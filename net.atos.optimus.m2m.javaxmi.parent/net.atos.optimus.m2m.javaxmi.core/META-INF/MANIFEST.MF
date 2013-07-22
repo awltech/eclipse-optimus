@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tools for JavaXMI model transformation
+Bundle-SymbolicName: net.atos.optimus.m2m.javaxmi.core
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: net.atos.optimus.m2m.javaxmi.core.Activator
+Bundle-Vendor: Worldline.com
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.eclipse.gmt.modisco.java,
+ org.eclipse.emf.ecore
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Export-Package: net.atos.optimus.m2m.javaxmi.core,
+ net.atos.optimus.m2m.javaxmi.core.annotations,
+ net.atos.optimus.m2m.javaxmi.core.javadoc,
+ net.atos.optimus.m2m.javaxmi.core.templating

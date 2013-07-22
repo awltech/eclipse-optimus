@@ -1,0 +1,214 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="net.atos.optimus.m2m.engine.core" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appinfo>
+         <meta.schema plugin="net.atos.optimus.m2m.engine.core" id="Transformations" name="Transformations"/>
+      </appinfo>
+      <documentation>
+         This extension point is used to register new transformation references into the M2M.Core engine.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appinfo>
+            <meta.element />
+         </appinfo>
+         <documentation>
+            This extension is used to register new transformation references into the M2M.Core engine.
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence minOccurs="0" maxOccurs="unbounded">
+            <element ref="transformationSet"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="transformation">
+      <complexType>
+         <sequence>
+            <element ref="objectRequires" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="parentRequires" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="customRequires" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Specify here an ID for the transformation. It should be unique across all the transformations registered in this workbench instance.
+
+This value may be reused when defining other transformations&apos; requirement, or when overriding an existing transformation.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="priority" type="string" use="default" value="0">
+            <annotation>
+               <documentation>
+                  Value is optional and default value is 0. The priority is used when overriding a transformation. (Overriding a transformation means defining a new transformation with same ID but higher priority.)
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="factory" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Implementation of the transformation factory class, dedicated to the eligibility management and creation of this transformation.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":net.atos.optimus.m2m.engine.core.transformations.ITransformationFactory"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="description" type="string">
+            <annotation>
+               <documentation>
+                  Description is optional and for information only. Information specified here to be propagated to the transformation management preferences and logging system.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="transformationSet">
+      <complexType>
+         <sequence minOccurs="0" maxOccurs="unbounded">
+            <element ref="transformation"/>
+         </sequence>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  Specify here an ID for the transformation set. This id should be unique for the whole workbench platform.
+
+The value can be used programmatically to limit the execution of a transformation process to some specific transformation sets.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="implementation" type="string">
+            <annotation>
+               <documentation>
+                  Implementation of the transformation set class, dedicated to the eligibility management of the transformations contained in this transformation set.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn="net.atos.optimus.m2m.engine.core.transformations.TransformationSet:"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="private" type="boolean">
+            <annotation>
+               <documentation>
+                  If TransformationSet is said as private, it will not be accessible in Optimus execution default mode. To make it accessible, it will have to be specified in the limited transformation sets list.
+If no value is specified, false will be taked in consideration.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="objectRequires">
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Specify here the ID of the transformation that should be executed as a requirement, on the same object as the one used in the requiring transformation.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="parentRequires">
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Specify here the ID of the transformation that should be executed as a requirement, on the parent of the object used in the requiring transformation.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="customRequires">
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Specify here the ID of the transformation that should be executed as a requirement
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="implementation" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Specify here the implementation of the class, in charge of determining on which elements should this required transformation be executed.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn="net.atos.optimus.m2m.engine.core.requirements.AbstractRequirement:"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="since"/>
+      </appinfo>
+      <documentation>
+         [Enter the first release in which this extension point appears.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="examples"/>
+      </appinfo>
+      <documentation>
+         [Enter extension point usage example here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="apiinfo"/>
+      </appinfo>
+      <documentation>
+         [Enter API information here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="implementation"/>
+      </appinfo>
+      <documentation>
+         [Enter information about supplied implementation of this extension point.]
+      </documentation>
+   </annotation>
+
+
+</schema>

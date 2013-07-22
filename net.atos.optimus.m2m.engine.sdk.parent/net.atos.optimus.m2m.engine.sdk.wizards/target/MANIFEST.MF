@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Require-Bundle: org.eclipse.ui,org.eclipse.core.runtime,org.eclipse.jd
+ t.core,org.eclipse.core.resources,net.atos.optimus.m2t.java.core;bund
+ le-version="0.1.0",org.eclipse.emf.ecore;bundle-version="2.7.0",org.e
+ clipse.gmt.modisco.xml;bundle-version="0.9.0",org.eclipse.jdt.ui;bund
+ le-version="3.7.0",net.atos.optimus.m2m.javaxmi.core,net.atos.optimus
+ .common.core;bundle-version="1.0.0"
+Bundle-Vendor: Worldline.com
+Bundle-ActivationPolicy: lazy
+Bundle-Version: 1.0.0.201306261146-indigo-SNAPSHOT
+Bundle-Name: Wizards for M2M Transformation Framework
+Bundle-Activator: net.atos.optimus.m2m.engine.sdk.wizards.Activator
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: net.atos.optimus.m2m.engine.sdk.wizards;singleton
+ :=true
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+

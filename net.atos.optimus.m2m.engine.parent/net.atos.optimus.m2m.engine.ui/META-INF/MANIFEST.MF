@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: User Interface for XA Optimus M2M Engine
+Bundle-SymbolicName: net.atos.optimus.m2m.engine.ui;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: net.atos.optimus.m2m.engine.ui.Activator
+Bundle-Vendor: Worldline.com
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ net.atos.optimus.m2m.engine.core,
+ net.atos.optimus.common.core
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy

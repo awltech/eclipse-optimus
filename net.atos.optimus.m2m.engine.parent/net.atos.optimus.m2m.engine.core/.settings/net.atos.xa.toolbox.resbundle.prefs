@@ -1,0 +1,4 @@
+LastLiteralPrefix=OPTIMUS_EXCEPTION_CAUGHT
+ResourceBundleName=OptimusM2MEngineMessages
+ResourceBundlePackage=net.atos.optimus.m2m.engine.core
+eclipse.preferences.version=1

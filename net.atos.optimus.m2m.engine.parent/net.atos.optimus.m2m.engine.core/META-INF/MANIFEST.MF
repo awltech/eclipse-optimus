@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Optimus M2M Transformation Orchestration Engine
+Bundle-SymbolicName: net.atos.optimus.m2m.engine.core;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: net.atos.optimus.m2m.engine.core.Activator
+Bundle-Vendor: Worldline.com
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.eclipse.ui.console,
+ org.eclipse.jface.text,
+ org.eclipse.emf.ecore,
+ org.eclipse.emf.workspace,
+ net.atos.optimus.common.core
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Export-Package: net.atos.optimus.m2m.engine.core,
+ net.atos.optimus.m2m.engine.core.adapters,
+ net.atos.optimus.m2m.engine.core.exceptions,
+ net.atos.optimus.m2m.engine.core.logging,
+ net.atos.optimus.m2m.engine.core.requirements,
+ net.atos.optimus.m2m.engine.core.transformations

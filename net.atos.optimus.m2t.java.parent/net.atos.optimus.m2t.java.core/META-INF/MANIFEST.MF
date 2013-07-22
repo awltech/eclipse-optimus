@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: M2T Generator for Java
+Bundle-SymbolicName: net.atos.optimus.m2t.java.core;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: net.atos.optimus.m2t.java.core.internal.Activator
+Bundle-Vendor: Worldline.com
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.eclipse.gmt.modisco.java;visibility:=reexport,
+ org.eclipse.gmt.modisco.java.generation;visibility:=reexport,
+ org.eclipse.acceleo.engine;visibility:=reexport,
+ org.eclipse.jdt.core,
+ net.atos.optimus.m2t.merger.java.core,
+ net.atos.optimus.common.core
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Export-Package: net.atos.optimus.m2t.java.core

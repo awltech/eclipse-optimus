@@ -1,0 +1,17 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>net.atos.optimus.m2t.selector.parent</artifactId>
+  <packaging>pom</packaging>
+  <name>Atos Optimus M2T Generator Router</name>
+  <modules>
+  	<module>net.atos.optimus.m2t.selector.core</module>
+  	<module>net.atos.optimus.m2t.selector.feature</module>
+  	<module>net.atos.optimus.m2t.selector.site</module>
+  	<module>net.atos.optimus.m2t.selector.source.feature</module>
+  </modules>
+  <parent>
+  	<groupId>net.atos.optimus</groupId>
+  	<artifactId>net.atos.optimus.parent</artifactId>
+  	<version>1.0.0-SNAPSHOT</version>
+  </parent>
+</project>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Optimus, framework for Model Transformation
+
+    Copyright (C) 2013 Worldline or third-party contributors as
+    indicated by the @author tags or express copyright attribution
+    statements applied by the authors.
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+    Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+
+-->
+<feature
+      id="net.atos.optimus.t2m.java.feature"
+      label="Optimus Java Code Reader"
+      version="1.0.0.qualifier"
+      provider-name="Atos.net">
+
+   <description url="http://www.example.com/description">
+      [Enter Feature Description here.]
+   </description>
+
+   <copyright url="http://www.example.com/copyright">
+      [Enter Copyright Description here.]
+   </copyright>
+
+   <license url="http://www.example.com/license">
+      [Enter License Description here.]
+   </license>
+
+   <requires>
+      <import plugin="org.eclipse.gmt.modisco.java.discoverer"/>
+      <import plugin="org.eclipse.modisco.java.discoverer" version="0.9.0" match="greaterOrEqual"/>
+   </requires>
+
+   <plugin
+         id="net.atos.optimus.t2m.java.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

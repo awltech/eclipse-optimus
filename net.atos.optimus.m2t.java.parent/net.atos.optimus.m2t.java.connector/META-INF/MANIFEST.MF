@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Java Connector for Optimus M2T Selector
+Bundle-SymbolicName: net.atos.optimus.m2t.java.connector;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: net.atos.optimus.m2t.java.connector.Activator
+Bundle-Vendor: Worldline.com
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ net.atos.optimus.m2t.selector.core,
+ net.atos.optimus.m2t.java.core
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy

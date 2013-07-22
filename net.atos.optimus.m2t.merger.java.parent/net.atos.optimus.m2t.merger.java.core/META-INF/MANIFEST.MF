@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Source Code Mergers
+Bundle-SymbolicName: net.atos.optimus.m2t.merger.java.core
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: net.atos.optimus.m2t.merger.java.core.internal.Activator
+Bundle-Vendor: Worldline.com
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.eclipse.jdt.core,
+ org.eclipse.jface.text,
+ net.atos.optimus.common.core
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Export-Package: net.atos.optimus.m2t.merger.java.core

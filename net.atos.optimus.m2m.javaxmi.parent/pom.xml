@@ -1,0 +1,17 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>net.atos.optimus.m2m.javaxmi.parent</artifactId>
+  <packaging>pom</packaging>
+  <name>JavaXMI API for Atos Optimus</name>
+  <modules>
+  	<module>net.atos.optimus.m2m.javaxmi.core</module>
+  	<module>net.atos.optimus.m2m.javaxmi.feature</module>
+  	<module>net.atos.optimus.m2m.javaxmi.site</module>
+  	<module>net.atos.optimus.m2m.javaxmi.source.feature</module>
+  </modules>
+  <parent>
+  	<groupId>net.atos.optimus</groupId>
+  	<artifactId>net.atos.optimus.parent</artifactId>
+  	<version>1.0.0-SNAPSHOT</version>
+  </parent>
+</project>

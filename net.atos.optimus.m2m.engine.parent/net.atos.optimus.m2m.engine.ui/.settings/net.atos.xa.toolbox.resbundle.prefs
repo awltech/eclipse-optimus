@@ -1,0 +1,4 @@
+LastLiteralPrefix=LOGGER_LEVEL
+ResourceBundleName=TransformationsPreferencesPage
+ResourceBundlePackage=net.atos.optimus.m2m.engine.core.ui.prefs
+eclipse.preferences.version=1

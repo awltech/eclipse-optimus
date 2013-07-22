@@ -1,0 +1,4 @@
+LastLiteralPrefix=TYPE_ADDSUPERCLASS
+ResourceBundleName=MergerLoggerMessages
+ResourceBundlePackage=net.atos.optimus.m2t.merger.java.core
+eclipse.preferences.version=1
