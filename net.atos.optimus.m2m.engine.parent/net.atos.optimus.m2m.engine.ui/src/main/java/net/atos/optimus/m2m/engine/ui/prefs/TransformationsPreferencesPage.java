@@ -1,31 +1,9 @@
-/**
- * Optimus, framework for Model Transformation
- *
- * Copyright (C) 2013 Worldline or third-party contributors as
- * indicated by the @author tags or express copyright attribution
- * statements applied by the authors.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
- */
 package net.atos.optimus.m2m.engine.ui.prefs;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
-import net.atos.optimus.common.tools.swt.FormDataBuilder;
 import net.atos.optimus.m2m.engine.core.Activator;
 import net.atos.optimus.m2m.engine.core.logging.OptimusM2MEngineLogger;
 import net.atos.optimus.m2m.engine.core.transformations.ExtensionPointTransformationDataSource;
@@ -35,6 +13,8 @@ import org.eclipse.jface.viewers.CheckboxTreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
@@ -48,8 +28,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 /**
  * Preference Page, for the transformation registration/enablement
  * 
- * @author Maxence Vanbésien (mvaawl@gmail.com)
- * @since 1.0
+ * @author mvanbesien
  * 
  */
 public class TransformationsPreferencesPage extends PreferencePage implements IWorkbenchPreferencePage {
@@ -59,6 +38,8 @@ public class TransformationsPreferencesPage extends PreferencePage implements IW
 	
 	// Temp value corresponding to the level chosen by user.
 	private int newLevel = -1;
+	
+	private TransformationsTreeCheckListener checkListener;
 
 	/*
 	 * (non-Javadoc)
@@ -118,7 +99,8 @@ public class TransformationsPreferencesPage extends PreferencePage implements IW
 		treeViewer.setLabelProvider(new TransformationsTreeLabelProvider());
 		treeViewer.setContentProvider(new TransformationsTreeContentsProvider());
 		treeViewer.setCheckStateProvider(new TransformationsTreeCheckProvider());
-		treeViewer.addCheckStateListener(new TransformationsTreeCheckListener(treeViewer));
+		this.checkListener = new TransformationsTreeCheckListener(treeViewer);
+		treeViewer.addCheckStateListener(this.checkListener);
 		treeViewer.setInput(ExtensionPointTransformationDataSource.instance());
 
 		Button exportButton = new Button(composite, SWT.PUSH);
@@ -140,52 +122,46 @@ public class TransformationsPreferencesPage extends PreferencePage implements IW
 			}
 		});
 
-		//FormData data;
+		FormData data;
 
-		new FormDataBuilder().left().top().right(combo).apply(label);
-//		data = new FormData();
-//		data.left = new FormAttachment(0, 5);
-//		data.top = new FormAttachment(0, 5);
-//		data.right = new FormAttachment(combo, 5);
-//		label.setLayoutData(data);
+		data = new FormData();
+		data.left = new FormAttachment(0, 5);
+		data.top = new FormAttachment(0, 5);
+		data.right = new FormAttachment(combo, 5);
+		label.setLayoutData(data);
 
-		new FormDataBuilder().top().width(120).right(importButton).apply(combo);
-//		data = new FormData();
-//		data.top = new FormAttachment(0, 5);
-//		data.width = 120;
-//		data.right = new FormAttachment(importButton, -5);
-//		combo.setLayoutData(data);
+		data = new FormData();
+		data.top = new FormAttachment(0, 5);
+		data.width = 120;
+		data.right = new FormAttachment(importButton, -5);
+		combo.setLayoutData(data);
 
-		new FormDataBuilder().left().top(combo, 15).right().apply(label2);
-//		data = new FormData();
-//		data.left = new FormAttachment(0, 5);
-//		data.top = new FormAttachment(combo, 15);
-//		data.right = new FormAttachment(100, 5);
-//		label2.setLayoutData(data);
+		data = new FormData();
+		data.left = new FormAttachment(0, 5);
+		data.top = new FormAttachment(combo, 15);
+		data.right = new FormAttachment(100, 5);
+		label2.setLayoutData(data);
 		
-		new FormDataBuilder().left().top(label2).bottom().right(exportButton).apply(tree);
-//		data = new FormData();
-//		data.left = new FormAttachment(0, 5);
-//		data.top = new FormAttachment(label2, 5);
-//		data.bottom = new FormAttachment(100, -5);
-//		data.right = new FormAttachment(exportButton, -5);
-//		tree.setLayoutData(data);
+		data = new FormData();
+		data.left = new FormAttachment(0, 5);
+		data.top = new FormAttachment(label2, 5);
+		data.bottom = new FormAttachment(100, -5);
+		data.right = new FormAttachment(exportButton, -5);
+		tree.setLayoutData(data);
 
-		new FormDataBuilder().top(label2).right().width(120).height(30).apply(exportButton);
-//		data = new FormData();
-//		data.top = new FormAttachment(label2, 5);
-//		data.right = new FormAttachment(100, -5);
-//		data.width = 120;
-//		data.height = 30;
-//		exportButton.setLayoutData(data);
+		data = new FormData();
+		data.top = new FormAttachment(label2, 5);
+		data.right = new FormAttachment(100, -5);
+		data.width = 120;
+		data.height = 30;
+		exportButton.setLayoutData(data);
 
-		new FormDataBuilder().top(exportButton).right().width(120).height(30).apply(importButton);
-//		data = new FormData();
-//		data.top = new FormAttachment(exportButton, 5);
-//		data.right = new FormAttachment(100, -5);
-//		data.width = 120;
-//		data.height = 30;
-//		importButton.setLayoutData(data);
+		data = new FormData();
+		data.top = new FormAttachment(exportButton, 5);
+		data.right = new FormAttachment(100, -5);
+		data.width = 120;
+		data.height = 30;
+		importButton.setLayoutData(data);
 
 		return composite;
 	}
@@ -197,6 +173,7 @@ public class TransformationsPreferencesPage extends PreferencePage implements IW
 	 */
 	@Override
 	protected void performApply() {
+		this.checkListener.apply();
 		super.performApply();
 	}
 

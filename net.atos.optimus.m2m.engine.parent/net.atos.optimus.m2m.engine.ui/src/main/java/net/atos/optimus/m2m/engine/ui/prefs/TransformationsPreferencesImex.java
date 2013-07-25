@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 import net.atos.optimus.m2m.engine.core.Activator;
+import net.atos.optimus.m2m.engine.core.masks.PreferencesTransformationMask;
 import net.atos.optimus.m2m.engine.core.transformations.ExtensionPointTransformationDataSource;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
 
@@ -39,8 +40,8 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- *  @author Maxence Vanbésien (mvaawl@gmail.com)
- *  @since 1.0
+ * @author Maxence Vanbésien (mvaawl@gmail.com)
+ * @since 1.0
  */
 public class TransformationsPreferencesImex {
 
@@ -51,18 +52,15 @@ public class TransformationsPreferencesImex {
 	private static final String IMPORT_NAME_PREF = "PreferencesImportName";
 
 	static void exportPreferences() {
-		IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
-
 		Properties properties = new Properties();
 
 		ExtensionPointTransformationDataSource manager = ExtensionPointTransformationDataSource.instance();
 
 		for (TransformationReference reference : manager.getAll()) {
-			String prefid = Activator.PLUGIN_ID + ".disabled." + reference.getId();
-			boolean value = preferenceStore.getBoolean(prefid);
-			properties.put(prefid, String.valueOf(value));
+			properties.put(reference.getId(),
+					PreferencesTransformationMask.getInstance().isTransformationEnabled(reference.getId()));
 		}
-
+		IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
 		FileDialog dialog = new FileDialog(new Shell(Display.getDefault()));
 		String pathName = preferenceStore.getString(EXPORT_PREF);
 		if (pathName != null && pathName.length() > 1)
@@ -129,7 +127,7 @@ public class TransformationsPreferencesImex {
 			preferenceStore.putValue(IMPORT_NAME_PREF, newPathName);
 
 		File file = new File(fullPath);
-		
+
 		if (!file.exists() || file.isDirectory()) {
 			// LOG MESSAGE
 			return;
@@ -150,13 +148,8 @@ public class TransformationsPreferencesImex {
 			String keyAsString = String.valueOf(key);
 			if (keyAsString.startsWith(keyPattern)) {
 				String id = keyAsString.substring(keyPattern.length());
-				TransformationReference byId = ExtensionPointTransformationDataSource.instance().getById(id);
-
-				if (byId != null) {
-					boolean value = Boolean.parseBoolean(properties.getProperty(keyAsString));
-					preferenceStore.setValue(keyAsString, String.valueOf(value));
-					byId.setEnabled(!value);
-				}
+				PreferencesTransformationMask.getInstance().setTransformationEnabled(id,
+						Boolean.parseBoolean(properties.getProperty(keyAsString)));
 			}
 		}
 	}
