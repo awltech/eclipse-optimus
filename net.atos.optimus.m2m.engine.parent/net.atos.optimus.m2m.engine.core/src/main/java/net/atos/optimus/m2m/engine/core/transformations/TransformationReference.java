@@ -24,10 +24,9 @@ package net.atos.optimus.m2m.engine.core.transformations;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import net.atos.optimus.m2m.engine.core.Activator;
+import net.atos.optimus.m2m.engine.core.masks.ITransformationMask;
+import net.atos.optimus.m2m.engine.core.masks.PreferencesTransformationMask;
 import net.atos.optimus.m2m.engine.core.requirements.AbstractRequirement;
-
-import org.eclipse.jface.preference.IPreferenceStore;
 
 /**
  * Transformation Reference
@@ -47,13 +46,6 @@ public class TransformationReference {
 	 * Id of the transformation
 	 */
 	private String id;
-
-	/**
-	 * Local information, to store the enablement key. The enablement key is a
-	 * key used in the Eclipse preferences, to store whether a transformation is
-	 * enabled or not
-	 */
-	private String enablementKey;
 
 	/**
 	 * Transformation factory instance
@@ -76,10 +68,9 @@ public class TransformationReference {
 	private String description;
 
 	/**
-	 * boolean telling if transformations are enabled or not.
+	 * Transformation priority. Used when there are two transformations with
+	 * same id
 	 */
-	private boolean isEnabled = true;
-
 	private int priority;
 
 	/**
@@ -93,7 +84,7 @@ public class TransformationReference {
 	 *            : Transformation Set
 	 * @param description
 	 *            : Description
-	 * @param priority 
+	 * @param priority
 	 */
 	public TransformationReference(String id, ITransformationFactory transformationFactory, TransformationSet lts,
 			String description, int priority) {
@@ -102,10 +93,7 @@ public class TransformationReference {
 		this.transformationSet = lts;
 		this.requirements = new LinkedHashSet<AbstractRequirement>();
 		this.description = description;
-		IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
-		this.enablementKey = Activator.PLUGIN_ID + ".disabled." + id;
 		this.priority = priority;
-		this.isEnabled = !preferenceStore.getBoolean(this.enablementKey);
 	}
 
 	/**
@@ -184,22 +172,15 @@ public class TransformationReference {
 	/**
 	 * @return whether the transformation is enabled in the Eclipse preferences
 	 */
-	public boolean isEnabled() {
-		return isEnabled;
+	public boolean isEnabled(ITransformationMask transformationMask) {
+		return transformationMask == null ? PreferencesTransformationMask.getInstance()
+				.isTransformationEnabled(this.id) : transformationMask.isTransformationEnabled(this.id);
 	}
 
 	/**
-	 * Flags the transformation as enabled or disabled, according to the
-	 * provided value
 	 * 
-	 * @param isEnabled
-	 *            : true to enable the transformation, false to disable it
+	 * @return
 	 */
-	public void setEnabled(boolean isEnabled) {
-		this.isEnabled = isEnabled;
-		Activator.getDefault().getPreferenceStore().setValue(this.enablementKey, !this.isEnabled);
-	}
-	
 	public int getPriority() {
 		return priority;
 	}

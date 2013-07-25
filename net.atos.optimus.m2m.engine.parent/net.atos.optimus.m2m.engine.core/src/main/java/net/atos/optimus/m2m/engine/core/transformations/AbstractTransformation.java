@@ -59,12 +59,6 @@ public abstract class AbstractTransformation<T extends EObject> {
 	private boolean isExecuted = false;
 
 	/**
-	 * Boolean to know if the transformation is enabled (from the Eclipse
-	 * Preferences)
-	 */
-	private boolean isEnabled = true;
-
-	/**
 	 * Input EObject
 	 */
 	private T eObject;
@@ -123,10 +117,6 @@ public abstract class AbstractTransformation<T extends EObject> {
 	 *            preferences.
 	 */
 	public final void execute(ITransformationContext context) {
-		if (!this.isEnabled) {
-			// TODO log something / Do we need to throw exception ?
-			return;
-		}
 		this.transform(context);
 		setExecuted();
 	}
@@ -169,23 +159,6 @@ public abstract class AbstractTransformation<T extends EObject> {
 	 */
 	private String getIdentifier() {
 		return id + "_" + EcoreUtil.getURI(eObject);
-	}
-
-	/**
-	 * Sets whether the transformation is enabled or not.
-	 * 
-	 * @param enabled
-	 */
-	public void setEnabled(boolean enabled) {
-		this.isEnabled = enabled;
-
-	}
-
-	/**
-	 * @return whether the current transformation is enabled.
-	 */
-	public boolean isEnabled() {
-		return isEnabled;
 	}
 
 	/**

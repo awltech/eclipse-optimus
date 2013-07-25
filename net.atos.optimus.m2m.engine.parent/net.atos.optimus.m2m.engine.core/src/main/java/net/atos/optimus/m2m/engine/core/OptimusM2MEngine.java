@@ -37,6 +37,7 @@ import net.atos.optimus.m2m.engine.core.adapters.EObjectLockAdapter;
 import net.atos.optimus.m2m.engine.core.exceptions.TransformationFailedException;
 import net.atos.optimus.m2m.engine.core.logging.EObjectLabelProvider;
 import net.atos.optimus.m2m.engine.core.logging.OptimusM2MEngineMessages;
+import net.atos.optimus.m2m.engine.core.masks.ITransformationMask;
 import net.atos.optimus.m2m.engine.core.requirements.AbstractRequirement;
 import net.atos.optimus.m2m.engine.core.transformations.AbstractTransformation;
 import net.atos.optimus.m2m.engine.core.transformations.ExtensionPointTransformationDataSource;
@@ -159,6 +160,11 @@ public class OptimusM2MEngine {
 	protected ITransformationDataSource transformationDataSource = ExtensionPointTransformationDataSource.instance();
 
 	/**
+	 * Instance of Mask used to filter the transformations
+	 */
+	private ITransformationMask transformationMask = null;
+	
+	/**
 	 * Creates new transformation engine, with provided context implementation
 	 * 
 	 * This default constructor will allow the input elements to be modified or
@@ -205,6 +211,19 @@ public class OptimusM2MEngine {
 		return this;
 	}
 
+	/**
+	 * Applies a mask on the transformations, to prevent them from being
+	 * enabled. Applying a mask will NOT go over the user configuration
+	 * specified in the Optimus preferences...
+	 * 
+	 * @param transformationMask
+	 * @return
+	 */
+	public OptimusM2MEngine applyTransformationMask(ITransformationMask transformationMask) {
+		this.transformationMask = transformationMask;
+		return this;
+	}
+	
 	/**
 	 * Sets user selection
 	 * 
@@ -361,7 +380,7 @@ public class OptimusM2MEngine {
 			OptimusM2MEngineMessages.TE06.log(reference.getId(), reference.getDescription(),
 					eObjectLabelProvider.getText(eObject));
 
-			if (!reference.isEnabled()) {
+			if (!reference.isEnabled(this.transformationMask)) {
 				OptimusM2MEngineMessages.TE10.log(reference.getId());
 				return false;
 			}
