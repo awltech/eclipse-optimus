@@ -13,7 +13,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.acceleo.engine;visibility:=reexport,
  org.eclipse.jdt.core,
  net.atos.optimus.m2t.merger.java.core,
- net.atos.optimus.common.core
+ net.atos.optimus.common.core,
+ net.atos.optimus.m2t.java.emtl;resolution:=optional
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: net.atos.optimus.m2t.java.core

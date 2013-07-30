@@ -67,7 +67,7 @@ public class JavaGenerator extends GenerateJava {
 	 * Veto Strategy. Initialized by default with XA Veto Strategy
 	 */
 	private IPostGenerationVetoStrategy vetoStrategy = new XAVetoStrategy();
-	
+
 	/**
 	 * Creates generator with default java code merger
 	 */
@@ -152,20 +152,41 @@ public class JavaGenerator extends GenerateJava {
 	 * org.eclipse.acceleo.engine.service.AbstractAcceleoGenerator#findModuleURL
 	 * (java.lang.String)
 	 */
-	@SuppressWarnings("restriction")
+
 	@Override
 	protected URL findModuleURL(String moduleName) {
+		URL moduleURL = this.findModuleURL(moduleName, GenerateJavaExtended.class);
+		if (moduleURL == null) {
+			try {
+				Class<?> clazz = Class.forName("net.atos.optimus.m2t.java.emtl.Activator");
+				if (clazz != null)
+					moduleURL = findModuleURL(moduleName, clazz);
+			} catch (ClassNotFoundException e) {
+				// Swallow it. Class is just not in the classpath...
+			}
+		}
+		return moduleURL;
+	}
+
+	/**
+	 * 
+	 * @param moduleName
+	 * @param clazz
+	 * @return
+	 */
+	@SuppressWarnings("restriction")
+	private URL findModuleURL(String moduleName, Class<?> clazz) {
 		URL moduleURL = null;
 		if (EMFPlugin.IS_ECLIPSE_RUNNING)
 			try {
 				moduleURL = org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil.getResourceURL(
-						GenerateJavaExtended.class, moduleName);
+						clazz, moduleName);
 			} catch (IOException e) {
 				// Swallow this, we'll try and locate the module through the
 				// class loader
 			}
 		if (moduleURL == null)
-			moduleURL = GenerateJavaExtended.class.getResource(moduleName);
+			moduleURL = clazz.getResource(moduleName);
 		return moduleURL;
 	}
 
@@ -179,9 +200,10 @@ public class JavaGenerator extends GenerateJava {
 	public IAcceleoGenerationStrategy getGenerationStrategy() {
 		return new XAGenerationStrategy(this.postProcessors, this.vetoStrategy);
 	}
-	
+
 	/**
 	 * Sets the veto strategy. If null, does nothing.
+	 * 
 	 * @param vetoStrategy
 	 */
 	public void setVetoStrategy(IPostGenerationVetoStrategy vetoStrategy) {
