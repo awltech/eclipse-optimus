@@ -43,6 +43,11 @@ public abstract class TransformationSet {
 	private String id;
 
 	/**
+	 * Transformation Set Description
+	 */
+	private String description;
+
+	/**
 	 * @return Transformation set ID
 	 */
 	public String getId() {
@@ -57,6 +62,23 @@ public abstract class TransformationSet {
 	 */
 	void setId(String id) {
 		this.id = id;
+	}
+
+	/**
+	 * 
+	 * @return transformation set description field
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * 
+	 * @param description
+	 *            description of transformation set.
+	 */
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	/**

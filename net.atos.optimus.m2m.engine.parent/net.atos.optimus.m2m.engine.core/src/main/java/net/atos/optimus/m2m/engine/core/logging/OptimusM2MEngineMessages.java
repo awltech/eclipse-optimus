@@ -55,7 +55,12 @@ public enum OptimusM2MEngineMessages {
 	DC01(Level.WARNING), DC02(Level.WARNING), DC03(Level.WARNING),
 	
 	// Messages related to logger
-	LG01(Level.WARNING);
+	LG01(Level.WARNING),
+
+	// Messages related to Extension Point loading process
+	EP01(Level.INFO), EP02(Level.INFO), EP03(Level.INFO), EP04(Level.INFO), EP05(Level.INFO), EP06(Level.INFO), EP07(
+			Level.INFO), EP08(Level.INFO), EP09(Level.INFO), EP10(Level.INFO), EP11(Level.INFO), EP12(Level.INFO), EP13(
+			Level.INFO), EP14(Level.SEVERE), EP15(Level.WARNING);
 
 	/**
 	 * Priority level

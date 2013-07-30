@@ -56,10 +56,11 @@ public class TransformationsTreeLabelProvider extends LabelProvider {
 		if (element instanceof ExtensionPointTransformationDataSource)
 			return "ROOT";
 		else if (element instanceof TransformationSet) {
-			return ((TransformationSet) element).getId();
+			TransformationSet transformationSet = (TransformationSet) element;
+			return transformationSet.getDescription() + " (" + transformationSet.getId() + ")";
 		} else if (element instanceof TransformationReference) {
 			TransformationReference reference = (TransformationReference) element;
-			return reference.getId() + " - " + reference.getDescription();
+			return reference.getDescription() + " (" + reference.getId() + ")";
 		}
 		return null;
 	};

@@ -22,6 +22,7 @@
       <complexType>
          <sequence minOccurs="0" maxOccurs="unbounded">
             <element ref="transformationSet"/>
+            <element ref="transformationSetExtension"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -122,6 +123,33 @@ The value can be used programmatically to limit the execution of a transformatio
                <documentation>
                   If TransformationSet is said as private, it will not be accessible in Optimus execution default mode. To make it accessible, it will have to be specified in the limited transformation sets list.
 If no value is specified, false will be taked in consideration.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="description" type="string">
+            <annotation>
+               <documentation>
+                  Description is optional and for information only. Information specified here to be propagated to the transformation management preferences and logging system.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="transformationSetExtension">
+      <annotation>
+         <documentation>
+            This object is to be used when a user would like to add transformations to an existing transformation set.
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence minOccurs="0" maxOccurs="unbounded">
+            <element ref="transformation"/>
+         </sequence>
+         <attribute name="transformationSetId" type="string" use="required">
+            <annotation>
+               <documentation>
+                  ID of the transformation set being extended.
                </documentation>
             </annotation>
          </attribute>

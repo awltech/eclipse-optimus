@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.atos.optimus.m2m.engine.core.Activator;
+import net.atos.optimus.m2m.engine.core.logging.OptimusM2MEngineMessages;
 import net.atos.optimus.m2m.engine.core.requirements.AbstractRequirement;
 import net.atos.optimus.m2m.engine.core.requirements.ObjectRequirement;
 import net.atos.optimus.m2m.engine.core.requirements.ParentRequirement;
@@ -35,7 +36,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 
 /**
  * Transformation Data Source implementation, based on extension points.
@@ -69,6 +72,7 @@ public class ExtensionPointTransformationDataSource implements ITransformationDa
 	 */
 	private ExtensionPointTransformationDataSource() {
 		this.transformationReferencesMap = new HashMap<String, TransformationReference>();
+		this.transformationSetsMap = new HashMap<String, TransformationSet>();
 		this.loadExtensions();
 	}
 
@@ -78,36 +82,75 @@ public class ExtensionPointTransformationDataSource implements ITransformationDa
 	private Map<String, TransformationReference> transformationReferencesMap;
 
 	/**
+	 * Map that holds the transformation sets by ID.
+	 */
+	private Map<String, TransformationSet> transformationSetsMap;
+	
+	/**
 	 * Load the extension points.
 	 */
 	private void loadExtensions() {
 		IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(Activator.PLUGIN_ID,
 				"Transformations");
+		OptimusM2MEngineMessages.EP01.log();
 		for (IExtension extension : extensionPoint.getExtensions()) {
+			OptimusM2MEngineMessages.EP02.log(extension.getContributor().getName());
 			for (IConfigurationElement configurationElement : extension.getConfigurationElements()) {
 				try {
 					if ("transformationSet".equals(configurationElement.getName())) {
 						String transformationSetId = configurationElement.getAttribute("id");
+						String transformationSetDescription = configurationElement.getAttribute("description");
 						String transformationSetPrivacy = configurationElement.getAttribute("private");
 						String transformationSetImplementation = configurationElement.getAttribute("implementation");
-						TransformationSet lts = null;
-
+						TransformationSet lts = null; 
+						
 						if (transformationSetImplementation != null
 								&& transformationSetImplementation.trim().length() > 0)
 							lts = (TransformationSet) configurationElement.createExecutableExtension("implementation");
 
 						if (lts == null)
 							lts = new DefaultTransformationSet();
-						lts.setId(transformationSetId);
-
+						lts.setId(transformationSetId); 
+						lts.setDescription(transformationSetDescription);
+						
+						OptimusM2MEngineMessages.EP03.log(transformationSetId);
+						OptimusM2MEngineMessages.EP04.log(lts.getClass().getName());
+						
 						if (transformationSetPrivacy != null)
 							lts.setPrivate(Boolean.parseBoolean(transformationSetPrivacy));
-
+						OptimusM2MEngineMessages.EP05.log(lts.isPrivate());
+						
+						this.transformationSetsMap.put(lts.getId(), lts);
+						
 						for (IConfigurationElement child : configurationElement.getChildren("transformation"))
 							this.loadTransformation(child, lts);
-					}
+					} 
 				} catch (CoreException ce) {
-					ce.printStackTrace();
+					OptimusM2MEngineMessages.EP14.log(ce.getMessage());
+					Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, OptimusM2MEngineMessages.EP14.message(ce.getMessage()), ce));
+				}
+			}	
+			OptimusM2MEngineMessages.EP13.log();
+		}
+		// Add the support of transformation set extensions, done in a second loop to ensure all transformation sets are enabled.
+		for (IExtension extension : extensionPoint.getExtensions()) {
+			OptimusM2MEngineMessages.EP02.log(extension.getContributor().getName());
+			for (IConfigurationElement configurationElement : extension.getConfigurationElements()) {
+				try {
+					if ("transformationSetExtension".equals(configurationElement.getName())) {
+						String transformationSetId = configurationElement.getAttribute("transformationSetId");
+						OptimusM2MEngineMessages.EP06.log(transformationSetId);
+						TransformationSet transformationSet = this.transformationSetsMap.get(transformationSetId);
+						if (transformationSet != null) {
+						for (IConfigurationElement child : configurationElement.getChildren("transformation"))
+							this.loadTransformation(child, transformationSet);
+						} else {
+							OptimusM2MEngineMessages.EP15.log(transformationSetId);
+						}
+					} 
+				} catch (CoreException ce) {
+					OptimusM2MEngineMessages.EP14.log(ce.getMessage());
+					Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, OptimusM2MEngineMessages.EP14.message(ce.getMessage()), ce));
 				}
 			}
 		}
@@ -125,10 +168,10 @@ public class ExtensionPointTransformationDataSource implements ITransformationDa
 	 */
 	private void loadTransformation(IConfigurationElement configurationElement, TransformationSet lts)
 			throws CoreException {
-		// Load the transformation itself
+		// Load the transformation itself 
 		String id = configurationElement.getAttribute("id");
 		String description = configurationElement.getAttribute("description");
-
+		
 		int priority = 0;
 
 		try {
@@ -136,12 +179,17 @@ public class ExtensionPointTransformationDataSource implements ITransformationDa
 		} catch (Exception e) {
 		}
 
+		OptimusM2MEngineMessages.EP07.log(id, description, priority);
+		
 		if (this.transformationReferencesMap.containsKey(id)) {
 			TransformationReference reference = this.transformationReferencesMap.get(id);
-			if (reference.getPriority() < priority)
-				this.transformationReferencesMap.remove(id);
-			else
+			if (reference.getPriority() < priority) {
+				this.transformationReferencesMap.remove(id); 
+				OptimusM2MEngineMessages.EP08.log(id, reference.getPriority(), priority);
+			} else {
+				OptimusM2MEngineMessages.EP09.log(id, reference.getPriority(), priority);
 				return;
+			}
 		}
 
 		ITransformationFactory transformationFactory = (ITransformationFactory) configurationElement
@@ -157,19 +205,21 @@ public class ExtensionPointTransformationDataSource implements ITransformationDa
 				ObjectRequirement objectRequirement = new ObjectRequirement();
 				objectRequirement.setId(reqid);
 				loopbackTransformationReference.addRequirement(objectRequirement);
+				OptimusM2MEngineMessages.EP10.log(id, reqid);
 			} else if ("parentRequires".equals(child.getName())) {
 				String reqid = child.getAttribute("id");
 				ParentRequirement parentRequirement = new ParentRequirement();
 				parentRequirement.setId(reqid);
 				loopbackTransformationReference.addRequirement(parentRequirement);
+				OptimusM2MEngineMessages.EP11.log(id, reqid);
 			} else if ("customRequires".equals(child.getName())) {
 				String reqid = child.getAttribute("id");
 				AbstractRequirement requirement = (AbstractRequirement) child
 						.createExecutableExtension("implementation");
 				requirement.setId(reqid);
 				loopbackTransformationReference.addRequirement(requirement);
+				OptimusM2MEngineMessages.EP12.log(id, reqid, requirement.getClass().getName());
 			}
-
 		}
 	}
 
@@ -177,7 +227,7 @@ public class ExtensionPointTransformationDataSource implements ITransformationDa
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * net.atos.optimus.m2m.engine.core.transformations.ITransformationDataSource
+	 * net.atos.xa.optimus.m2m.engine.transformations.ITransformationDataSource
 	 * #getById(java.lang.String)
 	 */
 	public TransformationReference getById(String id) {
@@ -188,7 +238,7 @@ public class ExtensionPointTransformationDataSource implements ITransformationDa
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * net.atos.optimus.m2m.engine.core.transformations.ITransformationDataSource
+	 * net.atos.xa.optimus.m2m.engine.transformations.ITransformationDataSource
 	 * #getAll()
 	 */
 	public Collection<TransformationReference> getAll() {
