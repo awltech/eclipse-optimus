@@ -8,7 +8,9 @@
   	<version>1.0.0-SNAPSHOT</version>
   </parent>
   <modules>
+  	<!--  SITE IS MISSING -->
   	<module>net.atos.optimus.m2m.engine.sdk.wizards</module>
   	<module>net.atos.optimus.m2m.engine.sdk.feature</module>
+  	<module>net.atos.optimus.m2m.engine.sdk.site</module>
   </modules>
 </project>

@@ -22,33 +22,9 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
 -->
-<feature
-      id="net.atos.optimus.m2m.engine.sdk.feature"
-      label="Optimus SDK"
-      version="1.0.0.qualifier"
-      provider-name="Atos.net">
-
-   <description url="http://www.example.com/description">
-      [Enter Feature Description here.]
+<site>
+   <description name="Atos Optimus M2M Engine SDK">
+     Atos Optimus M2M Engine SDK
    </description>
-
-   <copyright url="http://www.example.com/copyright">
-      [Enter Copyright Description here.]
-   </copyright>
-
-   <license url="http://www.example.com/license">
-      [Enter License Description here.]
-   </license>
-
-   <includes
-         id="net.atos.optimus.m2m.engine.source.feature"
-         version="0.0.0"/>
-
-   <plugin
-         id="net.atos.optimus.m2m.engine.sdk.wizards"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-</feature>
+   <feature url="features/net.atos.optimus.m2m.engine.sdk.feature_1.0.0.qualifier.jar" id="net.atos.optimus.m2m.engine.sdk.feature" version="1.0.0.qualifier"/>
+</site>
