@@ -27,7 +27,7 @@
 <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            class="net.atos.optimus.m2m.engine.core.ui.prefs.TransformationsPreferencesPage"
+            class="net.atos.optimus.m2m.engine.ui.prefs.TransformationsPreferencesPage"
             id="net.atos.optimus.m2m.engine.core.ui.prefs1"
             name="XA Optimus M2M Engine">
       </page>
