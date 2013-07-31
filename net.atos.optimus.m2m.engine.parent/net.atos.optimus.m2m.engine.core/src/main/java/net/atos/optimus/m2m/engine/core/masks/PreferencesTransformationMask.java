@@ -37,7 +37,7 @@ public class PreferencesTransformationMask implements ITransformationMask {
 
 	public boolean isTransformationEnabled(String id) {
 		String enablementKey = Activator.PLUGIN_ID + ".disabled." + id;
-		return this.preferenceStore.getBoolean(enablementKey);
+		return !this.preferenceStore.getBoolean(enablementKey);
 	}
 
 	public void setTransformationEnabled(String id, boolean enabled) {
