@@ -65,20 +65,26 @@ public class MainPreferencePage extends PreferencePage implements IWorkbenchPref
 		Label title = new Label(background, SWT.WRAP);
 		Label description = new Label(background, SWT.WRAP);
 		Link moreInfo = new Link(background, SWT.RIGHT);
+		Link moreInfo1 = new Link(background, SWT.RIGHT);
 		Link moreInfo2 = new Link(background, SWT.RIGHT);
 
 		description
 				.setText("Welcome to Optimus !\n\nOptimus is a new way to handle EMF-based model transformations, using requirements instead of predefined workflows."
 						+ "\nIt also comes natively with a Code Generation tooling, for a ready to run Code Generation framework.\n\n");
 		moreInfo.setText("Find more information about Optimus <A href=\"https://github.com/awltech/eclipse-optimus\">here</A>.");
+		moreInfo1.setText("Check out the Optimus documentation <A href=\"https://github.com/awltech/eclipse-optimus/wiki/_pages\">here</A>.");
 		moreInfo2.setText("Find more about AWLTech components <A href=\"https://github.com/awltech\">here</A>.");
 
+		
+		
 		moreInfo.addSelectionListener(new OpenLinkActionSelectionAdapter());
+		moreInfo1.addSelectionListener(new OpenLinkActionSelectionAdapter());
 		moreInfo2.addSelectionListener(new OpenLinkActionSelectionAdapter());
 
 		FormDataBuilder.on(title).top().left().right();
 		FormDataBuilder.on(description).top(title).left().right().bottom(moreInfo);
-		FormDataBuilder.on(moreInfo).bottom(moreInfo2).right();
+		FormDataBuilder.on(moreInfo).bottom(moreInfo1).right();
+		FormDataBuilder.on(moreInfo1).bottom(moreInfo2).right();
 		FormDataBuilder.on(moreInfo2).bottom().right();
 
 		return background;
