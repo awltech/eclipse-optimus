@@ -24,5 +24,13 @@
 -->
 <?eclipse version="3.4"?>
 <plugin>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="net.atos.optimus.common.tools.ui.MainPreferencePage"
+            id="net.atos.optimus.common.core.main"
+            name="Optimus">
+      </page>
+   </extension>
 
 </plugin>
