@@ -71,7 +71,7 @@ public class MainPreferencePage extends PreferencePage implements IWorkbenchPref
 				.setText("Welcome to Optimus !\n\nOptimus is a new way to handle EMF-based model transformations, using requirements instead of predefined workflows."
 						+ "\nIt also comes natively with a Code Generation tooling, for a ready to run Code Generation framework.\n\n");
 		moreInfo.setText("Find more information about Optimus <A href=\"https://github.com/awltech/eclipse-optimus\">here</A>.");
-		moreInfo2.setText("Find more about AWLTech components at <A href=\"https://github.com/awltech\">here</A>.");
+		moreInfo2.setText("Find more about AWLTech components <A href=\"https://github.com/awltech\">here</A>.");
 
 		moreInfo.addSelectionListener(new OpenLinkActionSelectionAdapter());
 		moreInfo2.addSelectionListener(new OpenLinkActionSelectionAdapter());
