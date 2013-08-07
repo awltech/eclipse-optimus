@@ -74,6 +74,7 @@ public class JavaCodeHelper {
 	/**
 	 * Compiler options used inside this Java code Merger
 	 */
+	@SuppressWarnings("unchecked")
 	public static Map<String, String> compilerOptions = JavaCore.getOptions();
 
 	static {
@@ -194,11 +195,9 @@ public class JavaCodeHelper {
 			childrenToSearch = getTypedChildren(parentNodeToSearchATD, MethodDeclaration.class);
 		}
 		else if (AbstractTypeDeclaration.class.isAssignableFrom(bodyDeclarationToFindClass)) {
-			//TODO: check effect
 			childrenToSearch = getTypedChildren(parentNodeToSearchATD, AbstractTypeDeclaration.class);
 		}
 		else if (EnumConstantDeclaration.class.isAssignableFrom(bodyDeclarationToFindClass)) {
-			//TODO: test
 			childrenToSearch = getTypedChildren(parentNodeToSearchATD, EnumConstantDeclaration.class);
 		}
 		
@@ -483,7 +482,6 @@ public class JavaCodeHelper {
 	 *            An inner type name
 	 * @return A AbstractTypeDeclaration object instance
 	 */
-	@SuppressWarnings("unchecked")
 	public static AbstractTypeDeclaration getInnerType(AbstractTypeDeclaration atd,
 			String innerTypeName) {
 		List<AbstractTypeDeclaration> atds = getTypedChildren(atd, AbstractTypeDeclaration.class);
@@ -1032,7 +1030,7 @@ public class JavaCodeHelper {
 
 		// Create an AST parser for the source (use JLS3 to support
 		// JDK 1.5)
-		ASTParser existingContentParser = ASTParser.newParser(AST.JLS3);
+		ASTParser existingContentParser = ASTParser.newParser(AST.JLS4);
 		existingContentParser.setSource(sourceAsDocument.get().toCharArray());
 		existingContentParser.setCompilerOptions(JavaCodeHelper.compilerOptions);
 		return (CompilationUnit) existingContentParser.createAST(null);

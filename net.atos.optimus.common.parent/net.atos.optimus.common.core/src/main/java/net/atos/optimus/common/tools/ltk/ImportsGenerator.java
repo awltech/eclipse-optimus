@@ -61,7 +61,7 @@ public class ImportsGenerator {
 	 */
 	public static CharSequence createImports(String filePath,
 			CharSequence initialContents) {
-		ASTParser parser = ASTParser.newParser(AST.JLS3);
+		ASTParser parser = ASTParser.newParser(AST.JLS4);
 
 		IPath absolutePath = new Path(filePath);
 		try {

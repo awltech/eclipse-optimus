@@ -228,7 +228,7 @@ public class GeneratedAnnotationHelper {
 	 * @return updated Source
 	 */
 	public static String updateHashcodeInSource(String source) {
-		ASTParser parser = ASTParser.newParser(AST.JLS3);
+		ASTParser parser = ASTParser.newParser(AST.JLS4);
 		parser.setSource(source.toCharArray());
 		parser.setCompilerOptions(GeneratedAnnotationHelper.compilerOptions);
 		CompilationUnit cu = (CompilationUnit) parser.createAST(null);

@@ -51,7 +51,7 @@ public class ASTHelper {
 	 * Initialize this AST parser
 	 */
 	static {
-		astp = ASTParser.newParser(AST.JLS3);
+		astp = ASTParser.newParser(AST.JLS4);
 	}
 
 	/**
