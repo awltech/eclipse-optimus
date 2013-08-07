@@ -45,7 +45,7 @@ public class FormDataBuilder {
 	/*
 	 * Internal value for default offset, value in px
 	 */
-	private int defaultOffset;
+	private int defaultOffset = 5;
 
 	/**
 	 * Updates the default offset value, saved internally
@@ -59,25 +59,29 @@ public class FormDataBuilder {
 		return this;
 	}
 
-	/**
+	/*
 	 * Creates new FormData builder instance with default offset value set to 5
-	 * px
+	 * px, on the provided object
 	 */
-	public FormDataBuilder() {
+	private FormDataBuilder(Control control) {
 		this.data = new FormData();
-		this.defaultOffset = 5;
+		control.setLayoutData(this.data);
 	}
 
 	/**
-	 * Creates a new FormData builder instance, with default offset value passed
-	 * as parameter
-	 * 
-	 * @param defaultOffset
-	 *            custom default offset value, in px
+	 * Creates new FormData builder instance with default offset value set to 5
+	 * px, applied on the provided object
 	 */
-	public FormDataBuilder(final int defaultOffset) {
-		this.data = new FormData();
-		this.defaultOffset = defaultOffset;
+	public static FormDataBuilder on(final Control control) {
+		return new FormDataBuilder(control);
+	}
+
+	/**
+	 * Creates new FormData builder instance with specific offset, applied on
+	 * the provided object
+	 */
+	public static FormDataBuilder on(final Control control, final int defaultOffset) {
+		return FormDataBuilder.on(control).setDefaultOffset(defaultOffset);
 	}
 
 	/**
@@ -415,14 +419,4 @@ public class FormDataBuilder {
 	public FormDataBuilder fill() {
 		return this.horizontal().vertical();
 	}
-
-	/**
-	 * Applies the defined layout data to the control passed as parameter.
-	 * 
-	 * @param control
-	 */
-	public void apply(final Control control) {
-		control.setLayoutData(this.data);
-	}
-
 }

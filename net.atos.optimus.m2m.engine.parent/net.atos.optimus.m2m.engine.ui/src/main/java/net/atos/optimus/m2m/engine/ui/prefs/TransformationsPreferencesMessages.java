@@ -30,7 +30,7 @@ import java.util.ResourceBundle;
  */
 public enum TransformationsPreferencesMessages {
 
-	IMPORT_BUTTON, EXPORT_BUTTON, LOGGER_LEVEL, TRANSFORMATIONS_LABEL;
+	IMPORT_BUTTON, EXPORT_BUTTON, LOGGER_LEVEL, TRANSFORMATIONS_LABEL, DESCRIPTION;
 	
 	private static ResourceBundle resourceBundle = ResourceBundle.getBundle("TransformationsPreferencesMessages");
 	

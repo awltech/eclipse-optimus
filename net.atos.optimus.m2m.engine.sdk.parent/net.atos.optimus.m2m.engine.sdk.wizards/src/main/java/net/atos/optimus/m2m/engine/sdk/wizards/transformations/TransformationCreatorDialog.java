@@ -49,46 +49,47 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionDialog;
 
 /**
- *  @author Maxence Vanbésien (mvaawl@gmail.com)
- *  @since 1.0
+ * @author Maxence Vanbésien (mvaawl@gmail.com)
+ * @since 1.0
  */
 public class TransformationCreatorDialog {
 
-	private Shell shell;
+	private final Shell shell;
 
-	private Text idText;
+	private final Text idText;
 
 	private String id;
 
-	private Text packageText;
+	private final Text packageText;
 
 	private IPackageFragment fragment;
 
-	private Text trnText;
+	private final Text trnText;
 
 	private String trn;
 
-	private Text factoryText;
+	private final Text factoryText;
 
 	private String factory;
 
-	private Text typeText;
+	private final Text typeText;
 
 	private String type;
 
-	private Text trnSetText;
+	private final Text trnSetText;
 
 	private String trnSet;
 
-	private Button computeButton;
+	private final Button computeButton;
 
 	private boolean keepOpen = true;
 
 	private boolean isOK = false;
 
-	private IJavaProject javaProject;
+	private final IJavaProject javaProject;
 
-	public TransformationCreatorDialog(final IJavaProject javaProject, TransformationCreatorPreferences preferences) {
+	public TransformationCreatorDialog(final IJavaProject javaProject,
+			final TransformationCreatorPreferences preferences) {
 
 		this.javaProject = javaProject;
 
@@ -98,93 +99,93 @@ public class TransformationCreatorDialog {
 		this.shell.setLayout(new FillLayout());
 		this.shell.setText(Messages.DIALOG_TITLE.message());
 
-		Composite background = new Composite(this.shell, SWT.NONE);
+		final Composite background = new Composite(this.shell, SWT.NONE);
 		background.setLayout(new FormLayout());
 
-		Group group1 = new Group(background, SWT.NONE);
+		final Group group1 = new Group(background, SWT.NONE);
 		group1.setLayout(new FormLayout());
 		group1.setText(Messages.EXTPT_GROUP_TITLE.message());
 
 		// Manage the transformation id
-		Label idLabel = new Label(group1, SWT.NONE);
+		final Label idLabel = new Label(group1, SWT.NONE);
 		idLabel.setText(Messages.TRN_ID.message());
 		idLabel.setToolTipText(Messages.TRN_ID_TOOLTIP.message());
 		this.idText = new Text(group1, SWT.BORDER);
 
 		// Manage the Transformation Set name
-		Label trnSetLabel = new Label(group1, SWT.NONE);
+		final Label trnSetLabel = new Label(group1, SWT.NONE);
 		trnSetLabel.setText(Messages.TRNSET_ID.message());
 		trnSetLabel.setToolTipText(Messages.TRNSET_ID_TOOLTIP.message());
 		this.trnSetText = new Text(group1, SWT.BORDER);
 
-		Group group2 = new Group(background, SWT.NONE);
+		final Group group2 = new Group(background, SWT.NONE);
 		group2.setLayout(new FormLayout());
 		group2.setText(Messages.JAVA_GROUP_TITLE.message());
 
 		// Manage the transformation package
-		Label packageLabel = new Label(group2, SWT.NONE);
+		final Label packageLabel = new Label(group2, SWT.NONE);
 		packageLabel.setText(Messages.JAVAPACK_LABEL.message());
 		packageLabel.setToolTipText(Messages.JAVAPACK_TOOLTIP.message());
 		this.packageText = new Text(group2, SWT.BORDER);
-		Button packageButton = new Button(group2, SWT.PUSH);
+		final Button packageButton = new Button(group2, SWT.PUSH);
 		packageButton.setText(Messages.JAVAPACK_BUTTON.message());
 
 		// Manage the Transformation Class Name
-		Label trnLabel = new Label(group2, SWT.NONE);
+		final Label trnLabel = new Label(group2, SWT.NONE);
 		trnLabel.setText(Messages.TRNCLASS_LABEL.message());
 		trnLabel.setToolTipText(Messages.TRNCLASS_TOOLTIP.message());
 
 		this.trnText = new Text(group2, SWT.BORDER);
 
 		// Manage the Transformation Class Name
-		Label factoryLabel = new Label(group2, SWT.NONE);
+		final Label factoryLabel = new Label(group2, SWT.NONE);
 		factoryLabel.setText(Messages.TRNFACT_LABEL.message());
 		factoryLabel.setToolTipText(Messages.TRNFACT_TOOLTIP.message());
 
 		this.factoryText = new Text(group2, SWT.BORDER);
 
 		// Manage the type of transformed object
-		Label typeLabel = new Label(group2, SWT.NONE);
+		final Label typeLabel = new Label(group2, SWT.NONE);
 		typeLabel.setText(Messages.TRNELT_LABEL.message());
 		typeLabel.setToolTipText(Messages.TRNELT_TOOLTIP.message());
 		this.typeText = new Text(group2, SWT.BORDER);
 		this.typeText.setEnabled(false);
-		Button typeButton = new Button(group2, SWT.PUSH);
+		final Button typeButton = new Button(group2, SWT.PUSH);
 		typeButton.setText(Messages.TRNELT_BUTTON.message());
 
-		Button okButton = new Button(background, SWT.PUSH);
+		final Button okButton = new Button(background, SWT.PUSH);
 		okButton.setText(Messages.OK_BUTTON.message());
 
 		this.computeButton = new Button(group2, SWT.PUSH);
 		this.computeButton.setText("Compute...");
 
 		// Define the layout between all the objects.
-		new FormDataBuilder().top().horizontal().apply(group1);
-		new FormDataBuilder().top(group1).left().right().bottom(okButton).apply(group2);
+		FormDataBuilder.on(group1).top().horizontal();
+		FormDataBuilder.on(group2).top(group1).left().right().bottom(okButton);
 
-		new FormDataBuilder().top().left().width(200).apply(idLabel);
-		new FormDataBuilder().top().left(idLabel).right().width(600).apply(idText);
+		FormDataBuilder.on(idLabel).top().left().width(200);
+		FormDataBuilder.on(this.idText).top().left(idLabel).right().width(600);
 
-		new FormDataBuilder().top(idText).left().width(200).apply(trnSetLabel);
-		new FormDataBuilder().top(idText).left(trnSetLabel).right().width(600).apply(trnSetText);
+		FormDataBuilder.on(trnSetLabel).top(this.idText).left().width(200);
+		FormDataBuilder.on(this.trnSetText).top(this.idText).left(trnSetLabel).right().width(600);
 
-		new FormDataBuilder().top().left().width(200).apply(packageLabel);
-		new FormDataBuilder().top().left(packageLabel).right(packageButton).apply(packageText);
-		new FormDataBuilder().top().right().width(80).height(22).apply(packageButton);
+		FormDataBuilder.on(packageLabel).top().left().width(200);
+		FormDataBuilder.on(this.packageText).top().left(packageLabel).right(packageButton);
+		FormDataBuilder.on(packageButton).top().right().width(80).height(22);
 
-		new FormDataBuilder().top(packageText).left().width(200).apply(trnLabel);
-		new FormDataBuilder().top(packageText).left(trnLabel).width(600).right(computeButton).apply(trnText);
+		FormDataBuilder.on(trnLabel).top(this.packageText).left().width(200);
+		FormDataBuilder.on(this.trnText).top(this.packageText).left(trnLabel).width(600).right(this.computeButton);
 
-		new FormDataBuilder().top(trnText).left().width(200).apply(factoryLabel);
-		new FormDataBuilder().top(trnText).left(factoryLabel).width(600).right(computeButton).apply(factoryText);
+		FormDataBuilder.on(factoryLabel).top(this.trnText).left().width(200);
+		FormDataBuilder.on(this.factoryText).top(this.trnText).left(factoryLabel).width(600).right(this.computeButton);
 
-		new FormDataBuilder().top(packageText).right().bottom(typeText).width(80).apply(computeButton);
+		FormDataBuilder.on(this.computeButton).top(this.packageText).right().bottom(this.typeText).width(80);
 
-		new FormDataBuilder().top(factoryText).left().width(200).apply(typeLabel);
-		new FormDataBuilder().top(factoryText).left(typeLabel).right(typeButton).apply(typeText);
-		new FormDataBuilder().top(factoryText).right().width(80).height(22).apply(typeButton);
+		FormDataBuilder.on(typeLabel).top(this.factoryText).left().width(200);
+		FormDataBuilder.on(this.typeText).top(this.factoryText).left(typeLabel).right(typeButton);
+		FormDataBuilder.on(typeButton).top(this.factoryText).right().width(80).height(22);
 
-		new FormDataBuilder().bottom().right().apply(okButton);
+		FormDataBuilder.on(okButton).bottom().right();
 
 		this.idText.setText(preferences.getTransformationName());
 		this.factoryText.setText(preferences.getFactoryName());
@@ -192,7 +193,7 @@ public class TransformationCreatorDialog {
 		this.trnText.setText(preferences.getClassName());
 		this.trnSetText.setText(preferences.getTransformationSetName());
 		this.typeText.setText(preferences.getElementName());
-		
+
 		group1.pack();
 		group2.pack();
 		background.pack();
@@ -201,55 +202,58 @@ public class TransformationCreatorDialog {
 		Rectangle bounds;
 		try {
 			bounds = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getBounds();
-		} catch (NullPointerException npe) {
-			bounds = shell.getDisplay().getPrimaryMonitor().getBounds();
+		} catch (final NullPointerException npe) {
+			bounds = this.shell.getDisplay().getPrimaryMonitor().getBounds();
 		}
-		Rectangle rect = shell.getBounds();
-		shell.setLocation(bounds.x + (bounds.width - rect.width) / 2, bounds.y + (bounds.height - rect.height) / 2);
+		final Rectangle rect = this.shell.getBounds();
+		this.shell.setLocation(bounds.x + ((bounds.width - rect.width) / 2), bounds.y
+				+ ((bounds.height - rect.height) / 2));
 
 		okButton.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void widgetSelected(final SelectionEvent e) {
 				TransformationCreatorDialog.this.isOK = true;
 				TransformationCreatorDialog.this.keepOpen = false;
-				id = idText.getText();
-				trn = trnText.getText();
-				factory = factoryText.getText();
-				trnSet = trnSetText.getText();
-				type = typeText.getText();
-				shell.update();
+				TransformationCreatorDialog.this.id = TransformationCreatorDialog.this.idText.getText();
+				TransformationCreatorDialog.this.trn = TransformationCreatorDialog.this.trnText.getText();
+				TransformationCreatorDialog.this.factory = TransformationCreatorDialog.this.factoryText.getText();
+				TransformationCreatorDialog.this.trnSet = TransformationCreatorDialog.this.trnSetText.getText();
+				TransformationCreatorDialog.this.type = TransformationCreatorDialog.this.typeText.getText();
+				TransformationCreatorDialog.this.shell.update();
 			}
 		});
 
-		computeButton.addSelectionListener(new SelectionAdapter() {
+		this.computeButton.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
-				String text = idText.getText();
-				if (text.indexOf(".") > -1)
+			public void widgetSelected(final SelectionEvent e) {
+				String text = TransformationCreatorDialog.this.idText.getText();
+				if (text.indexOf(".") > -1) {
 					text = text.substring(text.lastIndexOf(".") + 1);
-				trnText.setText(text);
-				factoryText.setText(text.concat("Factory"));
+				}
+				TransformationCreatorDialog.this.trnText.setText(text);
+				TransformationCreatorDialog.this.factoryText.setText(text.concat("Factory"));
 			}
 		});
 
 		packageButton.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void widgetSelected(final SelectionEvent e) {
 				try {
-					SelectionDialog createPackageDialog = JavaUI.createPackageDialog(new Shell(shell),
-							TransformationCreatorDialog.this.javaProject,
+					final SelectionDialog createPackageDialog = JavaUI.createPackageDialog(new Shell(
+							TransformationCreatorDialog.this.shell), TransformationCreatorDialog.this.javaProject,
 							IJavaElementSearchConstants.CONSIDER_REQUIRED_PROJECTS);
 					createPackageDialog.setMessage(Messages.JAVAPACK_SELECTOR_LABEL.message());
 					createPackageDialog.setTitle(Messages.DIALOG_TITLE.message());
-					if (createPackageDialog.open() == Window.OK && createPackageDialog.getResult().length > 0) {
-						Object o = createPackageDialog.getResult()[0];
+					if ((createPackageDialog.open() == Window.OK) && (createPackageDialog.getResult().length > 0)) {
+						final Object o = createPackageDialog.getResult()[0];
 						if (o instanceof IPackageFragment) {
-							fragment = (IPackageFragment) o;
-							packageText.setText(((IPackageFragment) o).getElementName());
-							packageText.update();
+							TransformationCreatorDialog.this.fragment = (IPackageFragment) o;
+							TransformationCreatorDialog.this.packageText.setText(((IPackageFragment) o)
+									.getElementName());
+							TransformationCreatorDialog.this.packageText.update();
 						}
 					}
-				} catch (JavaModelException e1) {
+				} catch (final JavaModelException e1) {
 					e1.printStackTrace();
 				}
 			}
@@ -257,24 +261,24 @@ public class TransformationCreatorDialog {
 
 		typeButton.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void widgetSelected(final SelectionEvent e) {
 				try {
-					IType eObjectType = TransformationCreatorDialog.this.javaProject
+					final IType eObjectType = TransformationCreatorDialog.this.javaProject
 							.findType("org.eclipse.emf.ecore.EObject");
-					Shell childShell = new Shell(shell);
-					SelectionDialog createTypeDialog = JavaUI.createTypeDialog(childShell, null,
+					final Shell childShell = new Shell(TransformationCreatorDialog.this.shell);
+					final SelectionDialog createTypeDialog = JavaUI.createTypeDialog(childShell, null,
 							SearchEngine.createHierarchyScope(eObjectType),
 							IJavaElementSearchConstants.CONSIDER_CLASSES_AND_INTERFACES, false);
 					createTypeDialog.setTitle(Messages.DIALOG_TITLE.message());
 					createTypeDialog.setMessage(Messages.TRNELT_SELECTOR_LABEL.message());
-					if (createTypeDialog.open() == Window.OK && createTypeDialog.getResult().length > 0) {
-						Object o = createTypeDialog.getResult()[0];
+					if ((createTypeDialog.open() == Window.OK) && (createTypeDialog.getResult().length > 0)) {
+						final Object o = createTypeDialog.getResult()[0];
 						if (o instanceof IType) {
-							typeText.setText(((IType) o).getFullyQualifiedName());
-							typeText.update();
+							TransformationCreatorDialog.this.typeText.setText(((IType) o).getFullyQualifiedName());
+							TransformationCreatorDialog.this.typeText.update();
 						}
 					}
-				} catch (JavaModelException e1) {
+				} catch (final JavaModelException e1) {
 					e1.printStackTrace();
 				}
 			}
@@ -283,42 +287,42 @@ public class TransformationCreatorDialog {
 	}
 
 	public boolean open() {
-		shell.open();
-		while (keepOpen && !shell.isDisposed()) {
-			if (!shell.getDisplay().readAndDispatch()) {
-				shell.getDisplay().sleep();
+		this.shell.open();
+		while (this.keepOpen && !this.shell.isDisposed()) {
+			if (!this.shell.getDisplay().readAndDispatch()) {
+				this.shell.getDisplay().sleep();
 			}
 		}
-		shell.dispose();
-		return isOK;
+		this.shell.dispose();
+		return this.isOK;
 	}
 
 	public IPackageFragment getPackageFragment() {
-		return fragment;
+		return this.fragment;
 	}
 
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
 	public IPackageFragment getFragment() {
-		return fragment;
+		return this.fragment;
 	}
 
 	public String getTrn() {
-		return trn;
+		return this.trn;
 	}
 
 	public String getFactory() {
-		return factory;
+		return this.factory;
 	}
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public String getTrnSet() {
-		return trnSet;
+		return this.trnSet;
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
+import net.atos.optimus.common.tools.swt.FormDataBuilder;
 import net.atos.optimus.m2m.engine.core.Activator;
 import net.atos.optimus.m2m.engine.core.logging.OptimusM2MEngineLogger;
 import net.atos.optimus.m2m.engine.core.transformations.ExtensionPointTransformationDataSource;
@@ -13,13 +14,12 @@ import org.eclipse.jface.viewers.CheckboxTreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.IWorkbench;
@@ -35,10 +35,10 @@ public class TransformationsPreferencesPage extends PreferencePage implements IW
 
 	// List of levels
 	private List<Level> levels = new ArrayList<Level>();
-	
+
 	// Temp value corresponding to the level chosen by user.
 	private int newLevel = -1;
-	
+
 	private TransformationsTreeCheckListener checkListener;
 
 	/*
@@ -73,11 +73,23 @@ public class TransformationsPreferencesPage extends PreferencePage implements IW
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new FormLayout());
 
+		Group descriptionGroup = new Group(composite, SWT.NONE);
+		descriptionGroup.setText("About : ");
+		descriptionGroup.setLayout(new FormLayout());
+
+		Label descriptionLabel = new Label(descriptionGroup, SWT.WRAP);
+		FormDataBuilder.on(descriptionLabel).fill();
+
+		descriptionLabel.setText(TransformationsPreferencesMessages.DESCRIPTION.message());
+
+		Group levelGroup = new Group(composite, SWT.NONE);
+		levelGroup.setLayout(new FormLayout());
+
 		// Create elements
-		Label label = new Label(composite, SWT.NONE);
+		Label label = new Label(levelGroup, SWT.NONE);
 		label.setText(TransformationsPreferencesMessages.LOGGER_LEVEL.message());
 
-		final Combo combo = new Combo(composite, SWT.NONE);
+		final Combo combo = new Combo(levelGroup, SWT.NONE);
 		for (Level level : levels)
 			combo.add(level.getName());
 		combo.select(levels.indexOf(OptimusM2MEngineLogger.logger.getLevel()));
@@ -92,7 +104,7 @@ public class TransformationsPreferencesPage extends PreferencePage implements IW
 
 		Label label2 = new Label(composite, SWT.NONE);
 		label2.setText(TransformationsPreferencesMessages.TRANSFORMATIONS_LABEL.message());
-		
+
 		// Manage the layout
 		Tree tree = new Tree(composite, SWT.CHECK | SWT.BORDER);
 		final CheckboxTreeViewer treeViewer = new CheckboxTreeViewer(tree);
@@ -122,46 +134,17 @@ public class TransformationsPreferencesPage extends PreferencePage implements IW
 			}
 		});
 
-		FormData data;
+		FormDataBuilder.on(descriptionGroup).top().left().right();
 
-		data = new FormData();
-		data.left = new FormAttachment(0, 5);
-		data.top = new FormAttachment(0, 5);
-		data.right = new FormAttachment(combo, 5);
-		label.setLayoutData(data);
+		FormDataBuilder.on(label2).left().top(descriptionGroup, 15).right();
+		FormDataBuilder.on(tree).left().top(label2).bottom(levelGroup).right(exportButton);
+		FormDataBuilder.on(exportButton).top(label2).right().width(90).height(25);
+		FormDataBuilder.on(importButton).top(exportButton).right().width(90).height(25);
 
-		data = new FormData();
-		data.top = new FormAttachment(0, 5);
-		data.width = 120;
-		data.right = new FormAttachment(importButton, -5);
-		combo.setLayoutData(data);
+		FormDataBuilder.on(levelGroup).bottom().left().right(exportButton);
 
-		data = new FormData();
-		data.left = new FormAttachment(0, 5);
-		data.top = new FormAttachment(combo, 15);
-		data.right = new FormAttachment(100, 5);
-		label2.setLayoutData(data);
-		
-		data = new FormData();
-		data.left = new FormAttachment(0, 5);
-		data.top = new FormAttachment(label2, 5);
-		data.bottom = new FormAttachment(100, -5);
-		data.right = new FormAttachment(exportButton, -5);
-		tree.setLayoutData(data);
-
-		data = new FormData();
-		data.top = new FormAttachment(label2, 5);
-		data.right = new FormAttachment(100, -5);
-		data.width = 120;
-		data.height = 30;
-		exportButton.setLayoutData(data);
-
-		data = new FormData();
-		data.top = new FormAttachment(exportButton, 5);
-		data.right = new FormAttachment(100, -5);
-		data.width = 120;
-		data.height = 30;
-		importButton.setLayoutData(data);
+		FormDataBuilder.on(label).left().top().bottom().right(combo);
+		FormDataBuilder.on(combo).top().width(120).bottom().right();
 
 		return composite;
 	}
@@ -207,8 +190,7 @@ public class TransformationsPreferencesPage extends PreferencePage implements IW
 		int currentLevel = levels.indexOf(OptimusM2MEngineLogger.logger.getLevel());
 		if (this.newLevel != currentLevel && this.newLevel > -1) {
 			OptimusM2MEngineLogger.logger.setLevel(levels.get(newLevel));
-			this.getPreferenceStore().setValue(Activator.LOGGER_LEVEL_KEY,
-					this.levels.get(this.newLevel).getName());
+			this.getPreferenceStore().setValue(Activator.LOGGER_LEVEL_KEY, this.levels.get(this.newLevel).getName());
 		}
 		return super.performOk();
 	}
