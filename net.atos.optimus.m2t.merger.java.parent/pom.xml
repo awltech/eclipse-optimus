@@ -6,6 +6,7 @@
   <modules>
   	<module>net.atos.optimus.m2t.merger.java.core</module>
   	<module>net.atos.optimus.m2t.merger.java.feature</module>
+  	<module>net.atos.optimus.m2t.merger.java.source.feature</module>
   	<module>net.atos.optimus.m2t.merger.java.site</module>
   </modules>
   <parent>
