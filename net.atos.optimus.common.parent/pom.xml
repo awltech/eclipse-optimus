@@ -6,6 +6,7 @@
   <modules>
   	<module>net.atos.optimus.common.core</module>
   	<module>net.atos.optimus.common.feature</module>
+  	<module>net.atos.optimus.common.source.feature</module>
   	<module>net.atos.optimus.common.site</module>
   </modules>
   <parent>

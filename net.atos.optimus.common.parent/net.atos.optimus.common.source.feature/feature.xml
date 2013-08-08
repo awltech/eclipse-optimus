@@ -22,10 +22,29 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
 -->
-<site>
-   <description name="Atos Optimus Common Components">
-      Atos Optimus Common Components
+<feature
+      id="net.atos.optimus.common.source.feature"
+      label="Optimus Common Components Source"
+      version="1.0.0.qualifier"
+      provider-name="Atos.net">
+
+   <description url="http://www.example.com/description">
+      [Enter Feature Description here.]
    </description>
-   <feature url="features/net.atos.optimus.common.feature_1.0.0.qualifier.jar" id="net.atos.optimus.common.feature" version="1.0.0.qualifier"/>
-   <feature url="features/net.atos.optimus.common.source.feature_1.0.0.qualifier.jar" id="net.atos.optimus.common.source.feature" version="1.0.0.qualifier"/>
-</site>
+
+   <copyright url="http://www.example.com/copyright">
+      [Enter Copyright Description here.]
+   </copyright>
+
+   <license url="http://www.example.com/license">
+      [Enter License Description here.]
+   </license>
+
+<plugin
+         id="net.atos.optimus.common.core.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>
