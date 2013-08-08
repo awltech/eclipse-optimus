@@ -24,7 +24,7 @@
 -->
 <feature
       id="net.atos.optimus.m2t.java.source.feature"
-      label="Optimus M2T Java Generator"
+      label="Optimus M2T Java Generator Source"
       version="1.0.0.qualifier"
       provider-name="Atos.net">
 

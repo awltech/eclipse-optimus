@@ -24,7 +24,7 @@
 -->
 <feature
       id="net.atos.optimus.t2m.java.source.feature"
-      label="Optimus Java Code Reader"
+      label="Optimus Java Code Reader Source"
       version="1.0.0.qualifier"
       provider-name="Atos.net">
 

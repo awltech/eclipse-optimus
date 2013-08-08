@@ -24,7 +24,7 @@
 -->
 <feature
       id="net.atos.optimus.m2m.javaxmi.feature"
-      label="Optimus : Tools for JavaXMI transformations"
+      label="Optimus M2M API for JavaXMI"
       version="1.0.0.qualifier"
       provider-name="Atos.net">
 
