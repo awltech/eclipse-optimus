@@ -24,7 +24,7 @@
 -->
 <feature
       id="net.atos.optimus.m2m.engine.source.feature"
-      label="XA Optimus M2M Engine"
+      label="Optimus M2M Engine Source"
       version="1.0.0.qualifier"
       provider-name="Atos.net">
 
@@ -57,12 +57,5 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-
-   <!--plugin
-         id="net.atos.optimus.tools.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/-->
 
 </feature>
