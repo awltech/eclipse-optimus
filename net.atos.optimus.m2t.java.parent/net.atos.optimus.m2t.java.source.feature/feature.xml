@@ -47,7 +47,21 @@
    </requires>
 
    <plugin
+         id="net.atos.optimus.m2t.java.connector.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+         
+   <plugin
          id="net.atos.optimus.m2t.java.core.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+         
+   <plugin
+         id="net.atos.optimus.m2t.java.emtl.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
