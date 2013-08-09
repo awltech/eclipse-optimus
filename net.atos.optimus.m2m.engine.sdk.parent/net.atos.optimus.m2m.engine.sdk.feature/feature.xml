@@ -24,12 +24,12 @@
 -->
 <feature
       id="net.atos.optimus.m2m.engine.sdk.feature"
-      label="Optimus SDK"
+      label="Optimus M2M Engine SDK"
       version="1.0.0.qualifier"
       provider-name="Atos.net">
 
    <description url="http://www.example.com/description">
-      [Enter Feature Description here.]
+      This SDK contains the a wizard to create transformations
    </description>
 
    <copyright url="http://www.example.com/copyright">
@@ -46,8 +46,8 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-         
-         <plugin
+
+   <plugin
          id="net.atos.optimus.m2m.engine.sdk.wizards.source"
          download-size="0"
          install-size="0"
