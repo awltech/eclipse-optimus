@@ -84,12 +84,12 @@
       <superInterfaces type="//@orphanTypes.4"/>
     </ownedElements>
   </ownedElements>
-  <orphanTypes xsi:type="java:UnresolvedInterfaceDeclaration" name="net.atos.xa.optimus.m2m.engine.transformations.ITransformationContext" usagesInTypeAccess="//@ownedElements.0/@ownedElements.0/@bodyDeclarations.1/@parameters.0/@type"/>
-  <orphanTypes xsi:type="java:UnresolvedClassDeclaration" name="net.atos.xa.optimus.m2m.engine.transformations.AbstractTransformation&lt;${transformedElementFQN}>" usagesInTypeAccess="//@ownedElements.0/@ownedElements.0/@superClass"/>
+  <orphanTypes xsi:type="java:UnresolvedInterfaceDeclaration" name="net.atos.optimus.m2m.engine.core.transformations.ITransformationContext" usagesInTypeAccess="//@ownedElements.0/@ownedElements.0/@bodyDeclarations.1/@parameters.0/@type"/>
+  <orphanTypes xsi:type="java:UnresolvedClassDeclaration" name="net.atos.optimus.m2m.engine.core.transformations.AbstractTransformation&lt;${transformedElementFQN}>" usagesInTypeAccess="//@ownedElements.0/@ownedElements.0/@superClass"/>
   <orphanTypes xsi:type="java:UnresolvedInterfaceDeclaration" name="org.eclipse.emf.ecore.EObject" usagesInTypeAccess="//@ownedElements.0/@ownedElements.1/@bodyDeclarations.0/@parameters.0/@type //@ownedElements.0/@ownedElements.1/@bodyDeclarations.1/@parameters.0/@type"/>
   <orphanTypes xsi:type="java:PrimitiveTypeBoolean" name="boolean" usagesInTypeAccess="//@ownedElements.0/@ownedElements.1/@bodyDeclarations.0/@returnType"/>
-  <orphanTypes xsi:type="java:UnresolvedInterfaceDeclaration" name="net.atos.xa.optimus.m2m.engine.transformations.ITransformationFactory" usagesInTypeAccess="//@ownedElements.0/@ownedElements.1/@superInterfaces.0"/>
-  <orphanTypes xsi:type="java:UnresolvedClassDeclaration" name="net.atos.xa.optimus.m2m.engine.transformations.AbstractTransformation&lt;?>" usagesInTypeAccess="//@ownedElements.0/@ownedElements.1/@bodyDeclarations.1/@returnType"/>
+  <orphanTypes xsi:type="java:UnresolvedInterfaceDeclaration" name="net.atos.optimus.m2m.engine.core.transformations.ITransformationFactory" usagesInTypeAccess="//@ownedElements.0/@ownedElements.1/@superInterfaces.0"/>
+  <orphanTypes xsi:type="java:UnresolvedClassDeclaration" name="net.atos.optimus.m2m.engine.core.transformations.AbstractTransformation&lt;?>" usagesInTypeAccess="//@ownedElements.0/@ownedElements.1/@bodyDeclarations.1/@returnType"/>
   <unresolvedItems xsi:type="java:UnresolvedInterfaceDeclaration" name="${transformedElementFQN}" usagesInTypeAccess="//@ownedElements.0/@ownedElements.0/@bodyDeclarations.0/@parameters.0/@type //@ownedElements.0/@ownedElements.1/@bodyDeclarations.1/@body/@statements.0/@expression/@arguments.0/@type"/>
   <unresolvedItems xsi:type="java:UnresolvedClassDeclaration" name="java.lang.String" usagesInTypeAccess="//@ownedElements.0/@ownedElements.0/@bodyDeclarations.0/@parameters.1/@type //@ownedElements.0/@ownedElements.1/@bodyDeclarations.1/@parameters.1/@type"/>
   <unresolvedItems xsi:type="java:UnresolvedAnnotationDeclaration" name="Override" usagesInTypeAccess="//@ownedElements.0/@ownedElements.0/@bodyDeclarations.1/@annotations.0/@type //@ownedElements.0/@ownedElements.1/@bodyDeclarations.0/@annotations.0/@type //@ownedElements.0/@ownedElements.1/@bodyDeclarations.1/@annotations.0/@type"/>
