@@ -32,7 +32,7 @@
             objectClass="org.eclipse.jdt.core.IJavaProject">
          <menu
                id="net.atos.xa.optimus.menu"
-               label="XA Optimus">
+               label="Optimus">
             <separator
                   name="M2MWizards">
             </separator>

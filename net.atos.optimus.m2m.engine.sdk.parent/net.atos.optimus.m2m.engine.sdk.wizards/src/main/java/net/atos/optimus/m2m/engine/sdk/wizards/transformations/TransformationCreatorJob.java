@@ -76,7 +76,7 @@ public class TransformationCreatorJob extends WorkspaceJob {
 
 	private static final String KEYWORD_ID = "id";
 
-	private static final String EXTENSION_ID = "net.atos.xa.optimus.m2m.engine.Transformations";
+	private static final String EXTENSION_ID = "net.atos.optimus.m2m.engine.core.Transformations";
 
 	private static final String KEYWORD_TRNSET = "transformationSet";
 
