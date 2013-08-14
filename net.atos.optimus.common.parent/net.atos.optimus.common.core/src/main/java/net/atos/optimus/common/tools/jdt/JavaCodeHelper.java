@@ -910,7 +910,7 @@ public class JavaCodeHelper {
 		if (typeWanted.equals(EnumConstantDeclaration.class)) {
 			result = ((EnumDeclaration) atd).enumConstants();
 		} else {
-			for (AbstractTypeDeclaration bd : (List<AbstractTypeDeclaration>) atd.bodyDeclarations()) {
+			for (BodyDeclaration bd : (List<BodyDeclaration>) atd.bodyDeclarations()) {
 				if (typeWanted.isAssignableFrom(bd.getClass())) {
 					result.add((T) bd);
 				}
