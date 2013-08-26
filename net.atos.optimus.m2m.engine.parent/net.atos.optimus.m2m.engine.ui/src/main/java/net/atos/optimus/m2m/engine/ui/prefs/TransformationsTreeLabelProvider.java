@@ -24,6 +24,7 @@ package net.atos.optimus.m2m.engine.ui.prefs;
 import net.atos.optimus.m2m.engine.core.transformations.ExtensionPointTransformationDataSource;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationSet;
+import net.atos.optimus.m2m.engine.ui.Activator;
 
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
@@ -37,6 +38,10 @@ import org.eclipse.swt.graphics.Image;
  */
 public class TransformationsTreeLabelProvider extends LabelProvider {
 
+	private static final String ICONS_TRN_GIF = "icons/trn.gif";
+	private static final String ICONS_TRNSET_PUBLIC_GIF = "icons/trnset-public.gif";
+	private static final String ICONS_TRNSET_PRIVATE_GIF = "icons/trnset-private.gif";
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -44,6 +49,15 @@ public class TransformationsTreeLabelProvider extends LabelProvider {
 	 */
 	@Override
 	public Image getImage(Object element) {
+		if (element instanceof TransformationSet) {
+			if (((TransformationSet) element).isPrivate()) {
+				return Activator.getDefault().getImage(ICONS_TRNSET_PRIVATE_GIF);	
+			} else {
+				return Activator.getDefault().getImage(ICONS_TRNSET_PUBLIC_GIF);
+			}
+		} else if (element instanceof TransformationReference) {
+			return Activator.getDefault().getImage(ICONS_TRN_GIF);
+		}
 		return super.getImage(element);
 	}
 

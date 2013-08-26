@@ -21,6 +21,8 @@
  */
 package net.atos.optimus.m2m.engine.ui;
 
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -53,6 +55,7 @@ public class Activator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		this.createImageRegistry();
 	}
 
 	/*
@@ -65,6 +68,7 @@ public class Activator extends AbstractUIPlugin {
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
 		super.stop(context);
+		this.getImageRegistry().dispose();
 	}
 
 	/**
@@ -76,4 +80,57 @@ public class Activator extends AbstractUIPlugin {
 		return plugin;
 	}
 
+	 /**
+	  * Returns image in plugin
+	  *
+	  * @param pluginId
+	  *            : Id of the plugin containing thie image
+	  * @param imageFilePath
+	  *            : image File Path in plugin
+	  * @return Image if exists
+	  */
+	 public Image getImage(String pluginId, String imageFilePath) {
+	        Image image = Activator.getDefault().getImageRegistry().get(pluginId + ":" + imageFilePath);
+	       if (image == null) {
+	               image = loadImage(pluginId, imageFilePath);
+	       }
+	       return image;
+	}
+
+	/**
+	  * Loads image in Image Registry is not available in it
+	  *
+	  * @param pluginId
+	  *            : Id of the plugin containing thie image
+	  * @param imageFilePath
+	  *            : image File Path in plugin
+	  * @return Image if loaded
+	  */
+	 private synchronized Image loadImage(String pluginId, String imageFilePath) {
+	        String id = pluginId + ":" + imageFilePath;
+	        Image image = Activator.getDefault().getImageRegistry().get(id);
+	       if (image != null)
+	             return image;
+	        ImageDescriptor imageDescriptor = AbstractUIPlugin.imageDescriptorFromPlugin(pluginId, imageFilePath);
+	       if (imageDescriptor != null) {
+	              image = imageDescriptor.createImage();
+	              Activator.getDefault().getImageRegistry().put(pluginId + ":" + imageFilePath, image);
+	       }
+	       return image;
+	 }
+
+	/**
+	  * Returns image in this plugin
+	  *
+	  * @param imageFilePath
+	  *            : image File Path in this plugin
+	  * @return Image if exists
+	  */
+	 public Image getImage(String imageFilePath) {
+	        Image image = Activator.getDefault().getImageRegistry().get(Activator.PLUGIN_ID + ":" + imageFilePath);
+	       if (image == null)
+	              image = loadImage(Activator.PLUGIN_ID, imageFilePath);
+	       return image;
+	 }
+	
 }
