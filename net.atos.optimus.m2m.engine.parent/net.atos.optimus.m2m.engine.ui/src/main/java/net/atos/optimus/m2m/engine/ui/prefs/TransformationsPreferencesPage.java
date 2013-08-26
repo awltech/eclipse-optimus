@@ -111,6 +111,7 @@ public class TransformationsPreferencesPage extends PreferencePage implements IW
 		treeViewer.setLabelProvider(new TransformationsTreeLabelProvider());
 		treeViewer.setContentProvider(new TransformationsTreeContentsProvider());
 		treeViewer.setCheckStateProvider(new TransformationsTreeCheckProvider());
+		treeViewer.addDoubleClickListener(new TransformationsTreeDoubleClickListener());
 		this.checkListener = new TransformationsTreeCheckListener(treeViewer);
 		treeViewer.addCheckStateListener(this.checkListener);
 		treeViewer.setInput(ExtensionPointTransformationDataSource.instance());
