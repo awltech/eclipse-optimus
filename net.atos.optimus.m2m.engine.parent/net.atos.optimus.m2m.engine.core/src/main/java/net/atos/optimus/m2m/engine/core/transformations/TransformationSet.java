@@ -46,7 +46,28 @@ public abstract class TransformationSet {
 	 * Transformation Set Description
 	 */
 	private String description;
+	
+	/**
+	 * TransformationSetContributor
+	 */
+	private String contributor;
 
+	/**
+	 * 
+	 * @return the process that contributed this extension point
+	 */
+	public String getContributor() {
+		return contributor;
+	}
+	
+	/**
+	 * Sets the process that contributed this extension point
+	 * @param contributor 
+	 */
+	public void setContributor(String contributor) {
+		this.contributor = contributor;
+	}
+	
 	/**
 	 * @return Transformation set ID
 	 */

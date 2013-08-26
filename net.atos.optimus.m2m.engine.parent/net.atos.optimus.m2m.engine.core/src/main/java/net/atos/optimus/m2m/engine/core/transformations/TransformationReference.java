@@ -74,6 +74,28 @@ public class TransformationReference {
 	private int priority;
 
 	/**
+	 * the process that contributed this extension point
+	 */
+	private String contributor;
+
+	/**
+	 * 
+	 * @return the process that contributed this extension point
+	 */
+	public String getContributor() {
+		return contributor;
+	}
+
+	/**
+	 * 
+	 * @param contributor
+	 *            the process that contributed this extension point
+	 */
+	public void setContributor(String contributor) {
+		this.contributor = contributor;
+	}
+
+	/**
 	 * Creates a new reference to a transformation factory
 	 * 
 	 * @param id

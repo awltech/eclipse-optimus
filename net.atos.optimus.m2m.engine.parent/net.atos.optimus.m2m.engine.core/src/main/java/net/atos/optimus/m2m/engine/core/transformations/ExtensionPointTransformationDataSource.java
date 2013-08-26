@@ -85,7 +85,7 @@ public class ExtensionPointTransformationDataSource implements ITransformationDa
 	 * Map that holds the transformation sets by ID.
 	 */
 	private Map<String, TransformationSet> transformationSetsMap;
-	
+
 	/**
 	 * Load the extension points.
 	 */
@@ -102,37 +102,43 @@ public class ExtensionPointTransformationDataSource implements ITransformationDa
 						String transformationSetDescription = configurationElement.getAttribute("description");
 						String transformationSetPrivacy = configurationElement.getAttribute("private");
 						String transformationSetImplementation = configurationElement.getAttribute("implementation");
-						TransformationSet lts = null; 
-						
+						TransformationSet lts = null;
+
 						if (transformationSetImplementation != null
 								&& transformationSetImplementation.trim().length() > 0)
 							lts = (TransformationSet) configurationElement.createExecutableExtension("implementation");
 
 						if (lts == null)
 							lts = new DefaultTransformationSet();
-						lts.setId(transformationSetId); 
+						lts.setId(transformationSetId);
 						lts.setDescription(transformationSetDescription);
-						
+						lts.setContributor(configurationElement.getContributor() == null ? "<UNKNOWN>"
+								: configurationElement.getContributor().getName());
 						OptimusM2MEngineMessages.EP03.log(transformationSetId);
 						OptimusM2MEngineMessages.EP04.log(lts.getClass().getName());
-						
+
 						if (transformationSetPrivacy != null)
 							lts.setPrivate(Boolean.parseBoolean(transformationSetPrivacy));
 						OptimusM2MEngineMessages.EP05.log(lts.isPrivate());
-						
+
 						this.transformationSetsMap.put(lts.getId(), lts);
-						
+
 						for (IConfigurationElement child : configurationElement.getChildren("transformation"))
 							this.loadTransformation(child, lts);
-					} 
+					}
 				} catch (CoreException ce) {
 					OptimusM2MEngineMessages.EP14.log(ce.getMessage());
-					Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, OptimusM2MEngineMessages.EP14.message(ce.getMessage()), ce));
+					Activator
+							.getDefault()
+							.getLog()
+							.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, OptimusM2MEngineMessages.EP14
+									.message(ce.getMessage()), ce));
 				}
-			}	
+			}
 			OptimusM2MEngineMessages.EP13.log();
 		}
-		// Add the support of transformation set extensions, done in a second loop to ensure all transformation sets are enabled.
+		// Add the support of transformation set extensions, done in a second
+		// loop to ensure all transformation sets are enabled.
 		for (IExtension extension : extensionPoint.getExtensions()) {
 			OptimusM2MEngineMessages.EP02.log(extension.getContributor().getName());
 			for (IConfigurationElement configurationElement : extension.getConfigurationElements()) {
@@ -142,15 +148,19 @@ public class ExtensionPointTransformationDataSource implements ITransformationDa
 						OptimusM2MEngineMessages.EP06.log(transformationSetId);
 						TransformationSet transformationSet = this.transformationSetsMap.get(transformationSetId);
 						if (transformationSet != null) {
-						for (IConfigurationElement child : configurationElement.getChildren("transformation"))
-							this.loadTransformation(child, transformationSet);
+							for (IConfigurationElement child : configurationElement.getChildren("transformation"))
+								this.loadTransformation(child, transformationSet);
 						} else {
 							OptimusM2MEngineMessages.EP15.log(transformationSetId);
 						}
-					} 
+					}
 				} catch (CoreException ce) {
 					OptimusM2MEngineMessages.EP14.log(ce.getMessage());
-					Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, OptimusM2MEngineMessages.EP14.message(ce.getMessage()), ce));
+					Activator
+							.getDefault()
+							.getLog()
+							.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, OptimusM2MEngineMessages.EP14
+									.message(ce.getMessage()), ce));
 				}
 			}
 		}
@@ -168,10 +178,10 @@ public class ExtensionPointTransformationDataSource implements ITransformationDa
 	 */
 	private void loadTransformation(IConfigurationElement configurationElement, TransformationSet lts)
 			throws CoreException {
-		// Load the transformation itself 
+		// Load the transformation itself
 		String id = configurationElement.getAttribute("id");
 		String description = configurationElement.getAttribute("description");
-		
+
 		int priority = 0;
 
 		try {
@@ -180,11 +190,11 @@ public class ExtensionPointTransformationDataSource implements ITransformationDa
 		}
 
 		OptimusM2MEngineMessages.EP07.log(id, description, priority);
-		
+
 		if (this.transformationReferencesMap.containsKey(id)) {
 			TransformationReference reference = this.transformationReferencesMap.get(id);
 			if (reference.getPriority() < priority) {
-				this.transformationReferencesMap.remove(id); 
+				this.transformationReferencesMap.remove(id);
 				OptimusM2MEngineMessages.EP08.log(id, reference.getPriority(), priority);
 			} else {
 				OptimusM2MEngineMessages.EP09.log(id, reference.getPriority(), priority);
@@ -196,6 +206,8 @@ public class ExtensionPointTransformationDataSource implements ITransformationDa
 				.createExecutableExtension("factory");
 		TransformationReference loopbackTransformationReference = new TransformationReference(id,
 				transformationFactory, lts, description, priority);
+		loopbackTransformationReference.setContributor(configurationElement.getContributor() == null ? "<UNKNOWN>"
+				: configurationElement.getContributor().getName());
 		this.transformationReferencesMap.put(id, loopbackTransformationReference);
 
 		// Loads the requirements of the current transformation
