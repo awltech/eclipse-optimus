@@ -58,8 +58,8 @@ public class MergerPostProcessor implements IPostProcessor {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * net.atos.optimus.m2t.java.core.IPostProcessor#beforeWrite(net.atos.xa.optimus
-	 * .m2t.java.FileHandler)
+	 * net.atos.optimus.m2t.java.core.IPostProcessor#beforeWrite(net.atos.optimus
+	 * .m2t.java.core.FileHandler)
 	 */
 	public void beforeWrite(FileHandler fileHandler) {
 
