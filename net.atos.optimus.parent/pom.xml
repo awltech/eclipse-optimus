@@ -5,7 +5,7 @@
 	<artifactId>net.atos.optimus.parent</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>Atos Optimus Parent Project</name>
+	<name>Optimus Parent Project</name>
 
 	<inceptionYear>2013</inceptionYear>
 
@@ -46,7 +46,6 @@
 		<maven.javadoc.skip>true</maven.javadoc.skip>
 		<release-type>SNAPSHOT</release-type>
 		<format>yyyyMMddHHmm'-${platform-version-name}-${release-type}'</format>
-		<project.module.updatesite>/DATA/xa/indivXAPluginsUpdSite</project.module.updatesite>
 	</properties>
 
 	<repositories>
@@ -135,4 +134,5 @@
 			</plugin>
 		</plugins>
 	</build>
+	<url>https://github.com/awltech/eclipse-optimus/wiki</url>
 </project>
