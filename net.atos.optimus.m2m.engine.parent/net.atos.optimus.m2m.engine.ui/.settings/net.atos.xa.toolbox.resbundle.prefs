@@ -1,4 +1,4 @@
-LastLiteralPrefix=LOGGER_LEVEL
-ResourceBundleName=TransformationsPreferencesPage
+LastLiteralPrefix=TRN_LABEL
+ResourceBundleName=TransformationsInfoDialog
 ResourceBundlePackage=net.atos.optimus.m2m.engine.core.ui.prefs
 eclipse.preferences.version=1

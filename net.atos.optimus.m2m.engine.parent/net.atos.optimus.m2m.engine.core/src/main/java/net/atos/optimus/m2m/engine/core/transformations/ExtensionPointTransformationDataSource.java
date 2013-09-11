@@ -239,7 +239,7 @@ public class ExtensionPointTransformationDataSource implements ITransformationDa
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * net.atos.xa.optimus.m2m.engine.transformations.ITransformationDataSource
+	 * net.atos.optimus.m2m.engine.core.transformations.ITransformationDataSource
 	 * #getById(java.lang.String)
 	 */
 	public TransformationReference getById(String id) {
@@ -250,7 +250,7 @@ public class ExtensionPointTransformationDataSource implements ITransformationDa
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * net.atos.xa.optimus.m2m.engine.transformations.ITransformationDataSource
+	 *  net.atos.optimus.m2m.engine.core.transformations.ITransformationDataSource
 	 * #getAll()
 	 */
 	public Collection<TransformationReference> getAll() {
