@@ -24,6 +24,7 @@ package net.atos.optimus.common.tools.ui;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import net.atos.optimus.common.tools.Activator;
 import net.atos.optimus.common.tools.swt.FormDataBuilder;
 
 import org.eclipse.jface.preference.PreferencePage;
@@ -64,6 +65,7 @@ public class MainPreferencePage extends PreferencePage implements IWorkbenchPref
 
 		Label title = new Label(background, SWT.WRAP);
 		Label description = new Label(background, SWT.WRAP);
+		Label image = new Label(background, SWT.BORDER);
 		Link moreInfo = new Link(background, SWT.RIGHT);
 		Link moreInfo1 = new Link(background, SWT.RIGHT);
 		Link moreInfo2 = new Link(background, SWT.RIGHT);
@@ -74,7 +76,7 @@ public class MainPreferencePage extends PreferencePage implements IWorkbenchPref
 		moreInfo.setText("Find more information about Optimus <A href=\"https://github.com/awltech/eclipse-optimus\">here</A>.");
 		moreInfo1.setText("Check out the Optimus documentation <A href=\"https://github.com/awltech/eclipse-optimus/wiki/_pages\">here</A>.");
 		moreInfo2.setText("Find more about AWLTech components <A href=\"https://github.com/awltech\">here</A>.");
-
+		image.setBackgroundImage(Activator.getDefault().getImage(Activator.PLUGIN_ID, "images/wltech-by-worldline.png"));
 		
 		
 		moreInfo.addSelectionListener(new OpenLinkActionSelectionAdapter());
@@ -82,7 +84,8 @@ public class MainPreferencePage extends PreferencePage implements IWorkbenchPref
 		moreInfo2.addSelectionListener(new OpenLinkActionSelectionAdapter());
 
 		FormDataBuilder.on(title).top().left().right();
-		FormDataBuilder.on(description).top(title).left().right().bottom(moreInfo);
+		FormDataBuilder.on(description).top(title).left().right().bottom(image);
+		FormDataBuilder.on(image).left().bottom().width(128).height(128);
 		FormDataBuilder.on(moreInfo).bottom(moreInfo1).right();
 		FormDataBuilder.on(moreInfo1).bottom(moreInfo2).right();
 		FormDataBuilder.on(moreInfo2).bottom().right();
