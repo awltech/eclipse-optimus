@@ -64,7 +64,9 @@ public class JavaAnnotationHelper {
 	 * @param annotation
 	 * @param propertyName
 	 * @param propertyValue
+	 * @deprecated use method with 4 parameters, for specifying if double-quotes are required or not..
 	 */
+	@Deprecated
 	public static void addAnnotationParameter(Annotation annotation, String propertyName, String propertyValue) {
 		StringLiteral propertyExpression = JavaFactory.eINSTANCE.createStringLiteral();
 		propertyExpression.setEscapedValue("\"" + propertyValue + "\"");
@@ -79,10 +81,30 @@ public class JavaAnnotationHelper {
 	 * @param annotation
 	 * @param propertyName
 	 * @param propertyValue
+	 * @deprecated use method with 4 parameters, for specifying if double-quotes are required or not.
 	 */
+	@Deprecated
 	public static void addAnnotationParameter(Annotation annotation, String propertyName, Object propertyValue) {
 		StringLiteral propertyExpression = JavaFactory.eINSTANCE.createStringLiteral();
 		propertyExpression.setEscapedValue(String.valueOf(propertyValue));
+		addAnnotationParameter(annotation, propertyName, propertyExpression);
+	}
+
+	/**
+	 * Adds a new object value to an annotation property. Note that is the
+	 * annotation already has a valued property with the same name, the value of
+	 * the property will be updated with an array
+	 * 
+	 * @param annotation
+	 * @param propertyName
+	 * @param propertyValue
+	 * @param escape if true, value generated in double quotes
+	 */
+	public static void addAnnotationParameter(Annotation annotation, String propertyName, Object propertyValue,
+			boolean escape) {
+		StringLiteral propertyExpression = JavaFactory.eINSTANCE.createStringLiteral();
+		String value = (escape ? "\"" : "") + String.valueOf(propertyValue) + (escape ? "\"" : "");
+		propertyExpression.setEscapedValue(value);
 		addAnnotationParameter(annotation, propertyName, propertyExpression);
 	}
 
