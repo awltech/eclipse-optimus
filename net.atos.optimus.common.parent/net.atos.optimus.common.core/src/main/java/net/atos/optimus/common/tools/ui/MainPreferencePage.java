@@ -27,6 +27,8 @@ import java.net.URL;
 import net.atos.optimus.common.tools.Activator;
 import net.atos.optimus.common.tools.swt.FormDataBuilder;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -74,11 +76,11 @@ public class MainPreferencePage extends PreferencePage implements IWorkbenchPref
 				.setText("Welcome to Optimus !\n\nOptimus is a new way to handle EMF-based model transformations, using requirements instead of predefined workflows."
 						+ "\nIt also comes natively with a Code Generation tooling, for a ready to run Code Generation framework.\n\n");
 		moreInfo.setText("Find more information about Optimus <A href=\"https://github.com/awltech/eclipse-optimus\">here</A>.");
-		moreInfo1.setText("Check out the Optimus documentation <A href=\"https://github.com/awltech/eclipse-optimus/wiki/_pages\">here</A>.");
+		moreInfo1
+				.setText("Check out the Optimus documentation <A href=\"https://github.com/awltech/eclipse-optimus/wiki/_pages\">here</A>.");
 		moreInfo2.setText("Find more about AWLTech components <A href=\"https://github.com/awltech\">here</A>.");
 		image.setBackgroundImage(Activator.getDefault().getImage(Activator.PLUGIN_ID, "images/wltech-by-worldline.png"));
-		
-		
+
 		moreInfo.addSelectionListener(new OpenLinkActionSelectionAdapter());
 		moreInfo1.addSelectionListener(new OpenLinkActionSelectionAdapter());
 		moreInfo2.addSelectionListener(new OpenLinkActionSelectionAdapter());
@@ -104,11 +106,13 @@ public class MainPreferencePage extends PreferencePage implements IWorkbenchPref
 						| IWorkbenchBrowserSupport.NAVIGATION_BAR, null, "Web Browser", "Web Browser");
 				browser.openURL(new URL(e.text));
 			} catch (PartInitException e1) {
-				e1.printStackTrace();
+				Activator.getDefault().getLog()
+						.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e1.getMessage(), e1));
 			} catch (MalformedURLException e1) {
-				e1.printStackTrace();
+				Activator.getDefault().getLog()
+						.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e1.getMessage(), e1));
 			}
-			
+
 		}
 	}
 
