@@ -30,10 +30,10 @@
 
 	<licenses>
 		<license>
-			<name>LGPL 2.1</name>
-			<url>http://www.gnu.org/licenses/lgpl-2.1.txt</url>
+			<name>EPL 1.0</name>
+			<url>http://www.eclipse.org/legal/epl-v10.html</url>
 			<distribution>repo</distribution>
-			<comments>GNU LESSER GENERAL PUBLIC LICENSE</comments>
+			<comments>Eclipse Public License - v 1.0</comments>
 		</license>
 	</licenses>
 
