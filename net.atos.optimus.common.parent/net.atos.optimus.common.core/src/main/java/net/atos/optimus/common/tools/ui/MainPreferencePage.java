@@ -73,7 +73,8 @@ public class MainPreferencePage extends PreferencePage implements IWorkbenchPref
 		Link moreInfo2 = new Link(background, SWT.RIGHT);
 
 		description
-				.setText("Welcome to Optimus !\n\nOptimus is a new way to handle EMF-based model transformations, using requirements instead of predefined workflows."
+				.setText("Optimus, an Agile Transformation Framework.\n\nWelcome to Optimus !\n\nOptimus is a new way to handle EMF-based model transformations,"
+						+ " using requirements instead of predefined workflows."
 						+ "\nIt also comes natively with a Code Generation tooling, for a ready to run Code Generation framework.\n\n");
 		moreInfo.setText("Find more information about Optimus <A href=\"https://github.com/awltech/eclipse-optimus\">here</A>.");
 		moreInfo1
