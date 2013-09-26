@@ -55,12 +55,12 @@ public class GeneratedAnnotationAdder {
 	public static void addGenerated(BodyDeclaration bodyDeclaration, String value, boolean withComments,
 			boolean withDate) {
 		Annotation addedAnnotation = JavaAnnotationHelper.addAnnotation(bodyDeclaration, JAVAX_ANNOTATION, GENERATED);
-		JavaAnnotationHelper.addAnnotationParameter(addedAnnotation, VALUE2, value);
+		JavaAnnotationHelper.addAnnotationParameter(addedAnnotation, VALUE2, value, true);
 		if (withComments)
-			JavaAnnotationHelper.addAnnotationParameter(addedAnnotation, COMMENTS, TO_BE_CALCULATED);
+			JavaAnnotationHelper.addAnnotationParameter(addedAnnotation, COMMENTS, TO_BE_CALCULATED, true);
 		if (withDate) {
 			String formattedDate = DATEFORMAT.format(new Date());
-			JavaAnnotationHelper.addAnnotationParameter(addedAnnotation, DATE, formattedDate);
+			JavaAnnotationHelper.addAnnotationParameter(addedAnnotation, DATE, formattedDate, true);
 		}
 	}
 
@@ -68,10 +68,10 @@ public class GeneratedAnnotationAdder {
 
 		Annotation addedAnnotation = JavaAnnotationHelper.addAnnotation(bodyDeclaration, JAVAX_ANNOTATION, GENERATED);
 
-		JavaAnnotationHelper.addAnnotationParameter(addedAnnotation, VALUE2, value);
+		JavaAnnotationHelper.addAnnotationParameter(addedAnnotation, VALUE2, value, true);
 
 		String commentsValue = String.format(PATTERN, withHashCode ? TO_BE_CALCULATED : EMPTY, uniqueId);
-		JavaAnnotationHelper.addAnnotationParameter(addedAnnotation, COMMENTS, commentsValue);
+		JavaAnnotationHelper.addAnnotationParameter(addedAnnotation, COMMENTS, commentsValue, true);
 	}
 
 }
