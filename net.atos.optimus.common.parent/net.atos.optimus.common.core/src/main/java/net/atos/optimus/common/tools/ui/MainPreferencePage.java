@@ -55,6 +55,8 @@ import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
  */
 public class MainPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
+	private static final String WLTECH_IMAGE_PATH = "images/wltech-by-worldline.png";
+
 	@Override
 	public void init(IWorkbench workbench) {
 	}
@@ -72,15 +74,11 @@ public class MainPreferencePage extends PreferencePage implements IWorkbenchPref
 		Link moreInfo1 = new Link(background, SWT.RIGHT);
 		Link moreInfo2 = new Link(background, SWT.RIGHT);
 
-		description
-				.setText("Optimus, an Agile Transformation Framework.\n\nWelcome to Optimus !\n\nOptimus is a new way to handle EMF-based model transformations,"
-						+ " using requirements instead of predefined workflows."
-						+ "\nIt also comes natively with a Code Generation tooling, for a ready to run Code Generation framework.\n\n");
-		moreInfo.setText("Find more information about Optimus <A href=\"https://github.com/awltech/eclipse-optimus\">here</A>.");
-		moreInfo1
-				.setText("Check out the Optimus documentation <A href=\"https://github.com/awltech/eclipse-optimus/wiki/_pages\">here</A>.");
-		moreInfo2.setText("Find more about AWLTech components <A href=\"https://github.com/awltech\">here</A>.");
-		image.setBackgroundImage(Activator.getDefault().getImage(Activator.PLUGIN_ID, "images/wltech-by-worldline.png"));
+		description.setText(MainPreferencePageMessages.DESCRIPTION.value());
+		moreInfo.setText(MainPreferencePageMessages.MORE_INFO.value());
+		moreInfo1.setText(MainPreferencePageMessages.MORE_INFO_1.value());
+		moreInfo2.setText(MainPreferencePageMessages.MORE_INFO_2.value());
+		image.setBackgroundImage(Activator.getDefault().getImage(Activator.PLUGIN_ID, WLTECH_IMAGE_PATH));
 
 		moreInfo.addSelectionListener(new OpenLinkActionSelectionAdapter());
 		moreInfo1.addSelectionListener(new OpenLinkActionSelectionAdapter());
@@ -104,7 +102,9 @@ public class MainPreferencePage extends PreferencePage implements IWorkbenchPref
 			IWebBrowser browser;
 			try {
 				browser = browserSupport.createBrowser(IWorkbenchBrowserSupport.LOCATION_BAR
-						| IWorkbenchBrowserSupport.NAVIGATION_BAR, null, "Web Browser", "Web Browser");
+						| IWorkbenchBrowserSupport.NAVIGATION_BAR, null,
+						MainPreferencePageMessages.BROWSER_TEXT.value(),
+						MainPreferencePageMessages.BROWSER_TEXT.value());
 				browser.openURL(new URL(e.text));
 			} catch (PartInitException e1) {
 				Activator.getDefault().getLog()
