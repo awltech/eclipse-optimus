@@ -55,7 +55,7 @@ import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
  */
 public class MainPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
-	private static final String WLTECH_IMAGE_PATH = "images/wltech-by-worldline.png";
+	private static final String WLTECH_IMAGE_PATH = "images/optimus-logo.png";
 
 	@Override
 	public void init(IWorkbench workbench) {
@@ -86,7 +86,7 @@ public class MainPreferencePage extends PreferencePage implements IWorkbenchPref
 
 		FormDataBuilder.on(title).top().left().right();
 		FormDataBuilder.on(description).top(title).left().right().bottom(image);
-		FormDataBuilder.on(image).left().bottom().width(128).height(128);
+		FormDataBuilder.on(image).left().bottom().width(120).height(60);
 		FormDataBuilder.on(moreInfo).bottom(moreInfo1).right();
 		FormDataBuilder.on(moreInfo1).bottom(moreInfo2).right();
 		FormDataBuilder.on(moreInfo2).bottom().right();
