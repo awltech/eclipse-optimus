@@ -1,5 +1,3 @@
-# Script used in Atos internal continuous integration, for building update site
-
 echo "Rebuilding update site structure..."
 rm -rf /DATA/xa/eclipse/temp/optimus/*
 mkdir /DATA/xa/eclipse/temp/optimus/common
@@ -12,17 +10,23 @@ mkdir /DATA/xa/eclipse/temp/optimus/m2t-selector
 mkdir /DATA/xa/eclipse/temp/optimus/t2m-java
 
 echo "Moving all the update sites to a destination folder..."
-cp -r "${WORKSPACE}/net.atos.optimus.common.parent/net.atos.optimus.common.site/target/repository/" /DATA/xa/eclipse/temp/optimus/common
-cp -r "${WORKSPACE}/net.atos.optimus.m2m.engine.parent/net.atos.optimus.m2m.engine.site/target/repository/" /DATA/xa/eclipse/temp/optimus/m2m-engine
-cp -r "${WORKSPACE}/net.atos.optimus.m2m.engine.sdk.parent/net.atos.optimus.m2m.engine.sdk.site/target/repository/" /DATA/xa/eclipse/temp/optimus/m2m-engine-sdk
-cp -r "${WORKSPACE}/net.atos.optimus.m2m.javaxmi.parent/net.atos.optimus.m2m.javaxmi.site/target/repository/" /DATA/xa/eclipse/temp/optimus/m2m-javaxmi
-cp -r "${WORKSPACE}/net.atos.optimus.m2t.java.parent/net.atos.optimus.m2t.java.site/target/repository/" /DATA/xa/eclipse/temp/optimus/m2t-java
-cp -r "${WORKSPACE}/net.atos.optimus.m2t.merger.java.parent/net.atos.optimus.m2t.merger.java.site/target/repository/" /DATA/xa/eclipse/temp/optimus/m2t-merger-java
-cp -r "${WORKSPACE}/net.atos.optimus.m2t.selector.parent/net.atos.optimus.m2t.selector.site/target/repository/" /DATA/xa/eclipse/temp/optimus/m2t-selector
-cp -r "${WORKSPACE}/net.atos.optimus.t2m.java.parent/net.atos.optimus.t2m.java.site/target/repository/" /DATA/xa/eclipse/temp/optimus/t2m-java
+cp -a "${WORKSPACE}/net.atos.optimus.common.parent/net.atos.optimus.common.site/target/repository/." /DATA/xa/eclipse/temp/optimus/common
+cp -a "${WORKSPACE}/net.atos.optimus.m2m.engine.parent/net.atos.optimus.m2m.engine.site/target/repository/." /DATA/xa/eclipse/temp/optimus/m2m-engine
+cp -a "${WORKSPACE}/net.atos.optimus.m2m.engine.sdk.parent/net.atos.optimus.m2m.engine.sdk.site/target/repository/." /DATA/xa/eclipse/temp/optimus/m2m-engine-sdk
+cp -a "${WORKSPACE}/net.atos.optimus.m2m.javaxmi.parent/net.atos.optimus.m2m.javaxmi.site/target/repository/." /DATA/xa/eclipse/temp/optimus/m2m-javaxmi
+cp -a "${WORKSPACE}/net.atos.optimus.m2t.java.parent/net.atos.optimus.m2t.java.site/target/repository/." /DATA/xa/eclipse/temp/optimus/m2t-java
+cp -a "${WORKSPACE}/net.atos.optimus.m2t.merger.java.parent/net.atos.optimus.m2t.merger.java.site/target/repository/." /DATA/xa/eclipse/temp/optimus/m2t-merger-java
+cp -a "${WORKSPACE}/net.atos.optimus.m2t.selector.parent/net.atos.optimus.m2t.selector.site/target/repository/." /DATA/xa/eclipse/temp/optimus/m2t-selector
+cp -a "${WORKSPACE}/net.atos.optimus.t2m.java.parent/net.atos.optimus.t2m.java.site/target/repository/." /DATA/xa/eclipse/temp/optimus/t2m-java
 
-echo "Invoking aggregation process"
-/DATA/xa/CI/eclipseHeadlessB3/b3 aggregate --action CLEAN_BUILD --buildModel "${WORKSPACE}/net.atos.optimus.build.b3/xa-nightly-aggregation.b3aggr" --logLevel DEBUG --eclipseLogLevel DEBUG --buildRoot /DATA/xa/eclipse/temp/optimus
+echo "Invoking aggregation process..."
+/DATA/xa/CI/eclipseHeadlessB3/b3 aggregate --action BUILD --buildModel "${WORKSPACE}/net.atos.optimus.build.b3/xa-nightly-aggregation.b3aggr" --buildRoot /DATA/xa/eclipse/temp/optimus/b3
 
-# Move the result of the aggregation
-# TODO
+echo "Move the result of the aggregation..."
+rm -rf /DATA/xa/indivXAPluginsUpdSite/net.atos.optimus/aggregated/*
+cp -a /DATA/xa/eclipse/temp/optimus/b3/final/* /DATA/xa/indivXAPluginsUpdSite/net.atos.optimus/aggregated/
+rm -rf /DATA/xa/eclipse/nightly/optimus/*
+cp -a /DATA/xa/eclipse/temp/optimus/b3/final/* /DATA/xa/eclipse/nightly/optimus/
+
+echo "Cleaning temporary folder"
+rm -rf /DATA/xa/eclipse/temp/optimus/*
