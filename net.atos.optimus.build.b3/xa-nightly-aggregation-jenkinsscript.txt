@@ -24,9 +24,9 @@ echo "Invoking aggregation process..."
 
 echo "Move the result of the aggregation..."
 rm -rf /DATA/xa/indivXAPluginsUpdSite/net.atos.optimus/aggregated/*
-cp -a /DATA/xa/eclipse/temp/optimus/b3/final/* /DATA/xa/indivXAPluginsUpdSite/net.atos.optimus/aggregated/
+cp -a /DATA/xa/eclipse/temp/optimus/b3/final/. /DATA/xa/indivXAPluginsUpdSite/net.atos.optimus/aggregated/
 rm -rf /DATA/xa/eclipse/nightly/optimus/*
-cp -a /DATA/xa/eclipse/temp/optimus/b3/final/* /DATA/xa/eclipse/nightly/optimus/
+cp -a /DATA/xa/eclipse/temp/optimus/b3/final/. /DATA/xa/eclipse/nightly/optimus/
 
-echo "Cleaning temporary folder"
+echo "Cleaning temporary folder..."
 rm -rf /DATA/xa/eclipse/temp/optimus/*
