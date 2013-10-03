@@ -1,3 +1,9 @@
+# Script used as post build action on jenkins/hudson, to collect all update sites into one temp folder
+# and aggregate them into one update site, using B3 aggregation. Note that this configuration
+# is environment-dependant and it needs to be duplicated/updated when the CI environment changes.
+#
+# Author: mvanbesien
+
 echo "Rebuilding update site structure..."
 rm -rf /DATA/xa/eclipse/temp/optimus/*
 mkdir /DATA/xa/eclipse/temp/optimus/common
