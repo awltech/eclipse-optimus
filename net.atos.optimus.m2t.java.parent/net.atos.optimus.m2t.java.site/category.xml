@@ -26,6 +26,6 @@
    <description name="Atos Optimus M2T Java Generator">
       Atos Optimus M2T Java Generator
    </description>
-   <feature url="features/net.atos.optimus.m2t.java.feature_1.0.0.qualifier.jar" id="net.atos.optimus.m2t.java.feature" version="1.0.0.qualifier"/>
-   <feature url="features/net.atos.optimus.m2t.java.source.feature_1.0.0.qualifier.jar" id="net.atos.optimus.m2t.java.source.feature" version="1.0.0.qualifier"/>
+   <feature url="features/net.atos.optimus.m2t.java.feature_1.0.1.qualifier.jar" id="net.atos.optimus.m2t.java.feature" version="1.0.1.qualifier"/>
+   <feature url="features/net.atos.optimus.m2t.java.source.feature_1.0.1.qualifier.jar" id="net.atos.optimus.m2t.java.source.feature" version="1.0.1.qualifier"/>
 </site>

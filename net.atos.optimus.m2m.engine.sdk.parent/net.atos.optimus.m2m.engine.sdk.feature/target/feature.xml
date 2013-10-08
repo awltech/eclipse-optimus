@@ -2,7 +2,7 @@
 <feature
       id="net.atos.optimus.m2m.engine.sdk.feature"
       label="Optimus SDK"
-      version="1.0.0.201306261146-indigo-SNAPSHOT"
+      version="1.0.1.201306261146-indigo-SNAPSHOT"
       provider-name="Atos.net">
 
    <description url="http://www.example.com/description">
@@ -21,7 +21,7 @@
          id="net.atos.optimus.m2m.engine.sdk.wizards"
          download-size="24"
          install-size="54"
-         version="1.0.0.201306261146-indigo-SNAPSHOT"
+         version="1.0.1.201306261146-indigo-SNAPSHOT"
          unpack="false"/>
 
 </feature>

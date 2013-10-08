@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Tests for XA Optimus Engine
 Bundle-SymbolicName: net.atos.optimus.m2m.engine.tests
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.0.1.qualifier
 Bundle-Activator: net.atos.optimus.m2m.engine.tests.Activator
 Bundle-Vendor: Worldline.com
 Require-Bundle: org.eclipse.ui,

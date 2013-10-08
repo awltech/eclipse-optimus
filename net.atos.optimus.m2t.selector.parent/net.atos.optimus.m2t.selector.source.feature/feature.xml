@@ -25,7 +25,7 @@
 <feature
       id="net.atos.optimus.m2t.selector.source.feature"
       label="Optimus M2T Generator Selector Source"
-      version="1.0.0.qualifier"
+      version="1.0.1.qualifier"
       provider-name="Atos.net">
 
    <description url="http://www.example.com/description">

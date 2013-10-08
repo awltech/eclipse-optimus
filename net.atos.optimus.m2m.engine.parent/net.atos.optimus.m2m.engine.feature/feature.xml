@@ -25,7 +25,7 @@
 <feature
       id="net.atos.optimus.m2m.engine.feature"
       label="Optimus M2M Engine"
-      version="1.0.0.qualifier"
+      version="1.0.1.qualifier"
       provider-name="Atos.net">
 
    <description url="http://www.example.com/description">
@@ -41,7 +41,7 @@
    </license>
 
    <requires>
-      <import feature="net.atos.optimus.common.feature" version="1.0.0" match="greaterOrEqual"/>
+      <import feature="net.atos.optimus.common.feature" version="1.0.1" match="greaterOrEqual"/>
    </requires>
 
    <plugin
