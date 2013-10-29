@@ -5,7 +5,5 @@
 <groupId>net.atos.optimus</groupId>
 <artifactId>net.atos.optimus.m2m.engine.parent</artifactId>
 <version>1.0.1-SNAPSHOT</version>
-
-	<relativePath>..</relativePath>
 </parent>
 </project>
