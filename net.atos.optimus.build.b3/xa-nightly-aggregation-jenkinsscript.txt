@@ -4,7 +4,7 @@
 #
 # Author: mvanbesien
 
-TEMPDIR=/DATA/xa/eclipse/temp/optimus
+TEMPDIR=/DATA/xa/temp/optimus
 
 echo "Rebuilding update site structure..."
 rm -rf ${TEMPDIR}/*
