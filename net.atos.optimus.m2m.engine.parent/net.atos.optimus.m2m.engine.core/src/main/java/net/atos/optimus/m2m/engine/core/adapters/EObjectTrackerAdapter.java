@@ -21,19 +21,10 @@
  */
 package net.atos.optimus.m2m.engine.core.adapters;
 
-import java.io.IOException;
-import java.util.logging.FileHandler;
-import java.util.logging.Formatter;
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import net.atos.optimus.m2m.engine.core.Activator;
 import net.atos.optimus.m2m.engine.core.logging.EObjectLabelProvider;
 
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.util.EList;
@@ -51,8 +42,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  * 
  */
 public class EObjectTrackerAdapter extends AdapterImpl {
-
-	private static final String HANDLER_EXCEPTION = "The handler creation threw an Exception !";
 
 	/**
 	 * Pattern for UNSET message
@@ -75,32 +64,6 @@ public class EObjectTrackerAdapter extends AdapterImpl {
 	private static final String PATTERN_ADDITION = "ADD %s AS %s INTO %s\n";
 
 	/**
-	 * True if logs, false if logger is closed
-	 */
-	private boolean active = false;
-
-	/**
-	 * Simple logger formatter instance
-	 * 
-	 * @author Maxence Vanbésien (mvaawl@gmail.com)
-	 * @since 1.0
-	 * 
-	 */
-	private static final class TrackerFormatter extends Formatter {
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.util.logging.Formatter#format(java.util.logging.LogRecord)
-		 */
-		@Override
-		public String format(LogRecord record) {
-			return record.getMessage();
-		}
-
-	}
-
-	/**
 	 * Logger instance
 	 */
 	private Logger logger = null;
@@ -111,30 +74,13 @@ public class EObjectTrackerAdapter extends AdapterImpl {
 	private EObjectLabelProvider labelProvider = new EObjectLabelProvider();
 
 	/**
-	 * Handler describing the file the messages will be written into
-	 */
-	private FileHandler handler = null;
-
-	/**
-	 * Creates adapter that will log in the file which path is provided as
-	 * parameter. Note that path provided as to be an absolute one
+	 * Creates adapter that will log in the provided logger all the
+	 * modifications brought to the listened project.
 	 * 
-	 * @param path
+	 * @param logger
 	 */
-	public EObjectTrackerAdapter(IPath path) {
-		this.logger = Logger.getLogger(EObjectTrackerAdapter.class.getCanonicalName());
-		this.logger.setUseParentHandlers(false);
-		this.logger.setLevel(Level.INFO);
-		try {
-			this.handler = new FileHandler(path.toString());
-			handler.setFormatter(new TrackerFormatter());
-			this.logger.addHandler(handler);
-			this.active = true;
-		} catch (SecurityException e) {
-			Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, HANDLER_EXCEPTION, e));
-		} catch (IOException e) {
-			Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, HANDLER_EXCEPTION, e));
-		}
+	public EObjectTrackerAdapter(Logger logger) {
+		this.logger = logger;
 	}
 
 	/*
@@ -146,8 +92,6 @@ public class EObjectTrackerAdapter extends AdapterImpl {
 	 */
 	@Override
 	public void notifyChanged(Notification msg) {
-		if (!active)
-			return;
 		try {
 			if (!(msg.getFeature() instanceof EStructuralFeature) || !(msg.getNotifier() instanceof EObject))
 				return;
@@ -318,19 +262,7 @@ public class EObjectTrackerAdapter extends AdapterImpl {
 	 * Flushes & closes the internal logger
 	 */
 	public void dispose() {
-		if (!this.active)
-			return;
-		this.handler.flush();
-		this.handler.close();
-		this.active = false;
+		// Does nothing.
 	}
 
-	/**
-	 * Returns true if logger is still active. False if it has been disposed.
-	 * 
-	 * @return
-	 */
-	public boolean isActive() {
-		return active;
-	}
 }
