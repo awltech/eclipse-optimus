@@ -160,7 +160,7 @@ public class ImportsGenerationVisitor extends ASTVisitor {
 			IBinding resolvedBinding = declaration.resolveBinding();
 			if (resolvedBinding instanceof ITypeBinding) {
 				ITypeBinding resolvedTypeBinding = (ITypeBinding) resolvedBinding;
-				if (!resolvedTypeBinding.isRecovered()) {
+				if (resolvedTypeBinding != null && !resolvedTypeBinding.isRecovered()) {
 					resolvedTypeBinding = resolvedTypeBinding.getErasure();
 					String typeName = resolvedTypeBinding.getName();
 					IPackageBinding packageBinding = resolvedTypeBinding.getPackage();
@@ -200,7 +200,13 @@ public class ImportsGenerationVisitor extends ASTVisitor {
 	 */
 	@Override
 	public boolean visit(MarkerAnnotation node) {
+		if (node == null)
+			return super.visit(node);
+		
 		ITypeBinding typeBinding = node.resolveTypeBinding();
+		if (typeBinding == null)
+			return super.visit(node);
+		
 		Name typeName = node.getTypeName();
 		this.checkType(node, typeName, typeBinding);
 		return super.visit(node);
@@ -211,7 +217,13 @@ public class ImportsGenerationVisitor extends ASTVisitor {
 	 */
 	@Override
 	public boolean visit(NormalAnnotation node) {
+		if (node == null)
+			return super.visit(node);
+		
 		ITypeBinding typeBinding = node.resolveTypeBinding();
+		if (typeBinding == null)
+			return super.visit(node);
+		
 		Name typeName = node.getTypeName();
 		this.checkType(node, typeName, typeBinding);
 		return super.visit(node);
@@ -222,7 +234,13 @@ public class ImportsGenerationVisitor extends ASTVisitor {
 	 */
 	@Override
 	public boolean visit(SingleMemberAnnotation node) {
+		if (node == null)
+			return super.visit(node);
+		
 		ITypeBinding typeBinding = node.resolveTypeBinding();
+		if (typeBinding == null)
+			return super.visit(node);
+		
 		Name typeName = node.getTypeName();
 		this.checkType(node, typeName, typeBinding);
 		return super.visit(node);
@@ -233,7 +251,13 @@ public class ImportsGenerationVisitor extends ASTVisitor {
 	 */
 	@Override
 	public boolean visit(SimpleType node) {
+		if (node == null)
+			return super.visit(node);
+		
 		ITypeBinding typeBinding = node.resolveBinding();
+		if (typeBinding == null)
+			return super.visit(node);
+		
 		Name typeName = node.getName();
 		this.checkType(node, typeName, typeBinding);
 		return super.visit(node);
@@ -267,7 +291,7 @@ public class ImportsGenerationVisitor extends ASTVisitor {
 						&& Modifier.isStatic(binding.getModifiers())) {
 					QualifiedName qualifier = (QualifiedName) node.getQualifier();
 					IBinding binding2 = qualifier.resolveBinding();
-					if (binding2.getKind() == IBinding.TYPE
+					if (binding2 != null && binding2.getKind() == IBinding.TYPE
 							&& !((ITypeBinding) binding2).isRecovered()) {
 						checkQualifiedType(node, qualifier, (ITypeBinding) binding2);
 					}
