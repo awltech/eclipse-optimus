@@ -28,7 +28,7 @@ cp -a "${WORKSPACE}/net.atos.optimus.m2t.selector.parent/net.atos.optimus.m2t.se
 cp -a "${WORKSPACE}/net.atos.optimus.t2m.java.parent/net.atos.optimus.t2m.java.site/target/repository/." ${TEMPDIR}/t2m-java
 
 echo "Invoking aggregation process..."
-/DATA/xa/CI/eclipseHeadlessB3/b3 aggregate --action BUILD --buildModel "${WORKSPACE}/net.atos.optimus.build.b3/xa-nightly-aggregation.b3aggr" --buildRoot ${TEMPDIR}/b3
+/DATA/xa/CI/eclipseHeadlessB3/b3 aggregate --action BUILD --buildModel "${WORKSPACE}/net.atos.optimus.build.b3/xa/nightly-aggregation.b3aggr" --buildRoot ${TEMPDIR}/b3
 
 echo "Move the result of the aggregation..."
 rm -rf /DATA/xa/indivXAPluginsUpdSite/net.atos.optimus/aggregated/*
