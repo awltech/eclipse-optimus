@@ -33,8 +33,10 @@ echo "[NIGHTLY-DEPLOY] Invoking aggregation process..."
 echo "[NIGHTLY-DEPLOY] Move the result of the aggregation..."
 rm -rf /DATA/xa/indivXAPluginsUpdSite/net.atos.optimus/aggregated/*
 cp -a ${TEMPDIR}/b3/final/. /DATA/xa/indivXAPluginsUpdSite/net.atos.optimus/aggregated/
+echo "[NIGHTLY-DEPLOY] Update site made available at /DATA/xa/indivXAPluginsUpdSite/net.atos.optimus/aggregated/"
 rm -rf /DATA/xa/eclipse/nightly/optimus/*
 cp -a ${TEMPDIR}/b3/final/. /DATA/xa/eclipse/nightly/optimus/
+echo "[NIGHTLY-DEPLOY] Update site made available at /DATA/xa/eclipse/nightly/optimus/"
 
 echo "[NIGHTLY-DEPLOY] Cleaning temporary folder..."
 rm -rf ${TEMPDIR}/*
