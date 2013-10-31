@@ -4,9 +4,12 @@
 #
 # Author: mvanbesien
 
+echo "**************************************************"
+echo "* Optimus Update Site Aggregation and Deployment *"
+echo "**************************************************"
 TEMPDIR=/DATA/xa/temp/optimus
 
-echo "[NIGHTLY-DEPLOY] Rebuilding update site structure..."
+echo "* Isolating individual update sites into temporary structure (1/4)..."
 rm -rf ${TEMPDIR}/*
 mkdir ${TEMPDIR}/common
 mkdir ${TEMPDIR}/m2m-engine
@@ -17,7 +20,6 @@ mkdir ${TEMPDIR}/m2t-merger-java
 mkdir ${TEMPDIR}/m2t-selector
 mkdir ${TEMPDIR}/t2m-java
 
-echo "[NIGHTLY-DEPLOY] Moving all the update sites to a destination folder..."
 cp -a "${WORKSPACE}/net.atos.optimus.common.parent/net.atos.optimus.common.site/target/repository/." ${TEMPDIR}/common
 cp -a "${WORKSPACE}/net.atos.optimus.m2m.engine.parent/net.atos.optimus.m2m.engine.site/target/repository/." ${TEMPDIR}/m2m-engine
 cp -a "${WORKSPACE}/net.atos.optimus.m2m.engine.sdk.parent/net.atos.optimus.m2m.engine.sdk.site/target/repository/." ${TEMPDIR}/m2m-engine-sdk
@@ -27,18 +29,18 @@ cp -a "${WORKSPACE}/net.atos.optimus.m2t.merger.java.parent/net.atos.optimus.m2t
 cp -a "${WORKSPACE}/net.atos.optimus.m2t.selector.parent/net.atos.optimus.m2t.selector.site/target/repository/." ${TEMPDIR}/m2t-selector
 cp -a "${WORKSPACE}/net.atos.optimus.t2m.java.parent/net.atos.optimus.t2m.java.site/target/repository/." ${TEMPDIR}/t2m-java
 
-echo "[NIGHTLY-DEPLOY] Invoking aggregation process..."
+echo "* Invoking B3 aggregation process (2/4)..."
 /DATA/xa/CI/eclipseHeadlessB3/b3 aggregate --action CLEAN_BUILD --buildModel "${WORKSPACE}/net.atos.optimus.build.b3/xa/nightly-aggregation.b3aggr" --buildRoot ${TEMPDIR}/b3 --logLevel WARNING --eclipseLogLevel WARNING
 
-echo "[NIGHTLY-DEPLOY] Move the result of the aggregation..."
+echo "* Deploying aggregated update site (3/4)..."
 rm -rf /DATA/xa/indivXAPluginsUpdSite/net.atos.optimus/aggregated/*
 cp -a ${TEMPDIR}/b3/final/. /DATA/xa/indivXAPluginsUpdSite/net.atos.optimus/aggregated/
-echo "[NIGHTLY-DEPLOY] Update site made available at /DATA/xa/indivXAPluginsUpdSite/net.atos.optimus/aggregated/"
+echo "Done at /DATA/xa/indivXAPluginsUpdSite/net.atos.optimus/aggregated/"
 rm -rf /DATA/xa/eclipse/nightly/optimus/*
 cp -a ${TEMPDIR}/b3/final/. /DATA/xa/eclipse/nightly/optimus/
-echo "[NIGHTLY-DEPLOY] Update site made available at /DATA/xa/eclipse/nightly/optimus/"
+echo "Done at /DATA/xa/eclipse/nightly/optimus/"
 
-echo "[NIGHTLY-DEPLOY] Cleaning temporary folder..."
+echo "* Cleaning temporary structure (4/4)..."
 rm -rf ${TEMPDIR}/*
 
-echo "[NIGHTLY-DEPLOY] Done."
+echo "* Aggregation and deployment completed successfully !"
