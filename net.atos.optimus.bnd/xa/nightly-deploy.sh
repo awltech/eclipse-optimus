@@ -30,7 +30,7 @@ cp -a "${WORKSPACE}/net.atos.optimus.m2t.selector.parent/net.atos.optimus.m2t.se
 cp -a "${WORKSPACE}/net.atos.optimus.t2m.java.parent/net.atos.optimus.t2m.java.site/target/repository/." ${TEMPDIR}/t2m-java
 
 echo "* Invoking B3 aggregation process (2/4)..."
-/DATA/xa/CI/eclipseHeadlessB3/b3 aggregate --action CLEAN_BUILD --buildModel "${WORKSPACE}/net.atos.optimus.build.b3/xa/nightly-aggregation.b3aggr" --buildRoot ${TEMPDIR}/b3 --logLevel WARNING --eclipseLogLevel WARNING
+/DATA/xa/CI/eclipseHeadlessB3/b3 aggregate --action CLEAN_BUILD --buildModel "${WORKSPACE}/net.atos.optimus.bnd/xa/nightly-aggregation.b3aggr" --buildRoot ${TEMPDIR}/b3 --logLevel WARNING --eclipseLogLevel WARNING
 
 echo "* Deploying aggregated update site (3/4)..."
 rm -rf /DATA/xa/indivXAPluginsUpdSite/net.atos.optimus/aggregated/*
