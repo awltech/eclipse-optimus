@@ -29,6 +29,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import net.atos.optimus.m2t.java.core.internal.Activator;
 import net.atos.optimus.m2t.java.core.internal.DefaultJavaCodeMerger;
 import net.atos.optimus.m2t.java.core.internal.XAGenerationStrategy;
 import net.atos.optimus.m2t.java.core.internal.postprocessors.GeneratedPostProcessor;
@@ -162,7 +163,15 @@ public class JavaGenerator extends GenerateJava {
 				if (clazz != null)
 					moduleURL = findModuleURL(moduleName, clazz);
 			} catch (ClassNotFoundException e) {
-				// Swallow it. Class is just not in the classpath...
+				Activator
+						.getDefault()
+						.getLog()
+						.log(new Status(
+								IStatus.WARNING,
+								Activator.PLUGIN_ID,
+								"The EMTL template could not be resolved at all (Modisco nor Optimus). "
+										+ "This will probabily make Java generation fail. "
+										+ "Please contact the development team or install the Optimus EMTL Patch Module."));
 			}
 		}
 		return moduleURL;
