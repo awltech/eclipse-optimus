@@ -44,3 +44,4 @@ echo "* Cleaning temporary structure (4/4)..."
 rm -rf ${TEMPDIR}/*
 
 echo "* Aggregation and deployment completed successfully !"
+echo "*****************************************************"
