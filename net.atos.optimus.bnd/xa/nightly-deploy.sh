@@ -33,9 +33,9 @@ echo "* Invoking B3 aggregation process (2/4)..."
 /DATA/xa/CI/eclipseHeadlessB3/b3 aggregate --action CLEAN_BUILD --buildModel "${WORKSPACE}/net.atos.optimus.bnd/xa/nightly-aggregation.b3aggr" --buildRoot ${TEMPDIR}/b3 --logLevel WARNING --eclipseLogLevel WARNING
 
 echo "* Deploying aggregated update site (3/4)..."
-rm -rf /DATA/xa/indivXAPluginsUpdSite/net.atos.optimus/aggregated/*
-cp -a ${TEMPDIR}/b3/final/. /DATA/xa/indivXAPluginsUpdSite/net.atos.optimus/aggregated/
-echo "Done at /DATA/xa/indivXAPluginsUpdSite/net.atos.optimus/aggregated/"
+#rm -rf /DATA/xa/indivXAPluginsUpdSite/net.atos.optimus/aggregated/*
+#cp -a ${TEMPDIR}/b3/final/. /DATA/xa/indivXAPluginsUpdSite/net.atos.optimus/aggregated/
+#echo "Done at /DATA/xa/indivXAPluginsUpdSite/net.atos.optimus/aggregated/"
 rm -rf /DATA/xa/eclipse/nightly/optimus/*
 cp -a ${TEMPDIR}/b3/final/. /DATA/xa/eclipse/nightly/optimus/
 echo "Done at /DATA/xa/eclipse/nightly/optimus/"
