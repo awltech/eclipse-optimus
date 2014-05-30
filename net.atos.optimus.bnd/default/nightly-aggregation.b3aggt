@@ -18,7 +18,7 @@
         <features name="net.atos.optimus.m2t.java.feature.feature.group" versionRange="1.0.0.201308071352-kepler-SNAPSHOT" categories="//@customCategories[identifier='eclipse-optimus']"/>
         <features name="net.atos.optimus.m2t.java.source.feature.feature.group" versionRange="1.0.0.201308071352-kepler-SNAPSHOT" categories="//@customCategories[identifier='eclipse-optimus-sources']"/>
       </repositories>
-      <repositories location="@@WORKSPACE@@/net.atos.optimus.m2t.merger.java.parent/net.atos.optimus.m2t.merger.java.site/target/">
+      <repositories location="@@WORKSPACE@@/net.atos.optimus.m2t.merger.java.parent/net.atos.optimus.m2t.merger.java.site/target/repository/">
         <features name="net.atos.optimus.m2t.merger.java.feature.feature.group" versionRange="1.0.0.201308071349-kepler-SNAPSHOT" categories="//@customCategories[identifier='eclipse-optimus']"/>
         <features name="net.atos.optimus.m2t.merger.java.source.feature.feature.group" versionRange="1.0.0.201308080842-kepler-SNAPSHOT" categories="//@customCategories[identifier='eclipse-optimus-sources']"/>
       </repositories>
