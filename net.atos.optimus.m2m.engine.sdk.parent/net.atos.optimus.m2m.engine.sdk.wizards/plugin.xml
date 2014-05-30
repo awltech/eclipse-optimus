@@ -43,6 +43,12 @@
                label="New M2M Transformation..."
                menubarPath="net.atos.xa.optimus.menu/M2MWizards">
          </action>
+         <action
+               class="net.atos.optimus.m2m.engine.sdk.wizards.modelgen.ModelGenerationAction"
+               id="net.atos.optimus.m2m.engine.sdk.wizards.action1"
+               label="Generate Transformations Model"
+               menubarPath="net.atos.xa.optimus.menu/M2MWizards">
+         </action>
       </objectContribution>
    </extension>
 
