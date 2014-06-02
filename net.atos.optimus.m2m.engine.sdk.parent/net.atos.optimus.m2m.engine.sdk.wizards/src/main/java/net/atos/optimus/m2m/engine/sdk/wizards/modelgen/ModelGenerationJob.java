@@ -29,12 +29,41 @@ import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.UMLFactory;
 
+/**
+ * Eclipse Job, that generates an UML model from transformation sets
+ * 
+ * @author mvanbesien
+ * 
+ */
 public class ModelGenerationJob extends WorkspaceJob {
 
+	/**
+	 * Project in which we create the model (initial user selection)
+	 */
 	private IJavaProject javaProject;
 
+	/**
+	 * Transformation Data Source. Defaultly instanciated to the extension points one.
+	 */
+	private ITransformationDataSource transformationDataSource = ExtensionPointTransformationDataSource.instance();
+
+	/**
+	 * Required. Set the java project, for which the model will be created in
+	 * @param javaProject
+	 * @return
+	 */
 	public ModelGenerationJob withJavaProject(IJavaProject javaProject) {
 		this.javaProject = javaProject;
+		return this;
+	}
+
+	/**
+	 * Use this method if you want to use an external transformation data source.
+	 * @param transformationDataSource
+	 * @return
+	 */
+	public ModelGenerationJob withTransformationDataSource(ITransformationDataSource transformationDataSource) {
+		this.transformationDataSource = transformationDataSource;
 		return this;
 	}
 
@@ -44,6 +73,10 @@ public class ModelGenerationJob extends WorkspaceJob {
 		this.setUser(true);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.core.resources.WorkspaceJob#runInWorkspace(org.eclipse.core.runtime.IProgressMonitor)
+	 */
 	@Override
 	public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
 		if (this.javaProject == null) {
@@ -59,8 +92,7 @@ public class ModelGenerationJob extends WorkspaceJob {
 		Model model = UMLFactory.eINSTANCE.createModel();
 		model.setName("Transformations");
 		resource.getContents().add(model);
-		
-		ITransformationDataSource transformationDataSource = ExtensionPointTransformationDataSource.instance();
+
 		Collection<TransformationReference> transformationReferences = transformationDataSource.getAll();
 
 		Map<TransformationSet, org.eclipse.uml2.uml.Package> packageMap = new HashMap<TransformationSet, Package>();
@@ -89,18 +121,18 @@ public class ModelGenerationJob extends WorkspaceJob {
 					Class referencedClass = classMap.get(requiredTransformation);
 					if (referencedClass != null) {
 						Dependency dependency = eClass.createDependency(referencedClass);
-						dependency.setName("<<"+requirement.getClass().getSimpleName()+">>");
+						dependency.setName("<<" + requirement.getClass().getSimpleName() + ">>");
 					}
 				}
 			}
 		}
-		
+
 		try {
 			resource.save(Collections.EMPTY_MAP);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		return Status.OK_STATUS;
 	}
 }
