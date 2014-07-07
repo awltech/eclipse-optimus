@@ -14,11 +14,28 @@ import net.atos.optimus.m2m.engine.core.transformations.ITransformationContext;
 
 import org.eclipse.emf.ecore.EObject;
 
+/**
+ * Static class that performs the injection and update of field, from and to
+ * context.
+ * 
+ * @author mvanbesien
+ * 
+ */
 public class ContextElementManager {
 
 	private ContextElementManager() {
 	}
 
+	/**
+	 * Scans fields annotated with context injection annotations in provided
+	 * transformation, and injects the value from context into them.
+	 * 
+	 * @param transformation
+	 * @param context
+	 * @throws NullValueException
+	 * @throws NullInstanceException
+	 * @throws FieldInjectionException
+	 */
 	public static void inject(AbstractTransformation<?> transformation, ITransformationContext context)
 			throws NullValueException, NullInstanceException, FieldInjectionException {
 
@@ -91,10 +108,25 @@ public class ContextElementManager {
 		}
 	}
 
+	/**
+	 * Scans fields that are annotated with context injection annotation, in
+	 * passed transformation, and updates context fields with values.
+	 * 
+	 * @param transformation
+	 * @param context
+	 */
 	public static void update(AbstractTransformation<?> transformation, ITransformationContext context) {
 		// TODO
 	}
 
+	/**
+	 * Generic implementation that sets a field value using reflection API
+	 * 
+	 * @param instance
+	 * @param field
+	 * @param value
+	 * @throws FieldInjectionException
+	 */
 	private static void setValue(Object instance, Field field, Object value) throws FieldInjectionException {
 		if (value != null && field.getType().isAssignableFrom(value.getClass())) {
 			boolean accessible = field.isAccessible();

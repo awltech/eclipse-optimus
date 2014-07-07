@@ -1,5 +1,12 @@
 package net.atos.optimus.m2m.engine.core.ctxinject.impl;
 
+/**
+ * Thrown when an system exception is raised when trying to inject a field into
+ * a transformation
+ * 
+ * @author mvanbesien
+ * 
+ */
 public class FieldInjectionException extends Exception {
 
 	private static final long serialVersionUID = 1L;

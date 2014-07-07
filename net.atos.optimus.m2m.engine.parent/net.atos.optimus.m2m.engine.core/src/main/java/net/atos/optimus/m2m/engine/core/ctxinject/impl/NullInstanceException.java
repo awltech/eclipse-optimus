@@ -1,5 +1,12 @@
 package net.atos.optimus.m2m.engine.core.ctxinject.impl;
 
+/**
+ * Thrown when an system exception is raised when trying to get the context
+ * retriever instance, when using the CustomContextElement annotation
+ * 
+ * @author mvanbesien
+ * 
+ */
 public class NullInstanceException extends Exception {
 
 	private static final String MESSAGE = "Could not instantiate/get implementation %s for injection to field %s";
