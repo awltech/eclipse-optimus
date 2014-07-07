@@ -46,4 +46,9 @@ public @interface ContextParameter {
 	 *         inject is null
 	 */
 	boolean nullable() default true;
+	
+	/**
+	 * @return the Context Element visibility. Default is INOUT
+	 */
+	ContextElementVisibility visibility() default ContextElementVisibility.INOUT;
 }

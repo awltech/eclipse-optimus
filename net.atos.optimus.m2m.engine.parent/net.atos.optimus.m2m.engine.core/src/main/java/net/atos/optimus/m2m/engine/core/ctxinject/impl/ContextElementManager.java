@@ -63,11 +63,14 @@ public class ContextElementManager {
 		for (Field declaredField : transformation.getClass().getDeclaredFields()) {
 			if (declaredField.getAnnotation(ContextParameter.class) != null) {
 				ContextParameter annotation = declaredField.getAnnotation(ContextParameter.class);
-				String value = annotation.value();
-				String property = value != null ? context.getProperty(value) : null;
-				if (property == null && !annotation.nullable())
-					throw new NullValueException(declaredField.getName());
-				setValue(transformation, declaredField, value);
+				ContextElementVisibility visibility = annotation.visibility();
+				if (visibility == ContextElementVisibility.IN || visibility == ContextElementVisibility.INOUT) {
+					String value = annotation.value();
+					String property = value != null ? context.getProperty(value) : null;
+					if (property == null && !annotation.nullable())
+						throw new NullValueException(declaredField.getName());
+					setValue(transformation, declaredField, value);
+				}
 			} else if (declaredField.getAnnotation(RootContextElement.class) != null) {
 				RootContextElement annotation = declaredField.getAnnotation(RootContextElement.class);
 				ContextElementVisibility visibility = annotation.visibility();
@@ -104,20 +107,21 @@ public class ContextElementManager {
 			} else if (declaredField.getAnnotation(CustomContextElement.class) != null) {
 				CustomContextElement annotation = declaredField.getAnnotation(CustomContextElement.class);
 				Class<? extends IContextRetriever> contextRetriever = annotation.contextRetriever();
-				if (contextRetriever != null) {
-					IContextRetriever newInstance = null;
-					try {
-						newInstance = contextRetriever.newInstance();
-					} catch (InstantiationException e) {
-						throw new NullInstanceException(declaredField.getName(), contextRetriever, e);
-					} catch (IllegalAccessException e) {
-						throw new NullInstanceException(declaredField.getName(), contextRetriever, e);
-					}
-					if (newInstance == null) {
-						throw new NullInstanceException(declaredField.getName(), contextRetriever);
-					}
-					ContextElementVisibility visibility = annotation.visibility();
-					if (visibility == ContextElementVisibility.IN || visibility == ContextElementVisibility.INOUT) {
+				ContextElementVisibility visibility = annotation.visibility();
+				if (visibility == ContextElementVisibility.IN || visibility == ContextElementVisibility.INOUT) {
+					if (contextRetriever != null) {
+						IContextRetriever newInstance = null;
+						try {
+							newInstance = contextRetriever.newInstance();
+						} catch (InstantiationException e) {
+							throw new NullInstanceException(declaredField.getName(), contextRetriever, e);
+						} catch (IllegalAccessException e) {
+							throw new NullInstanceException(declaredField.getName(), contextRetriever, e);
+						}
+						if (newInstance == null) {
+							throw new NullInstanceException(declaredField.getName(), contextRetriever);
+						}
+
 						String value = annotation.value();
 						EObject eObject = value != null ? context.get(
 								newInstance.getFromEObject(transformation.getEObject()), value) : null;
@@ -144,24 +148,39 @@ public class ContextElementManager {
 		for (Field declaredField : transformation.getClass().getDeclaredFields()) {
 			if (declaredField.getAnnotation(ContextParameter.class) != null) {
 				ContextParameter annotation = declaredField.getAnnotation(ContextParameter.class);
-				Object object = getValue(transformation, declaredField);
-				if (object == null && !annotation.nullable()) {
-					throw new NullValueException(declaredField.getName());
-				}
-				if (object == null || object instanceof String) {
+				ContextElementVisibility visibility = annotation.visibility();
+				if (visibility == ContextElementVisibility.OUT || visibility == ContextElementVisibility.INOUT) {
+					Object object = getValue(transformation, declaredField);
+					if (object == null && !annotation.nullable()) {
+						throw new NullValueException(declaredField.getName());
+					}
+					if (object == null || object instanceof String) {
 						context.putProperty(annotation.value(), (String) object);
+					}
 				}
 			} else if (declaredField.getAnnotation(RootContextElement.class) != null) {
 				RootContextElement annotation = declaredField.getAnnotation(RootContextElement.class);
 				ContextElementVisibility visibility = annotation.visibility();
 				if (visibility == ContextElementVisibility.OUT || visibility == ContextElementVisibility.INOUT) {
-					// TODO
+					Object object = getValue(transformation, declaredField);
+					if (object == null && !annotation.nullable()) {
+						throw new NullValueException(declaredField.getName());
+					}
+					if (object == null || object instanceof EObject) {
+						context.putRoot(annotation.value(), (EObject) object);
+					}
 				}
 			} else if (declaredField.getAnnotation(ObjectContextElement.class) != null) {
 				ObjectContextElement annotation = declaredField.getAnnotation(ObjectContextElement.class);
 				ContextElementVisibility visibility = annotation.visibility();
 				if (visibility == ContextElementVisibility.OUT || visibility == ContextElementVisibility.INOUT) {
-					// TODO
+					Object object = getValue(transformation, declaredField);
+					if (object == null && !annotation.nullable()) {
+						throw new NullValueException(declaredField.getName());
+					}
+					if (object == null || object instanceof EObject) {
+						context.put(transformation.getEObject(), annotation.value(), (EObject) object);
+					}
 				}
 			} else if (declaredField.getAnnotation(ParentContextElement.class) != null) {
 				EObject parent = transformation.getEObject().eContainer();
@@ -169,27 +188,43 @@ public class ContextElementManager {
 					ParentContextElement annotation = declaredField.getAnnotation(ParentContextElement.class);
 					ContextElementVisibility visibility = annotation.visibility();
 					if (visibility == ContextElementVisibility.OUT || visibility == ContextElementVisibility.INOUT) {
-						// TODO
+						Object object = getValue(transformation, declaredField);
+						if (object == null && !annotation.nullable()) {
+							throw new NullValueException(declaredField.getName());
+						}
+						if (object == null || object instanceof EObject) {
+							context.put(parent, annotation.value(), (EObject) object);
+						}
 					}
 				}
 			} else if (declaredField.getAnnotation(CustomContextElement.class) != null) {
 				CustomContextElement annotation = declaredField.getAnnotation(CustomContextElement.class);
 				Class<? extends IContextRetriever> contextRetriever = annotation.contextRetriever();
-				if (contextRetriever != null) {
-					IContextRetriever newInstance = null;
-					try {
-						newInstance = contextRetriever.newInstance();
-					} catch (InstantiationException e) {
-						throw new NullInstanceException(declaredField.getName(), contextRetriever, e);
-					} catch (IllegalAccessException e) {
-						throw new NullInstanceException(declaredField.getName(), contextRetriever, e);
-					}
-					if (newInstance == null) {
-						throw new NullInstanceException(declaredField.getName(), contextRetriever);
-					}
-					ContextElementVisibility visibility = annotation.visibility();
-					if (visibility == ContextElementVisibility.OUT || visibility == ContextElementVisibility.INOUT) {
-						// TODO
+				ContextElementVisibility visibility = annotation.visibility();
+				if (visibility == ContextElementVisibility.OUT || visibility == ContextElementVisibility.INOUT) {
+					if (contextRetriever != null) {
+						IContextRetriever newInstance = null;
+						try {
+							newInstance = contextRetriever.newInstance();
+						} catch (InstantiationException e) {
+							throw new NullInstanceException(declaredField.getName(), contextRetriever, e);
+						} catch (IllegalAccessException e) {
+							throw new NullInstanceException(declaredField.getName(), contextRetriever, e);
+						}
+						if (newInstance == null) {
+							throw new NullInstanceException(declaredField.getName(), contextRetriever);
+						}
+
+						Object object = getValue(transformation, declaredField);
+						if (object == null && !annotation.nullable()) {
+							throw new NullValueException(declaredField.getName());
+						}
+						if (object == null || object instanceof EObject) {
+							EObject fromEObject = newInstance.getFromEObject(transformation.getEObject());
+							if (fromEObject != null) {
+								context.put(fromEObject, annotation.value(), (EObject) object);
+							}
+						}
 					}
 				}
 			}
