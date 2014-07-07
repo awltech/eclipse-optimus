@@ -34,6 +34,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import net.atos.optimus.m2m.engine.core.adapters.AbstractOptimusAdapter;
 import net.atos.optimus.m2m.engine.core.adapters.EObjectChildAdditionAdapter;
 import net.atos.optimus.m2m.engine.core.adapters.EObjectLockAdapter;
+import net.atos.optimus.m2m.engine.core.ctxinject.impl.ContextElementManager;
 import net.atos.optimus.m2m.engine.core.exceptions.TransformationFailedException;
 import net.atos.optimus.m2m.engine.core.logging.EObjectLabelProvider;
 import net.atos.optimus.m2m.engine.core.logging.OptimusM2MEngineMessages;
@@ -413,7 +414,9 @@ public class OptimusM2MEngine {
 
 			cachedTransformationsForEObject.add(transformation);
 			try {
+				ContextElementManager.inject(transformation, context); // TODO Make it optional!
 				transformation.execute(context);
+				ContextElementManager.update(transformation, context); // TODO Make it optional!
 				OptimusM2MEngineMessages.TE13.log(reference.getId(), eObjectLabelProvider.getText(eObject));
 			} catch (Exception e) {
 				throw new TransformationFailedException(reference.getId(), eObject, e);
