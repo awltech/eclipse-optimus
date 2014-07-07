@@ -31,15 +31,49 @@ public enum ContextElementVisibility {
 	/**
 	 * For field injection only
 	 */
-	IN,
+	IN(true, false),
 
 	/**
 	 * for field update only
 	 */
-	OUT,
+	OUT(false, true),
 
 	/**
 	 * For field injection and update
 	 */
-	INOUT
+	INOUT(true, true);
+
+	/**
+	 * If field can be injected (writeable)
+	 */
+	private boolean injectable;
+
+	/**
+	 * If field value can be updated in context (readable)
+	 */
+	private boolean updatable;
+
+	/*
+	 * Private constructor
+	 */
+	private ContextElementVisibility(boolean injectable, boolean updatable) {
+		this.injectable = injectable;
+		this.updatable = updatable;
+	}
+
+	/**
+	 * 
+	 * @return true If field can be injected (writeable)
+	 */
+	public boolean isInjectable() {
+		return this.injectable;
+	}
+
+	/**
+	 * 
+	 * @return If field value can be updated in context (readable)
+	 */
+	public boolean isUpdatable() {
+		return this.updatable;
+	}
 }
