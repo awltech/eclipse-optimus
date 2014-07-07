@@ -64,7 +64,8 @@ public class ContextElementManager {
 			if (declaredField.getAnnotation(ContextParameter.class) != null) {
 				ContextParameter annotation = declaredField.getAnnotation(ContextParameter.class);
 				String value = annotation.value();
-				if (value == null && !annotation.nullable())
+				String property = value != null ? context.getProperty(value) : null;
+				if (property == null && !annotation.nullable())
 					throw new NullValueException(declaredField.getName());
 				setValue(transformation, declaredField, value);
 			} else if (declaredField.getAnnotation(RootContextElement.class) != null) {
@@ -135,9 +136,64 @@ public class ContextElementManager {
 	 * 
 	 * @param transformation
 	 * @param context
+	 * @throws NullInstanceException
+	 * @throws FieldInjectionException
 	 */
-	public static void update(AbstractTransformation<?> transformation, ITransformationContext context) {
-		// TODO
+	public static void update(AbstractTransformation<?> transformation, ITransformationContext context)
+			throws NullValueException, NullInstanceException, FieldUpdateException {
+		for (Field declaredField : transformation.getClass().getDeclaredFields()) {
+			if (declaredField.getAnnotation(ContextParameter.class) != null) {
+				ContextParameter annotation = declaredField.getAnnotation(ContextParameter.class);
+				Object object = getValue(transformation, declaredField);
+				if (object == null && !annotation.nullable()) {
+					throw new NullValueException(declaredField.getName());
+				}
+				if (object == null || object instanceof String) {
+						context.putProperty(annotation.value(), (String) object);
+				}
+			} else if (declaredField.getAnnotation(RootContextElement.class) != null) {
+				RootContextElement annotation = declaredField.getAnnotation(RootContextElement.class);
+				ContextElementVisibility visibility = annotation.visibility();
+				if (visibility == ContextElementVisibility.OUT || visibility == ContextElementVisibility.INOUT) {
+					// TODO
+				}
+			} else if (declaredField.getAnnotation(ObjectContextElement.class) != null) {
+				ObjectContextElement annotation = declaredField.getAnnotation(ObjectContextElement.class);
+				ContextElementVisibility visibility = annotation.visibility();
+				if (visibility == ContextElementVisibility.OUT || visibility == ContextElementVisibility.INOUT) {
+					// TODO
+				}
+			} else if (declaredField.getAnnotation(ParentContextElement.class) != null) {
+				EObject parent = transformation.getEObject().eContainer();
+				if (parent != null) {
+					ParentContextElement annotation = declaredField.getAnnotation(ParentContextElement.class);
+					ContextElementVisibility visibility = annotation.visibility();
+					if (visibility == ContextElementVisibility.OUT || visibility == ContextElementVisibility.INOUT) {
+						// TODO
+					}
+				}
+			} else if (declaredField.getAnnotation(CustomContextElement.class) != null) {
+				CustomContextElement annotation = declaredField.getAnnotation(CustomContextElement.class);
+				Class<? extends IContextRetriever> contextRetriever = annotation.contextRetriever();
+				if (contextRetriever != null) {
+					IContextRetriever newInstance = null;
+					try {
+						newInstance = contextRetriever.newInstance();
+					} catch (InstantiationException e) {
+						throw new NullInstanceException(declaredField.getName(), contextRetriever, e);
+					} catch (IllegalAccessException e) {
+						throw new NullInstanceException(declaredField.getName(), contextRetriever, e);
+					}
+					if (newInstance == null) {
+						throw new NullInstanceException(declaredField.getName(), contextRetriever);
+					}
+					ContextElementVisibility visibility = annotation.visibility();
+					if (visibility == ContextElementVisibility.OUT || visibility == ContextElementVisibility.INOUT) {
+						// TODO
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -161,6 +217,32 @@ public class ContextElementManager {
 			} catch (IllegalAccessException e) {
 				throw new FieldInjectionException(field.getName(), e);
 			}
+			if (!accessible) {
+				field.setAccessible(false);
+			}
+		}
+	}
+
+	/**
+	 * Generic implementation that sets a field value using reflection API
+	 * 
+	 * @param instance
+	 * @param field
+	 * @param value
+	 * @throws FieldInjectionException
+	 */
+	private static Object getValue(Object instance, Field field) throws FieldUpdateException {
+		boolean accessible = field.isAccessible();
+		if (!accessible) {
+			field.setAccessible(true);
+		}
+		try {
+			return field.get(instance);
+		} catch (IllegalArgumentException e) {
+			throw new FieldUpdateException(field.getName(), e);
+		} catch (IllegalAccessException e) {
+			throw new FieldUpdateException(field.getName(), e);
+		} finally {
 			if (!accessible) {
 				field.setAccessible(false);
 			}
