@@ -414,9 +414,9 @@ public class OptimusM2MEngine {
 
 			cachedTransformationsForEObject.add(transformation);
 			try {
-				ContextElementManager.inject(transformation, context); // TODO Make it optional!
+				ContextElementManager.INSTANCE.inject(transformation, context); // TODO Make it optional!
 				transformation.execute(context);
-				ContextElementManager.update(transformation, context); // TODO Make it optional!
+				ContextElementManager.INSTANCE.update(transformation, context); // TODO Make it optional!
 				OptimusM2MEngineMessages.TE13.log(reference.getId(), eObjectLabelProvider.getText(eObject));
 			} catch (Exception e) {
 				throw new TransformationFailedException(reference.getId(), eObject, e);
