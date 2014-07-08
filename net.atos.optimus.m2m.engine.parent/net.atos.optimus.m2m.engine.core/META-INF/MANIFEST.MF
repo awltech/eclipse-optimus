@@ -17,6 +17,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: net.atos.optimus.m2m.engine.core,
  net.atos.optimus.m2m.engine.core.adapters,
+ net.atos.optimus.m2m.engine.core.ctxinject,
  net.atos.optimus.m2m.engine.core.exceptions,
  net.atos.optimus.m2m.engine.core.logging,
  net.atos.optimus.m2m.engine.core.masks,
