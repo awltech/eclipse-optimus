@@ -47,7 +47,7 @@ public class ParentContextElementInjector extends Injector {
 
 	@Override
 	public void inject(AbstractTransformation<?> transformation, ITransformationContext context)
-			throws NullValueException, NullInstanceException, FieldInjectionException {
+			throws NullValueException, FieldInjectionException {
 		EObject parent = transformation.getEObject().eContainer();
 		if (this.isInjectable() && parent != null) {
 			EObject eObject = this.mapping != null ? context.get(parent, this.mapping) : null;
@@ -59,7 +59,7 @@ public class ParentContextElementInjector extends Injector {
 
 	@Override
 	public void update(AbstractTransformation<?> transformation, ITransformationContext context)
-			throws NullValueException, NullInstanceException, FieldUpdateException {
+			throws NullValueException, FieldUpdateException {
 		EObject parent = transformation.getEObject().eContainer();
 		if (this.isUpdatable() && parent != null) {
 			Object object = getValue(transformation, field);

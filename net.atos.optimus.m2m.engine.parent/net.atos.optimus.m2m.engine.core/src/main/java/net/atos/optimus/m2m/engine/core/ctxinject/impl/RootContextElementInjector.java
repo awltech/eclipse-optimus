@@ -47,7 +47,7 @@ public class RootContextElementInjector extends Injector {
 
 	@Override
 	public void inject(AbstractTransformation<?> transformation, ITransformationContext context)
-			throws NullValueException, NullInstanceException, FieldInjectionException {
+			throws NullValueException, FieldInjectionException {
 		if (this.isInjectable()) {
 			EObject eObject = this.mapping != null ? context.getRoot(this.mapping) : null;
 			if (eObject == null && !this.nullable)
@@ -58,7 +58,7 @@ public class RootContextElementInjector extends Injector {
 
 	@Override
 	public void update(AbstractTransformation<?> transformation, ITransformationContext context)
-			throws NullValueException, NullInstanceException, FieldUpdateException {
+			throws NullValueException, FieldUpdateException {
 		if (this.isUpdatable()) {
 			Object object = getValue(transformation, field);
 			if (object == null && !this.nullable) {

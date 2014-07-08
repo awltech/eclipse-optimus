@@ -24,7 +24,7 @@ public class ContextParameterInjector extends Injector {
 
 	@Override
 	public void inject(AbstractTransformation<?> transformation, ITransformationContext context)
-			throws NullValueException, NullInstanceException, FieldInjectionException {
+			throws NullValueException, FieldInjectionException {
 		if (this.isInjectable()) {
 			String property = this.mapping != null ? context.getProperty(this.mapping) : null;
 			if (property == null && !this.nullable) {
@@ -36,7 +36,7 @@ public class ContextParameterInjector extends Injector {
 
 	@Override
 	public void update(AbstractTransformation<?> transformation, ITransformationContext context)
-			throws NullValueException, NullInstanceException, FieldUpdateException {
+			throws NullValueException, FieldUpdateException {
 		if (this.isUpdatable()) {
 			Object object = getValue(transformation, this.field);
 			if (object == null && !this.nullable) {

@@ -29,10 +29,10 @@ import net.atos.optimus.m2m.engine.core.transformations.ITransformationContext;
 public abstract class Injector {
 
 	public abstract void inject(AbstractTransformation<?> transformation, ITransformationContext context)
-			throws NullValueException, NullInstanceException, FieldInjectionException;
+			throws NullValueException, FieldInjectionException;
 
 	public abstract void update(AbstractTransformation<?> transformation, ITransformationContext context)
-			throws NullValueException, NullInstanceException, FieldUpdateException;
+			throws NullValueException, FieldUpdateException;
 
 	/**
 	 * Generic implementation that sets a field value using reflection API
