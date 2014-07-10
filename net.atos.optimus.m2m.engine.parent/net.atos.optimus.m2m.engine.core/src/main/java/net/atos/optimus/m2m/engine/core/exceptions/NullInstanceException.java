@@ -19,31 +19,36 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.engine.core.ctxinject.impl;
+package net.atos.optimus.m2m.engine.core.exceptions;
 
 /**
- * Thrown when an system exception is raised when trying to inject a field into
- * a transformation
+ * Thrown when an system exception is raised when trying to get the context
+ * retriever instance, when using the CustomContextElement annotation
  * 
  * @author mvanbesien
  * 
  */
-public class FieldInjectionException extends Exception {
+public class NullInstanceException extends Exception {
 
-	private static final long serialVersionUID = 1L;
-
-	private static final String MESSAGE = "An error occurred while injecting value into field: %s.";
-
+	private static final String MESSAGE = "Could not instantiate/get implementation %s for injection to field %s";
 	private String name;
+	private Class<?> clazz;
 
-	public FieldInjectionException(String name, Exception e) {
-		super(e);
+	public NullInstanceException(String name, Class<?> clazz) {
 		this.name = name;
+		this.clazz = clazz;
+	}
+
+	public NullInstanceException(String name, Class<?> clazz, Exception cause) {
+		super(cause);
+		this.name = name;
+		this.clazz = clazz;
 	}
 
 	@Override
 	public String getMessage() {
-		return String.format(MESSAGE, this.name);
+		return String.format(MESSAGE, this.clazz == null ? null : this.clazz.getName(), this.name);
 	}
 
+	private static final long serialVersionUID = 1L;
 }

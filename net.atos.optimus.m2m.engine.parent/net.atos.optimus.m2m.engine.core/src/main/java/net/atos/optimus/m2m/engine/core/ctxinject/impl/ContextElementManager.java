@@ -30,6 +30,10 @@ import net.atos.optimus.m2m.engine.core.ctxinject.CustomContextElement;
 import net.atos.optimus.m2m.engine.core.ctxinject.ObjectContextElement;
 import net.atos.optimus.m2m.engine.core.ctxinject.ParentContextElement;
 import net.atos.optimus.m2m.engine.core.ctxinject.RootContextElement;
+import net.atos.optimus.m2m.engine.core.exceptions.FieldInjectionException;
+import net.atos.optimus.m2m.engine.core.exceptions.FieldUpdateException;
+import net.atos.optimus.m2m.engine.core.exceptions.NullInstanceException;
+import net.atos.optimus.m2m.engine.core.exceptions.NullValueException;
 import net.atos.optimus.m2m.engine.core.transformations.AbstractTransformation;
 import net.atos.optimus.m2m.engine.core.transformations.ITransformationContext;
 
