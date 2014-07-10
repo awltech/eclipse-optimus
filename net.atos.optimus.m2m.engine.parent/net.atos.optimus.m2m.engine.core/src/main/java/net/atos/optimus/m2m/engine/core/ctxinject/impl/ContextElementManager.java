@@ -22,6 +22,8 @@
 package net.atos.optimus.m2m.engine.core.ctxinject.impl;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.atos.optimus.m2m.engine.core.ctxinject.ContextParameter;
 import net.atos.optimus.m2m.engine.core.ctxinject.CustomContextElement;
@@ -31,24 +33,48 @@ import net.atos.optimus.m2m.engine.core.ctxinject.RootContextElement;
 import net.atos.optimus.m2m.engine.core.transformations.AbstractTransformation;
 import net.atos.optimus.m2m.engine.core.transformations.ITransformationContext;
 
-// TODO: Add cache support.
 public enum ContextElementManager {
-	
+
 	INSTANCE;
-	
+
+	private Map<Field, Injector> injectorCache = new HashMap<Field, Injector>();
+
+	private boolean cacheEnabled = false;
+
+	private Injector getInjector(Field field) throws NullInstanceException {
+		if (this.cacheEnabled) {
+			Injector injector = this.injectorCache.get(field);
+			if (injector == null) {
+				injector = this.createInjector(field);
+				this.injectorCache.put(field, injector);
+			}
+			return injector;
+		} else {
+			return this.createInjector(field);
+		}
+	}
+
+	private Injector createInjector(Field field) throws NullInstanceException {
+		if (field.getAnnotation(ContextParameter.class) != null) {
+			return new ContextParameterInjector(field);
+		} else if (field.getAnnotation(RootContextElement.class) != null) {
+			return new RootContextElementInjector(field);
+		} else if (field.getAnnotation(ObjectContextElement.class) != null) {
+			return new ObjectContextElementInjector(field);
+		} else if (field.getAnnotation(ParentContextElement.class) != null) {
+			return new ParentContextElementInjector(field);
+		} else if (field.getAnnotation(CustomContextElement.class) != null) {
+			return new CustomContextElementInjector(field);
+		}
+		return null;
+	}
+
 	public void inject(AbstractTransformation<?> transformation, ITransformationContext context)
 			throws NullValueException, FieldInjectionException, NullInstanceException {
 		for (Field field : transformation.getClass().getDeclaredFields()) {
-			if (field.getAnnotation(ContextParameter.class) != null) {
-				new ContextParameterInjector(field).inject(transformation, context);
-			} else if (field.getAnnotation(RootContextElement.class) != null) {
-				new RootContextElementInjector(field).inject(transformation, context);
-			} else if (field.getAnnotation(ObjectContextElement.class) != null) {
-				new ObjectContextElementInjector(field).inject(transformation, context);
-			} else if (field.getAnnotation(ParentContextElement.class) != null) {
-				new ParentContextElementInjector(field).inject(transformation, context);
-			} else if (field.getAnnotation(CustomContextElement.class) != null) {
-				new CustomContextElementInjector(field).inject(transformation, context);
+			Injector injector = this.getInjector(field);
+			if (injector != null) {
+				injector.inject(transformation, context);
 			}
 		}
 	}
@@ -56,17 +82,22 @@ public enum ContextElementManager {
 	public void update(AbstractTransformation<?> transformation, ITransformationContext context)
 			throws NullValueException, FieldUpdateException, NullInstanceException {
 		for (Field field : transformation.getClass().getDeclaredFields()) {
-			if (field.getAnnotation(ContextParameter.class) != null) {
-				new ContextParameterInjector(field).update(transformation, context);
-			} else if (field.getAnnotation(RootContextElement.class) != null) {
-				new RootContextElementInjector(field).update(transformation, context);
-			} else if (field.getAnnotation(ObjectContextElement.class) != null) {
-				new ObjectContextElementInjector(field).update(transformation, context);
-			} else if (field.getAnnotation(ParentContextElement.class) != null) {
-				new ParentContextElementInjector(field).update(transformation, context);
-			} else if (field.getAnnotation(CustomContextElement.class) != null) {
-				new CustomContextElementInjector(field).update(transformation, context);
+			Injector injector = this.getInjector(field);
+			if (injector != null) {
+				injector.update(transformation, context);
 			}
 		}
+	}
+
+	public void enableCache() {
+		this.cacheEnabled = true;
+	}
+
+	public void disableCache() {
+		this.cacheEnabled = false;
+	}
+
+	public void clearCache() {
+		this.injectorCache.clear();
 	}
 }
