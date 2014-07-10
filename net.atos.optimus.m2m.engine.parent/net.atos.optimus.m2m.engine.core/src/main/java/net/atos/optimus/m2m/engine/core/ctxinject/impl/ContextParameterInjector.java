@@ -28,6 +28,12 @@ import net.atos.optimus.m2m.engine.core.ctxinject.ContextParameter;
 import net.atos.optimus.m2m.engine.core.transformations.AbstractTransformation;
 import net.atos.optimus.m2m.engine.core.transformations.ITransformationContext;
 
+/**
+ * Injector implementation for Context properties
+ * 
+ * @author mvanbesien
+ * 
+ */
 public class ContextParameterInjector extends Injector {
 
 	private Field field;

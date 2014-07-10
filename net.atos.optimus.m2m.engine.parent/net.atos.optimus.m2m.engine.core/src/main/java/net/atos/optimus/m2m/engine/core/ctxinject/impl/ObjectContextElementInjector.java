@@ -30,6 +30,12 @@ import net.atos.optimus.m2m.engine.core.transformations.ITransformationContext;
 
 import org.eclipse.emf.ecore.EObject;
 
+/**
+ * Injector implementation for Object Context Element
+ * 
+ * @author mvanbesien
+ * 
+ */
 public class ObjectContextElementInjector extends Injector {
 
 	private Field field;

@@ -30,6 +30,12 @@ import net.atos.optimus.m2m.engine.core.transformations.ITransformationContext;
 
 import org.eclipse.emf.ecore.EObject;
 
+/**
+ * Injector implementation for Root Context Element
+ * 
+ * @author mvanbesien
+ * 
+ */
 public class RootContextElementInjector extends Injector {
 
 	private Field field;
