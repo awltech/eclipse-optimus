@@ -33,14 +33,38 @@ import net.atos.optimus.m2m.engine.core.ctxinject.RootContextElement;
 import net.atos.optimus.m2m.engine.core.transformations.AbstractTransformation;
 import net.atos.optimus.m2m.engine.core.transformations.ITransformationContext;
 
+/**
+ * 
+ * Implementation of ContextElement injection management. This is implemented as
+ * a singleton and supports caching.
+ * 
+ * @author mvanbesien
+ * 
+ */
 public enum ContextElementManager {
 
+	/**
+	 * Instance
+	 */
 	INSTANCE;
 
+	/**
+	 * Cache implementation
+	 */
 	private Map<Field, Injector> injectorCache = new HashMap<Field, Injector>();
 
+	/**
+	 * true if cache is used, false otherwise
+	 */
 	private boolean cacheEnabled = false;
 
+	/**
+	 * Gets an injector instance. If cache is enabled, it uses it.
+	 * 
+	 * @param field
+	 * @return
+	 * @throws NullInstanceException
+	 */
 	private Injector getInjector(Field field) throws NullInstanceException {
 		if (this.cacheEnabled) {
 			Injector injector = this.injectorCache.get(field);
@@ -54,6 +78,13 @@ public enum ContextElementManager {
 		}
 	}
 
+	/**
+	 * Creates an injector for the field. Returns null if field is not
+	 * 
+	 * @param field
+	 * @return
+	 * @throws NullInstanceException
+	 */
 	private Injector createInjector(Field field) throws NullInstanceException {
 		if (field.getAnnotation(ContextParameter.class) != null) {
 			return new ContextParameterInjector(field);
@@ -69,6 +100,17 @@ public enum ContextElementManager {
 		return null;
 	}
 
+	/**
+	 * 
+	 * Injects into annotated fields of the transformations, elements from the
+	 * context.
+	 * 
+	 * @param transformation
+	 * @param context
+	 * @throws NullValueException
+	 * @throws FieldInjectionException
+	 * @throws NullInstanceException
+	 */
 	public void inject(AbstractTransformation<?> transformation, ITransformationContext context)
 			throws NullValueException, FieldInjectionException, NullInstanceException {
 		for (Field field : transformation.getClass().getDeclaredFields()) {
@@ -79,6 +121,17 @@ public enum ContextElementManager {
 		}
 	}
 
+	/**
+	 * 
+	 * updates context with valies from context-annotated fields of the
+	 * transformations.
+	 * 
+	 * @param transformation
+	 * @param context
+	 * @throws NullValueException
+	 * @throws FieldInjectionException
+	 * @throws NullInstanceException
+	 */
 	public void update(AbstractTransformation<?> transformation, ITransformationContext context)
 			throws NullValueException, FieldUpdateException, NullInstanceException {
 		for (Field field : transformation.getClass().getDeclaredFields()) {
@@ -89,14 +142,23 @@ public enum ContextElementManager {
 		}
 	}
 
+	/**
+	 * Enables the cache
+	 */
 	public void enableCache() {
 		this.cacheEnabled = true;
 	}
 
+	/**
+	 * Disables the cache
+	 */
 	public void disableCache() {
 		this.cacheEnabled = false;
 	}
 
+	/**
+	 * Empties the cache map
+	 */
 	public void clearCache() {
 		this.injectorCache.clear();
 	}
