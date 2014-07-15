@@ -416,8 +416,8 @@ public class OptimusM2MEngine {
 			try {
 				ContextElementManager.INSTANCE.inject(transformation, context); // TODO Make it optional!
 				transformation.execute(context);
-				ContextElementManager.INSTANCE.update(transformation, context); // TODO Make it optional!
 				OptimusM2MEngineMessages.TE13.log(reference.getId(), eObjectLabelProvider.getText(eObject));
+				ContextElementManager.INSTANCE.update(transformation, context); // TODO Make it optional!
 			} catch (Exception e) {
 				throw new TransformationFailedException(reference.getId(), eObject, e);
 			}
