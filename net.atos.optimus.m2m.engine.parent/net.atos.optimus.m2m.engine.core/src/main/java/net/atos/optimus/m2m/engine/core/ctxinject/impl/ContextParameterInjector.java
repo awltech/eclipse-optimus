@@ -28,6 +28,7 @@ import net.atos.optimus.m2m.engine.core.ctxinject.ContextParameter;
 import net.atos.optimus.m2m.engine.core.exceptions.FieldInjectionException;
 import net.atos.optimus.m2m.engine.core.exceptions.FieldUpdateException;
 import net.atos.optimus.m2m.engine.core.exceptions.NullValueException;
+import net.atos.optimus.m2m.engine.core.logging.OptimusM2MEngineMessages;
 import net.atos.optimus.m2m.engine.core.transformations.AbstractTransformation;
 import net.atos.optimus.m2m.engine.core.transformations.ITransformationContext;
 
@@ -58,9 +59,13 @@ public class ContextParameterInjector extends Injector {
 		if (this.isInjectable()) {
 			String property = this.mapping != null ? context.getProperty(this.mapping) : null;
 			if (property == null && !this.nullable) {
+				OptimusM2MEngineMessages.CI12.log(transformation.getClass().getName(), this.field.getName());
 				throw new NullValueException(this.field.getName());
 			}
 			Injector.setValue(transformation, this.field, property);
+			OptimusM2MEngineMessages.CI07.log(transformation.getClass().getName(), this.field.getName(), property);
+		} else {
+			OptimusM2MEngineMessages.CI08.log(transformation.getClass().getName(), this.field.getName());
 		}
 	}
 
@@ -70,11 +75,18 @@ public class ContextParameterInjector extends Injector {
 		if (this.isUpdatable()) {
 			Object object = getValue(transformation, this.field);
 			if (object == null && !this.nullable) {
+				OptimusM2MEngineMessages.CI13.log(transformation.getClass().getName(), this.field.getName());
 				throw new NullValueException(this.field.getName());
 			}
 			if (object instanceof String) {
 				context.putProperty(this.mapping, (String) object);
+				OptimusM2MEngineMessages.CI09.log(transformation.getClass().getName(), this.field.getName(),
+						(String) object);
+			} else {
+				OptimusM2MEngineMessages.CI11.log(transformation.getClass().getName(), this.field.getName(), String.class.getName());
 			}
+		} else {
+			OptimusM2MEngineMessages.CI10.log(transformation.getClass().getName(), this.field.getName());
 		}
 
 	}

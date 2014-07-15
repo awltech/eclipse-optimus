@@ -34,6 +34,7 @@ import net.atos.optimus.m2m.engine.core.exceptions.FieldInjectionException;
 import net.atos.optimus.m2m.engine.core.exceptions.FieldUpdateException;
 import net.atos.optimus.m2m.engine.core.exceptions.NullInstanceException;
 import net.atos.optimus.m2m.engine.core.exceptions.NullValueException;
+import net.atos.optimus.m2m.engine.core.logging.OptimusM2MEngineMessages;
 import net.atos.optimus.m2m.engine.core.transformations.AbstractTransformation;
 import net.atos.optimus.m2m.engine.core.transformations.ITransformationContext;
 
@@ -75,9 +76,12 @@ public enum ContextElementManager {
 			if (injector == null) {
 				injector = this.createInjector(field);
 				this.injectorCache.put(field, injector);
+				OptimusM2MEngineMessages.CI01.log(field.getDeclaringClass().getName(), field.getName());				
 			}
+			OptimusM2MEngineMessages.CI02.log(field.getDeclaringClass().getName(), field.getName());
 			return injector;
 		} else {
+			OptimusM2MEngineMessages.CI03.log(field.getDeclaringClass().getName(), field.getName());
 			return this.createInjector(field);
 		}
 	}
@@ -151,6 +155,7 @@ public enum ContextElementManager {
 	 */
 	public void enableCache() {
 		this.cacheEnabled = true;
+		OptimusM2MEngineMessages.CI04.log();
 	}
 
 	/**
@@ -158,6 +163,7 @@ public enum ContextElementManager {
 	 */
 	public void disableCache() {
 		this.cacheEnabled = false;
+		OptimusM2MEngineMessages.CI05.log();
 	}
 
 	/**
@@ -165,5 +171,6 @@ public enum ContextElementManager {
 	 */
 	public void clearCache() {
 		this.injectorCache.clear();
+		OptimusM2MEngineMessages.CI06.log();
 	}
 }

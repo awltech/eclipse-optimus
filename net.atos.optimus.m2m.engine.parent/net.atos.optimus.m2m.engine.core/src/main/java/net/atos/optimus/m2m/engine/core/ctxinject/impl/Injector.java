@@ -26,10 +26,14 @@ import java.lang.reflect.Field;
 import net.atos.optimus.m2m.engine.core.exceptions.FieldInjectionException;
 import net.atos.optimus.m2m.engine.core.exceptions.FieldUpdateException;
 import net.atos.optimus.m2m.engine.core.exceptions.NullValueException;
+import net.atos.optimus.m2m.engine.core.logging.EObjectLabelProvider;
+import net.atos.optimus.m2m.engine.core.logging.OptimusM2MEngineMessages;
 import net.atos.optimus.m2m.engine.core.transformations.AbstractTransformation;
 import net.atos.optimus.m2m.engine.core.transformations.ITransformationContext;
 
 public abstract class Injector {
+
+	protected final EObjectLabelProvider eObjectLabelProvider = new EObjectLabelProvider();
 
 	public abstract void inject(AbstractTransformation<?> transformation, ITransformationContext context)
 			throws NullValueException, FieldInjectionException;
@@ -54,8 +58,10 @@ public abstract class Injector {
 			try {
 				field.set(instance, value);
 			} catch (IllegalArgumentException e) {
+				OptimusM2MEngineMessages.CI17.log();
 				throw new FieldInjectionException(field.getName(), e);
 			} catch (IllegalAccessException e) {
+				OptimusM2MEngineMessages.CI17.log();
 				throw new FieldInjectionException(field.getName(), e);
 			}
 			if (!accessible) {
@@ -80,8 +86,10 @@ public abstract class Injector {
 		try {
 			return field.get(instance);
 		} catch (IllegalArgumentException e) {
+			OptimusM2MEngineMessages.CI17.log();
 			throw new FieldUpdateException(field.getName(), e);
 		} catch (IllegalAccessException e) {
+			OptimusM2MEngineMessages.CI17.log();
 			throw new FieldUpdateException(field.getName(), e);
 		} finally {
 			if (!accessible) {

@@ -30,6 +30,7 @@ import net.atos.optimus.m2m.engine.core.exceptions.FieldInjectionException;
 import net.atos.optimus.m2m.engine.core.exceptions.FieldUpdateException;
 import net.atos.optimus.m2m.engine.core.exceptions.NullInstanceException;
 import net.atos.optimus.m2m.engine.core.exceptions.NullValueException;
+import net.atos.optimus.m2m.engine.core.logging.OptimusM2MEngineMessages;
 import net.atos.optimus.m2m.engine.core.transformations.AbstractTransformation;
 import net.atos.optimus.m2m.engine.core.transformations.ITransformationContext;
 
@@ -59,11 +60,16 @@ public class CustomContextElementInjector extends Injector {
 		if (crClass != null) {
 			try {
 				this.contextRetriever = crClass.newInstance();
+				OptimusM2MEngineMessages.CI16.log(field.getDeclaringClass().getName(), this.field.getName(), crClass.getName().getClass());
 			} catch (InstantiationException e) {
+				OptimusM2MEngineMessages.CI14.log(field.getDeclaringClass().getName(), this.field.getName(), crClass.getName().getClass());
 				throw new NullInstanceException(this.field.getName(), crClass, e);
 			} catch (IllegalAccessException e) {
+				OptimusM2MEngineMessages.CI14.log(field.getDeclaringClass().getName(), this.field.getName(), crClass.getName().getClass());
 				throw new NullInstanceException(this.field.getName(), crClass, e);
 			}
+		} else {
+			OptimusM2MEngineMessages.CI15.log(field.getDeclaringClass().getName(), this.field.getName());
 		}
 
 	}
@@ -75,9 +81,14 @@ public class CustomContextElementInjector extends Injector {
 			EObject eObject = this.mapping != null ? context.get(
 					this.contextRetriever.getFromEObject(transformation.getEObject()), this.mapping) : null;
 			if (eObject == null && !this.nullable) {
+				OptimusM2MEngineMessages.CI12.log(transformation.getClass().getName(), this.field.getName());
 				throw new NullValueException(this.field.getName());
-			}
+			} 
 			setValue(transformation, this.field, eObject);
+			OptimusM2MEngineMessages.CI07.log(transformation.getClass().getName(), this.field.getName(),
+					eObjectLabelProvider.getText(eObject));
+		} else {
+			OptimusM2MEngineMessages.CI08.log(transformation.getClass().getName(), this.field.getName());
 		}
 	}
 
@@ -87,14 +98,22 @@ public class CustomContextElementInjector extends Injector {
 		if (this.isUpdatable() && this.contextRetriever != null) {
 			Object object = getValue(transformation, this.field);
 			if (object == null && !this.nullable) {
+				OptimusM2MEngineMessages.CI13.log(transformation.getClass().getName(), this.field.getName());
 				throw new NullValueException(this.field.getName());
 			}
-			if (object == null || object instanceof EObject) {
+			if (object instanceof EObject) {
 				EObject fromEObject = this.contextRetriever.getFromEObject(transformation.getEObject());
-				if (fromEObject != null) {
+				if (fromEObject instanceof EObject) {
 					context.put(fromEObject, this.mapping, (EObject) object);
+					OptimusM2MEngineMessages.CI09.log(transformation.getClass().getName(), this.field.getName(),
+							eObjectLabelProvider.getText(fromEObject));
+				} else {
+					OptimusM2MEngineMessages.CI11.log(transformation.getClass().getName(), this.field.getName(),
+							EObject.class.getName());
 				}
 			}
+		} else {
+			OptimusM2MEngineMessages.CI10.log(transformation.getClass().getName(), this.field.getName());
 		}
 
 	}

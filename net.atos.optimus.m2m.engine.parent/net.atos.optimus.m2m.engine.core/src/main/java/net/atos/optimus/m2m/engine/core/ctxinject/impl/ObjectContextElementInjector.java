@@ -28,6 +28,7 @@ import net.atos.optimus.m2m.engine.core.ctxinject.ObjectContextElement;
 import net.atos.optimus.m2m.engine.core.exceptions.FieldInjectionException;
 import net.atos.optimus.m2m.engine.core.exceptions.FieldUpdateException;
 import net.atos.optimus.m2m.engine.core.exceptions.NullValueException;
+import net.atos.optimus.m2m.engine.core.logging.OptimusM2MEngineMessages;
 import net.atos.optimus.m2m.engine.core.transformations.AbstractTransformation;
 import net.atos.optimus.m2m.engine.core.transformations.ITransformationContext;
 
@@ -59,9 +60,15 @@ public class ObjectContextElementInjector extends Injector {
 			throws NullValueException, FieldInjectionException {
 		if (this.isInjectable()) {
 			EObject eObject = this.mapping != null ? context.get(transformation.getEObject(), this.mapping) : null;
-			if (eObject == null && !this.nullable)
+			if (eObject == null && !this.nullable) {
+				OptimusM2MEngineMessages.CI12.log(transformation.getClass().getName(), this.field.getName());
 				throw new NullValueException(field.getName());
+			}
 			setValue(transformation, field, eObject);
+			OptimusM2MEngineMessages.CI07.log(transformation.getClass().getName(), this.field.getName(),
+					eObjectLabelProvider.getText(eObject));
+		} else {
+			OptimusM2MEngineMessages.CI08.log(transformation.getClass().getName(), this.field.getName());
 		}
 	}
 
@@ -71,11 +78,19 @@ public class ObjectContextElementInjector extends Injector {
 		if (this.isUpdatable()) {
 			Object object = getValue(transformation, field);
 			if (object == null && !this.nullable) {
+				OptimusM2MEngineMessages.CI13.log(transformation.getClass().getName(), this.field.getName());
 				throw new NullValueException(field.getName());
 			}
 			if (object instanceof EObject) {
 				context.put(transformation.getEObject(), this.mapping, (EObject) object);
+				OptimusM2MEngineMessages.CI09.log(transformation.getClass().getName(), this.field.getName(),
+						eObjectLabelProvider.getText(object));
+			} else {
+				OptimusM2MEngineMessages.CI11.log(transformation.getClass().getName(), this.field.getName(),
+						EObject.class.getName());
 			}
+		} else {
+			OptimusM2MEngineMessages.CI10.log(transformation.getClass().getName(), this.field.getName());
 		}
 
 	}
