@@ -48,7 +48,7 @@ public @interface ContextParameter {
 	boolean nullable() default true;
 	
 	/**
-	 * @return the Context Element visibility. Default is INOUT
+	 * @return the Context Element visibility. Default is IN
 	 */
-	ContextElementVisibility visibility() default ContextElementVisibility.INOUT;
+	ContextElementVisibility visibility() default ContextElementVisibility.IN;
 }

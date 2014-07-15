@@ -46,9 +46,9 @@ public @interface RootContextElement {
 	String value() default ContextDefaultValues.ROOT;
 
 	/**
-	 * @return the Context Element visibility. Default is INOUT
+	 * @return the Context Element visibility. Default is IN
 	 */
-	ContextElementVisibility visibility() default ContextElementVisibility.INOUT;
+	ContextElementVisibility visibility() default ContextElementVisibility.IN;
 
 	/**
 	 * @return If set to false, and exception will be thrown is the value to
