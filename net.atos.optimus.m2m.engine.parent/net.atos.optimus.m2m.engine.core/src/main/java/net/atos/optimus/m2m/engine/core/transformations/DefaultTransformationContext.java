@@ -52,7 +52,7 @@ public class DefaultTransformationContext implements ITransformationContext {
 	 * Roots container
 	 */
 	private Map<String, EObject> roots = new HashMap<String, EObject>();
-	
+
 	/**
 	 * Properties Container
 	 */
@@ -62,7 +62,7 @@ public class DefaultTransformationContext implements ITransformationContext {
 	 * Label Provider which purpose is to provide naming system for EObjects.
 	 */
 	protected LabelProvider eObjectLabelProvider = new EObjectLabelProvider();
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -77,9 +77,13 @@ public class DefaultTransformationContext implements ITransformationContext {
 			session.put(source, values);
 		}
 		if (values.containsKey(key)) {
-			OptimusM2MEngineMessages.DC01.log(eObjectLabelProvider.getText(source), key);
+			if (value != values.get(key)) {
+				OptimusM2MEngineMessages.DC01.log(eObjectLabelProvider.getText(source), key);
+				values.put(key, value);
+			}
+		} else {
+			values.put(key, value);
 		}
-		values.put(key, value);
 	}
 
 	/*
@@ -145,14 +149,21 @@ public class DefaultTransformationContext implements ITransformationContext {
 	 */
 	public void putRoot(String key, EObject eObject) {
 		if (this.roots.containsKey(key)) {
-			OptimusM2MEngineMessages.DC02.log(key);
+			if (this.roots.get(key) != eObject) {
+				OptimusM2MEngineMessages.DC02.log(key);
+				this.roots.put(key, eObject);
+			}
+		} else {
+			this.roots.put(key, eObject);
 		}
-		this.roots.put(key, eObject);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.atos.optimus.m2m.engine.core.transformations.ITransformationContext#getProperty(java.lang.String)
+	 * 
+	 * @see
+	 * net.atos.optimus.m2m.engine.core.transformations.ITransformationContext
+	 * #getProperty(java.lang.String)
 	 */
 	public String getProperty(String key) {
 		return this.properties.get(key);
@@ -160,13 +171,20 @@ public class DefaultTransformationContext implements ITransformationContext {
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.atos.optimus.m2m.engine.core.transformations.ITransformationContext#putProperty(java.lang.String, java.lang.String)
+	 * 
+	 * @see
+	 * net.atos.optimus.m2m.engine.core.transformations.ITransformationContext
+	 * #putProperty(java.lang.String, java.lang.String)
 	 */
 	public void putProperty(String key, String property) {
 		if (this.properties.containsKey(key)) {
-			OptimusM2MEngineMessages.DC03.log(key);
+			if (this.properties.get(key) != property) {
+				OptimusM2MEngineMessages.DC03.log(key);
+				this.properties.put(key, property);
+			}
+		} else {
+			this.properties.put(key, property);
 		}
-		this.properties.put(key, property);
 	}
 
 }
