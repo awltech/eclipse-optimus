@@ -25,11 +25,20 @@ import java.lang.reflect.Field;
 
 import net.atos.optimus.m2m.engine.core.ctxinject.ContextElementVisibility;
 import net.atos.optimus.m2m.engine.core.ctxinject.ParentContextElement;
+import net.atos.optimus.m2m.engine.core.exceptions.FieldInjectionException;
+import net.atos.optimus.m2m.engine.core.exceptions.FieldUpdateException;
+import net.atos.optimus.m2m.engine.core.exceptions.NullValueException;
 import net.atos.optimus.m2m.engine.core.transformations.AbstractTransformation;
 import net.atos.optimus.m2m.engine.core.transformations.ITransformationContext;
 
 import org.eclipse.emf.ecore.EObject;
 
+/**
+ * Injector implementation for Parent Context Element
+ * 
+ * @author mvanbesien
+ * 
+ */
 public class ParentContextElementInjector extends Injector {
 
 	private Field field;

@@ -25,9 +25,18 @@ import java.lang.reflect.Field;
 
 import net.atos.optimus.m2m.engine.core.ctxinject.ContextElementVisibility;
 import net.atos.optimus.m2m.engine.core.ctxinject.ContextParameter;
+import net.atos.optimus.m2m.engine.core.exceptions.FieldInjectionException;
+import net.atos.optimus.m2m.engine.core.exceptions.FieldUpdateException;
+import net.atos.optimus.m2m.engine.core.exceptions.NullValueException;
 import net.atos.optimus.m2m.engine.core.transformations.AbstractTransformation;
 import net.atos.optimus.m2m.engine.core.transformations.ITransformationContext;
 
+/**
+ * Injector implementation for Context properties
+ * 
+ * @author mvanbesien
+ * 
+ */
 public class ContextParameterInjector extends Injector {
 
 	private Field field;

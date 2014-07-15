@@ -19,24 +19,25 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.engine.core.ctxinject.impl;
+package net.atos.optimus.m2m.engine.core.exceptions;
 
 /**
- * Thrown when the process tries to inject a null value for a field, while the
- * field's annotation specifies that the field is not nullable. This also throws
- * the same error, if the field is updatable, and the value is null when trying
- * to update.
+ * Thrown when an system exception is raised when trying to inject a field into
+ * a transformation
  * 
  * @author mvanbesien
  * 
  */
-public class NullValueException extends Exception {
+public class FieldUpdateException extends Exception {
+
+	private static final long serialVersionUID = 1L;
+
+	private static final String MESSAGE = "An error occurred while retrieving value into field: %s.";
 
 	private String name;
 
-	private static final String MESSAGE = "Not allowed to inject null value into field %s";
-
-	public NullValueException(String name) {
+	public FieldUpdateException(String name, Exception e) {
+		super(e);
 		this.name = name;
 	}
 
@@ -44,7 +45,5 @@ public class NullValueException extends Exception {
 	public String getMessage() {
 		return String.format(MESSAGE, this.name);
 	}
-
-	private static final long serialVersionUID = 1L;
 
 }

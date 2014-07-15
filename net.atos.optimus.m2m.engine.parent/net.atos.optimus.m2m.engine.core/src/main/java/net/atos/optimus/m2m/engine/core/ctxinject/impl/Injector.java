@@ -23,6 +23,9 @@ package net.atos.optimus.m2m.engine.core.ctxinject.impl;
 
 import java.lang.reflect.Field;
 
+import net.atos.optimus.m2m.engine.core.exceptions.FieldInjectionException;
+import net.atos.optimus.m2m.engine.core.exceptions.FieldUpdateException;
+import net.atos.optimus.m2m.engine.core.exceptions.NullValueException;
 import net.atos.optimus.m2m.engine.core.transformations.AbstractTransformation;
 import net.atos.optimus.m2m.engine.core.transformations.ITransformationContext;
 
