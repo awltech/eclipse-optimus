@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Tools for JavaXMI model transformation
 Bundle-SymbolicName: net.atos.optimus.m2m.javaxmi.core
-Bundle-Version: 1.0.1.qualifier
+Bundle-Version: 1.1.0.qualifier
 Bundle-Activator: net.atos.optimus.m2m.javaxmi.core.Activator
 Bundle-Vendor: Worldline.com
 Require-Bundle: org.eclipse.ui,

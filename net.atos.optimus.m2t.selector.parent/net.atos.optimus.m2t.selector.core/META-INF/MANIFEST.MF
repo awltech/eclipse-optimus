@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: M2T Generic Code Generation Handler
 Bundle-SymbolicName: net.atos.optimus.m2t.selector.core;singleton:=true
-Bundle-Version: 1.0.1.qualifier
+Bundle-Version: 1.1.0.qualifier
 Bundle-Activator: net.atos.optimus.m2t.selector.core.internal.Activator
 Bundle-Vendor: Worldline.com
 Require-Bundle: org.eclipse.ui,

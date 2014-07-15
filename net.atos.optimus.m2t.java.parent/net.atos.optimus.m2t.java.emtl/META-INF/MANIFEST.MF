@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Emtl Backup for Modisco Issue
 Bundle-SymbolicName: net.atos.optimus.m2t.java.emtl
-Bundle-Version: 1.0.1.qualifier
+Bundle-Version: 1.1.0.qualifier
 Bundle-Activator: net.atos.optimus.m2t.java.emtl.Activator
 Bundle-Vendor: Worldline.com
 Require-Bundle: org.eclipse.ui,

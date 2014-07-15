@@ -26,6 +26,6 @@
    <description name="Atos Optimus Common Components">
       Atos Optimus Common Components
    </description>
-   <feature url="features/net.atos.optimus.common.feature_1.0.1.qualifier.jar" id="net.atos.optimus.common.feature" version="1.0.1.qualifier"/>
-   <feature url="features/net.atos.optimus.common.source.feature_1.0.1.qualifier.jar" id="net.atos.optimus.common.source.feature" version="1.0.1.qualifier"/>
+   <feature url="features/net.atos.optimus.common.feature_1.1.0.qualifier.jar" id="net.atos.optimus.common.feature" version="1.1.0.qualifier"/>
+   <feature url="features/net.atos.optimus.common.source.feature_1.1.0.qualifier.jar" id="net.atos.optimus.common.source.feature" version="1.1.0.qualifier"/>
 </site>
