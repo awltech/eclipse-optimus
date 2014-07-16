@@ -86,7 +86,7 @@ public class MainPreferencePage extends PreferencePage implements IWorkbenchPref
 
 		FormDataBuilder.on(title).top().left().right();
 		FormDataBuilder.on(description).top(title).left().right().bottom(image);
-		FormDataBuilder.on(image).left().bottom().width(120).height(60);
+		FormDataBuilder.on(image).left().bottom().width(140).height(55);
 		FormDataBuilder.on(moreInfo).bottom(moreInfo1).right();
 		FormDataBuilder.on(moreInfo1).bottom(moreInfo2).right();
 		FormDataBuilder.on(moreInfo2).bottom().right();
