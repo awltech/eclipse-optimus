@@ -110,7 +110,7 @@ public class TransformationsPreferencesPage extends PreferencePage implements IW
 		Label label = new Label(levelGroup, SWT.NONE);
 		label.setText(TransformationsPreferencesMessages.LOGGER_LEVEL.message());
 
-		final Combo combo = new Combo(levelGroup, SWT.NONE);
+		final Combo combo = new Combo(levelGroup, SWT.READ_ONLY);
 		for (Level level : levels)
 			combo.add(level.getName());
 		combo.select(levels.indexOf(OptimusM2MEngineLogger.logger.getLevel()));
@@ -128,6 +128,7 @@ public class TransformationsPreferencesPage extends PreferencePage implements IW
 
 		// Manage the layout
 		Tree tree = new Tree(composite, SWT.CHECK | SWT.BORDER);
+		
 		final CheckboxTreeViewer treeViewer = new CheckboxTreeViewer(tree);
 		treeViewer.setLabelProvider(new TransformationsTreeLabelProvider());
 		treeViewer.setContentProvider(new TransformationsTreeContentsProvider());
