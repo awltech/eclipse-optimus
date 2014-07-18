@@ -40,7 +40,7 @@ import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
  * @since 1.0
  * 
  */
-public class TransformationMask implements ITransformationMask {
+public class JavaTransformationMask implements ITransformationMask {
 
 	/**
 	 * Defines the initial enablement condition of this transformation mask.
@@ -75,7 +75,7 @@ public class TransformationMask implements ITransformationMask {
 	 *            all the transformations are disabled, and the user will have
 	 *            to enable them to configure the filter.
 	 */
-	private TransformationMask(boolean defaultEnabled) {
+	private JavaTransformationMask(boolean defaultEnabled) {
 		this.defaultEnabled = defaultEnabled;
 	}
 
@@ -86,7 +86,7 @@ public class TransformationMask implements ITransformationMask {
 	 *            , new implementation
 	 * @return
 	 */
-	public TransformationMask withTransformationDataSource(ITransformationDataSource transformationDataSource) {
+	public JavaTransformationMask withTransformationDataSource(ITransformationDataSource transformationDataSource) {
 		this.transformationDataSource = transformationDataSource;
 		return this;
 	}
@@ -98,8 +98,8 @@ public class TransformationMask implements ITransformationMask {
 	 * 
 	 * @return
 	 */
-	public static TransformationMask allOn() {
-		return new TransformationMask(true);
+	public static JavaTransformationMask allOn() {
+		return new JavaTransformationMask(true);
 	}
 
 	/**
@@ -109,8 +109,8 @@ public class TransformationMask implements ITransformationMask {
 	 * 
 	 * @return
 	 */
-	public static TransformationMask allOff() {
-		return new TransformationMask(false);
+	public static JavaTransformationMask allOff() {
+		return new JavaTransformationMask(false);
 	}
 
 	/**
@@ -119,7 +119,7 @@ public class TransformationMask implements ITransformationMask {
 	 * @param id
 	 * @return
 	 */
-	public TransformationMask withTransformation(String id) {
+	public JavaTransformationMask withTransformation(String id) {
 		this.manageTransformation(id, true);
 		return this;
 	}
@@ -131,7 +131,7 @@ public class TransformationMask implements ITransformationMask {
 	 * @param id
 	 * @return
 	 */
-	public TransformationMask withTransformationSet(String id) {
+	public JavaTransformationMask withTransformationSet(String id) {
 		this.manageTransformationSet(id, true);
 		return this;
 	}
@@ -142,7 +142,7 @@ public class TransformationMask implements ITransformationMask {
 	 * @param id
 	 * @return
 	 */
-	public TransformationMask withoutTransformation(String id) {
+	public JavaTransformationMask withoutTransformation(String id) {
 		this.manageTransformation(id, false);
 		return this;
 	}
@@ -154,7 +154,7 @@ public class TransformationMask implements ITransformationMask {
 	 * @param id
 	 * @return
 	 */
-	public TransformationMask withoutTransformationSet(String id) {
+	public JavaTransformationMask withoutTransformationSet(String id) {
 		this.manageTransformationSet(id, false);
 		return this;
 	}
@@ -218,7 +218,7 @@ public class TransformationMask implements ITransformationMask {
 	 * @param transformationMask
 	 * @return
 	 */
-	public TransformationMask merge(TransformationMask transformationMask) {
+	public JavaTransformationMask merge(JavaTransformationMask transformationMask) {
 
 		if (this.transformationDataSource != transformationMask.transformationDataSource)
 			return this;
