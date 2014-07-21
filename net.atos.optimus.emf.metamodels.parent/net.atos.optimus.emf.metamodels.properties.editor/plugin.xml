@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ <copyright>
+ </copyright>
+
+ $Id$
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="net.atos.optimus.emf.metamodels.properties.presentation.PropertiesModelWizardID"
+            name="%_UI_PropertiesModelWizard_label"
+            class="net.atos.optimus.emf.metamodels.properties.presentation.PropertiesModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/PropertiesModelFile.gif">
+         <description>%_UI_PropertiesModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <editor
+            id="net.atos.optimus.emf.metamodels.properties.presentation.PropertiesEditorID"
+            name="%_UI_PropertiesEditor_label"
+            icon="icons/full/obj16/PropertiesModelFile.gif"
+            extensions="properties"
+            class="net.atos.optimus.emf.metamodels.properties.presentation.PropertiesEditor"
+            contributorClass="net.atos.optimus.emf.metamodels.properties.presentation.PropertiesActionBarContributor">
+      </editor>
+   </extension>
+
+</plugin>

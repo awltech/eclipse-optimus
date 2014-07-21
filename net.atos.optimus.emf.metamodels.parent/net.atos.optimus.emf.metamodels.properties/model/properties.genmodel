@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/net.atos.optimus.emf.metamodels.properties/src/main/java"
+    editDirectory="/net.atos.optimus.emf.metamodels.properties.edit/src/main/java" editorDirectory="/net.atos.optimus.emf.metamodels.properties.editor/src/main/java"
+    modelPluginID="net.atos.optimus.emf.metamodels.properties" modelName="Properties"
+    editPluginClass="net.atos.optimus.emf.metamodels.properties.provider.PropertiesEditPlugin"
+    editorPluginClass="net.atos.optimus.emf.metamodels.properties.presentation.PropertiesEditorPlugin"
+    testsDirectory="/net.atos.optimus.emf.metamodels.properties.tests/src/main/java"
+    testSuiteClass="tests.PropertiesAllTests" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="6.0" copyrightFields="false" editPluginID="net.atos.optimus.emf.metamodels.properties.edit"
+    editorPluginID="net.atos.optimus.emf.metamodels.properties.editor">
+  <foreignModel>properties.ecore</foreignModel>
+  <genPackages prefix="Properties" basePackage="net.atos.xa.modelling.models" resource="Basic"
+      disposableProviderFactory="true" ecorePackage="properties.ecore#/">
+    <genClasses ecoreClass="properties.ecore#//Properties">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference properties.ecore#//Properties/contents"/>
+    </genClasses>
+    <genClasses ecoreClass="properties.ecore#//Content">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference properties.ecore#//Content/properties"/>
+    </genClasses>
+    <genClasses ecoreClass="properties.ecore#//Pair">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//Pair/key"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//Pair/value"/>
+    </genClasses>
+    <genClasses ecoreClass="properties.ecore#//Comment">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//Comment/value"/>
+    </genClasses>
+    <genClasses ecoreClass="properties.ecore#//CarriageReturn"/>
+  </genPackages>
+</genmodel:GenModel>

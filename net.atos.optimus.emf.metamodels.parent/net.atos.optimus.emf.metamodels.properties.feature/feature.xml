@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="net.atos.optimus.emf.metamodels.properties.feature"
+      label="Meta model for Properties File"
+      version="1.0.0.qualifier"
+      provider-name="Atos.net">
+
+   <description url="">
+   	EMF Metamodel for properties view management
+   </description>
+
+   <plugin
+         id="net.atos.optimus.emf.metamodels.properties"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.atos.optimus.emf.metamodels.properties.edit"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.atos.optimus.emf.metamodels.properties.editor"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>
