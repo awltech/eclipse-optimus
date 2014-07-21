@@ -33,7 +33,7 @@
       <repositories location="@@WORKSPACE@@/net.atos.optimus.m2m.engine.sdk.parent/net.atos.optimus.m2m.engine.sdk.site/target/repository/">
         <features name="net.atos.optimus.m2m.engine.sdk.feature.feature.group" versionRange="1.0.0.201308071356-kepler-SNAPSHOT" categories="//@customCategories[identifier='eclipse-optimus-sdk']"/>
       </repositories>
-       <repositories location="@@WORKSPACE@@/net.atos.optimus.emf.metamodels.properties.parent/net.atos.optimus.emf.metamodels.properties.repository/target/repository/">
+       <repositories location="@@WORKSPACE@@/net.atos.optimus.emf.metamodels.parent/net.atos.optimus.emf.metamodels.repository/target/repository/">
         <features name="net.atos.optimus.emf.metamodels.properties.feature.feature.group" versionRange="1.0.0.201308071356-kepler-SNAPSHOT" categories="//@customCategories[identifier='eclipse-metamodels']"/>
       </repositories>
     </contributions>
