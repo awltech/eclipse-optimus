@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/net.atos.optimus.emf.metamodels.properties.feature_1.0.0.qualifier.jar" id="com.worldline.awltech.i18ntools.wizard.feature" version="1.0.0.qualifier">
+   <feature url="features/net.atos.optimus.emf.metamodels.properties.feature_1.0.0.qualifier.jar" id="net.atos.optimus.emf.metamodels.properties.feature" version="1.0.0.qualifier">
       <category name="Optimus Metamodels"/>
    </feature>
    <category-def name="Optimus Metamodels" label="Optimus Metamodels"/>
