@@ -51,18 +51,23 @@ In Optimus, Transformation Masks are used upon a group of transformations, to de
    </element>
 
    <element name="implementedMask">
+      <annotation>
+         <documentation>
+            Registers an existing implementation of Transformation Mask
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="name" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  Displayable name for Transformation Mask
                </documentation>
             </annotation>
          </attribute>
          <attribute name="implementation" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  Transformation Mask implementation
                </documentation>
                <appinfo>
                   <meta.attribute kind="java" basedOn=":net.atos.optimus.m2m.engine.core.masks.ITransformationMask"/>
@@ -73,6 +78,11 @@ In Optimus, Transformation Masks are used upon a group of transformations, to de
    </element>
 
    <element name="inclusiveMask">
+      <annotation>
+         <documentation>
+            Creates an initialTransformation Mask with no transformations in it.
+         </documentation>
+      </annotation>
       <complexType>
          <sequence minOccurs="0" maxOccurs="unbounded">
             <element ref="includes"/>
@@ -81,7 +91,7 @@ In Optimus, Transformation Masks are used upon a group of transformations, to de
          <attribute name="name" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  Displayable name for Transformation Mask
                </documentation>
             </annotation>
          </attribute>
@@ -89,6 +99,11 @@ In Optimus, Transformation Masks are used upon a group of transformations, to de
    </element>
 
    <element name="exclusiveMask">
+      <annotation>
+         <documentation>
+            Creates an initialTransformation Mask with all transformations in it.
+         </documentation>
+      </annotation>
       <complexType>
          <sequence minOccurs="0" maxOccurs="unbounded">
             <element ref="excludes"/>
@@ -97,7 +112,7 @@ In Optimus, Transformation Masks are used upon a group of transformations, to de
          <attribute name="name" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  Displayable name for Transformation Mask
                </documentation>
             </annotation>
          </attribute>
@@ -105,11 +120,16 @@ In Optimus, Transformation Masks are used upon a group of transformations, to de
    </element>
 
    <element name="includes">
+      <annotation>
+         <documentation>
+            Includes a transformation into the mask
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="transformationId" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  Transformation Identifier
                </documentation>
             </annotation>
          </attribute>
@@ -117,11 +137,16 @@ In Optimus, Transformation Masks are used upon a group of transformations, to de
    </element>
 
    <element name="excludes">
+      <annotation>
+         <documentation>
+            Excludes a transformation from the mask
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="transformationId" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  Transformation Identifier
                </documentation>
             </annotation>
          </attribute>
@@ -129,11 +154,16 @@ In Optimus, Transformation Masks are used upon a group of transformations, to de
    </element>
 
    <element name="includesSet">
+      <annotation>
+         <documentation>
+            Includes a transformation set into the mask
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="transformationSetId" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  Transformation Set Identifier
                </documentation>
             </annotation>
          </attribute>
@@ -141,11 +171,16 @@ In Optimus, Transformation Masks are used upon a group of transformations, to de
    </element>
 
    <element name="excludesSet">
+      <annotation>
+         <documentation>
+            Excludes a transformation set from the mask
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="transformationSetId" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  Transformation Set Identifier
                </documentation>
             </annotation>
          </attribute>
