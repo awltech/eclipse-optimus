@@ -30,15 +30,15 @@
 
 	<licenses>
 		<license>
-			<name>EPL 1.0</name>
-			<url>http://www.eclipse.org/legal/epl-v10.html</url>
+			<name>LGPL 3.0</name>
+			<url>https://www.gnu.org/licenses/lgpl.html</url>
 			<distribution>repo</distribution>
-			<comments>Eclipse Public License - v 1.0</comments>
+			<comments>GNU Lesser General Public License</comments>
 		</license>
 	</licenses>
 
 	<properties>
-		<tycho-version>0.14.0</tycho-version>
+		<tycho-version>0.20.0</tycho-version>
 		<tycho-groupid>org.eclipse.tycho</tycho-groupid>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<platform-version-name>kepler</platform-version-name>
