@@ -109,4 +109,19 @@ public enum TransformationMasksExtensionsManager {
 	public List<TransformationMaskReference> getRegisteredMasks() {
 		return registeredMasks;
 	}
+
+	/**
+	 * 
+	 * @param name
+	 * @return Transformation Mask registered from extension points, which name
+	 *         matches the proposed one
+	 */
+	public ITransformationMask getRegisteredMask(String name) {
+		for (TransformationMaskReference reference : this.registeredMasks) {
+			if (name == null ? reference.getName() == null : name.equals(reference.getName())) {
+				return reference.getImplementation();
+			}
+		}
+		return null;
+	}
 }

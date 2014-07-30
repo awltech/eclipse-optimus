@@ -35,34 +35,16 @@ import org.eclipse.jface.preference.IPreferenceStore;
  * @since 1.0
  * 
  */
-public class PreferencesTransformationMask implements ITransformationMask {
+public enum PreferencesTransformationMask implements ITransformationMask {
+	/**
+	 * Instance
+	 */
+	INSTANCE;
 
 	/**
-	 * Static internal class, in charge of holding the Singleton instance.
-	 * 
-	 * @generated XA Singleton Generator on 2013-07-10 15:28:48 CEST
+	 * Preferences Key prefix
 	 */
-	private static class SingletonHolder {
-		static PreferencesTransformationMask instance = new PreferencesTransformationMask();
-	}
-
-	/**
-	 * Returns the Singleton instance of this class.
-	 * 
-	 * @generated XA Singleton Generator on 2013-07-10 15:28:48 CEST
-	 */
-	public static PreferencesTransformationMask getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	/**
-	 * Default constructor. Generated because used in singleton instanciation &
-	 * needs to be private
-	 * 
-	 * @generated XA Singleton Generator on 2013-07-10 15:28:48 CEST
-	 */
-	private PreferencesTransformationMask() {
-	}
+	private static final String KEY_PREFIX = Activator.PLUGIN_ID + ".disabled.";
 
 	/**
 	 * Internal instance of preferenceStore
@@ -77,20 +59,18 @@ public class PreferencesTransformationMask implements ITransformationMask {
 	 */
 	@Override
 	public boolean isTransformationEnabled(String id) {
-		String enablementKey = Activator.PLUGIN_ID + ".disabled." + id;
-		return !this.preferenceStore.getBoolean(enablementKey);
+		return !this.preferenceStore.getBoolean(KEY_PREFIX + id);
 	}
 
 	/**
-	 * Updates the value for the enablement of the transformation, which id is passed as
-	 * parameter
+	 * Updates the value for the enablement of the transformation, which id is
+	 * passed as parameter
 	 * 
 	 * @param id
 	 * @param enabled
 	 */
 	public void setTransformationEnabled(String id, boolean enabled) {
-		String enablementKey = Activator.PLUGIN_ID + ".disabled." + id;
-		this.preferenceStore.setValue(enablementKey, !enabled);
+		this.preferenceStore.setValue(KEY_PREFIX + id, !enabled);
 	}
 
 }
