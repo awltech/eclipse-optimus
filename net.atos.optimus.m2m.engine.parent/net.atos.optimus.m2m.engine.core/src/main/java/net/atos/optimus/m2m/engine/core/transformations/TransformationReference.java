@@ -25,7 +25,6 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import net.atos.optimus.m2m.engine.core.masks.ITransformationMask;
-import net.atos.optimus.m2m.engine.core.masks.PreferencesTransformationMask;
 import net.atos.optimus.m2m.engine.core.requirements.AbstractRequirement;
 
 /**
@@ -195,8 +194,7 @@ public class TransformationReference {
 	 * @return whether the transformation is enabled in the Eclipse preferences
 	 */
 	public boolean isEnabled(ITransformationMask transformationMask) {
-		return transformationMask == null ? PreferencesTransformationMask.getInstance()
-				.isTransformationEnabled(this.id) : transformationMask.isTransformationEnabled(this.id);
+		return transformationMask != null ? transformationMask.isTransformationEnabled(this.id) : true;
 	}
 
 	/**

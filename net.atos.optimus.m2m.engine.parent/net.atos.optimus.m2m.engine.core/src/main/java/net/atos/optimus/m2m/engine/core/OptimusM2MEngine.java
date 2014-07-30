@@ -39,6 +39,7 @@ import net.atos.optimus.m2m.engine.core.exceptions.TransformationFailedException
 import net.atos.optimus.m2m.engine.core.logging.EObjectLabelProvider;
 import net.atos.optimus.m2m.engine.core.logging.OptimusM2MEngineMessages;
 import net.atos.optimus.m2m.engine.core.masks.ITransformationMask;
+import net.atos.optimus.m2m.engine.core.masks.PreferencesTransformationMask;
 import net.atos.optimus.m2m.engine.core.requirements.AbstractRequirement;
 import net.atos.optimus.m2m.engine.core.transformations.AbstractTransformation;
 import net.atos.optimus.m2m.engine.core.transformations.ExtensionPointTransformationDataSource;
@@ -163,7 +164,7 @@ public class OptimusM2MEngine {
 	/**
 	 * Instance of Mask used to filter the transformations
 	 */
-	private ITransformationMask transformationMask = null;
+	private ITransformationMask userTransformationMask = null;
 	
 	/**
 	 * Creates new transformation engine, with provided context implementation
@@ -221,7 +222,7 @@ public class OptimusM2MEngine {
 	 * @return
 	 */
 	public OptimusM2MEngine applyTransformationMask(ITransformationMask transformationMask) {
-		this.transformationMask = transformationMask;
+		this.userTransformationMask = transformationMask;
 		return this;
 	}
 	
@@ -381,7 +382,7 @@ public class OptimusM2MEngine {
 			OptimusM2MEngineMessages.TE06.log(reference.getId(), reference.getDescription(),
 					eObjectLabelProvider.getText(eObject));
 
-			if (!reference.isEnabled(this.transformationMask)) {
+			if (!reference.isEnabled(this.getTransformationMask())) {
 				OptimusM2MEngineMessages.TE10.log(reference.getId());
 				return false;
 			}
@@ -430,6 +431,17 @@ public class OptimusM2MEngine {
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * Returns the transformation mask to apply for this execution.
+	 * 
+	 * If none is defined by the user, it returns the one selected through preferences.
+	 * 
+	 * @return
+	 */
+	private ITransformationMask getTransformationMask() {
+		return this.userTransformationMask != null ? this.userTransformationMask : PreferencesTransformationMask.getInstance();
 	}
 
 	/**
