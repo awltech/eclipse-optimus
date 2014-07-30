@@ -58,7 +58,7 @@ public class TransformationsPreferencesImex {
 
 		for (TransformationReference reference : manager.getAll()) {
 			properties.put(reference.getId(),
-					PreferencesTransformationMask.getInstance().isTransformationEnabled(reference.getId()));
+					PreferencesTransformationMask.INSTANCE.isTransformationEnabled(reference.getId()));
 		}
 		IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
 		FileDialog dialog = new FileDialog(new Shell(Display.getDefault()));
@@ -148,7 +148,7 @@ public class TransformationsPreferencesImex {
 			String keyAsString = String.valueOf(key);
 			if (keyAsString.startsWith(keyPattern)) {
 				String id = keyAsString.substring(keyPattern.length());
-				PreferencesTransformationMask.getInstance().setTransformationEnabled(id,
+				PreferencesTransformationMask.INSTANCE.setTransformationEnabled(id,
 						Boolean.parseBoolean(properties.getProperty(keyAsString)));
 			}
 		}

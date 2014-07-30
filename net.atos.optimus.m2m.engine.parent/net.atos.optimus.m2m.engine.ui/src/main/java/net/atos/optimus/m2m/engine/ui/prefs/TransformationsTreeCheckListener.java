@@ -99,7 +99,7 @@ public class TransformationsTreeCheckListener implements ICheckStateListener {
 
 	public void apply() {
 		for (TransformationReference key : this.userActions.keySet()) {
-			PreferencesTransformationMask.getInstance()
+			PreferencesTransformationMask.INSTANCE
 					.setTransformationEnabled(key.getId(), this.userActions.get(key));
 		}
 

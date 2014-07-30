@@ -50,7 +50,7 @@ public class TransformationsTreeCheckProvider implements ICheckStateProvider {
 	public boolean isChecked(Object element) {
 		if (element instanceof TransformationReference) {
 			TransformationReference reference = (TransformationReference) element;
-			return PreferencesTransformationMask.getInstance().isTransformationEnabled(reference.getId());
+			return PreferencesTransformationMask.INSTANCE.isTransformationEnabled(reference.getId());
 		}
 		return false;
 	}
