@@ -441,7 +441,7 @@ public class OptimusM2MEngine {
 	 * @return
 	 */
 	private ITransformationMask getTransformationMask() {
-		return this.userTransformationMask != null ? this.userTransformationMask : PreferencesTransformationMask.getInstance();
+		return this.userTransformationMask != null ? this.userTransformationMask : PreferencesTransformationMask.INSTANCE;
 	}
 
 	/**
