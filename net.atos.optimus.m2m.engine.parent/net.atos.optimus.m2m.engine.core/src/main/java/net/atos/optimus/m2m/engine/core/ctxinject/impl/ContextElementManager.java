@@ -123,7 +123,7 @@ public enum ContextElementManager {
 			FieldInjectionException, NullInstanceException {
 		Class<?> clazz = transformation.getClass();
 		while (clazz != null && clazz != Object.class) {
-			for (Field field : transformation.getClass().getDeclaredFields()) {
+			for (Field field : clazz.getDeclaredFields()) {
 				Injector injector = this.getInjector(field);
 				if (injector != null) {
 					injector.inject(transformation, context);
@@ -148,7 +148,7 @@ public enum ContextElementManager {
 			FieldUpdateException, NullInstanceException {
 		Class<?> clazz = transformation.getClass();
 		while (clazz != null && clazz != Object.class) {
-			for (Field field : transformation.getClass().getDeclaredFields()) {
+			for (Field field : clazz.getDeclaredFields()) {
 				Injector injector = this.getInjector(field);
 				if (injector != null) {
 					injector.update(transformation, context);
