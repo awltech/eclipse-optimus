@@ -76,7 +76,7 @@ public enum ContextElementManager {
 			if (injector == null) {
 				injector = this.createInjector(field);
 				this.injectorCache.put(field, injector);
-				OptimusM2MEngineMessages.CI01.log(field.getDeclaringClass().getName(), field.getName());				
+				OptimusM2MEngineMessages.CI01.log(field.getDeclaringClass().getName(), field.getName());
 			}
 			OptimusM2MEngineMessages.CI02.log(field.getDeclaringClass().getName(), field.getName());
 			return injector;
@@ -119,13 +119,17 @@ public enum ContextElementManager {
 	 * @throws FieldInjectionException
 	 * @throws NullInstanceException
 	 */
-	public void inject(AbstractTransformation<?> transformation, ITransformationContext context)
-			throws NullValueException, FieldInjectionException, NullInstanceException {
-		for (Field field : transformation.getClass().getDeclaredFields()) {
-			Injector injector = this.getInjector(field);
-			if (injector != null) {
-				injector.inject(transformation, context);
+	public void inject(AbstractTransformation<?> transformation, ITransformationContext context) throws NullValueException,
+			FieldInjectionException, NullInstanceException {
+		Class<?> clazz = transformation.getClass();
+		while (clazz != null && clazz != Object.class) {
+			for (Field field : transformation.getClass().getDeclaredFields()) {
+				Injector injector = this.getInjector(field);
+				if (injector != null) {
+					injector.inject(transformation, context);
+				}
 			}
+			clazz = clazz.getSuperclass();
 		}
 	}
 
@@ -140,13 +144,17 @@ public enum ContextElementManager {
 	 * @throws FieldInjectionException
 	 * @throws NullInstanceException
 	 */
-	public void update(AbstractTransformation<?> transformation, ITransformationContext context)
-			throws NullValueException, FieldUpdateException, NullInstanceException {
-		for (Field field : transformation.getClass().getDeclaredFields()) {
-			Injector injector = this.getInjector(field);
-			if (injector != null) {
-				injector.update(transformation, context);
+	public void update(AbstractTransformation<?> transformation, ITransformationContext context) throws NullValueException,
+			FieldUpdateException, NullInstanceException {
+		Class<?> clazz = transformation.getClass();
+		while (clazz != null && clazz != Object.class) {
+			for (Field field : transformation.getClass().getDeclaredFields()) {
+				Injector injector = this.getInjector(field);
+				if (injector != null) {
+					injector.update(transformation, context);
+				}
 			}
+			clazz = clazz.getSuperclass();
 		}
 	}
 
