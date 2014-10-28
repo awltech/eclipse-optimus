@@ -137,10 +137,11 @@ public class JavaGenerator extends GenerateJava {
 	 * @param generatorName
 	 */
 	private static Collection<IPostProcessor> getDefaultPostProcessors(JavaCodeMerger javaCodeMerger) {
+		// MVA: Attempt to perform the imports cleaning process after the merge to prevent from imports conflicts...
 		Collection<IPostProcessor> postProcessors = new ArrayList<IPostProcessor>();
-		postProcessors.add(new ImportsPostProcessor());
 		postProcessors.add(new GeneratedPostProcessor());
 		postProcessors.add(new MergerPostProcessor(javaCodeMerger));
+		postProcessors.add(new ImportsPostProcessor());
 		postProcessors.add(new JavaFormatterPostProcessor());
 		return postProcessors;
 	}
