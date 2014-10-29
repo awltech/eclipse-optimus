@@ -39,14 +39,32 @@
          </menu>
          <action
                class="net.atos.optimus.m2m.engine.sdk.wizards.transformations.TransformationCreatorAction"
-               id="net.atos.xa.generator.m2m.wizards.action1"
+               id="net.atos.optimus.m2m.engine.sdk.wizards.action1"
                label="New M2M Transformation..."
                menubarPath="net.atos.xa.optimus.menu/M2MWizards">
          </action>
          <action
                class="net.atos.optimus.m2m.engine.sdk.wizards.modelgen.ModelGenerationAction"
-               id="net.atos.optimus.m2m.engine.sdk.wizards.action1"
+               id="net.atos.optimus.m2m.engine.sdk.wizards.action2"
                label="Generate Transformations Model"
+               menubarPath="net.atos.xa.optimus.menu/M2MWizards">
+         </action>
+      </objectContribution>
+      <objectContribution
+            adaptable="false"
+            id="net.atos.xa.generator.m2m.wizards.objectContribution2"
+            objectClass="org.eclipse.emf.ecore.EObject">
+         <menu
+               id="net.atos.xa.optimus.menu"
+               label="Optimus">
+            <separator
+                  name="M2MWizards">
+            </separator>
+         </menu>
+         <action
+               class="net.atos.optimus.m2m.engine.sdk.wizards.parentinfo.DisplayParentInformationAction"
+               id="net.atos.optimus.m2m.engine.sdk.wizards.action3"
+               label="Show containment information..."
                menubarPath="net.atos.xa.optimus.menu/M2MWizards">
          </action>
       </objectContribution>
