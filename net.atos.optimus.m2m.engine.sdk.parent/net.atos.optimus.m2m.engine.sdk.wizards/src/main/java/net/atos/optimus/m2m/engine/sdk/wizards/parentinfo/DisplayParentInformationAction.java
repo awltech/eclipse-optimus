@@ -11,6 +11,7 @@ import org.eclipse.ui.IActionDelegate;
 
 public class DisplayParentInformationAction implements IActionDelegate {
 
+	private static final String UML_SEPARATOR = "::";
 	private EObject eObject;
 
 	@Override
@@ -27,10 +28,11 @@ public class DisplayParentInformationAction implements IActionDelegate {
 			EStructuralFeature eContainingFeature = this.eObject.eContainingFeature();
 			String name = eContainingFeature.getName();
 			boolean isMultiple = eContainingFeature.isMany();
-			messageBox.setMessage(DisplayParentInformationMessages.MESSAGE_INFO.value(parent.eClass().getEPackage()
-					.getName()
-					+ "::" + parent.eClass().getName(), name, isMultiple ? DisplayParentInformationMessages.IS.value()
-					: DisplayParentInformationMessages.IS_NOT.value()));
+			messageBox.setMessage(DisplayParentInformationMessages.MESSAGE_INFO.value(
+					parent.eClass().getEPackage().getName() + UML_SEPARATOR + parent.eClass().getName(),
+					name,
+					isMultiple ? DisplayParentInformationMessages.IS.value() : DisplayParentInformationMessages.IS_NOT
+							.value()));
 		}
 		messageBox.open();
 	}
