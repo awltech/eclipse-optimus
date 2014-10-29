@@ -8,7 +8,6 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IActionDelegate;
-import net.atos.optimus.m2m.engine.sdk.wizards.parentinfo.DisplayParentInformationMessages;
 
 public class DisplayParentInformationAction implements IActionDelegate {
 
@@ -28,8 +27,10 @@ public class DisplayParentInformationAction implements IActionDelegate {
 			EStructuralFeature eContainingFeature = this.eObject.eContainingFeature();
 			String name = eContainingFeature.getName();
 			boolean isMultiple = eContainingFeature.isMany();
-			messageBox.setMessage(DisplayParentInformationMessages.MESSAGE_INFO.value(parent.getClass().getSimpleName(), name,
-					isMultiple ? DisplayParentInformationMessages.IS.value() : DisplayParentInformationMessages.IS_NOT.value()));
+			messageBox.setMessage(DisplayParentInformationMessages.MESSAGE_INFO.value(parent.eClass().getEPackage()
+					.getName()
+					+ "::" + parent.eClass().getName(), name, isMultiple ? DisplayParentInformationMessages.IS.value()
+					: DisplayParentInformationMessages.IS_NOT.value()));
 		}
 		messageBox.open();
 	}
