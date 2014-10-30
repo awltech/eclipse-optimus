@@ -29,8 +29,13 @@ public class ImportsRemovalVisitor extends ASTVisitor {
 		if (resolvedBinding == null || resolvedBinding.isRecovered()) {
 			return true;
 		}
-		String qualifiedName = resolvedBinding.getQualifiedName();
-		node.setName(node.getAST().newName(qualifiedName));
+
+		if (resolvedBinding.isParameterizedType()) {
+			// TODO
+		} else {
+			String qualifiedName = resolvedBinding.getQualifiedName();
+			node.setName(node.getAST().newName(qualifiedName));
+		}
 		this.modified = true;
 		return true;
 	}
