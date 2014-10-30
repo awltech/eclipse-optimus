@@ -31,7 +31,11 @@ public class ImportsRemovalVisitor extends ASTVisitor {
 		}
 
 		if (resolvedBinding.isParameterizedType()) {
-			// TODO
+			ITypeBinding erasure = resolvedBinding.getErasure();
+			if (erasure != null) {
+				String qualifiedName = erasure.getQualifiedName();
+				node.setName(node.getAST().newName(qualifiedName));
+			}
 		} else {
 			String qualifiedName = resolvedBinding.getQualifiedName();
 			node.setName(node.getAST().newName(qualifiedName));
