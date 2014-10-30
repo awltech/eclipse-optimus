@@ -59,7 +59,7 @@ public abstract class AbstractImportsManager {
 	 *            : Initial Contents
 	 * @return Updated Contents.
 	 */
-	public static CharSequence createImports(String filePath, CharSequence initialContents) {
+	public static CharSequence execute(String filePath, CharSequence initialContents) {
 		ASTParser parser = ASTParser.newParser(AST.JLS4);
 
 		IPath absolutePath = new Path(filePath);

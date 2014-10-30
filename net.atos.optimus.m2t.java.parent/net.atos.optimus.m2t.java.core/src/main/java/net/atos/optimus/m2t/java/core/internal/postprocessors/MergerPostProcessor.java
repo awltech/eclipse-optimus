@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.io.StringWriter;
 
+import net.atos.optimus.common.tools.ltk.ImportsRemover;
 import net.atos.optimus.m2t.java.core.FileHandler;
 import net.atos.optimus.m2t.java.core.IPostProcessor;
 import net.atos.optimus.m2t.merger.java.core.JavaCodeMerger;
@@ -68,8 +69,13 @@ public class MergerPostProcessor implements IPostProcessor {
 			return;
 
 		try {
-			String fileContent = getFileContent(fileHandler.getFilePath());
-			String merged = delegate.merge(fileContent, fileHandler.getWriter().toString());
+			String existingContent = getFileContent(fileHandler.getFilePath());
+			String generatedContent = fileHandler.getWriter().toString();
+
+			ImportsRemover.execute(fileHandler.getFilePath(), existingContent);
+			ImportsRemover.execute(fileHandler.getFilePath(), generatedContent);
+
+			String merged = delegate.merge(existingContent, generatedContent);
 			StringWriter mergedWriter = new StringWriter();
 			mergedWriter.write(merged);
 			fileHandler.setWriter(mergedWriter);
