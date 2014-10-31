@@ -1,5 +1,6 @@
 package net.atos.optimus.common.tools.ltk;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jdt.core.dom.ASTNode;
@@ -8,9 +9,11 @@ import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.ChildListPropertyDescriptor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.IMethodBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.IVariableBinding;
+import org.eclipse.jdt.core.dom.ImportDeclaration;
 import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.Modifier;
@@ -78,7 +81,7 @@ public class ImportsRemovalVisitor extends ASTVisitor {
 	@Override
 	public boolean visit(SimpleType node) {
 		ITypeBinding resolvedBinding = node.resolveBinding();
-		if (resolvedBinding == null || resolvedBinding.isRecovered()) {
+		if (resolvedBinding == null) {
 			return true;
 		}
 
@@ -86,12 +89,13 @@ public class ImportsRemovalVisitor extends ASTVisitor {
 
 		if (resolvedBinding.isParameterizedType()) {
 			ITypeBinding erasure = resolvedBinding.getErasure();
-			if (erasure != null) {
+			if (erasure != null && !erasure.isRecovered()) {
 				qualifiedName = erasure.getQualifiedName();
 			}
-		} else {
+		} else if (!resolvedBinding.isRecovered()) {
 			qualifiedName = resolvedBinding.getQualifiedName();
 		}
+
 		if (qualifiedName != null) {
 			node.setName(node.getAST().newName(qualifiedName));
 			this.modified = true;
@@ -109,7 +113,8 @@ public class ImportsRemovalVisitor extends ASTVisitor {
 	public boolean visit(MethodInvocation node) {
 		// For the static methods invocation
 		IMethodBinding resolvedMethodBinding = node.resolveMethodBinding();
-		if (resolvedMethodBinding != null && Modifier.isStatic(resolvedMethodBinding.getModifiers())) {
+		if (resolvedMethodBinding != null && !resolvedMethodBinding.isRecovered()
+				&& Modifier.isStatic(resolvedMethodBinding.getModifiers())) {
 			Expression expression = node.getExpression();
 			if (expression instanceof SimpleName) {
 				ITypeBinding typeBinding = expression.resolveTypeBinding();
@@ -131,9 +136,8 @@ public class ImportsRemovalVisitor extends ASTVisitor {
 		// For the static fields & enumeration literals invocation
 		if (node.resolveBinding() instanceof IVariableBinding) {
 			IVariableBinding binding = (IVariableBinding) node.resolveBinding();
-			if (Modifier.isStatic(binding.getModifiers())) {
+			if (!binding.isRecovered() && Modifier.isStatic(binding.getModifiers())) {
 				if (node.getQualifier() instanceof SimpleName) {
-
 					ITypeBinding typeBinding = node.getQualifier().resolveTypeBinding();
 					Name qualifier = node.getQualifier();
 					overrideValueInParent(qualifier, typeBinding);
@@ -190,10 +194,10 @@ public class ImportsRemovalVisitor extends ASTVisitor {
 
 				if (resolvedBinding.isParameterizedType()) {
 					ITypeBinding erasure = resolvedBinding.getErasure();
-					if (erasure != null) {
+					if (erasure != null && !erasure.isRecovered()) {
 						qualifiedName = erasure.getQualifiedName();
 					}
-				} else {
+				} else if (!resolvedBinding.isRecovered()) {
 					qualifiedName = resolvedBinding.getQualifiedName();
 				}
 				if (qualifiedName != null) {
@@ -217,10 +221,10 @@ public class ImportsRemovalVisitor extends ASTVisitor {
 		String qualifiedName = null;
 		if (typeBinding.isParameterizedType()) {
 			ITypeBinding erasure = typeBinding.getErasure();
-			if (erasure != null) {
+			if (erasure != null && !erasure.isRecovered()) {
 				qualifiedName = erasure.getQualifiedName();
 			}
-		} else {
+		} else if (!typeBinding.isRecovered()) {
 			qualifiedName = typeBinding.getQualifiedName();
 		}
 
@@ -253,10 +257,19 @@ public class ImportsRemovalVisitor extends ASTVisitor {
 	 * org.eclipse.jdt.core.dom.ASTVisitor#endVisit(org.eclipse.jdt.core.dom
 	 * .CompilationUnit)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void endVisit(CompilationUnit node) {
+		List<ImportDeclaration> toRemove = new ArrayList<ImportDeclaration>();
+		for (Object o : node.imports()) {
+			ImportDeclaration declaration = (ImportDeclaration) o;
+			IBinding resolvedBinding = declaration.resolveBinding();
+			if (resolvedBinding != null && !resolvedBinding.isRecovered()) {
+				toRemove.add(declaration);
+			}
+		}
 		// To clean the imports from the source code.
-		node.imports().clear();
+		node.imports().removeAll(toRemove);
 	}
 
 }

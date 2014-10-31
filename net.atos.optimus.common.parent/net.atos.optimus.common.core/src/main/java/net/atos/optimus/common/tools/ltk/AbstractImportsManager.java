@@ -25,13 +25,12 @@ import net.atos.optimus.common.tools.Activator;
 import net.atos.optimus.common.tools.jdt.ASTParserFactory;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
@@ -62,48 +61,49 @@ public abstract class AbstractImportsManager {
 	public CharSequence execute(String filePath, CharSequence initialContents) {
 		ASTParser parser = ASTParserFactory.INSTANCE.newParser();
 
-		IPath absolutePath = new Path(filePath);
+		IPath iPath = new Path(filePath);
 		try {
+
 			IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 			IPath workspacePath = root.getLocation();
 
-			IPath relativePath = absolutePath.makeRelativeTo(workspacePath);
-			IFile file = root.getFile(relativePath);
-			IProject project = file.getProject();
+			if (workspacePath.isAbsolute() && workspacePath.isPrefixOf(iPath)) {
+				iPath = iPath.makeRelativeTo(workspacePath);
+			}
+			IFile file = root.getFile(iPath);
 
-			IJavaProject javaProject = JavaCore.create(project);
+			ICompilationUnit compilationUnit = (ICompilationUnit) JavaCore.create(file);
 
-			parser.setProject(javaProject);
-			parser.setUnitName(relativePath.removeFileExtension().lastSegment());
+			parser.setUnitName(iPath.removeFileExtension().lastSegment());
+			parser.setBindingsRecovery(true);
+			parser.setResolveBindings(true);
+			parser.setIgnoreMethodBodies(false);
+			parser.setStatementsRecovery(true);
+			parser.setSource(compilationUnit);
+
+			ASTNode astNode = parser.createAST(new NullProgressMonitor());
+			IDocument document = new Document(initialContents.toString().toString());
+			if (astNode instanceof CompilationUnit) {
+				CompilationUnit domCompilationUnit = (CompilationUnit) astNode;
+				domCompilationUnit.recordModifications();
+				if (apply(domCompilationUnit)) {
+					TextEdit rewrite = domCompilationUnit.rewrite(document, null);
+					try {
+						rewrite.apply(document);
+						return document.get();
+					} catch (MalformedTreeException e) {
+						Activator.getDefault().logError("Import Creation encountered Exception", e);
+					} catch (BadLocationException e) {
+						Activator.getDefault().logError("Import Creation encountered Exception", e);
+					}
+				}
+			}
+
 		} catch (IllegalStateException e) {
 			// Workspace is closed
 			// Binding resolution will probably not work
 		}
-		parser.setBindingsRecovery(true);
-		parser.setResolveBindings(true);
 
-		parser.setIgnoreMethodBodies(false);
-
-		parser.setStatementsRecovery(true);
-		parser.setSource(initialContents.toString().toCharArray());
-
-		ASTNode astNode = parser.createAST(new NullProgressMonitor());
-		IDocument document = new Document(initialContents.toString().toString());
-		if (astNode instanceof CompilationUnit) {
-			CompilationUnit compilationUnit = (CompilationUnit) astNode;
-			compilationUnit.recordModifications();
-			if (apply(compilationUnit)) {
-				TextEdit rewrite = compilationUnit.rewrite(document, null);
-				try {
-					rewrite.apply(document);
-					return document.get();
-				} catch (MalformedTreeException e) {
-					Activator.getDefault().logError("Import Creation encountered Exception", e);
-				} catch (BadLocationException e) {
-					Activator.getDefault().logError("Import Creation encountered Exception", e);
-				}
-			}
-		}
 		return initialContents;
 	}
 
