@@ -49,8 +49,8 @@ import org.eclipse.text.edits.TextEdit;
 public abstract class AbstractImportsManager {
 
 	/**
-	 * Generates imports for the file located at the given path, with given
-	 * contents
+	 * Executes the imports process on the file located at the given path, with
+	 * given contents
 	 * 
 	 * @param filePath
 	 *            : Destination File Path (used to retrieve project, in order to
@@ -107,6 +107,12 @@ public abstract class AbstractImportsManager {
 		return initialContents;
 	}
 
+	/**
+	 * Effectively launches the process on the Compilation Unit
+	 * 
+	 * @param compilationUnit
+	 * @return
+	 */
 	protected abstract boolean apply(CompilationUnit compilationUnit);
 
 }
