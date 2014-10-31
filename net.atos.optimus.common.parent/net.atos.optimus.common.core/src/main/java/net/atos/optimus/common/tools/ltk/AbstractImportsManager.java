@@ -21,6 +21,8 @@
  */
 package net.atos.optimus.common.tools.ltk;
 
+import java.awt.Component;
+
 import net.atos.optimus.common.tools.Activator;
 import net.atos.optimus.common.tools.jdt.ASTParserFactory;
 
@@ -79,7 +81,9 @@ public abstract class AbstractImportsManager {
 			parser.setResolveBindings(true);
 			parser.setIgnoreMethodBodies(false);
 			parser.setStatementsRecovery(true);
-			parser.setSource(compilationUnit);
+			parser.setProject(compilationUnit.getJavaProject());
+			parser.setSource(initialContents.toString().toCharArray());
+			
 
 			ASTNode astNode = parser.createAST(new NullProgressMonitor());
 			IDocument document = new Document(initialContents.toString().toString());
