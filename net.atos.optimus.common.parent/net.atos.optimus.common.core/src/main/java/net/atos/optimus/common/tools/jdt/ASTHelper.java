@@ -26,7 +26,6 @@ import java.util.List;
 
 import net.atos.optimus.common.tools.Activator;
 
-import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.Block;
@@ -51,7 +50,7 @@ public class ASTHelper {
 	 * Initialize this AST parser
 	 */
 	static {
-		astp = ASTParser.newParser(AST.JLS4);
+		astp = ASTParserFactory.INSTANCE.newParser();
 	}
 
 	/**

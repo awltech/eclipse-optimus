@@ -38,7 +38,6 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ASTVisitor;
@@ -228,7 +227,7 @@ public class GeneratedAnnotationHelper {
 	 * @return updated Source
 	 */
 	public static String updateHashcodeInSource(String source) {
-		ASTParser parser = ASTParser.newParser(AST.JLS4);
+		ASTParser parser = ASTParserFactory.INSTANCE.newParser();
 		parser.setSource(source.toCharArray());
 		parser.setCompilerOptions(GeneratedAnnotationHelper.compilerOptions);
 		CompilationUnit cu = (CompilationUnit) parser.createAST(null);

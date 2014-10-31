@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import net.atos.optimus.common.tools.jdt.ASTParserFactory;
 import net.atos.optimus.common.tools.jdt.JavaCodeHelper;
 import net.atos.optimus.m2t.merger.java.core.internal.MergerLogger;
 import net.atos.optimus.m2t.merger.java.core.internal.MergerLoggerMessages;
@@ -36,7 +37,6 @@ import net.atos.optimus.m2t.merger.java.core.internal.MergerLoggerMessages;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
@@ -189,9 +189,7 @@ public abstract class JavaCodeMerger {
 		// Create a Document object for the existing content
 		Document existingDocument = new Document(existingContent);
 
-		// Create an AST parser for the existing content (use JLS3 to support
-		// JDK 1.5)
-		ASTParser existingContentParser = ASTParser.newParser(AST.JLS3);
+		ASTParser existingContentParser = ASTParserFactory.INSTANCE.newParser();
 		existingContentParser.setSource(existingDocument.get().toCharArray());
 		existingContentParser.setCompilerOptions(JavaCodeHelper.compilerOptions);
 		CompilationUnit existingCU = (CompilationUnit) existingContentParser.createAST(null);
@@ -204,7 +202,7 @@ public abstract class JavaCodeMerger {
 
 		// Create an AST parser for generated content (use JSL3 to support JDK
 		// 1.5)
-		ASTParser generatedContentParser = ASTParser.newParser(AST.JLS3);
+		ASTParser generatedContentParser = ASTParserFactory.INSTANCE.newParser();
 		generatedContentParser.setSource(generatedDocument.get().toCharArray());
 		generatedContentParser.setCompilerOptions(JavaCodeHelper.compilerOptions);
 		CompilationUnit generatedContentCU = (CompilationUnit) generatedContentParser.createAST(null);

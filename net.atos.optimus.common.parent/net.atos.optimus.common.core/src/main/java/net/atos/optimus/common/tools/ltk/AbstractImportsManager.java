@@ -22,6 +22,7 @@
 package net.atos.optimus.common.tools.ltk;
 
 import net.atos.optimus.common.tools.Activator;
+import net.atos.optimus.common.tools.jdt.ASTParserFactory;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -32,7 +33,6 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -60,7 +60,7 @@ public abstract class AbstractImportsManager {
 	 * @return Updated Contents.
 	 */
 	public static CharSequence execute(String filePath, CharSequence initialContents) {
-		ASTParser parser = ASTParser.newParser(AST.JLS4);
+		ASTParser parser = ASTParserFactory.INSTANCE.newParser();
 
 		IPath absolutePath = new Path(filePath);
 		try {

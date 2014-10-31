@@ -29,7 +29,6 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
@@ -1028,9 +1027,8 @@ public class JavaCodeHelper {
 		// Create a Document object for the source
 		Document sourceAsDocument = new Document(source);
 
-		// Create an AST parser for the source (use JLS3 to support
-		// JDK 1.5)
-		ASTParser existingContentParser = ASTParser.newParser(AST.JLS4);
+		// Create an AST parser for the source 
+		ASTParser existingContentParser = ASTParserFactory.INSTANCE.newParser();
 		existingContentParser.setSource(sourceAsDocument.get().toCharArray());
 		existingContentParser.setCompilerOptions(JavaCodeHelper.compilerOptions);
 		return (CompilationUnit) existingContentParser.createAST(null);
