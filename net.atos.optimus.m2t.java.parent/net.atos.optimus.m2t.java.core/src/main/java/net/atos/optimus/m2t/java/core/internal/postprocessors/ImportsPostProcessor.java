@@ -40,7 +40,7 @@ public class ImportsPostProcessor implements IPostProcessor {
 	 * @see net.atos.xa.generator.m2t.java.IPostProcessor#beforeWrite(net.atos.xa.generator.m2t.java.FileHandler)
 	 */
 	public void beforeWrite(FileHandler fileHandler) {
-		 CharSequence merged = ImportsGenerator.execute(fileHandler.getFilePath(), fileHandler.getWriter().toString());
+		 CharSequence merged = new ImportsGenerator().execute(fileHandler.getFilePath(), fileHandler.getWriter().toString());
 		 StringWriter mergedWriter = new StringWriter();
 		 mergedWriter.append(merged);
 		 fileHandler.setWriter(mergedWriter);

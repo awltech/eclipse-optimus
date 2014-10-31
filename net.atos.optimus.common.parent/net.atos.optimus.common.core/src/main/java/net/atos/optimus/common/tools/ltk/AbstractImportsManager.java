@@ -59,7 +59,7 @@ public abstract class AbstractImportsManager {
 	 *            : Initial Contents
 	 * @return Updated Contents.
 	 */
-	public static CharSequence execute(String filePath, CharSequence initialContents) {
+	public CharSequence execute(String filePath, CharSequence initialContents) {
 		ASTParser parser = ASTParserFactory.INSTANCE.newParser();
 
 		IPath absolutePath = new Path(filePath);
@@ -92,7 +92,7 @@ public abstract class AbstractImportsManager {
 		if (astNode instanceof CompilationUnit) {
 			CompilationUnit compilationUnit = (CompilationUnit) astNode;
 			compilationUnit.recordModifications();
-			if (ImportsGenerationVisitor.apply(compilationUnit)) {
+			if (apply(compilationUnit)) {
 				TextEdit rewrite = compilationUnit.rewrite(document, null);
 				try {
 					rewrite.apply(document);
