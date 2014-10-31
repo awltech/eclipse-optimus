@@ -96,13 +96,13 @@ public enum ASTParserFactory {
 		jlsMapping.put(ASTParserFactory.JAVA5, ASTParserFactory.ASTJLS3);
 		jlsMapping.put(ASTParserFactory.JAVA6, ASTParserFactory.ASTJLS3);
 		jlsMapping.put(ASTParserFactory.JAVA7, ASTParserFactory.ASTJLS4);
-		jlsMapping.put(ASTParserFactory.JAVA8, ASTParserFactory.ASTJLS8);
+		jlsMapping.put(ASTParserFactory.JAVA8, /* ASTParserFactory.ASTJLS8 */ASTParserFactory.ASTJLS4);
 
 		// Defines the default value of AST from taking all the values, in
 		// decreasing order, and try to instanciate them as soon as one is
 		// created
-		int[] jlsLevelsDesc = new int[] { ASTParserFactory.ASTJLS8, ASTParserFactory.ASTJLS4, ASTParserFactory.ASTJLS3,
-				ASTParserFactory.ASTJLS2 };
+		int[] jlsLevelsDesc = new int[] { /* ASTParserFactory.ASTJLS8, */ASTParserFactory.ASTJLS4,
+				ASTParserFactory.ASTJLS3, ASTParserFactory.ASTJLS2 };
 
 		for (int i = 0; i < jlsLevelsDesc.length && jlsDefaultLevel == null; i++) {
 			int astLevel = jlsLevelsDesc[i];
