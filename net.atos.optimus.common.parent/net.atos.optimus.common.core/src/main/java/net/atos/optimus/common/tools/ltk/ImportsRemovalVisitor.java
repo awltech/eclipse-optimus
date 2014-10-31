@@ -109,7 +109,7 @@ public class ImportsRemovalVisitor extends ASTVisitor {
 	public boolean visit(MethodInvocation node) {
 		// For the static methods invocation
 		IMethodBinding resolvedMethodBinding = node.resolveMethodBinding();
-		if (Modifier.isStatic(resolvedMethodBinding.getModifiers())) {
+		if (resolvedMethodBinding != null && Modifier.isStatic(resolvedMethodBinding.getModifiers())) {
 			Expression expression = node.getExpression();
 			if (expression instanceof SimpleName) {
 				ITypeBinding typeBinding = expression.resolveTypeBinding();
