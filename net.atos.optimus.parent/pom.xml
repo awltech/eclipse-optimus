@@ -41,8 +41,8 @@
 		<tycho-version>0.20.0</tycho-version>
 		<tycho-groupid>org.eclipse.tycho</tycho-groupid>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<platform-version-name>kepler</platform-version-name>
-		<platform-tag>e43x</platform-tag>
+		<platform-version-name>luna</platform-version-name>
+		<platform-tag>e44x</platform-tag>
 		<maven.javadoc.skip>true</maven.javadoc.skip>
 		<release-type>SNAPSHOT</release-type>
 		<format>yyyyMMddHHmm'-${platform-version-name}-${release-type}'</format>
@@ -50,9 +50,9 @@
 
 	<repositories>
 		<repository>
-			<id>kepler</id>
+			<id>luna</id>
 			<layout>p2</layout>
-			<url>http://download.eclipse.org/releases/kepler</url>
+			<url>http://download.eclipse.org/releases/luna</url>
 		</repository>
 	</repositories>
 
