@@ -43,6 +43,8 @@ import org.eclipse.jdt.core.JavaModelException;
  */
 public class MergerPostProcessor implements IPostProcessor {
 
+	private static final String DENORMALIZE_IMPORTS_PROPERTY = "net.atos.optimus.m2t.java.core.denormalize-imports";
+	
 	private JavaCodeMerger delegate;
 
 	/**
@@ -72,9 +74,11 @@ public class MergerPostProcessor implements IPostProcessor {
 			String existingContent = getFileContent(fileHandler.getFilePath());
 			String generatedContent = fileHandler.getWriter().toString();
 
-			existingContent = String.valueOf(new ImportsRemover().execute(fileHandler.getFilePath(), existingContent));
-			generatedContent = String.valueOf(new ImportsRemover().execute(fileHandler.getFilePath(), generatedContent));
-
+			String property = System.getProperty(DENORMALIZE_IMPORTS_PROPERTY);
+			if (property != null) {
+				existingContent = String.valueOf(new ImportsRemover().execute(fileHandler.getFilePath(),existingContent));
+				generatedContent = String.valueOf(new ImportsRemover().execute(fileHandler.getFilePath(),generatedContent));
+			}
 			String merged = delegate.merge(existingContent, generatedContent);
 			StringWriter mergedWriter = new StringWriter();
 			mergedWriter.write(merged);
