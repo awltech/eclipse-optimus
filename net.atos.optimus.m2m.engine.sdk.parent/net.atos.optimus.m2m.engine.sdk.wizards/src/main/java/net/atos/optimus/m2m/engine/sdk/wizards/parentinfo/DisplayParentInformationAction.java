@@ -1,9 +1,5 @@
 package net.atos.optimus.m2m.engine.sdk.wizards.parentinfo;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jface.action.IAction;
@@ -80,36 +76,4 @@ public class DisplayParentInformationAction implements IActionDelegate {
 		}
 		action.setEnabled(this.eObject != null);
 	}
-
-	private Object selectedObject;
-
-	public void foo1(IAction action, ISelection selection) {
-		this.selectedObject = null;
-		if (selection instanceof IStructuredSelection) {
-			Object o = ((IStructuredSelection) selection).getFirstElement();
-			if (o instanceof Object) {
-				this.selectedObject = (Object) o;
-			}
-		}
-		action.setEnabled(this.selectedObject != null);
-
-	}
-
-	public Collection<Object> selectedObjects = new ArrayList<Object>();
-
-	public void foo2(IAction action, ISelection selection) {
-		this.selectedObjects.clear();
-		if (selection instanceof IStructuredSelection) {
-			Iterator<?> i = ((IStructuredSelection) selection).iterator();
-			while (i.hasNext()) {
-				Object o = i.next();
-				if (o instanceof Object) {
-					this.selectedObjects.add((Object) o);
-				}
-			}
-		}
-		action.setEnabled(!this.selectedObjects.isEmpty());
-
-	}
-
 }

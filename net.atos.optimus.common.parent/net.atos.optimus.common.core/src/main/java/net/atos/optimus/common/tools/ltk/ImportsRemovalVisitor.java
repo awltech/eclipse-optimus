@@ -15,6 +15,7 @@ import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.IVariableBinding;
 import org.eclipse.jdt.core.dom.ImportDeclaration;
 import org.eclipse.jdt.core.dom.MarkerAnnotation;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.Name;
@@ -234,8 +235,9 @@ public class ImportsRemovalVisitor extends ASTVisitor {
 				ChildListPropertyDescriptor clpd = (ChildListPropertyDescriptor) locationInParent;
 				List<ASTNode> astNodes = (List<ASTNode>) node.getParent().getStructuralProperty(clpd);
 				try {
-					astNodes.remove(qualifiedName);
-					astNodes.add(node.getAST().newName(qualifiedName));
+					int index = astNodes.indexOf(node);
+					astNodes.remove(node);
+					astNodes.add(index, node.getAST().newName(qualifiedName));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -248,6 +250,29 @@ public class ImportsRemovalVisitor extends ASTVisitor {
 			}
 			this.modified = true;
 		}
+	}
+
+	@Override
+	public boolean visit(SimpleName node) {
+		ITypeBinding resolveTypeBinding = node.resolveTypeBinding();
+		if (resolveTypeBinding != null && !resolveTypeBinding.isRecovered()) {
+			System.out.print(node + " ==> " + node.getParent().getClass());
+			System.out.println();
+		}
+		return super.visit(node);
+	}
+
+	@Override
+	public boolean visit(MethodDeclaration node) {
+		List<?> thrownExceptions = new ArrayList<Object>();
+		thrownExceptions.addAll(node.thrownExceptions());
+		for (Object o : thrownExceptions) {
+			if (o instanceof SimpleName) {
+				SimpleName name = (SimpleName) o;
+				overrideValueInParent(name, name.resolveTypeBinding());
+			}
+		}
+		return true;
 	}
 
 	/*

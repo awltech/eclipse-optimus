@@ -72,8 +72,8 @@ public class MergerPostProcessor implements IPostProcessor {
 			String existingContent = getFileContent(fileHandler.getFilePath());
 			String generatedContent = fileHandler.getWriter().toString();
 
-//			existingContent = String.valueOf(new ImportsRemover().execute(fileHandler.getFilePath(), existingContent));
-//			generatedContent = String.valueOf(new ImportsRemover().execute(fileHandler.getFilePath(), generatedContent));
+			existingContent = String.valueOf(new ImportsRemover().execute(fileHandler.getFilePath(), existingContent));
+			generatedContent = String.valueOf(new ImportsRemover().execute(fileHandler.getFilePath(), generatedContent));
 
 			String merged = delegate.merge(existingContent, generatedContent);
 			StringWriter mergedWriter = new StringWriter();
