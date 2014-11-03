@@ -253,16 +253,6 @@ public class ImportsRemovalVisitor extends ASTVisitor {
 	}
 
 	@Override
-	public boolean visit(SimpleName node) {
-		ITypeBinding resolveTypeBinding = node.resolveTypeBinding();
-		if (resolveTypeBinding != null && !resolveTypeBinding.isRecovered()) {
-			System.out.print(node + " ==> " + node.getParent().getClass());
-			System.out.println();
-		}
-		return super.visit(node);
-	}
-
-	@Override
 	public boolean visit(MethodDeclaration node) {
 		List<?> thrownExceptions = new ArrayList<Object>();
 		thrownExceptions.addAll(node.thrownExceptions());

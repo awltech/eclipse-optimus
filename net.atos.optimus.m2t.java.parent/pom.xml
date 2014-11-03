@@ -10,6 +10,7 @@
   	<module>net.atos.optimus.m2t.java.site</module>
   	<module>net.atos.optimus.m2t.java.source.feature</module>
   	<module>net.atos.optimus.m2t.java.emtl</module>
+  	<module>net.atos.optimus.m2t.java.ui</module>
   </modules>
   <parent>
   	<groupId>net.atos.optimus</groupId>

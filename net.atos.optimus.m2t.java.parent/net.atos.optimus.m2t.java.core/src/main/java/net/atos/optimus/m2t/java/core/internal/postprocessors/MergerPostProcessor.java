@@ -30,6 +30,7 @@ import java.io.StringWriter;
 import net.atos.optimus.common.tools.ltk.ImportsRemover;
 import net.atos.optimus.m2t.java.core.FileHandler;
 import net.atos.optimus.m2t.java.core.IPostProcessor;
+import net.atos.optimus.m2t.java.core.config.JavaGenerationPreferencesHandler;
 import net.atos.optimus.m2t.merger.java.core.JavaCodeMerger;
 
 import org.eclipse.jdt.core.JavaModelException;
@@ -43,8 +44,6 @@ import org.eclipse.jdt.core.JavaModelException;
  */
 public class MergerPostProcessor implements IPostProcessor {
 
-	private static final String DENORMALIZE_IMPORTS_PROPERTY = "net.atos.optimus.m2t.java.core.denormalize-imports";
-	
 	private JavaCodeMerger delegate;
 
 	/**
@@ -74,10 +73,11 @@ public class MergerPostProcessor implements IPostProcessor {
 			String existingContent = getFileContent(fileHandler.getFilePath());
 			String generatedContent = fileHandler.getWriter().toString();
 
-			String property = System.getProperty(DENORMALIZE_IMPORTS_PROPERTY);
-			if (property != null) {
-				existingContent = String.valueOf(new ImportsRemover().execute(fileHandler.getFilePath(),existingContent));
-				generatedContent = String.valueOf(new ImportsRemover().execute(fileHandler.getFilePath(),generatedContent));
+			if (!JavaGenerationPreferencesHandler.INSTANCE.isImportDesorganisationDisabled()) {
+				existingContent = String.valueOf(new ImportsRemover().execute(fileHandler.getFilePath(),
+						existingContent));
+				generatedContent = String.valueOf(new ImportsRemover().execute(fileHandler.getFilePath(),
+						generatedContent));
 			}
 			String merged = delegate.merge(existingContent, generatedContent);
 			StringWriter mergedWriter = new StringWriter();
@@ -113,5 +113,4 @@ public class MergerPostProcessor implements IPostProcessor {
 			}
 		}
 	}
-
 }

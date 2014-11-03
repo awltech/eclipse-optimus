@@ -17,4 +17,5 @@ Require-Bundle: org.eclipse.ui,
  net.atos.optimus.m2t.java.emtl;resolution:=optional
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
-Export-Package: net.atos.optimus.m2t.java.core
+Export-Package: net.atos.optimus.m2t.java.core,
+ net.atos.optimus.m2t.java.core.config

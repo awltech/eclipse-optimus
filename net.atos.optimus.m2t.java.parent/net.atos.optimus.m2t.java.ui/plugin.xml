@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+<extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="net.atos.optimus.common.core.main"
+            class="net.atos.optimus.m2t.java.ui.internal.JavaGenerationPreferencesPage"
+            id="net.atos.optimus.m2t.java.ui.prefs1"
+            name="Java Code Generation Configuration">
+      </page>
+   </extension>
+</plugin>
