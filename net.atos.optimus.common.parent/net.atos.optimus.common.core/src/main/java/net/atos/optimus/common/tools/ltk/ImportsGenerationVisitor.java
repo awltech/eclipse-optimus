@@ -116,8 +116,8 @@ public class ImportsGenerationVisitor extends ASTVisitor {
 			unit.accept(visitor);
 			visitor.addMissingImports(unit);
 			return visitor.hasModifications;
-		} catch (Throwable t) {
-			Activator.getDefault().logError("Exception encountered while generating imports", t);
+		} catch (Exception e) {
+			Activator.getDefault().logError("Exception encountered while generating imports", e);
 		}
 		return false;
 	}
