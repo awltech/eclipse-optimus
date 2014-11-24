@@ -27,6 +27,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import net.atos.optimus.common.tools.CharsetHelper;
 import net.atos.optimus.m2t.java.core.IPostGenerationVetoStrategy;
 import net.atos.optimus.m2t.java.core.IPostProcessor;
 
@@ -100,20 +101,19 @@ public class XAGenerationStrategy extends DefaultStrategy {
 					final String message = AcceleoEngineMessages.getString(
 							"AcceleoGenerationStrategy.UnsupportedCharset", charset); //$NON-NLS-1$
 					AcceleoEnginePlugin.log(message, false);
-					writer = new XAAcceleoWriter(file, appendMode);
+					writer = new XAAcceleoWriter(file, appendMode, CharsetHelper.getCharset(file));
 					((XAAcceleoWriter) writer).setPostProcessors(this.postProcessors).setVetoStrategy(vetoStrategy);
 				}
 			} else {
-				writer = new XAAcceleoWriter(file, appendMode);
+				writer = new XAAcceleoWriter(file, appendMode, CharsetHelper.getCharset(file));
 				((XAAcceleoWriter) writer).setPostProcessors(this.postProcessors).setVetoStrategy(vetoStrategy);
 			}
 			if (appendMode && fileExisted)
 				writer.append(IAcceleoGenerationStrategy.LINE_SEPARATOR);
 		} else {
-			writer = new XAAcceleoWriter(file.getPath());
+			writer = new XAAcceleoWriter(file.getPath(), CharsetHelper.getCharset(file));
 			((XAAcceleoWriter) writer).setPostProcessors(this.postProcessors).setVetoStrategy(vetoStrategy);
 		}
 		return writer;
 	}
-
 }
