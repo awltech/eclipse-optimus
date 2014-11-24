@@ -58,9 +58,9 @@ public abstract class AbstractImportsManager {
 		
 		IPath localPath = new Path(filePath);
 		IFile fileForLocation = root.getFileForLocation(localPath);
-		if (fileForLocation != null && fileForLocation.exists()) {
+		if (fileForLocation != null) {
 			IJavaElement create = JavaCore.create(fileForLocation);
-			if (create instanceof ICompilationUnit && create.exists()) {
+			if (create instanceof ICompilationUnit) {
 				return (ICompilationUnit) create;
 			}
 			
@@ -72,7 +72,7 @@ public abstract class AbstractImportsManager {
 				IFile file = root.getFile(tempPath);
 				if (file != null && file.exists()) {
 					IJavaElement create2 = JavaCore.create(file);
-					if (create2 instanceof ICompilationUnit && create2.exists()) {
+					if (create2 instanceof ICompilationUnit) {
 						return (ICompilationUnit) create2;
 					}
 				}
