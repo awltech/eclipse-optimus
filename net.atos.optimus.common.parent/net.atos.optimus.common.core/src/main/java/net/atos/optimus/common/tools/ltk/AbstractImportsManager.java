@@ -116,12 +116,10 @@ public abstract class AbstractImportsManager {
 
 			ASTNode astNode = parser.createAST(new NullProgressMonitor());
 			IDocument document = new Document(initialContents.toString().toString());
-			// Valeur du contenu du document qui n'est pas bonne ?
 			if (astNode instanceof CompilationUnit) {
 				CompilationUnit domCompilationUnit = (CompilationUnit) astNode;
 				domCompilationUnit.recordModifications();
 				if (apply(domCompilationUnit)) {
-					// test avec retour direct de la compilation unit ?
 					TextEdit rewrite = domCompilationUnit.rewrite(document, null);
 					try {
 						rewrite.apply(document);
