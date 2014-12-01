@@ -131,12 +131,13 @@ public final class NoJMergeAcceleoFileWriter extends AbstractAcceleoWriter {
 		} else {
 			Writer writer = null;
 			OutputStream fileOutputStream = null;
+			OutputStreamWriter fileWriter = null;
 			try {
 				if (selectedCharset == null) {
 					writer = new BufferedWriter(new FileWriter(new File(targetPath)));
 				} else {
 					fileOutputStream = new FileOutputStream(new File(targetPath));
-					final OutputStreamWriter fileWriter = new OutputStreamWriter(fileOutputStream, selectedCharset);
+					fileWriter = new OutputStreamWriter(fileOutputStream, selectedCharset);
 					writer = new BufferedWriter(fileWriter);
 				}
 				writer.append(toString());
@@ -144,11 +145,14 @@ public final class NoJMergeAcceleoFileWriter extends AbstractAcceleoWriter {
 				// TODO Message to be added here !
 				e.printStackTrace();
 			} finally {
-				if (fileOutputStream != null) {
-					fileOutputStream.close();
-				}
 				if (writer != null) {
 					writer.close();
+				}
+				if (fileWriter != null) {
+					fileWriter.close();
+				}
+				if (fileOutputStream != null) {
+					fileOutputStream.close();
 				}
 			}
 		}
