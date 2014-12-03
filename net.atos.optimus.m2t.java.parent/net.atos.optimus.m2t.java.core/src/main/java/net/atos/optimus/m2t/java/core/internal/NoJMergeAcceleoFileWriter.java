@@ -32,6 +32,8 @@ import java.io.StringWriter;
 import java.io.Writer;
 
 import org.eclipse.acceleo.engine.generation.writers.AbstractAcceleoWriter;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.EMFPlugin;
 
 /**
@@ -143,19 +145,21 @@ public final class NoJMergeAcceleoFileWriter extends AbstractAcceleoWriter {
 				writer.append(toString());
 				writer.flush();
 			} catch (Exception e) {
-				// TODO Message to be added here !
-				e.printStackTrace();
+				Activator
+						.getDefault()
+						.getLog()
+						.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+								"An exception occurred while writing to writer", e));
 			} finally {
 				if (writer != null) {
 					writer.close();
 				}
-				// Useless as previous writer closes it.
-				// if (fileWriter != null) {
-				// fileWriter.close();
-				// }
-				// if (fileOutputStream != null) {
-				// fileOutputStream.close();
-				// }
+				if (fileWriter != null) {
+					fileWriter.close();
+				}
+				if (fileOutputStream != null) {
+					fileOutputStream.close();
+				}
 			}
 		}
 	}
