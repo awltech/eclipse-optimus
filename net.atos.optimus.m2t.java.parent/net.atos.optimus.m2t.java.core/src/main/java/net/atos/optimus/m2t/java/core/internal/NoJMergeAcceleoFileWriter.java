@@ -141,6 +141,7 @@ public final class NoJMergeAcceleoFileWriter extends AbstractAcceleoWriter {
 					writer = new BufferedWriter(fileWriter);
 				}
 				writer.append(toString());
+				writer.flush();
 			} catch (Exception e) {
 				// TODO Message to be added here !
 				e.printStackTrace();
@@ -148,12 +149,13 @@ public final class NoJMergeAcceleoFileWriter extends AbstractAcceleoWriter {
 				if (writer != null) {
 					writer.close();
 				}
-				if (fileWriter != null) {
-					fileWriter.close();
-				}
-				if (fileOutputStream != null) {
-					fileOutputStream.close();
-				}
+				// Useless as previous writer closes it.
+				// if (fileWriter != null) {
+				// fileWriter.close();
+				// }
+				// if (fileOutputStream != null) {
+				// fileOutputStream.close();
+				// }
 			}
 		}
 	}
