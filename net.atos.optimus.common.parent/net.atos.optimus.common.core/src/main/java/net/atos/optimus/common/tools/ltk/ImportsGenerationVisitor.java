@@ -152,9 +152,14 @@ public class ImportsGenerationVisitor extends ASTVisitor {
 
 	@Override
 	public boolean visit(CompilationUnit node) {
-		this.currentPackageName = node.getPackage().getName().getFullyQualifiedName();
 		
-		// Prefills the list with the imports that already exist in the list. (XADII-320)
+		if(node.getPackage() != null && node.getPackage().getName() != null) {
+			this.currentPackageName = node.getPackage().getName().getFullyQualifiedName(); 
+		} else { 
+	 		this.currentPackageName = ""; 
+		} 
+
+		// Prefills the list with the imports that already exist in the list.
 		for (Object o : node.imports()) {
 			ImportDeclaration declaration = (ImportDeclaration) o;
 			IBinding resolvedBinding = declaration.resolveBinding();
