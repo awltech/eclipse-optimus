@@ -21,7 +21,7 @@
  */
 package net.atos.optimus.m2m.engine.ui.prefs;
 
-import net.atos.optimus.m2m.engine.core.transformations.ExtensionPointTransformationDataSource;
+import net.atos.optimus.m2m.engine.core.transformations.ITransformationDataSource;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationSet;
 import net.atos.optimus.m2m.engine.ui.Activator;
@@ -57,6 +57,8 @@ public class TransformationsTreeLabelProvider extends LabelProvider {
 			}
 		} else if (element instanceof TransformationReference) {
 			return Activator.getDefault().getImage(ICONS_TRN_GIF);
+		} else if (element instanceof ITransformationDataSource) {
+			return null;
 		}
 		return super.getImage(element);
 	}
@@ -67,8 +69,8 @@ public class TransformationsTreeLabelProvider extends LabelProvider {
 	 * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
 	 */
 	public String getText(Object element) {
-		if (element instanceof ExtensionPointTransformationDataSource)
-			return "ROOT";
+		if (element instanceof ITransformationDataSource)
+			return element.getClass().getSimpleName();
 		else if (element instanceof TransformationSet) {
 			TransformationSet transformationSet = (TransformationSet) element;
 			return transformationSet.getDescription() + " (" + transformationSet.getId() + ")";
