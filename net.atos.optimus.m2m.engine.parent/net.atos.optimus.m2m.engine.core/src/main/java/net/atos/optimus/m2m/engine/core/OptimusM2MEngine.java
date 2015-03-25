@@ -21,11 +21,14 @@
  */
 package net.atos.optimus.m2m.engine.core;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
@@ -159,7 +162,7 @@ public class OptimusM2MEngine {
 	/**
 	 * Instance of transformation data source. Default implementation heads to extension points management
 	 */
-	protected ITransformationDataSource transformationDataSource = ExtensionPointTransformationDataSource.instance();
+	protected List<ITransformationDataSource> transformationDataSources = new ArrayList<ITransformationDataSource>();
 
 	/**
 	 * Instance of Mask used to filter the transformations
@@ -196,6 +199,7 @@ public class OptimusM2MEngine {
 			this.optimusAdapters.add(new EObjectLockAdapter());
 		if (trackAddition)
 			this.optimusAdapters.add(new EObjectChildAdditionAdapter(this, this.password));
+		this.transformationDataSources.add(ExtensionPointTransformationDataSource.instance());
 	}
 
 	/**
@@ -212,7 +216,7 @@ public class OptimusM2MEngine {
 		OptimusM2MEngineMessages.TE03.log(Arrays.toString(transformationSetIDs));
 		return this;
 	}
-
+	
 	/**
 	 * Applies a mask on the transformations, to prevent them from being
 	 * enabled. Applying a mask will NOT go over the user configuration
@@ -284,26 +288,28 @@ public class OptimusM2MEngine {
 	 */
 	private void resolveTransformations() {
 		OptimusM2MEngineMessages.TE24.log();
-		for (final TransformationReference reference : transformationDataSource.getAll()) {
-			String transformationSetID = reference.getTransformationSet().getId();
-			if (this.transformationsSetLimited) {
-				boolean found = false;
-				for (int i = 0; i < this.allowedTransformationSetsID.length && !found; i++) {
-					if (this.allowedTransformationSetsID[i].equals(transformationSetID))
-						found = true;
-				}
-				if (found) {
-					OptimusM2MEngineMessages.TE26.log(reference.getId(), transformationSetID);
-					this.accessibleTransformationReferences.put(reference.getId(), reference);
+		for (final ITransformationDataSource transformationDataSource : this.transformationDataSources) {
+			for (final TransformationReference reference : transformationDataSource.getAll()) {
+				String transformationSetID = reference.getTransformationSet().getId();
+				if (this.transformationsSetLimited) {
+					boolean found = false;
+					for (int i = 0; i < this.allowedTransformationSetsID.length && !found; i++) {
+						if (this.allowedTransformationSetsID[i].equals(transformationSetID))
+							found = true;
+					}
+					if (found) {
+						OptimusM2MEngineMessages.TE26.log(reference.getId(), transformationSetID);
+						this.accessibleTransformationReferences.put(reference.getId(), reference);
+					} else {
+						OptimusM2MEngineMessages.TE27.log(reference.getId(), transformationSetID);
+					}
 				} else {
-					OptimusM2MEngineMessages.TE27.log(reference.getId(), transformationSetID);
-				}
-			} else {
-				if (!reference.getTransformationSet().isPrivate()) {
-					OptimusM2MEngineMessages.TE28.log(reference.getId(), transformationSetID);
-					this.accessibleTransformationReferences.put(reference.getId(), reference);
-				} else {
-					OptimusM2MEngineMessages.TE29.log(reference.getId(), transformationSetID);
+					if (!reference.getTransformationSet().isPrivate()) {
+						OptimusM2MEngineMessages.TE28.log(reference.getId(), transformationSetID);
+						this.accessibleTransformationReferences.put(reference.getId(), reference);
+					} else {
+						OptimusM2MEngineMessages.TE29.log(reference.getId(), transformationSetID);
+					}
 				}
 			}
 		}
@@ -558,7 +564,28 @@ public class OptimusM2MEngine {
 	 * 
 	 * @return implementation
 	 */
+	@Deprecated
 	public ITransformationDataSource getTransformationDataSource() {
-		return transformationDataSource;
+		return transformationDataSources.size() > 0 ? transformationDataSources.iterator().next() : null;
+	}
+	
+	/**
+	 * Returns a transformation reference from its id. It tries to locate it in all the transformation data sources identified in this engine.
+	 * 
+	 * @param transformationReferenceId
+	 * @return
+	 */
+	public TransformationReference getTransformationReference(String transformationReferenceId) {
+		if (this.transformationDataSources == null) {
+			return null;
+		}
+		for (Iterator<ITransformationDataSource> iterator = this.transformationDataSources.iterator();iterator.hasNext();) {
+			ITransformationDataSource transformationDataSource = iterator.next();
+			TransformationReference reference = transformationDataSource != null ? transformationDataSource.getById(transformationReferenceId) : null;
+			if (reference != null) {
+				return reference;
+			}
+		}
+		return null;
 	}
 }

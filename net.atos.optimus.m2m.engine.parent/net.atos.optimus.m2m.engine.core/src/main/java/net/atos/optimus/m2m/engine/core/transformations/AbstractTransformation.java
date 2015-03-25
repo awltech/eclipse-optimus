@@ -188,11 +188,8 @@ public abstract class AbstractTransformation<T extends EObject> {
 	 * @param eObject
 	 */
 	protected void scheduleTransformation(String transformationId, EObject eObject) {
-
 		if (this.transformationEngine != null) {
-			ITransformationDataSource transformationDataSource = this.transformationEngine
-					.getTransformationDataSource();
-			TransformationReference reference = transformationDataSource.getById(transformationId);
+			TransformationReference reference = this.transformationEngine.getTransformationReference(transformationId);
 			if (reference != null)
 				this.transformationEngine.scheduleTransformation(eObject, reference, this.password);
 		}
@@ -210,9 +207,7 @@ public abstract class AbstractTransformation<T extends EObject> {
 	@Deprecated
 	protected void runTransformation(String transformationId, EObject eObject) throws TransformationFailedException {
 		if (this.transformationEngine != null) {
-			ITransformationDataSource transformationDataSource = this.transformationEngine
-					.getTransformationDataSource();
-			TransformationReference reference = transformationDataSource.getById(transformationId);
+			TransformationReference reference = this.transformationEngine.getTransformationReference(transformationId);
 			if (reference != null)
 				this.transformationEngine.executeTransformation(eObject, reference, this.password);
 		}
