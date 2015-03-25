@@ -28,7 +28,7 @@ import java.util.logging.Level;
 import net.atos.optimus.common.tools.swt.FormDataBuilder;
 import net.atos.optimus.m2m.engine.core.Activator;
 import net.atos.optimus.m2m.engine.core.logging.OptimusM2MEngineLogger;
-import net.atos.optimus.m2m.engine.core.transformations.ExtensionPointTransformationDataSource;
+import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSourceManager;
 
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
@@ -136,7 +136,7 @@ public class TransformationsPreferencesPage extends PreferencePage implements IW
 		treeViewer.addDoubleClickListener(new TransformationsTreeDoubleClickListener());
 		this.checkListener = new TransformationsTreeCheckListener(treeViewer);
 		treeViewer.addCheckStateListener(this.checkListener);
-		treeViewer.setInput(ExtensionPointTransformationDataSource.instance());
+		treeViewer.setInput(TransformationDataSourceManager.INSTANCE);
 
 		Button exportButton = new Button(composite, SWT.PUSH);
 		exportButton.setText(TransformationsPreferencesMessages.EXPORT_BUTTON.message());

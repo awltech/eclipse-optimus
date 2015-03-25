@@ -21,7 +21,6 @@
  */
 package net.atos.optimus.m2m.engine.core;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -45,10 +44,10 @@ import net.atos.optimus.m2m.engine.core.masks.ITransformationMask;
 import net.atos.optimus.m2m.engine.core.masks.PreferencesTransformationMask;
 import net.atos.optimus.m2m.engine.core.requirements.AbstractRequirement;
 import net.atos.optimus.m2m.engine.core.transformations.AbstractTransformation;
-import net.atos.optimus.m2m.engine.core.transformations.ExtensionPointTransformationDataSource;
 import net.atos.optimus.m2m.engine.core.transformations.ITransformationContext;
 import net.atos.optimus.m2m.engine.core.transformations.ITransformationDataSource;
 import net.atos.optimus.m2m.engine.core.transformations.ITransformationFactory;
+import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSourceManager;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationSet;
 
@@ -162,7 +161,7 @@ public class OptimusM2MEngine {
 	/**
 	 * Instance of transformation data source. Default implementation heads to extension points management
 	 */
-	protected List<ITransformationDataSource> transformationDataSources = new ArrayList<ITransformationDataSource>();
+	protected List<ITransformationDataSource> transformationDataSources = TransformationDataSourceManager.INSTANCE.getTransformationDataSources();
 
 	/**
 	 * Instance of Mask used to filter the transformations
@@ -199,7 +198,6 @@ public class OptimusM2MEngine {
 			this.optimusAdapters.add(new EObjectLockAdapter());
 		if (trackAddition)
 			this.optimusAdapters.add(new EObjectChildAdditionAdapter(this, this.password));
-		this.transformationDataSources.add(ExtensionPointTransformationDataSource.instance());
 	}
 
 	/**

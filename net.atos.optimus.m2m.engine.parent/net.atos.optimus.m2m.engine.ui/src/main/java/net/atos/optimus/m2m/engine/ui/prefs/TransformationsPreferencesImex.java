@@ -25,11 +25,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.Properties;
 
 import net.atos.optimus.m2m.engine.core.Activator;
 import net.atos.optimus.m2m.engine.core.masks.PreferencesTransformationMask;
 import net.atos.optimus.m2m.engine.core.transformations.ExtensionPointTransformationDataSource;
+import net.atos.optimus.m2m.engine.core.transformations.ITransformationDataSource;
+import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSourceManager;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
 
 import org.eclipse.core.runtime.IStatus;
@@ -54,7 +57,13 @@ public class TransformationsPreferencesImex {
 	static void exportPreferences() {
 		Properties properties = new Properties();
 
-		ExtensionPointTransformationDataSource manager = ExtensionPointTransformationDataSource.instance();
+		ITransformationDataSource manager = null;
+		for (Iterator<ITransformationDataSource> iterator = TransformationDataSourceManager.INSTANCE.getTransformationDataSources().iterator();iterator.hasNext();) {
+			ITransformationDataSource next = iterator.next();
+			if (next instanceof ExtensionPointTransformationDataSource) {
+				manager = next;
+			}
+		}
 
 		for (TransformationReference reference : manager.getAll()) {
 			properties.put(reference.getId(),

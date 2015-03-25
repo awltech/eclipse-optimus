@@ -26,4 +26,11 @@
 <plugin>
    <extension-point id="Transformations" name="Transformations" schema="schema/Transformations.exsd"/>
    <extension-point id="TransformationMasks" name="TransformationMasks" schema="schema/TransformationMasks.exsd"/>
+   <extension-point id="TransformationSources" name="TransformationSources" schema="schema/TransformationSources.exsd"/>
+   <extension
+         point="net.atos.optimus.m2m.engine.core.TransformationSources">
+      <transformationDataSource
+            implementation="net.atos.optimus.m2m.engine.core.transformations.ExtensionPointTransformationDataSource">
+      </transformationDataSource>
+   </extension>
 </plugin>

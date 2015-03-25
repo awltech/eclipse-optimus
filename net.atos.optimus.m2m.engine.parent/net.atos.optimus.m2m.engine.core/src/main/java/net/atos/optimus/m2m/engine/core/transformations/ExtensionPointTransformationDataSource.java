@@ -49,28 +49,28 @@ import org.eclipse.core.runtime.Status;
  */
 public class ExtensionPointTransformationDataSource implements ITransformationDataSource {
 
-	/**
-	 * Singleton Holder class
-	 * 
-	 * @author Maxence Vanbésien (mvaawl@gmail.com)
-	 * @since 1.0
-	 * 
-	 */
-	private static class SingletonHolder {
-		static ExtensionPointTransformationDataSource instance = new ExtensionPointTransformationDataSource();
-	}
-
-	/**
-	 * @return Transformation Manager single instance
-	 */
-	public static ExtensionPointTransformationDataSource instance() {
-		return SingletonHolder.instance;
-	}
+//	/**
+//	 * Singleton Holder class
+//	 * 
+//	 * @author Maxence Vanbésien (mvaawl@gmail.com)
+//	 * @since 1.0
+//	 * 
+//	 */
+//	private static class SingletonHolder {
+//		static ExtensionPointTransformationDataSource instance = new ExtensionPointTransformationDataSource();
+//	}
+//
+//	/**
+//	 * @return Transformation Manager single instance
+//	 */
+//	public static ExtensionPointTransformationDataSource instance() {
+//		return SingletonHolder.instance;
+//	}
 
 	/**
 	 * Private Constructor
 	 */
-	private ExtensionPointTransformationDataSource() {
+	public ExtensionPointTransformationDataSource() {
 		this.transformationReferencesMap = new HashMap<String, TransformationReference>();
 		this.transformationSetsMap = new HashMap<String, TransformationSet>();
 		this.loadExtensions();
@@ -111,6 +111,7 @@ public class ExtensionPointTransformationDataSource implements ITransformationDa
 						if (lts == null)
 							lts = new DefaultTransformationSet();
 						lts.setId(transformationSetId);
+						lts.setTransformationDataSource(this);
 						lts.setDescription(transformationSetDescription);
 						lts.setContributor(configurationElement.getContributor() == null ? "<UNKNOWN>"
 								: configurationElement.getContributor().getName());

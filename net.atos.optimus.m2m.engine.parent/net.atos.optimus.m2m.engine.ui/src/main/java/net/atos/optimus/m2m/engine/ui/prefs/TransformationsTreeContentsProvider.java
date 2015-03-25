@@ -24,7 +24,8 @@ package net.atos.optimus.m2m.engine.ui.prefs;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import net.atos.optimus.m2m.engine.core.transformations.ExtensionPointTransformationDataSource;
+import net.atos.optimus.m2m.engine.core.transformations.ITransformationDataSource;
+import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSourceManager;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationSet;
 
@@ -60,8 +61,8 @@ public class TransformationsTreeContentsProvider implements ITreeContentProvider
 	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getElements(java.lang.Object)
 	 */
 	public Object[] getElements(Object inputElement) {
-		if (inputElement instanceof ExtensionPointTransformationDataSource) {
-			Collection<TransformationReference> references = ((ExtensionPointTransformationDataSource) inputElement).getAll();
+		if (inputElement instanceof ITransformationDataSource) {
+			Collection<TransformationReference> references = ((ITransformationDataSource) inputElement).getAll();
 			Collection<TransformationSet> sets = new ArrayList<TransformationSet>();
 			for (TransformationReference reference : references) {
 				TransformationSet set = reference.getTransformationSet();
@@ -71,7 +72,7 @@ public class TransformationsTreeContentsProvider implements ITreeContentProvider
 			return sets.toArray();
 		} else if (inputElement instanceof TransformationSet) {
 			TransformationSet thisSet = (TransformationSet) inputElement;
-			Collection<TransformationReference> allRefs = ExtensionPointTransformationDataSource.instance().getAll();
+			Collection<TransformationReference> allRefs = thisSet.getTransformationDataSource().getAll();
 			Collection<TransformationReference> refs = new ArrayList<TransformationReference>();
 			for (TransformationReference reference : allRefs)
 				if (reference.getTransformationSet() == thisSet)
@@ -96,9 +97,10 @@ public class TransformationsTreeContentsProvider implements ITreeContentProvider
 	public Object getParent(Object element) {
 		if (element instanceof TransformationReference) {
 			return ((TransformationReference) element).getTransformationSet();
-
 		} else if (element instanceof TransformationSet) {
-			return ExtensionPointTransformationDataSource.instance();
+			return ((TransformationSet) element).getTransformationDataSource();
+		} else if (element instanceof ITransformationDataSource) {
+			return TransformationDataSourceManager.INSTANCE;
 		}
 		return null;
 	}

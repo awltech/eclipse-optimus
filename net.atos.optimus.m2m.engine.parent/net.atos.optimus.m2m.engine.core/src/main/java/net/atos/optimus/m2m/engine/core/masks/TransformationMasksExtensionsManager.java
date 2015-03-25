@@ -26,7 +26,6 @@ import java.util.Collections;
 import java.util.List;
 
 import net.atos.optimus.m2m.engine.core.Activator;
-import net.atos.optimus.m2m.engine.core.transformations.ExtensionPointTransformationDataSource;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -82,8 +81,7 @@ public enum TransformationMasksExtensionsManager {
 					// When transformation set is build from extension point,
 					// starting with nothing and including elements
 					String name = configurationElement.getAttribute("name");
-					JavaTransformationMask mask = JavaTransformationMask.allOff().withTransformationDataSource(
-							ExtensionPointTransformationDataSource.instance());
+					JavaTransformationMask mask = JavaTransformationMask.allOff();
 					for (IConfigurationElement child : configurationElement.getChildren()) {
 						if ("includes".equals(child.getName())) {
 							String transformationId = child.getAttribute("transformationId");
@@ -102,8 +100,7 @@ public enum TransformationMasksExtensionsManager {
 					// When transformation set is build from extension point,
 					// starting with all and excluding elements
 					String name = configurationElement.getAttribute("name");
-					JavaTransformationMask mask = JavaTransformationMask.allOn().withTransformationDataSource(
-							ExtensionPointTransformationDataSource.instance());
+					JavaTransformationMask mask = JavaTransformationMask.allOn();
 					for (IConfigurationElement child : configurationElement.getChildren()) {
 						if ("excludes".equals(child.getName())) {
 							String transformationId = child.getAttribute("transformationId");

@@ -23,10 +23,11 @@ package net.atos.optimus.m2m.engine.core.masks;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-import net.atos.optimus.m2m.engine.core.transformations.ExtensionPointTransformationDataSource;
 import net.atos.optimus.m2m.engine.core.transformations.ITransformationDataSource;
+import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSourceManager;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
 
 /**
@@ -63,7 +64,8 @@ public class JavaTransformationMask implements ITransformationMask {
 	/**
 	 * Default Transformation Data Source implementation used.
 	 */
-	private ITransformationDataSource transformationDataSource = ExtensionPointTransformationDataSource.instance();
+	private List<ITransformationDataSource> transformationDataSources = TransformationDataSourceManager.INSTANCE
+			.getTransformationDataSources();
 
 	/**
 	 * Creates a new Transformation mask, with the enablement default value,
@@ -86,8 +88,9 @@ public class JavaTransformationMask implements ITransformationMask {
 	 *            , new implementation
 	 * @return
 	 */
-	public JavaTransformationMask withTransformationDataSource(ITransformationDataSource transformationDataSource) {
-		this.transformationDataSource = transformationDataSource;
+	public JavaTransformationMask withTransformationDataSources(List<ITransformationDataSource> transformationDataSource) {
+		this.transformationDataSources.clear();
+		this.transformationDataSources.addAll(transformationDataSource);
 		return this;
 	}
 
@@ -187,13 +190,14 @@ public class JavaTransformationMask implements ITransformationMask {
 
 		if (id == null)
 			return;
-
-		Collection<TransformationReference> allReferences = transformationDataSource.getAll();
-		for (TransformationReference reference : allReferences) {
-			String transformationSetID = reference.getTransformationSet() != null ? reference.getTransformationSet()
-					.getId() : null;
-			if (id.equals(transformationSetID)) {
-				this.manageTransformation(reference.getId(), enable);
+		for (ITransformationDataSource transformationDataSource : transformationDataSources) {
+			Collection<TransformationReference> allReferences = transformationDataSource.getAll();
+			for (TransformationReference reference : allReferences) {
+				String transformationSetID = reference.getTransformationSet() != null ? reference
+						.getTransformationSet().getId() : null;
+				if (id.equals(transformationSetID)) {
+					this.manageTransformation(reference.getId(), enable);
+				}
 			}
 		}
 	}
@@ -220,7 +224,11 @@ public class JavaTransformationMask implements ITransformationMask {
 	 */
 	public JavaTransformationMask merge(JavaTransformationMask transformationMask) {
 
-		if (this.transformationDataSource != transformationMask.transformationDataSource)
+		if (!checkSameTransformationSets(transformationMask)) {
+			return this;
+		}
+
+		if (this.transformationDataSources != transformationMask.transformationDataSources)
 			return this;
 
 		if (this.defaultEnabled == transformationMask.defaultEnabled) {
@@ -230,14 +238,26 @@ public class JavaTransformationMask implements ITransformationMask {
 			if (transformationMask.exceptions.size() == 0) {
 				return this;
 			}
-
-			for (TransformationReference transformationReference : this.transformationDataSource.getAll()) {
-				if (!transformationMask.exceptions.contains(transformationReference.getId())) {
-					this.exceptions.add(transformationReference.getId());
+			for (ITransformationDataSource transformationDataSource : this.transformationDataSources) {
+				for (TransformationReference transformationReference : transformationDataSource.getAll()) {
+					if (!transformationMask.exceptions.contains(transformationReference.getId())) {
+						this.exceptions.add(transformationReference.getId());
+					}
 				}
 			}
 		}
 		return this;
 	}
 
+	private boolean checkSameTransformationSets(JavaTransformationMask transformationMask) {
+		if (this.transformationDataSources.size() != transformationMask.transformationDataSources.size()) {
+			return false;
+		}
+		for (ITransformationDataSource transformationDataSource : this.transformationDataSources) {
+			if (!transformationMask.transformationDataSources.contains(transformationDataSource)) {
+				return false;
+			}
+		}
+		return true;
+	}
 }
