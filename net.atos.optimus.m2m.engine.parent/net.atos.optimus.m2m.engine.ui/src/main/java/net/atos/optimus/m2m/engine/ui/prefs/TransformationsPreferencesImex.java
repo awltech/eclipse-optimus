@@ -31,7 +31,7 @@ import java.util.Properties;
 import net.atos.optimus.m2m.engine.core.Activator;
 import net.atos.optimus.m2m.engine.core.masks.PreferencesTransformationMask;
 import net.atos.optimus.m2m.engine.core.transformations.ExtensionPointTransformationDataSource;
-import net.atos.optimus.m2m.engine.core.transformations.ITransformationDataSource;
+import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSource;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSourceManager;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
 
@@ -57,9 +57,10 @@ public class TransformationsPreferencesImex {
 	static void exportPreferences() {
 		Properties properties = new Properties();
 
-		ITransformationDataSource manager = null;
-		for (Iterator<ITransformationDataSource> iterator = TransformationDataSourceManager.INSTANCE.getTransformationDataSources().iterator();iterator.hasNext();) {
-			ITransformationDataSource next = iterator.next();
+		TransformationDataSource manager = null;
+		for (Iterator<TransformationDataSource> iterator = TransformationDataSourceManager.INSTANCE
+				.getTransformationDataSources().iterator(); iterator.hasNext();) {
+			TransformationDataSource next = iterator.next();
 			if (next instanceof ExtensionPointTransformationDataSource) {
 				manager = next;
 			}
@@ -67,14 +68,17 @@ public class TransformationsPreferencesImex {
 
 		for (TransformationReference reference : manager.getAll()) {
 			properties.put(reference.getId(),
-					PreferencesTransformationMask.INSTANCE.isTransformationEnabled(reference.getId()));
+					PreferencesTransformationMask.INSTANCE
+							.isTransformationEnabled(reference.getId()));
 		}
-		IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
+		IPreferenceStore preferenceStore = Activator.getDefault()
+				.getPreferenceStore();
 		FileDialog dialog = new FileDialog(new Shell(Display.getDefault()));
 		String pathName = preferenceStore.getString(EXPORT_PREF);
 		if (pathName != null && pathName.length() > 1)
 			dialog.setFilterPath(pathName);
-		dialog.setFileName("OptimusEnginePreferences-" + System.currentTimeMillis() + ".properties");
+		dialog.setFileName("OptimusEnginePreferences-"
+				+ System.currentTimeMillis() + ".properties");
 		dialog.setText("Please select where to write the preferences (Selecting existing file will overwrite it)...");
 
 		String result = dialog.open();
@@ -98,8 +102,8 @@ public class TransformationsPreferencesImex {
 			Activator
 					.getDefault()
 					.getLog()
-					.log(new Status(IStatus.INFO, Activator.PLUGIN_ID, "Preferences exported successfully at "
-							+ fullpath));
+					.log(new Status(IStatus.INFO, Activator.PLUGIN_ID,
+							"Preferences exported successfully at " + fullpath));
 			fos.close();
 		} catch (IOException e1) {
 			e1.printStackTrace();
@@ -114,7 +118,8 @@ public class TransformationsPreferencesImex {
 	}
 
 	static void importPreferences() {
-		IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
+		IPreferenceStore preferenceStore = Activator.getDefault()
+				.getPreferenceStore();
 
 		FileDialog dialog = new FileDialog(new Shell(Display.getDefault()));
 		String pathName = preferenceStore.getString(IMPORT_PATH_PREF);
@@ -157,8 +162,10 @@ public class TransformationsPreferencesImex {
 			String keyAsString = String.valueOf(key);
 			if (keyAsString.startsWith(keyPattern)) {
 				String id = keyAsString.substring(keyPattern.length());
-				PreferencesTransformationMask.INSTANCE.setTransformationEnabled(id,
-						Boolean.parseBoolean(properties.getProperty(keyAsString)));
+				PreferencesTransformationMask.INSTANCE
+						.setTransformationEnabled(id, Boolean
+								.parseBoolean(properties
+										.getProperty(keyAsString)));
 			}
 		}
 	}

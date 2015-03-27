@@ -26,26 +26,29 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import net.atos.optimus.m2m.engine.core.transformations.DefaultTransformationSet;
-import net.atos.optimus.m2m.engine.core.transformations.ITransformationDataSource;
+import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSource;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationSet;
 
 /**
- *  @author Maxence Vanbésien (mvaawl@gmail.com)
- *  @since 1.0
+ * @author Maxence Vanbésien (mvaawl@gmail.com)
+ * @since 1.0
  */
-public class TSetTransformationsDataSource implements ITransformationDataSource {
+public class TSetTransformationsDataSource extends TransformationDataSource {
 
 	private Map<String, TransformationReference> transformationReferences = new LinkedHashMap<String, TransformationReference>();
 
 	public TSetTransformationsDataSource() {
-		TransformationSet set1 = new DefaultTransformationSet("transformationSet1");
+		super("TSetTransformationsDataSource");
+		TransformationSet set1 = new DefaultTransformationSet(
+				"transformationSet1");
 		set1.setPrivate(true);
-		TransformationReference reference1 = new TransformationReference("t1", new TransformationFactory1(), set1,
-				null, 0);
-		TransformationSet set2 = new DefaultTransformationSet("transformationSet2");
-		TransformationReference reference2 = new TransformationReference("t2", new TransformationFactory2(), set2,
-				null, 0);
+		TransformationReference reference1 = new TransformationReference("t1",
+				new TransformationFactory1(), set1, null, 0);
+		TransformationSet set2 = new DefaultTransformationSet(
+				"transformationSet2");
+		TransformationReference reference2 = new TransformationReference("t2",
+				new TransformationFactory2(), set2, null, 0);
 
 		transformationReferences.put("t1", reference1);
 		transformationReferences.put("t2", reference2);

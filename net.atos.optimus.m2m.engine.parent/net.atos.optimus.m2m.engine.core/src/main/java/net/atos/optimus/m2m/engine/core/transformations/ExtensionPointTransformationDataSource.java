@@ -47,7 +47,7 @@ import org.eclipse.core.runtime.Status;
  * @since 1.0
  * 
  */
-public class ExtensionPointTransformationDataSource implements ITransformationDataSource {
+public class ExtensionPointTransformationDataSource extends TransformationDataSource {
 
 //	/**
 //	 * Singleton Holder class
@@ -71,6 +71,7 @@ public class ExtensionPointTransformationDataSource implements ITransformationDa
 	 * Private Constructor
 	 */
 	public ExtensionPointTransformationDataSource() {
+		super("Optimus Default Extension Point Transformation Data Source");
 		this.transformationReferencesMap = new HashMap<String, TransformationReference>();
 		this.transformationSetsMap = new HashMap<String, TransformationSet>();
 		this.loadExtensions();

@@ -26,7 +26,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import net.atos.optimus.m2m.engine.core.transformations.ITransformationDataSource;
+import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSource;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSourceManager;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
 
@@ -64,7 +64,7 @@ public class JavaTransformationMask implements ITransformationMask {
 	/**
 	 * Default Transformation Data Source implementation used.
 	 */
-	private List<ITransformationDataSource> transformationDataSources = TransformationDataSourceManager.INSTANCE
+	private List<TransformationDataSource> transformationDataSources = TransformationDataSourceManager.INSTANCE
 			.getTransformationDataSources();
 
 	/**
@@ -88,7 +88,7 @@ public class JavaTransformationMask implements ITransformationMask {
 	 *            , new implementation
 	 * @return
 	 */
-	public JavaTransformationMask withTransformationDataSources(List<ITransformationDataSource> transformationDataSource) {
+	public JavaTransformationMask withTransformationDataSources(List<TransformationDataSource> transformationDataSource) {
 		this.transformationDataSources.clear();
 		this.transformationDataSources.addAll(transformationDataSource);
 		return this;
@@ -190,7 +190,7 @@ public class JavaTransformationMask implements ITransformationMask {
 
 		if (id == null)
 			return;
-		for (ITransformationDataSource transformationDataSource : transformationDataSources) {
+		for (TransformationDataSource transformationDataSource : transformationDataSources) {
 			Collection<TransformationReference> allReferences = transformationDataSource.getAll();
 			for (TransformationReference reference : allReferences) {
 				String transformationSetID = reference.getTransformationSet() != null ? reference
@@ -238,7 +238,7 @@ public class JavaTransformationMask implements ITransformationMask {
 			if (transformationMask.exceptions.size() == 0) {
 				return this;
 			}
-			for (ITransformationDataSource transformationDataSource : this.transformationDataSources) {
+			for (TransformationDataSource transformationDataSource : this.transformationDataSources) {
 				for (TransformationReference transformationReference : transformationDataSource.getAll()) {
 					if (!transformationMask.exceptions.contains(transformationReference.getId())) {
 						this.exceptions.add(transformationReference.getId());
@@ -253,7 +253,7 @@ public class JavaTransformationMask implements ITransformationMask {
 		if (this.transformationDataSources.size() != transformationMask.transformationDataSources.size()) {
 			return false;
 		}
-		for (ITransformationDataSource transformationDataSource : this.transformationDataSources) {
+		for (TransformationDataSource transformationDataSource : this.transformationDataSources) {
 			if (!transformationMask.transformationDataSources.contains(transformationDataSource)) {
 				return false;
 			}

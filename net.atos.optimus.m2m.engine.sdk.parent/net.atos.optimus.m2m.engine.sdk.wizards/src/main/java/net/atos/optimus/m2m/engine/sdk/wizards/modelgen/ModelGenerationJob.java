@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.atos.optimus.m2m.engine.core.requirements.AbstractRequirement;
-import net.atos.optimus.m2m.engine.core.transformations.ITransformationDataSource;
+import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSource;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSourceManager;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationSet;
@@ -47,7 +47,7 @@ public class ModelGenerationJob extends WorkspaceJob {
 	 * Transformation Data Source. Defaultly instanciated to the extension
 	 * points one.
 	 */
-	private List<ITransformationDataSource> transformationDataSources = TransformationDataSourceManager.INSTANCE
+	private List<TransformationDataSource> transformationDataSources = TransformationDataSourceManager.INSTANCE
 			.getTransformationDataSources();
 
 	/**
@@ -68,7 +68,7 @@ public class ModelGenerationJob extends WorkspaceJob {
 	 * @param transformationDataSource
 	 * @return
 	 */
-	public ModelGenerationJob withTransformationDataSources(List<ITransformationDataSource> dataSources) {
+	public ModelGenerationJob withTransformationDataSources(List<TransformationDataSource> dataSources) {
 		this.transformationDataSources.clear();
 		this.transformationDataSources.addAll(dataSources);
 		return this;
@@ -103,7 +103,7 @@ public class ModelGenerationJob extends WorkspaceJob {
 		model.setName("Transformations");
 		resource.getContents().add(model);
 
-		for (ITransformationDataSource transformationDataSource : this.transformationDataSources) {
+		for (TransformationDataSource transformationDataSource : this.transformationDataSources) {
 			Collection<TransformationReference> transformationReferences = transformationDataSource.getAll();
 
 			Map<TransformationSet, org.eclipse.uml2.uml.Package> packageMap = new HashMap<TransformationSet, Package>();

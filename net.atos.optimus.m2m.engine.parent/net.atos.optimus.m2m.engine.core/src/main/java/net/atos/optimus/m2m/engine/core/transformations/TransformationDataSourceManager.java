@@ -17,11 +17,11 @@ import org.eclipse.core.runtime.Status;
 public enum TransformationDataSourceManager {
 	INSTANCE, TransformationSet;
 
-	private final List<ITransformationDataSource> transformationDataSources;
+	private final List<TransformationDataSource> transformationDataSources;
 
 	private TransformationDataSourceManager() {
 
-		List<ITransformationDataSource> tempTransformationDataSources = new ArrayList<ITransformationDataSource>();
+		List<TransformationDataSource> tempTransformationDataSources = new ArrayList<TransformationDataSource>();
 
 		IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(Activator.PLUGIN_ID,
 				"TransformationSources");
@@ -33,8 +33,8 @@ public enum TransformationDataSourceManager {
 						String implementation = configurationElement.getAttribute("implementation");
 						if (implementation != null && implementation.length() > 0) {
 							Object o = configurationElement.createExecutableExtension("implementation");
-							if (o instanceof ITransformationDataSource) {
-								tempTransformationDataSources.add((ITransformationDataSource) o);
+							if (o instanceof TransformationDataSource) {
+								tempTransformationDataSources.add((TransformationDataSource) o);
 							}
 						}
 					}
@@ -51,7 +51,7 @@ public enum TransformationDataSourceManager {
 		this.transformationDataSources = Collections.unmodifiableList(tempTransformationDataSources);
 	}
 	
-	public List<ITransformationDataSource> getTransformationDataSources() {
+	public List<TransformationDataSource> getTransformationDataSources() {
 		return transformationDataSources;
 	}
 }

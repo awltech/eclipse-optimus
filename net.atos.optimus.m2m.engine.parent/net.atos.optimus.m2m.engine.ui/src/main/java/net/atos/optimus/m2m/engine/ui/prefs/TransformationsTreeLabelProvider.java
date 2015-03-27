@@ -21,7 +21,7 @@
  */
 package net.atos.optimus.m2m.engine.ui.prefs;
 
-import net.atos.optimus.m2m.engine.core.transformations.ITransformationDataSource;
+import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSource;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationSet;
 import net.atos.optimus.m2m.engine.ui.Activator;
@@ -51,13 +51,14 @@ public class TransformationsTreeLabelProvider extends LabelProvider {
 	public Image getImage(Object element) {
 		if (element instanceof TransformationSet) {
 			if (((TransformationSet) element).isPrivate()) {
-				return Activator.getDefault().getImage(ICONS_TRNSET_PRIVATE_GIF);	
+				return Activator.getDefault()
+						.getImage(ICONS_TRNSET_PRIVATE_GIF);
 			} else {
 				return Activator.getDefault().getImage(ICONS_TRNSET_PUBLIC_GIF);
 			}
 		} else if (element instanceof TransformationReference) {
 			return Activator.getDefault().getImage(ICONS_TRN_GIF);
-		} else if (element instanceof ITransformationDataSource) {
+		} else if (element instanceof TransformationDataSource) {
 			return null;
 		}
 		return super.getImage(element);
@@ -69,11 +70,14 @@ public class TransformationsTreeLabelProvider extends LabelProvider {
 	 * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
 	 */
 	public String getText(Object element) {
-		if (element instanceof ITransformationDataSource)
-			return element.getClass().getSimpleName();
-		else if (element instanceof TransformationSet) {
+		if (element instanceof TransformationDataSource) {
+			TransformationDataSource dataSource = (TransformationDataSource) element;
+			return dataSource.getName() + " ("
+					+ dataSource.getClass().getName() + ")";
+		} else if (element instanceof TransformationSet) {
 			TransformationSet transformationSet = (TransformationSet) element;
-			return transformationSet.getDescription() + " (" + transformationSet.getId() + ")";
+			return transformationSet.getDescription() + " ("
+					+ transformationSet.getId() + ")";
 		} else if (element instanceof TransformationReference) {
 			TransformationReference reference = (TransformationReference) element;
 			return reference.getDescription() + " (" + reference.getId() + ")";

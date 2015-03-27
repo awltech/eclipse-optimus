@@ -45,7 +45,7 @@ import net.atos.optimus.m2m.engine.core.masks.PreferencesTransformationMask;
 import net.atos.optimus.m2m.engine.core.requirements.AbstractRequirement;
 import net.atos.optimus.m2m.engine.core.transformations.AbstractTransformation;
 import net.atos.optimus.m2m.engine.core.transformations.ITransformationContext;
-import net.atos.optimus.m2m.engine.core.transformations.ITransformationDataSource;
+import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSource;
 import net.atos.optimus.m2m.engine.core.transformations.ITransformationFactory;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSourceManager;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
@@ -161,7 +161,7 @@ public class OptimusM2MEngine {
 	/**
 	 * Instance of transformation data source. Default implementation heads to extension points management
 	 */
-	protected List<ITransformationDataSource> transformationDataSources = TransformationDataSourceManager.INSTANCE.getTransformationDataSources();
+	protected List<TransformationDataSource> transformationDataSources = TransformationDataSourceManager.INSTANCE.getTransformationDataSources();
 
 	/**
 	 * Instance of Mask used to filter the transformations
@@ -286,7 +286,7 @@ public class OptimusM2MEngine {
 	 */
 	private void resolveTransformations() {
 		OptimusM2MEngineMessages.TE24.log();
-		for (final ITransformationDataSource transformationDataSource : this.transformationDataSources) {
+		for (final TransformationDataSource transformationDataSource : this.transformationDataSources) {
 			for (final TransformationReference reference : transformationDataSource.getAll()) {
 				String transformationSetID = reference.getTransformationSet().getId();
 				if (this.transformationsSetLimited) {
@@ -563,7 +563,7 @@ public class OptimusM2MEngine {
 	 * @return implementation
 	 */
 	@Deprecated
-	public ITransformationDataSource getTransformationDataSource() {
+	public TransformationDataSource getTransformationDataSource() {
 		return transformationDataSources.size() > 0 ? transformationDataSources.iterator().next() : null;
 	}
 	
@@ -577,8 +577,8 @@ public class OptimusM2MEngine {
 		if (this.transformationDataSources == null) {
 			return null;
 		}
-		for (Iterator<ITransformationDataSource> iterator = this.transformationDataSources.iterator();iterator.hasNext();) {
-			ITransformationDataSource transformationDataSource = iterator.next();
+		for (Iterator<TransformationDataSource> iterator = this.transformationDataSources.iterator();iterator.hasNext();) {
+			TransformationDataSource transformationDataSource = iterator.next();
 			TransformationReference reference = transformationDataSource != null ? transformationDataSource.getById(transformationReferenceId) : null;
 			if (reference != null) {
 				return reference;

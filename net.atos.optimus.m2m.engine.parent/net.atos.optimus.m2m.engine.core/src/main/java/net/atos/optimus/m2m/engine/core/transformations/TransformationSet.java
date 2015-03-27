@@ -52,13 +52,26 @@ public abstract class TransformationSet {
 	 */
 	private String contributor;
 
-	private ITransformationDataSource transformationDataSource;
+	/**
+	 * Parent Data Source
+	 */
+	private TransformationDataSource transformationDataSource;
 
-	public ITransformationDataSource getTransformationDataSource() {
+	/**
+	 * 
+	 * @return parent data source
+	 */
+	public TransformationDataSource getTransformationDataSource() {
 		return transformationDataSource;
 	}
 
-	public void setTransformationDataSource(ITransformationDataSource transformationDataSource) {
+	/**
+	 * 
+	 * @param transformationDataSource
+	 *            parent data source
+	 */
+	public void setTransformationDataSource(
+			TransformationDataSource transformationDataSource) {
 		this.transformationDataSource = transformationDataSource;
 	}
 
