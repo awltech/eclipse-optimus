@@ -69,7 +69,9 @@ public class TransformationsTreeContentsProvider implements
 	 * Object)
 	 */
 	public Object[] getElements(Object inputElement) {
-		if (inputElement instanceof TransformationDataSource) {
+		if (inputElement instanceof TransformationDataSourceManager) {
+			return TransformationDataSourceManager.INSTANCE.getTransformationDataSources().toArray();
+		} else if (inputElement instanceof TransformationDataSource) {
 			Collection<TransformationReference> references = ((TransformationDataSource) inputElement)
 					.getAll();
 			Collection<TransformationSet> sets = new ArrayList<TransformationSet>();
