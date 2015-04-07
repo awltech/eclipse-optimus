@@ -25,6 +25,9 @@ import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 
+import net.atos.optimus.common.tools.logging.OptimusLogger;
+import net.atos.optimus.common.tools.logging.OptimusMessage;
+
 /**
  * Class that contains prioritized messages for the M2M logger
  * 
@@ -32,7 +35,7 @@ import java.util.logging.Level;
  * @since 1.0
  * 
  */
-public enum OptimusM2MEngineMessages {
+public enum OptimusM2MEngineMessages implements OptimusMessage {
 
 	// Messages related to the Transformation Engine
 	TE01(Level.INFO), TE02(Level.INFO), TE03(Level.INFO), TE04(Level.INFO), TE05(Level.INFO), TE06(Level.INFO), TE07(
@@ -77,6 +80,7 @@ public enum OptimusM2MEngineMessages {
 	 */
 	private static ResourceBundle resourceBundle = ResourceBundle.getBundle("OptimusM2MEngineMessages");
 
+	@Override
 	public Level getLevel() {
 		return level;
 	}
@@ -95,8 +99,9 @@ public enum OptimusM2MEngineMessages {
 	 * 
 	 * @param args
 	 */
+	@Override
 	public void log(final Object... args) {
-		OptimusM2MEngineLogger.log(this, args);
+		OptimusLogger.log(this, args);
 	}
 
 	/**
@@ -104,6 +109,7 @@ public enum OptimusM2MEngineMessages {
 	 * 
 	 * @param args
 	 */
+	@Override
 	public String message(final Object... args) {
 		return MessageFormat.format(OptimusM2MEngineMessages.resourceBundle.getString(this.toString()), args);
 	}

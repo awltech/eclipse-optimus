@@ -19,13 +19,13 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.engine.core.logging;
+package net.atos.optimus.common.tools.logging;
 
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.atos.optimus.m2m.engine.core.Activator;
+import net.atos.optimus.common.tools.Activator;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 
@@ -36,12 +36,13 @@ import org.eclipse.jface.preference.IPreferenceStore;
  * @since 1.0
  * 
  */
-public class OptimusM2MEngineLogger {
-
+public class OptimusLogger {
+	
+	public static final String LOGGER_LEVEL_KEY = Activator.PLUGIN_ID + ".logger.level";
 	/**
 	 * Console instance, in which messages will be logged
 	 */
-	public static final Logger logger = Logger.getLogger("Optimus-M2M");
+	public static final Logger logger = Logger.getLogger("OptimusLogger");
 
 	/**
 	 * Initializes the logger.
@@ -49,12 +50,12 @@ public class OptimusM2MEngineLogger {
 	static {
 		logger.setUseParentHandlers(false);
 		IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
-		String preferenceLevel = preferenceStore.getString(Activator.LOGGER_LEVEL_KEY);
+		String preferenceLevel = preferenceStore.getString(OptimusLogger.LOGGER_LEVEL_KEY);
 		logger.setLevel(Level.WARNING);
 		try {
 			logger.setLevel(Level.parse(preferenceLevel));
 		} catch (IllegalArgumentException iae) {
-			OptimusM2MEngineMessages.LG01.log(preferenceLevel);
+//			OptimusM2MEngineMessages.LG01.log(preferenceLevel);
 		}
 	}
 
@@ -63,10 +64,10 @@ public class OptimusM2MEngineLogger {
 	 * 
 	 * @param args
 	 */
-	public static void log(OptimusM2MEngineMessages message, final Object... args) {
+	public static void log(OptimusMessage message, final Object... args) {
 		if (logger.getLevel().intValue() <= message.getLevel().intValue()) {
 			logger.log(message.getLevel(), message.message(args));
-			OptimusM2MEngineLogger.flush();
+			OptimusLogger.flush();
 		}
 	}
 

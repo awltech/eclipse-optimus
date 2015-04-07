@@ -19,7 +19,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.engine.core.logging;
+package net.atos.optimus.common.tools.logging;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -35,7 +35,7 @@ import java.util.logging.LogRecord;
  * @author Maxence Vanbésien (mvaawl@gmail.com)
  * @since 1.0
  */
-public final class MessagesDefaultFormatter extends Formatter {
+public final class DefaultFormatter extends Formatter {
 
 	/**
 	 * Date Formatter

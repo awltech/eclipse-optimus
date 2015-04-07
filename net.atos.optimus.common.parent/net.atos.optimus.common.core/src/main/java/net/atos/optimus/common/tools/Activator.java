@@ -26,6 +26,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 
+import net.atos.optimus.common.tools.logging.OptimusConsoleManager;
+import net.atos.optimus.common.tools.logging.OptimusLogger;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -81,6 +84,7 @@ public class Activator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		OptimusConsoleManager.getInstance().register(OptimusLogger.logger);
 	}
 
 	/*
