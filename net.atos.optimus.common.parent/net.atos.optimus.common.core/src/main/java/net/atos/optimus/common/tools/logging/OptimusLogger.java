@@ -27,6 +27,8 @@ import java.util.logging.Logger;
 
 import net.atos.optimus.common.tools.Activator;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 /**
@@ -37,7 +39,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
  * 
  */
 public class OptimusLogger {
-	
+
 	public static final String LOGGER_LEVEL_KEY = Activator.PLUGIN_ID + ".logger.level";
 	/**
 	 * Console instance, in which messages will be logged
@@ -55,7 +57,11 @@ public class OptimusLogger {
 		try {
 			logger.setLevel(Level.parse(preferenceLevel));
 		} catch (IllegalArgumentException iae) {
-//			OptimusM2MEngineMessages.LG01.log(preferenceLevel);
+			Activator
+					.getDefault()
+					.getLog()
+					.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Failed to update logger level with value:"
+							+ preferenceLevel));
 		}
 	}
 
