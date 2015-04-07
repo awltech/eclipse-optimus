@@ -105,7 +105,7 @@ public abstract class TransformationSet {
 	 * @param id
 	 *            : ID
 	 */
-	void setId(String id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
