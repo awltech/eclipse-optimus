@@ -68,8 +68,11 @@ public enum OptimusM2MEngineMessages implements OptimusMessage {
 	// Messages related to Context Injection process
 	CI01(Level.FINE), CI02(Level.FINE), CI03(Level.FINE), CI04(Level.FINE), CI05(Level.INFO), CI06(Level.INFO), CI07(
 			Level.INFO), CI08(Level.INFO), CI09(Level.INFO), CI10(Level.INFO), CI11(Level.WARNING), CI12(Level.WARNING), CI13(
-			Level.WARNING), CI14(Level.WARNING), CI15(Level.WARNING), CI16(Level.INFO), CI17(Level.SEVERE);
+			Level.WARNING), CI14(Level.WARNING), CI15(Level.WARNING), CI16(Level.INFO), CI17(Level.SEVERE),
 
+	
+	// Messages related to the Transformation Data Sources registration
+	DS01(Level.INFO), DS02(Level.WARNING), DS03(Level.WARNING), DS04(Level.WARNING), DS05(Level.FINE), DS06(Level.FINE);
 	/**
 	 * Priority level
 	 */

@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import net.atos.optimus.m2m.engine.core.Activator;
+import net.atos.optimus.m2m.engine.core.logging.OptimusM2MEngineMessages;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -15,12 +16,13 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 
 public enum TransformationDataSourceManager {
-	INSTANCE;
+	INSTANCE, TransformationDataSource;
 
 	private final List<TransformationDataSource> transformationDataSources;
 
 	private TransformationDataSourceManager() {
-
+		OptimusM2MEngineMessages.DS05.log();
+		
 		List<TransformationDataSource> tempTransformationDataSources = new ArrayList<TransformationDataSource>();
 
 		IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(Activator.PLUGIN_ID,
@@ -34,11 +36,18 @@ public enum TransformationDataSourceManager {
 						if (implementation != null && implementation.length() > 0) {
 							Object o = configurationElement.createExecutableExtension("implementation");
 							if (o instanceof TransformationDataSource) {
-								tempTransformationDataSources.add((TransformationDataSource) o);
+								TransformationDataSource dataSource = (TransformationDataSource) o;
+								tempTransformationDataSources.add(dataSource);
+								OptimusM2MEngineMessages.DS01.log(dataSource.getName(), dataSource.getClass().getName());
+							} else {
+								OptimusM2MEngineMessages.DS02.log(o.getClass().getName());
 							}
+						} else {
+							OptimusM2MEngineMessages.DS03.log(configurationElement.getContributor().getName());
 						}
 					}
 				} catch (CoreException ce) {
+					OptimusM2MEngineMessages.DS04.log(ce.getMessage(), configurationElement.getContributor().getName());
 					Activator
 							.getDefault()
 							.getLog()
@@ -49,6 +58,7 @@ public enum TransformationDataSourceManager {
 			}
 		}
 		this.transformationDataSources = Collections.unmodifiableList(tempTransformationDataSources);
+		OptimusM2MEngineMessages.DS06.log();
 	}
 	
 	public List<TransformationDataSource> getTransformationDataSources() {
