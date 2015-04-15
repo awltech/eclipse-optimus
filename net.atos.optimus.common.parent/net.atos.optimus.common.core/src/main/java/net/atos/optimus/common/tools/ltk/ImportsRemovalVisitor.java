@@ -3,6 +3,8 @@ package net.atos.optimus.common.tools.ltk;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.atos.optimus.common.tools.jdt.jstcomp.ASTThrownExceptionsHelper;
+
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Annotation;
@@ -254,9 +256,9 @@ public class ImportsRemovalVisitor extends ASTVisitor {
 
 	@Override
 	public boolean visit(MethodDeclaration node) {
-		List<?> thrownExceptions = new ArrayList<Object>();
-		thrownExceptions.addAll(node.thrownExceptions());
-		for (Object o : thrownExceptions) {
+		List<Name> thrownExceptions = new ArrayList<Name>();
+		thrownExceptions.addAll(ASTThrownExceptionsHelper.getThrownExceptionNames(node));
+		for (Name o : thrownExceptions) {
 			if (o instanceof SimpleName) {
 				SimpleName name = (SimpleName) o;
 				overrideValueInParent(name, name.resolveTypeBinding());
