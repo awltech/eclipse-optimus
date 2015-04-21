@@ -27,6 +27,7 @@
    <extension-point id="Transformations" name="Transformations" schema="schema/Transformations.exsd"/>
    <extension-point id="TransformationMasks" name="TransformationMasks" schema="schema/TransformationMasks.exsd"/>
    <extension-point id="TransformationSources" name="TransformationSources" schema="schema/TransformationSources.exsd"/>
+   <extension-point id="TransformationExecutionHooks" name="TransformationExecutionHooks" schema="schema/TransformationExecutionHooks.exsd"/>
    <extension
          point="net.atos.optimus.m2m.engine.core.TransformationSources">
       <transformationDataSource

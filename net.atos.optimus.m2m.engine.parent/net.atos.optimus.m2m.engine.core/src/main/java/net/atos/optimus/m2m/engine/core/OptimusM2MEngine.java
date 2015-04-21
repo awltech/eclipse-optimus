@@ -37,6 +37,7 @@ import net.atos.optimus.m2m.engine.core.adapters.AbstractOptimusAdapter;
 import net.atos.optimus.m2m.engine.core.adapters.EObjectChildAdditionAdapter;
 import net.atos.optimus.m2m.engine.core.adapters.EObjectLockAdapter;
 import net.atos.optimus.m2m.engine.core.exceptions.TransformationFailedException;
+import net.atos.optimus.m2m.engine.core.hooks.TransformationExecutionHookManager;
 import net.atos.optimus.m2m.engine.core.logging.EObjectLabelProvider;
 import net.atos.optimus.m2m.engine.core.logging.OptimusM2MEngineMessages;
 import net.atos.optimus.m2m.engine.core.masks.ITransformationMask;
@@ -418,10 +419,10 @@ public class OptimusM2MEngine {
 
 			cachedTransformationsForEObject.add(transformation);
 			try {
-				//ContextElementManager.INSTANCE.inject(transformation, context); // TODO Make it optional!
+				TransformationExecutionHookManager.INSTANCE.onPreExecute(transformation, context);
 				transformation.execute(context);
 				OptimusM2MEngineMessages.TE13.log(reference.getId(), eObjectLabelProvider.getText(eObject));
-				//ContextElementManager.INSTANCE.update(transformation, context); // TODO Make it optional!
+				TransformationExecutionHookManager.INSTANCE.onPostExecute(transformation, context);
 			} catch (Exception e) {
 				throw new TransformationFailedException(reference.getId(), eObject, e);
 			}
