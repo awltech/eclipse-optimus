@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Context Injection for Optimus Transformations
+Bundle-SymbolicName: net.atos.optimus.m2m.engine.ctxinject
+Bundle-Version: 1.1.0.qualifier
+Bundle-Activator: net.atos.optimus.m2m.engine.ctxinject.internal.Activator
+Bundle-Vendor: Atos.net
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.emf.ecore,
+ net.atos.optimus.m2m.engine.core,
+ net.atos.optimus.common.core
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Export-Package: net.atos.optimus.m2m.engine.ctxinject.api,
+ net.atos.optimus.m2m.engine.ctxinject.exceptions
+Bundle-ClassPath: .

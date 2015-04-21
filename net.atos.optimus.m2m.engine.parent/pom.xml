@@ -10,6 +10,7 @@
   	<module>net.atos.optimus.m2m.engine.source.feature</module>
   	<module>net.atos.optimus.m2m.engine.tests</module>
   	<module>net.atos.optimus.m2m.engine.ui</module>
+  	<module>net.atos.optimus.m2m.engine.ctxinject</module>
   </modules>
   <parent>
   	<groupId>net.atos.optimus</groupId>
