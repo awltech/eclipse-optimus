@@ -36,7 +36,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import net.atos.optimus.m2m.engine.core.adapters.AbstractOptimusAdapter;
 import net.atos.optimus.m2m.engine.core.adapters.EObjectChildAdditionAdapter;
 import net.atos.optimus.m2m.engine.core.adapters.EObjectLockAdapter;
-import net.atos.optimus.m2m.engine.core.ctxinject.impl.ContextElementManager;
 import net.atos.optimus.m2m.engine.core.exceptions.TransformationFailedException;
 import net.atos.optimus.m2m.engine.core.logging.EObjectLabelProvider;
 import net.atos.optimus.m2m.engine.core.logging.OptimusM2MEngineMessages;
@@ -45,8 +44,8 @@ import net.atos.optimus.m2m.engine.core.masks.PreferencesTransformationMask;
 import net.atos.optimus.m2m.engine.core.requirements.AbstractRequirement;
 import net.atos.optimus.m2m.engine.core.transformations.AbstractTransformation;
 import net.atos.optimus.m2m.engine.core.transformations.ITransformationContext;
-import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSource;
 import net.atos.optimus.m2m.engine.core.transformations.ITransformationFactory;
+import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSource;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSourceManager;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationSet;
@@ -419,10 +418,10 @@ public class OptimusM2MEngine {
 
 			cachedTransformationsForEObject.add(transformation);
 			try {
-				ContextElementManager.INSTANCE.inject(transformation, context); // TODO Make it optional!
+				//ContextElementManager.INSTANCE.inject(transformation, context); // TODO Make it optional!
 				transformation.execute(context);
 				OptimusM2MEngineMessages.TE13.log(reference.getId(), eObjectLabelProvider.getText(eObject));
-				ContextElementManager.INSTANCE.update(transformation, context); // TODO Make it optional!
+				//ContextElementManager.INSTANCE.update(transformation, context); // TODO Make it optional!
 			} catch (Exception e) {
 				throw new TransformationFailedException(reference.getId(), eObject, e);
 			}
