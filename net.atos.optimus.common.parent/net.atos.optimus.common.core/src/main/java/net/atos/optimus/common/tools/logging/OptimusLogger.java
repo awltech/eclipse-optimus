@@ -73,6 +73,10 @@ public class OptimusLogger {
 	public static void log(OptimusMessage message, final Object... args) {
 		if (logger.getLevel().intValue() <= message.getLevel().intValue()) {
 			logger.log(message.getLevel(), message.message(args));
+			if (args.length > 0 && args[args.length - 1] instanceof Throwable) {
+				Throwable throwable = (Throwable) args[args.length - 1];
+				logger.log(message.getLevel(), throwable.getMessage(), throwable);
+			}
 			OptimusLogger.flush();
 		}
 	}

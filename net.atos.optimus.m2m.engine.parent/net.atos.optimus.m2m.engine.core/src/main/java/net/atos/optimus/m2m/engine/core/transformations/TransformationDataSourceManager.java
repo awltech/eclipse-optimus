@@ -52,7 +52,7 @@ public enum TransformationDataSourceManager {
 							.getDefault()
 							.getLog()
 							.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-									"An error occurred when trying to load Transformation Data Source"));
+									"An error occurred when trying to load Transformation Data Source", ce));
 				}
 
 			}

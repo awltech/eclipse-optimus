@@ -419,10 +419,10 @@ public class OptimusM2MEngine {
 
 			cachedTransformationsForEObject.add(transformation);
 			try {
-				TransformationExecutionHookManager.INSTANCE.onPreExecute(transformation, context);
-				transformation.execute(context);
-				OptimusM2MEngineMessages.TE13.log(reference.getId(), eObjectLabelProvider.getText(eObject));
-				TransformationExecutionHookManager.INSTANCE.onPostExecute(transformation, context);
+				TransformationExecutionHookManager.INSTANCE.beforeExecution(transformation, this.context);
+				transformation.execute(this.context);
+				OptimusM2MEngineMessages.TE13.log(reference.getId(), this.eObjectLabelProvider.getText(eObject));
+				TransformationExecutionHookManager.INSTANCE.afterExecution(transformation, this.context);
 			} catch (Exception e) {
 				throw new TransformationFailedException(reference.getId(), eObject, e);
 			}
@@ -430,7 +430,7 @@ public class OptimusM2MEngine {
 			while (!pendingTransformations.isEmpty()) {
 				PendingTransformation pendingTransformation = pendingTransformations.poll();
 				OptimusM2MEngineMessages.TE14.log(pendingTransformation.reference,
-						eObjectLabelProvider.getText(pendingTransformation.eObject));
+						this.eObjectLabelProvider.getText(pendingTransformation.eObject));
 				this.executeTransformation(pendingTransformation.eObject, pendingTransformation.reference, password);
 			}
 		}

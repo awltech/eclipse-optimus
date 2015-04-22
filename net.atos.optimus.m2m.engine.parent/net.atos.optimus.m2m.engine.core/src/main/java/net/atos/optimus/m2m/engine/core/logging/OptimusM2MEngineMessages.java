@@ -64,9 +64,14 @@ public enum OptimusM2MEngineMessages implements OptimusMessage {
 	EP01(Level.INFO), EP02(Level.INFO), EP03(Level.INFO), EP04(Level.INFO), EP05(Level.INFO), EP06(Level.INFO), EP07(
 			Level.INFO), EP08(Level.INFO), EP09(Level.INFO), EP10(Level.INFO), EP11(Level.INFO), EP12(Level.INFO), EP13(
 			Level.INFO), EP14(Level.SEVERE), EP15(Level.WARNING),
-	
+
 	// Messages related to the Transformation Data Sources registration
-	DS01(Level.INFO), DS02(Level.WARNING), DS03(Level.WARNING), DS04(Level.WARNING), DS05(Level.FINE), DS06(Level.FINE);
+	DS01(Level.INFO), DS02(Level.WARNING), DS03(Level.WARNING), DS04(Level.WARNING), DS05(Level.FINE), DS06(Level.FINE),
+
+	// Messages related to Transformation Hooks management
+	TH01(Level.FINE), TH02(Level.FINE), TH03(Level.INFO), TH04(Level.WARNING), TH05(Level.WARNING), TH06(Level.WARNING), TH07(
+			Level.WARNING), TH08(Level.WARNING);
+
 	/**
 	 * Priority level
 	 */
