@@ -213,7 +213,7 @@ public class TransformationsPreferencesPage extends PreferencePage implements IW
 		int currentLevel = levels.indexOf(OptimusLogger.logger.getLevel());
 		if (this.newLevel != currentLevel && this.newLevel > -1) {
 			OptimusLogger.logger.setLevel(levels.get(newLevel));
-			this.getPreferenceStore().setValue(Activator.LOGGER_LEVEL_KEY, this.levels.get(this.newLevel).getName());
+			this.getPreferenceStore().setValue(OptimusLogger.LOGGER_LEVEL_KEY, this.levels.get(this.newLevel).getName());
 		}
 		return super.performOk();
 	}

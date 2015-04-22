@@ -34,8 +34,6 @@ public class Activator extends AbstractUIPlugin {
 	// The plug-in ID
 	public static final String PLUGIN_ID = "net.atos.optimus.m2m.engine.core"; //$NON-NLS-1$
 
-	public static final String LOGGER_LEVEL_KEY = PLUGIN_ID + ".logger.level";
-
 	// The shared instance
 	private static Activator plugin;
 

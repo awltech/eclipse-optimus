@@ -54,14 +54,16 @@ public class OptimusLogger {
 		IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
 		String preferenceLevel = preferenceStore.getString(OptimusLogger.LOGGER_LEVEL_KEY);
 		logger.setLevel(Level.WARNING);
-		try {
-			logger.setLevel(Level.parse(preferenceLevel));
-		} catch (IllegalArgumentException iae) {
-			Activator
-					.getDefault()
-					.getLog()
-					.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Failed to update logger level with value:"
-							+ preferenceLevel));
+		if (preferenceLevel != null && preferenceLevel.length() > 0) {
+			try {
+				logger.setLevel(Level.parse(preferenceLevel));
+			} catch (IllegalArgumentException iae) {
+				Activator
+						.getDefault()
+						.getLog()
+						.log(new Status(IStatus.WARNING, Activator.PLUGIN_ID,
+								"Failed to update logger level with value:" + preferenceLevel));
+			}
 		}
 	}
 
