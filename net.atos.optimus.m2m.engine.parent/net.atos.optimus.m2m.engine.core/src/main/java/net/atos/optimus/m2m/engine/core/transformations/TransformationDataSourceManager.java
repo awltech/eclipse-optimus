@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 
 public enum TransformationDataSourceManager {
-	INSTANCE, TransformationDataSource;
+	INSTANCE;
 
 	private final List<TransformationDataSource> transformationDataSources;
 
