@@ -42,6 +42,8 @@ import net.atos.optimus.m2m.engine.core.logging.EObjectLabelProvider;
 import net.atos.optimus.m2m.engine.core.logging.OptimusM2MEngineMessages;
 import net.atos.optimus.m2m.engine.core.masks.ITransformationMask;
 import net.atos.optimus.m2m.engine.core.masks.PreferencesTransformationMask;
+import net.atos.optimus.m2m.engine.core.masks.TransformationMaskDataSource;
+import net.atos.optimus.m2m.engine.core.masks.TransformationMaskDataSourceManager;
 import net.atos.optimus.m2m.engine.core.requirements.AbstractRequirement;
 import net.atos.optimus.m2m.engine.core.transformations.AbstractTransformation;
 import net.atos.optimus.m2m.engine.core.transformations.ITransformationContext;
@@ -163,6 +165,11 @@ public class OptimusM2MEngine {
 	 */
 	protected List<TransformationDataSource> transformationDataSources = TransformationDataSourceManager.INSTANCE.getTransformationDataSources();
 
+	/**
+	 * Instance of transformation mask data source.
+	 */
+	protected List<TransformationMaskDataSource> transformationMaskDataSources = TransformationMaskDataSourceManager.INSTANCE.getTransformationMaskDataSources();
+	
 	/**
 	 * Instance of Mask used to filter the transformations
 	 */

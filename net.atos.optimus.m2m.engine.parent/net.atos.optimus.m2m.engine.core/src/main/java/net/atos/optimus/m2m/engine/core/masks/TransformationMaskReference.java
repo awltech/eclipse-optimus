@@ -35,21 +35,34 @@ public class TransformationMaskReference {
 	 * Mask Name
 	 */
 	private String name;
+	
+	/**
+	 * Mask description
+	 */
+	private String description;
 
 	/**
 	 * Mask implementation
 	 */
 	private ITransformationMask implementation;
+	
+	/**
+	 * Tell if the mask is customizable or not
+	 */
+	private boolean isCustomizable;
 
 	/**
 	 * Creates new Transformation Mask Reference
 	 * 
 	 * @param name
+	 * @param description
 	 * @param implementation
 	 */
-	public TransformationMaskReference(String name, ITransformationMask implementation) {
+	public TransformationMaskReference(String name, String description, ITransformationMask implementation, boolean isCustomizable) {
 		this.name = name;
+		this.description = description;
 		this.implementation = implementation;
+		this.isCustomizable = isCustomizable;
 	}
 
 	/**
@@ -64,6 +77,17 @@ public class TransformationMaskReference {
 	 */
 	public String getName() {
 		return name;
+	}
+	
+	/**
+	 * @return transformation mask description
+	 */
+	public String getDescription(){
+		return description;
+	}
+	
+	public boolean isCustomizable(){
+		return this.isCustomizable;
 	}
 
 }

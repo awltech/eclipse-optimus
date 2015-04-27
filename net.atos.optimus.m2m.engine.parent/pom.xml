@@ -6,6 +6,7 @@
   <modules>
   	<module>net.atos.optimus.m2m.engine.core</module>
   	<module>net.atos.optimus.m2m.engine.feature</module>
+  	<module>net.atos.optimus.m2m.engine.masks</module>
   	<module>net.atos.optimus.m2m.engine.site</module>
   	<module>net.atos.optimus.m2m.engine.source.feature</module>
   	<module>net.atos.optimus.m2m.engine.tests</module>

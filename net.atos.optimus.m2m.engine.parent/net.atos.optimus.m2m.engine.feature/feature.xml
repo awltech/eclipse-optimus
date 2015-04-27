@@ -51,6 +51,14 @@
          version="0.0.0"
          unpack="false"/>
          
+            
+   <plugin
+         id="net.atos.optimus.m2m.engine.masks"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+         
    <plugin
          id="net.atos.optimus.m2m.engine.ctxinject"
          download-size="0"

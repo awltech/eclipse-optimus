@@ -47,6 +47,7 @@ In Optimus, Transformation Masks are used upon a group of transformations, to de
                </appinfo>
             </annotation>
          </attribute>
+         
       </complexType>
    </element>
 
@@ -61,6 +62,13 @@ In Optimus, Transformation Masks are used upon a group of transformations, to de
             <annotation>
                <documentation>
                   Displayable name for Transformation Mask
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="description" type="string">
+            <annotation>
+               <documentation>
+           		 Optional description of the Transformation Mask
                </documentation>
             </annotation>
          </attribute>
@@ -95,6 +103,13 @@ In Optimus, Transformation Masks are used upon a group of transformations, to de
                </documentation>
             </annotation>
          </attribute>
+         <attribute name="description" type="string">
+            <annotation>
+               <documentation>
+           		 Optional description of the Transformation Mask
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 
@@ -113,6 +128,13 @@ In Optimus, Transformation Masks are used upon a group of transformations, to de
             <annotation>
                <documentation>
                   Displayable name for Transformation Mask
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="description" type="string">
+            <annotation>
+               <documentation>
+           		 Optional description of the Transformation Mask
                </documentation>
             </annotation>
          </attribute>

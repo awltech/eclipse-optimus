@@ -19,9 +19,12 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.engine.core.masks;
+package net.atos.optimus.m2m.engine.masks.extension;
 
 import net.atos.optimus.m2m.engine.core.Activator;
+import net.atos.optimus.m2m.engine.core.masks.ITransformationMask;
+import net.atos.optimus.m2m.engine.core.masks.PreferencesTransformationMask;
+import net.atos.optimus.m2m.engine.masks.JavaTransformationMask;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 
@@ -58,8 +61,8 @@ public enum TransformationsMaskSelectionPreference {
 
 		if (property != null && property.startsWith(EXISTING_PREFIX)) {
 			String maskIdentifier = property.substring(EXISTING_PREFIX.length());
-			ITransformationMask registeredMask = TransformationMasksExtensionsManager.INSTANCE
-					.getRegisteredMask(maskIdentifier);
+			ITransformationMask registeredMask = (new ExtensionPointTransformationMaskDataSource())
+					.getMaskById(maskIdentifier).getImplementation();
 			if (registeredMask != null) {
 				return registeredMask;
 			}
