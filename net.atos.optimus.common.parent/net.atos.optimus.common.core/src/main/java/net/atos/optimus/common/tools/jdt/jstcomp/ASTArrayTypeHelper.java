@@ -22,6 +22,9 @@ package net.atos.optimus.common.tools.jdt.jstcomp;
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 import java.util.List;
+import java.util.logging.Level;
+
+import net.atos.optimus.common.tools.logging.OptimusLogger;
 
 import org.eclipse.jdt.core.dom.ArrayType;
 import org.eclipse.jdt.core.dom.ChildPropertyDescriptor;
@@ -38,6 +41,8 @@ import org.eclipse.jdt.core.dom.Type;
  */
 public class ASTArrayTypeHelper {
 
+	private static final String RETURNED_DESCRIPTOR_MESSAGE = "[JSTComp] Returns ArrayType PropertyDescriptor named [%s].";
+
 	private ASTArrayTypeHelper() {
 	}
 
@@ -51,8 +56,14 @@ public class ASTArrayTypeHelper {
 			if (propertyDescriptor instanceof ChildPropertyDescriptor) {
 				ChildPropertyDescriptor childListPropertyDescriptor = (ChildPropertyDescriptor) propertyDescriptor;
 				if (DESCRIPTOR_NAME_AST4.equals(childListPropertyDescriptor.getId())) {
+					if (OptimusLogger.logger.isLoggable(Level.FINE)) {
+						OptimusLogger.logger.fine(String.format(RETURNED_DESCRIPTOR_MESSAGE, DESCRIPTOR_NAME_AST4));
+					}
 					return childListPropertyDescriptor;
 				} else if (DESCRIPTOR_NAME_AST8.equals(childListPropertyDescriptor.getId())) {
+					if (OptimusLogger.logger.isLoggable(Level.FINE)) {
+						OptimusLogger.logger.fine(String.format(RETURNED_DESCRIPTOR_MESSAGE, DESCRIPTOR_NAME_AST8));
+					}
 					return childListPropertyDescriptor;
 				}
 			}

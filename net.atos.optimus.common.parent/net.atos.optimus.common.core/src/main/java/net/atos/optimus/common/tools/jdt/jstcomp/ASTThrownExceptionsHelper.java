@@ -23,8 +23,10 @@ package net.atos.optimus.common.tools.jdt.jstcomp;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 import net.atos.optimus.common.tools.jdt.JavaCodeHelper;
+import net.atos.optimus.common.tools.logging.OptimusLogger;
 
 import org.eclipse.jdt.core.dom.ChildListPropertyDescriptor;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
@@ -42,6 +44,8 @@ import org.eclipse.jdt.core.dom.Type;
  */
 public class ASTThrownExceptionsHelper {
 
+	private static final String DESCRIPTOR_RETURNED_MESSAGE = "[JSTComp] Returns ThrownExceptions PropertyDescriptor named [%s].";
+
 	private ASTThrownExceptionsHelper() {
 	}
 
@@ -55,8 +59,14 @@ public class ASTThrownExceptionsHelper {
 			if (propertyDescriptor instanceof ChildListPropertyDescriptor) {
 				ChildListPropertyDescriptor childListPropertyDescriptor = (ChildListPropertyDescriptor) propertyDescriptor;
 				if (DESCRIPTOR_NAME_AST4.equals(childListPropertyDescriptor.getId())) {
+					if (OptimusLogger.logger.isLoggable(Level.FINE)) {
+						OptimusLogger.logger.fine(String.format(DESCRIPTOR_RETURNED_MESSAGE, DESCRIPTOR_NAME_AST4));
+					}
 					return childListPropertyDescriptor;
 				} else if (DESCRIPTOR_NAME_AST8.equals(childListPropertyDescriptor.getId())) {
+					if (OptimusLogger.logger.isLoggable(Level.FINE)) {
+						OptimusLogger.logger.fine(String.format(DESCRIPTOR_RETURNED_MESSAGE, DESCRIPTOR_NAME_AST4));
+					}
 					return childListPropertyDescriptor;
 				}
 			}
