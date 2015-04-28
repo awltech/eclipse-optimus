@@ -54,6 +54,15 @@ public enum TransformationMaskDataSourceManager {
 	/** The name of the element in the extension */
 	public static final String EXTENSION_ELEMENT = "transformationMaskDataSource";
 
+	/**
+	 * The key in the Optimus preference store associated to the transformation
+	 * mask choose in the preference
+	 */
+	public static final String PREFERED_MASK_STORE_KEY = "Transformation Mask Preference";
+
+	/** The name of the default mask */
+	public static final String DEFAULT_MASK_NAME = "Default all On mask";
+
 	private final List<TransformationMaskDataSource> transformationMaskDataSources;
 
 	private TransformationMaskDataSourceManager() {
@@ -75,8 +84,8 @@ public enum TransformationMaskDataSourceManager {
 							if (o instanceof TransformationMaskDataSource) {
 								TransformationMaskDataSource dataSource = (TransformationMaskDataSource) o;
 								tempTransformationMaskDataSources.add(dataSource);
-								OptimusM2MEngineMessages.MS02.log(dataSource.getName(), dataSource.getClass()
-										.getName());
+								OptimusM2MEngineMessages.MS02
+										.log(dataSource.getName(), dataSource.getClass().getName());
 							} else {
 								OptimusM2MEngineMessages.MS03.log(o.getClass().getName());
 							}
@@ -106,7 +115,7 @@ public enum TransformationMaskDataSourceManager {
 	public List<TransformationMaskDataSource> getTransformationMaskDataSources() {
 		return transformationMaskDataSources;
 	}
-	
+
 	/**
 	 * Returns the transformation mask reference with the id provided as
 	 * parameter
@@ -116,15 +125,31 @@ public enum TransformationMaskDataSourceManager {
 	 * @return the transformation mask reference with the id provided as
 	 *         parameter or null if it doesn't exist.
 	 */
-	public TransformationMaskReference getTransformationMaskById(String id){
+	public TransformationMaskReference getTransformationMaskById(String id) {
 		TransformationMaskReference transformationMaskReference = null;
-		for(TransformationMaskDataSource transformationMaskDataSource : this.getTransformationMaskDataSources()){
+		for (TransformationMaskDataSource transformationMaskDataSource : this.getTransformationMaskDataSources()) {
 			transformationMaskReference = transformationMaskDataSource.getMaskById(id);
-			if(transformationMaskReference != null){
+			if (transformationMaskReference != null) {
 				return transformationMaskReference;
 			}
 		}
 		return transformationMaskReference;
+	}
+
+	/**
+	 * Returns the transformation mask reference selected via the preference
+	 * window or the filter on all if nothing was selected
+	 * 
+	 * @return the transformation mask reference selected via the preference
+	 *         window or the filter on all if nothing was selected.
+	 */
+	public TransformationMaskReference getPreferredTransformationMask() {
+		String maskName = Activator.getDefault().getPreferenceStore()
+				.getString(TransformationMaskDataSourceManager.PREFERED_MASK_STORE_KEY);
+		TransformationMaskReference transformationMaskReference = TransformationMaskDataSourceManager.INSTANCE
+				.getTransformationMaskById(maskName);
+		return transformationMaskReference != null ? transformationMaskReference : this
+				.getTransformationMaskById(TransformationMaskDataSourceManager.DEFAULT_MASK_NAME);
 	}
 
 }

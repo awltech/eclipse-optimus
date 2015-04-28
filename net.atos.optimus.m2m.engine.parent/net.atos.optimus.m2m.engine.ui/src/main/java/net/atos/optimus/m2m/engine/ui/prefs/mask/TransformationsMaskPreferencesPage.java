@@ -35,6 +35,9 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 public class TransformationsMaskPreferencesPage extends PreferencePage implements IWorkbenchPreferencePage {
 
+	/** The combo box displaying the available transformation masks */
+	protected Combo transformationMaskCombo;
+
 	@Override
 	public void init(IWorkbench workbench) {
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
@@ -49,15 +52,25 @@ public class TransformationsMaskPreferencesPage extends PreferencePage implement
 		selectionLabel.setText(TransformationMasksPreferencesMessages.CHECK_BOX_LABEL.message());
 		FormDataBuilder.on(selectionLabel).top();
 
-		final Combo combo = new Combo(composite, SWT.READ_ONLY);
+		this.transformationMaskCombo = new Combo(composite, SWT.READ_ONLY);
 		for (TransformationMaskDataSource transformationMaskDataSource : TransformationMaskDataSourceManager.INSTANCE
 				.getTransformationMaskDataSources()) {
 			for (TransformationMaskReference transformationMaskReference : transformationMaskDataSource.getAllMasks()) {
-				combo.add(transformationMaskReference.getName());
+				this.transformationMaskCombo.add(transformationMaskReference.getName());
 			}
 		}
-		combo.select(0);
-		FormDataBuilder.on(combo).top(selectionLabel).horizontal();
+
+		TransformationMaskReference transformationMaskReference = TransformationMaskDataSourceManager.INSTANCE
+				.getPreferredTransformationMask();
+		int indexMaskName = 0;
+		String[] maskNames = this.transformationMaskCombo.getItems();
+		while (indexMaskName < maskNames.length - 1
+				&& !transformationMaskReference.getName().equals(maskNames[indexMaskName])) {
+			indexMaskName++;
+		}
+		this.transformationMaskCombo.select(indexMaskName);
+
+		FormDataBuilder.on(this.transformationMaskCombo).top(selectionLabel).horizontal();
 
 		Group descriptionGroup = new Group(composite, SWT.NONE);
 		descriptionGroup.setText(TransformationMasksPreferencesMessages.MASK_DESCRIPTION.message());
@@ -65,10 +78,10 @@ public class TransformationsMaskPreferencesPage extends PreferencePage implement
 
 		final Label descriptionLabel = new Label(descriptionGroup, SWT.WRAP);
 		FormDataBuilder.on(descriptionLabel).fill();
-		descriptionLabel.setText(TransformationMaskDataSourceManager.INSTANCE
-				.getTransformationMaskById(combo.getText()).getDescription());
+		descriptionLabel.setText(TransformationMaskDataSourceManager.INSTANCE.getTransformationMaskById(
+				this.transformationMaskCombo.getText()).getDescription());
 
-		FormDataBuilder.on(descriptionGroup).top(combo).horizontal();
+		FormDataBuilder.on(descriptionGroup).top(this.transformationMaskCombo).horizontal();
 
 		Label transformationListLabel = new Label(composite, SWT.NONE);
 		transformationListLabel.setText(TransformationMasksPreferencesMessages.TRANSFORMATIONS_LABEL.message());
@@ -79,34 +92,42 @@ public class TransformationsMaskPreferencesPage extends PreferencePage implement
 
 		treeViewer.setLabelProvider(new TransformationsTreeLabelProvider());
 		treeViewer.setContentProvider(new TransformationsTreeContentsProvider());
-		treeViewer.setCheckStateProvider(new TransformationMaskTreeCheckProvider(combo));
+		treeViewer.setCheckStateProvider(new TransformationMaskTreeCheckProvider(this.transformationMaskCombo));
 		treeViewer.addDoubleClickListener(new TransformationsTreeDoubleClickListener());
 		treeViewer.setInput(TransformationDataSourceManager.INSTANCE);
 
 		FormDataBuilder.on(tree).top(transformationListLabel).horizontal().bottom();
 
 		// Add a listener to display the description of the selected mask
-		combo.addSelectionListener(new SelectionAdapter() {
+		this.transformationMaskCombo.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				TransformationMaskReference transformationMaskReference = TransformationMaskDataSourceManager.INSTANCE
-						.getTransformationMaskById(combo.getText());
+						.getTransformationMaskById(TransformationsMaskPreferencesPage.this.transformationMaskCombo
+								.getText());
 				descriptionLabel.setText(transformationMaskReference.getDescription());
 			}
 		});
 
 		// Add a listener to display the transformations enable/disable for the
 		// selected mask
-		combo.addSelectionListener(new SelectionAdapter() {
+		this.transformationMaskCombo.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				treeViewer.refresh();
 			}
 		});
-		
-		// Attach a listener directly after the creation of the tree to lock 
+
+		// Attach a listener directly after the creation of the tree to lock
 
 		return composite;
+	}
+
+	@Override
+	public boolean performOk() {
+		this.getPreferenceStore().putValue(TransformationMaskDataSourceManager.PREFERED_MASK_STORE_KEY,
+				this.transformationMaskCombo.getText());
+		return super.performOk();
 	}
 
 }

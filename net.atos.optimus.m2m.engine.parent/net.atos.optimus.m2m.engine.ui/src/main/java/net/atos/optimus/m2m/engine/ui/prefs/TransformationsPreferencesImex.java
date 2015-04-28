@@ -29,11 +29,11 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import net.atos.optimus.m2m.engine.core.Activator;
-import net.atos.optimus.m2m.engine.core.masks.PreferencesTransformationMask;
 import net.atos.optimus.m2m.engine.core.transformations.ExtensionPointTransformationDataSource;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSource;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSourceManager;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
+import net.atos.optimus.m2m.engine.ui.prefs.mask.PreferencesTransformationMask;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;

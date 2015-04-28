@@ -25,7 +25,7 @@
 <feature
       id="net.atos.optimus.m2m.engine.sdk.feature"
       label="Optimus M2M Engine SDK"
-      version="1.1.0.201504271430-devds-SNAPSHOT"
+      version="1.1.0.201504280842-devds-SNAPSHOT"
       provider-name="Atos.net">
 
    <description url="http://www.example.com/description">
@@ -44,14 +44,14 @@
          id="net.atos.optimus.m2m.engine.sdk.wizards"
          download-size="33"
          install-size="72"
-         version="1.1.0.201504271430-devds-SNAPSHOT"
+         version="1.1.0.201504280842-devds-SNAPSHOT"
          unpack="false"/>
 
    <plugin
          id="net.atos.optimus.m2m.engine.sdk.wizards.source"
          download-size="19"
          install-size="49"
-         version="1.1.0.201504271430-devds-SNAPSHOT"
+         version="1.1.0.201504280842-devds-SNAPSHOT"
          unpack="false"/>
 
 </feature>
