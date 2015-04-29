@@ -7,15 +7,15 @@
 	<packaging>pom</packaging>
 	<name>Atos Optimus Global Build Pom</name>
 	<modules>
-		<module>../net.atos.optimus.parent</module>
-		<module>../net.atos.optimus.common.parent</module>
-		<module>../net.atos.optimus.emf.metamodels.parent</module>
-		<module>../net.atos.optimus.t2m.java.parent</module>
-		<module>../net.atos.optimus.m2m.engine.parent</module>
-		<module>../net.atos.optimus.m2m.javaxmi.parent</module>
-		<module>../net.atos.optimus.m2t.selector.parent</module>
-		<module>../net.atos.optimus.m2t.merger.java.parent</module>
-		<module>../net.atos.optimus.m2t.java.parent</module>
-		<module>../net.atos.optimus.m2m.engine.sdk.parent</module>
+		<module>../../net.atos.optimus.parent</module>
+		<module>../../net.atos.optimus.common.parent</module>
+		<module>../../net.atos.optimus.emf.metamodels.parent</module>
+		<module>../../net.atos.optimus.t2m.java.parent</module>
+		<module>../../net.atos.optimus.m2m.engine.parent</module>
+		<module>../../net.atos.optimus.m2m.javaxmi.parent</module>
+		<module>../../net.atos.optimus.m2t.selector.parent</module>
+		<module>../../net.atos.optimus.m2t.merger.java.parent</module>
+		<module>../../net.atos.optimus.m2t.java.parent</module>
+		<module>../../net.atos.optimus.m2m.engine.sdk.parent</module>
 	</modules>
 </project>
