@@ -33,7 +33,7 @@ import net.atos.optimus.m2m.engine.core.transformations.ExtensionPointTransforma
 import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSource;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSourceManager;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
-import net.atos.optimus.m2m.engine.ui.prefs.mask.PreferencesTransformationMask;
+import net.atos.optimus.m2m.engine.ui.prefs.masks.PreferencesTransformationMask;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;

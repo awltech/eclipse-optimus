@@ -19,40 +19,49 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.engine.ui.prefs;
+package net.atos.optimus.m2m.engine.ui.prefs.masks;
 
+import net.atos.optimus.m2m.engine.core.masks.TemporaryTransformationMask;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
-import net.atos.optimus.m2m.engine.ui.prefs.masks.PreferencesTransformationMask;
 
 import org.eclipse.jface.viewers.ICheckStateProvider;
 
 /**
- * Check State Provider, used to give initial values to the check boxes of the
- * {@link TransformationsPreferencesPage}
+ * Check State Provider, used to give values to the check boxes according to
+ * selected transformation mask
  * 
- * @author mvanbesien
+ * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
+ *
  */
-public class TransformationsTreeCheckProvider implements ICheckStateProvider {
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.ICheckStateProvider#isGrayed(java.lang.Object)
+public class TransformationMasksTreeCheckProvider implements ICheckStateProvider {
+
+	/** The temporary transformation mask */
+	private TemporaryTransformationMask tmpTransformationMask;
+
+	/**
+	 * Constructor
+	 * 
+	 * @param tmpTransformationMask
+	 *            the temporary transformation mask.
 	 */
-	public boolean isGrayed(Object element) {
-		return !(element instanceof TransformationReference);
+	public TransformationMasksTreeCheckProvider(TemporaryTransformationMask tmpTransformationMask) {
+		this.tmpTransformationMask = tmpTransformationMask;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.ICheckStateProvider#isChecked(java.lang.Object)
-	 */
+	@Override
 	public boolean isChecked(Object element) {
 		if (element instanceof TransformationReference) {
 			TransformationReference reference = (TransformationReference) element;
-			return PreferencesTransformationMask.INSTANCE.isTransformationEnabled(reference.getId());
+			return tmpTransformationMask.isTransformationEnabled(reference.getId());
 		}
 		return false;
+	}
+
+	@Override
+	public boolean isGrayed(Object element) {
+		return !(element instanceof TransformationReference);
 	}
 
 }
