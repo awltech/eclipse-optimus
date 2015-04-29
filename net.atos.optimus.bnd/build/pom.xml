@@ -7,7 +7,7 @@
 	<packaging>pom</packaging>
 	<name>Atos Optimus Global Build Pom</name>
 	<modules>
-		<module>../../net.atos.optimus.parent</module>
+		<!-- <module>../../net.atos.optimus.parent</module> -->
 		<module>../../net.atos.optimus.common.parent</module>
 		<module>../../net.atos.optimus.emf.metamodels.parent</module>
 		<module>../../net.atos.optimus.t2m.java.parent</module>
