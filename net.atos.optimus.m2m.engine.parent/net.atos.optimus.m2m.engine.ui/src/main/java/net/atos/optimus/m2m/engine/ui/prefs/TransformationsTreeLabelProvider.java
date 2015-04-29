@@ -72,8 +72,7 @@ public class TransformationsTreeLabelProvider extends LabelProvider {
 	public String getText(Object element) {
 		if (element instanceof TransformationDataSource) {
 			TransformationDataSource dataSource = (TransformationDataSource) element;
-			return dataSource.getName() + " ("
-					+ dataSource.getClass().getName() + ")";
+			return dataSource.getName();
 		} else if (element instanceof TransformationSet) {
 			TransformationSet transformationSet = (TransformationSet) element;
 			return transformationSet.getDescription() + " ("

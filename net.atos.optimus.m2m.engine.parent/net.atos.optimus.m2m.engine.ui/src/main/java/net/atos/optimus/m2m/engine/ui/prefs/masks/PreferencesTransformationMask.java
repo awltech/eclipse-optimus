@@ -19,7 +19,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.engine.ui.prefs.mask;
+package net.atos.optimus.m2m.engine.ui.prefs.masks;
 
 import net.atos.optimus.m2m.engine.core.Activator;
 import net.atos.optimus.m2m.engine.core.masks.ITransformationMask;

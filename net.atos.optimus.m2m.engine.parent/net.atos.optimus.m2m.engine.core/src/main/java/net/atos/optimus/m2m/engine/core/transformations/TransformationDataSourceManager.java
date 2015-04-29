@@ -22,7 +22,7 @@ public enum TransformationDataSourceManager {
 
 	private TransformationDataSourceManager() {
 		OptimusM2MEngineMessages.DS05.log();
-		
+
 		List<TransformationDataSource> tempTransformationDataSources = new ArrayList<TransformationDataSource>();
 
 		IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(Activator.PLUGIN_ID,
@@ -38,7 +38,8 @@ public enum TransformationDataSourceManager {
 							if (o instanceof TransformationDataSource) {
 								TransformationDataSource dataSource = (TransformationDataSource) o;
 								tempTransformationDataSources.add(dataSource);
-								OptimusM2MEngineMessages.DS01.log(dataSource.getName(), dataSource.getClass().getName());
+								OptimusM2MEngineMessages.DS01
+										.log(dataSource.getName(), dataSource.getClass().getName());
 							} else {
 								OptimusM2MEngineMessages.DS02.log(o.getClass().getName());
 							}
@@ -60,8 +61,34 @@ public enum TransformationDataSourceManager {
 		this.transformationDataSources = Collections.unmodifiableList(tempTransformationDataSources);
 		OptimusM2MEngineMessages.DS06.log();
 	}
-	
+
+	/**
+	 * Give the list of transformation data source of the transformation data
+	 * source manager
+	 * 
+	 * @return the list of transformation data source of the transformation data
+	 *         source manager.
+	 */
 	public List<TransformationDataSource> getTransformationDataSources() {
 		return transformationDataSources;
 	}
+
+	/**
+	 * Returns the Transformation Reference with the id provided as parameter
+	 * 
+	 * @param id
+	 *            transformation id.
+	 * @return Transformation Reference.
+	 */
+	public TransformationReference getById(String id) {
+		TransformationReference transformationReference = null;
+		for (TransformationDataSource transformationDataSource : this.getTransformationDataSources()) {
+			transformationReference = transformationDataSource.getById(id);
+			if (transformationReference != null) {
+				return transformationReference;
+			}
+		}
+		return transformationReference;
+	}
+
 }
