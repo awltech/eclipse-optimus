@@ -25,10 +25,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
+import net.atos.optimus.common.tools.logging.OptimusLogger;
 import net.atos.optimus.common.tools.swt.FormDataBuilder;
 import net.atos.optimus.m2m.engine.core.Activator;
-import net.atos.optimus.m2m.engine.core.logging.OptimusM2MEngineLogger;
-import net.atos.optimus.m2m.engine.core.transformations.ExtensionPointTransformationDataSource;
+import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSourceManager;
 
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
@@ -113,7 +113,7 @@ public class TransformationsPreferencesPage extends PreferencePage implements IW
 		final Combo combo = new Combo(levelGroup, SWT.READ_ONLY);
 		for (Level level : levels)
 			combo.add(level.getName());
-		combo.select(levels.indexOf(OptimusM2MEngineLogger.logger.getLevel()));
+		combo.select(levels.indexOf(OptimusLogger.logger.getLevel()));
 
 		// Add a listener to save the user selection
 		combo.addSelectionListener(new SelectionAdapter() {
@@ -136,7 +136,7 @@ public class TransformationsPreferencesPage extends PreferencePage implements IW
 		treeViewer.addDoubleClickListener(new TransformationsTreeDoubleClickListener());
 		this.checkListener = new TransformationsTreeCheckListener(treeViewer);
 		treeViewer.addCheckStateListener(this.checkListener);
-		treeViewer.setInput(ExtensionPointTransformationDataSource.instance());
+		treeViewer.setInput(TransformationDataSourceManager.INSTANCE);
 
 		Button exportButton = new Button(composite, SWT.PUSH);
 		exportButton.setText(TransformationsPreferencesMessages.EXPORT_BUTTON.message());
@@ -210,10 +210,10 @@ public class TransformationsPreferencesPage extends PreferencePage implements IW
 	 */
 	@Override
 	public boolean performOk() {
-		int currentLevel = levels.indexOf(OptimusM2MEngineLogger.logger.getLevel());
+		int currentLevel = levels.indexOf(OptimusLogger.logger.getLevel());
 		if (this.newLevel != currentLevel && this.newLevel > -1) {
-			OptimusM2MEngineLogger.logger.setLevel(levels.get(newLevel));
-			this.getPreferenceStore().setValue(Activator.LOGGER_LEVEL_KEY, this.levels.get(this.newLevel).getName());
+			OptimusLogger.logger.setLevel(levels.get(newLevel));
+			this.getPreferenceStore().setValue(OptimusLogger.LOGGER_LEVEL_KEY, this.levels.get(this.newLevel).getName());
 		}
 		return super.performOk();
 	}

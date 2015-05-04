@@ -4,11 +4,12 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.atos.optimus.m2m.engine.core.requirements.AbstractRequirement;
-import net.atos.optimus.m2m.engine.core.transformations.ExtensionPointTransformationDataSource;
-import net.atos.optimus.m2m.engine.core.transformations.ITransformationDataSource;
+import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSource;
+import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSourceManager;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationSet;
 import net.atos.optimus.m2m.engine.sdk.wizards.Activator;
@@ -43,12 +44,15 @@ public class ModelGenerationJob extends WorkspaceJob {
 	private IJavaProject javaProject;
 
 	/**
-	 * Transformation Data Source. Defaultly instanciated to the extension points one.
+	 * Transformation Data Source. Defaultly instanciated to the extension
+	 * points one.
 	 */
-	private ITransformationDataSource transformationDataSource = ExtensionPointTransformationDataSource.instance();
+	private List<TransformationDataSource> transformationDataSources = TransformationDataSourceManager.INSTANCE
+			.getTransformationDataSources();
 
 	/**
 	 * Required. Set the java project, for which the model will be created in
+	 * 
 	 * @param javaProject
 	 * @return
 	 */
@@ -58,12 +62,15 @@ public class ModelGenerationJob extends WorkspaceJob {
 	}
 
 	/**
-	 * Use this method if you want to use an external transformation data source.
+	 * Use this method if you want to use an external transformation data
+	 * source.
+	 * 
 	 * @param transformationDataSource
 	 * @return
 	 */
-	public ModelGenerationJob withTransformationDataSource(ITransformationDataSource transformationDataSource) {
-		this.transformationDataSource = transformationDataSource;
+	public ModelGenerationJob withTransformationDataSources(List<TransformationDataSource> dataSources) {
+		this.transformationDataSources.clear();
+		this.transformationDataSources.addAll(dataSources);
 		return this;
 	}
 
@@ -75,7 +82,10 @@ public class ModelGenerationJob extends WorkspaceJob {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.core.resources.WorkspaceJob#runInWorkspace(org.eclipse.core.runtime.IProgressMonitor)
+	 * 
+	 * @see
+	 * org.eclipse.core.resources.WorkspaceJob#runInWorkspace(org.eclipse.core
+	 * .runtime.IProgressMonitor)
 	 */
 	@Override
 	public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
@@ -93,35 +103,38 @@ public class ModelGenerationJob extends WorkspaceJob {
 		model.setName("Transformations");
 		resource.getContents().add(model);
 
-		Collection<TransformationReference> transformationReferences = transformationDataSource.getAll();
+		for (TransformationDataSource transformationDataSource : this.transformationDataSources) {
+			Collection<TransformationReference> transformationReferences = transformationDataSource.getAll();
 
-		Map<TransformationSet, org.eclipse.uml2.uml.Package> packageMap = new HashMap<TransformationSet, Package>();
-		Map<TransformationReference, Class> classMap = new HashMap<TransformationReference, Class>();
+			Map<TransformationSet, org.eclipse.uml2.uml.Package> packageMap = new HashMap<TransformationSet, Package>();
+			Map<TransformationReference, Class> classMap = new HashMap<TransformationReference, Class>();
 
-		for (TransformationReference transformationReference : transformationReferences) {
-			TransformationSet transformationSet = transformationReference.getTransformationSet();
-			Package ePackage = packageMap.get(transformationSet);
-			if (ePackage == null) {
-				ePackage = UMLFactory.eINSTANCE.createPackage();
-				ePackage.setName(transformationSet.getId());
-				model.getPackagedElements().add(ePackage);
-				packageMap.put(transformationSet, ePackage);
+			for (TransformationReference transformationReference : transformationReferences) {
+				TransformationSet transformationSet = transformationReference.getTransformationSet();
+				Package ePackage = packageMap.get(transformationSet);
+				if (ePackage == null) {
+					ePackage = UMLFactory.eINSTANCE.createPackage();
+					ePackage.setName(transformationSet.getId());
+					model.getPackagedElements().add(ePackage);
+					packageMap.put(transformationSet, ePackage);
+				}
+				Class eClass = UMLFactory.eINSTANCE.createClass();
+				eClass.setName(transformationReference.getId());
+				ePackage.getPackagedElements().add(eClass);
+				classMap.put(transformationReference, eClass);
 			}
-			Class eClass = UMLFactory.eINSTANCE.createClass();
-			eClass.setName(transformationReference.getId());
-			ePackage.getPackagedElements().add(eClass);
-			classMap.put(transformationReference, eClass);
-		}
 
-		for (TransformationReference transformationReference : transformationReferences) {
-			Class eClass = classMap.get(transformationReference);
-			for (AbstractRequirement requirement : transformationReference.getRequirements()) {
-				TransformationReference requiredTransformation = transformationDataSource.getById(requirement.getId());
-				if (requiredTransformation != null) {
-					Class referencedClass = classMap.get(requiredTransformation);
-					if (referencedClass != null) {
-						Dependency dependency = eClass.createDependency(referencedClass);
-						dependency.setName("<<" + requirement.getClass().getSimpleName() + ">>");
+			for (TransformationReference transformationReference : transformationReferences) {
+				Class eClass = classMap.get(transformationReference);
+				for (AbstractRequirement requirement : transformationReference.getRequirements()) {
+					TransformationReference requiredTransformation = transformationDataSource.getById(requirement
+							.getId());
+					if (requiredTransformation != null) {
+						Class referencedClass = classMap.get(requiredTransformation);
+						if (referencedClass != null) {
+							Dependency dependency = eClass.createDependency(referencedClass);
+							dependency.setName("<<" + requirement.getClass().getSimpleName() + ">>");
+						}
 					}
 				}
 			}

@@ -21,9 +21,6 @@
  */
 package net.atos.optimus.m2m.engine.core;
 
-import net.atos.optimus.common.tools.logging.OptimusConsoleManager;
-import net.atos.optimus.m2m.engine.core.logging.OptimusM2MEngineLogger;
-
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -36,8 +33,6 @@ public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "net.atos.optimus.m2m.engine.core"; //$NON-NLS-1$
-
-	public static final String LOGGER_LEVEL_KEY = PLUGIN_ID + ".logger.level";
 
 	// The shared instance
 	private static Activator plugin;
@@ -58,7 +53,6 @@ public class Activator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-		OptimusConsoleManager.getInstance().register(OptimusM2MEngineLogger.logger);
 	}
 
 	/*

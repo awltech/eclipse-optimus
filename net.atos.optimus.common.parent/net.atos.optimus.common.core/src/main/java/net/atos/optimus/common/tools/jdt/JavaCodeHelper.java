@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import net.atos.optimus.common.tools.jdt.jstcomp.ASTArrayTypeHelper;
+
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
@@ -826,9 +828,10 @@ public class JavaCodeHelper {
 			// Case when type1 is a primitive type (int, boolean, void, ...)
 			return ((PrimitiveType) type1).getPrimitiveTypeCode().toString().equals(type2);
 		} else if (type1 instanceof ArrayType) {
+			ArrayType arrayType = (ArrayType) type1;
 			// Case when type1 is an array (int[], MyObject[],...)
 			return type2.endsWith("[]")
-					&& areTypesEquals(((ArrayType) type1).getComponentType(), type2.substring(0,
+					&& areTypesEquals(ASTArrayTypeHelper.getComponentType(arrayType), type2.substring(0,
 							type2.lastIndexOf('[')));
 		} else if (type1 instanceof ParameterizedType) {
 			// Case when type1 is a parametrized type (MyObject<Integer>,
@@ -1001,7 +1004,8 @@ public class JavaCodeHelper {
 	 */
 	public static Name getName(Type t) {
 		if (t.isArrayType()) {
-			return getName(((ArrayType) t).getComponentType());
+			ArrayType arrayType = (ArrayType) t;
+			return getName(ASTArrayTypeHelper.getComponentType(arrayType));
 		} else if (t.isParameterizedType()) {
 			return getName(((ParameterizedType) t).getType());
 		} else if (t.isPrimitiveType()) {

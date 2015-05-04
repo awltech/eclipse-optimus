@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="net.atos.optimus.emf.metamodels.properties.feature"
-      label="EMF Metamodel for Properties Files"
-      version="1.0.0.qualifier"
+      label="Optimus EMF Metamodel for Properties Files"
+      version="1.2.0.qualifier"
       provider-name="Worldline.com">
 
    <description url="">

@@ -2,6 +2,9 @@ package net.atos.optimus.common.tools.jdt;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.logging.Level;
+
+import net.atos.optimus.common.tools.logging.OptimusLogger;
 
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
@@ -24,6 +27,12 @@ public enum ASTParserFactory {
 	 * Singleton instance
 	 */
 	INSTANCE;
+
+	private static final String RETURNED_AST_WITH_DEFAULT_JLS = "[ASTParserFactory] Request for parser with default Level requested. Level is [%s].";
+
+	private static final String RETURNED_AST_WITH_JLS = "[ASTParserFactory] Compliance for project [%s] is [%s]. Ast Level returned is [%s].";
+
+	private static final String DEFAULT_JLS_MESSAGE = "[ASTParserFactory] JLS value used as default is [%s].";
 
 	/**
 	 * @see JavaCore.VERSION_1_8
@@ -96,7 +105,7 @@ public enum ASTParserFactory {
 		jlsMapping.put(ASTParserFactory.JAVA5, ASTParserFactory.ASTJLS3);
 		jlsMapping.put(ASTParserFactory.JAVA6, ASTParserFactory.ASTJLS3);
 		jlsMapping.put(ASTParserFactory.JAVA7, ASTParserFactory.ASTJLS4);
-		jlsMapping.put(ASTParserFactory.JAVA8, /* ASTParserFactory.ASTJLS8 */ASTParserFactory.ASTJLS4);
+		jlsMapping.put(ASTParserFactory.JAVA8, ASTParserFactory.ASTJLS8);
 
 		// Defines the default value of AST from taking all the values, in
 		// decreasing order, and try to instanciate them as soon as one is
@@ -110,6 +119,9 @@ public enum ASTParserFactory {
 				ASTParser parser = ASTParser.newParser(astLevel);
 				if (parser != null) {
 					jlsDefaultLevel = astLevel;
+					if (OptimusLogger.logger.isLoggable(Level.INFO)) {
+						OptimusLogger.logger.info(String.format(DEFAULT_JLS_MESSAGE, jlsDefaultLevel));
+					}
 				}
 			} catch (IllegalArgumentException iae) {
 				// Swallow it.
@@ -145,6 +157,10 @@ public enum ASTParserFactory {
 				Integer astLevel = jlsMapping.get(object);
 				if (astLevel != null) {
 					try {
+						if (OptimusLogger.logger.isLoggable(Level.INFO)) {
+							OptimusLogger.logger.info(String.format(RETURNED_AST_WITH_JLS,
+									javaProject.getElementName(), object, astLevel));
+						}
 						return ASTParser.newParser(astLevel);
 					} catch (IllegalArgumentException iae) {
 						// Swallow it.
@@ -162,6 +178,9 @@ public enum ASTParserFactory {
 	 * @return
 	 */
 	public ASTParser newParser() {
+		if (OptimusLogger.logger.isLoggable(Level.INFO)) {
+			OptimusLogger.logger.info(String.format(RETURNED_AST_WITH_DEFAULT_JLS, this.jlsDefaultLevel));
+		}
 		return ASTParser.newParser(this.jlsDefaultLevel);
 	}
 }

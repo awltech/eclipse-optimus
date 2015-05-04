@@ -25,6 +25,9 @@ import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 
+import net.atos.optimus.common.tools.logging.OptimusLogger;
+import net.atos.optimus.common.tools.logging.OptimusMessage;
+
 /**
  * Class that contains prioritized messages for the M2M logger
  * 
@@ -32,7 +35,7 @@ import java.util.logging.Level;
  * @since 1.0
  * 
  */
-public enum OptimusM2MEngineMessages {
+public enum OptimusM2MEngineMessages implements OptimusMessage {
 
 	// Messages related to the Transformation Engine
 	TE01(Level.INFO), TE02(Level.INFO), TE03(Level.INFO), TE04(Level.INFO), TE05(Level.INFO), TE06(Level.INFO), TE07(
@@ -40,7 +43,7 @@ public enum OptimusM2MEngineMessages {
 			Level.WARNING), TE13(Level.INFO), TE14(Level.INFO), TE15(Level.INFO), TE16(Level.INFO), TE17(Level.INFO), TE18(
 			Level.INFO), TE19(Level.INFO), TE20(Level.WARNING), TE21(Level.INFO), TE22(Level.SEVERE), TE23(Level.SEVERE), TE24(
 			Level.INFO), TE25(Level.INFO), TE26(Level.INFO), TE27(Level.INFO), TE28(Level.INFO), TE29(Level.INFO), TE30(
-			Level.INFO), TE31(Level.INFO),
+			Level.INFO), TE31(Level.INFO), TE32(Level.WARNING), 
 
 	// Messages related to the Transformation Adapters
 	AD01(Level.FINE), AD02(Level.FINE), AD03(Level.SEVERE), AD04(Level.INFO), AD05(Level.INFO),
@@ -62,10 +65,15 @@ public enum OptimusM2MEngineMessages {
 			Level.INFO), EP08(Level.INFO), EP09(Level.INFO), EP10(Level.INFO), EP11(Level.INFO), EP12(Level.INFO), EP13(
 			Level.INFO), EP14(Level.SEVERE), EP15(Level.WARNING),
 
-	// Messages related to Context Injection process
-	CI01(Level.FINE), CI02(Level.FINE), CI03(Level.FINE), CI04(Level.FINE), CI05(Level.INFO), CI06(Level.INFO), CI07(
-			Level.INFO), CI08(Level.INFO), CI09(Level.INFO), CI10(Level.INFO), CI11(Level.WARNING), CI12(Level.WARNING), CI13(
-			Level.WARNING), CI14(Level.WARNING), CI15(Level.WARNING), CI16(Level.INFO), CI17(Level.SEVERE);
+	// Messages related to the Transformation Data Sources registration
+	DS01(Level.INFO), DS02(Level.WARNING), DS03(Level.WARNING), DS04(Level.WARNING), DS05(Level.FINE), DS06(Level.FINE),
+
+	// Messages related to the Transformation Mask Data Sources registration
+	MS01(Level.FINE),MS02(Level.INFO),MS03(Level.WARNING),MS04(Level.WARNING),MS05(Level.WARNING),MS06(Level.FINE),
+	
+	// Messages related to Transformation Hooks management
+	TH01(Level.FINE), TH02(Level.FINE), TH03(Level.INFO), TH04(Level.WARNING), TH05(Level.WARNING), TH06(Level.WARNING), TH07(
+			Level.WARNING), TH08(Level.WARNING);
 
 	/**
 	 * Priority level
@@ -77,6 +85,7 @@ public enum OptimusM2MEngineMessages {
 	 */
 	private static ResourceBundle resourceBundle = ResourceBundle.getBundle("OptimusM2MEngineMessages");
 
+	@Override
 	public Level getLevel() {
 		return level;
 	}
@@ -95,8 +104,9 @@ public enum OptimusM2MEngineMessages {
 	 * 
 	 * @param args
 	 */
+	@Override
 	public void log(final Object... args) {
-		OptimusM2MEngineLogger.log(this, args);
+		OptimusLogger.log(this, args);
 	}
 
 	/**
@@ -104,6 +114,7 @@ public enum OptimusM2MEngineMessages {
 	 * 
 	 * @param args
 	 */
+	@Override
 	public String message(final Object... args) {
 		return MessageFormat.format(OptimusM2MEngineMessages.resourceBundle.getString(this.toString()), args);
 	}

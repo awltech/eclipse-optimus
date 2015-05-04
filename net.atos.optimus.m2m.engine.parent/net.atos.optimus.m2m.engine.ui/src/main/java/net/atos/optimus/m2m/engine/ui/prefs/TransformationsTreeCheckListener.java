@@ -26,10 +26,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import net.atos.optimus.m2m.engine.core.masks.PreferencesTransformationMask;
 import net.atos.optimus.m2m.engine.core.requirements.AbstractRequirement;
-import net.atos.optimus.m2m.engine.core.transformations.ExtensionPointTransformationDataSource;
+import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSource;
+import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSourceManager;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
+import net.atos.optimus.m2m.engine.ui.prefs.masks.PreferencesTransformationMask;
 
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
@@ -61,10 +62,14 @@ public class TransformationsTreeCheckListener implements ICheckStateListener {
 	 */
 	public void checkStateChanged(CheckStateChangedEvent event) {
 		if (event.getElement() instanceof TransformationReference) {
-			this.userActions.put(((TransformationReference) event.getElement()), event.getChecked());
+			this.userActions.put(
+					((TransformationReference) event.getElement()),
+					event.getChecked());
 			if (!event.getChecked()) {
 				Set<TransformationReference> uncheckedReferences = new HashSet<TransformationReference>();
-				this.checkForRequirementsToUncheck((TransformationReference) event.getElement(), uncheckedReferences);
+				this.checkForRequirementsToUncheck(
+						(TransformationReference) event.getElement(),
+						uncheckedReferences);
 			}
 		}
 	}
@@ -81,17 +86,24 @@ public class TransformationsTreeCheckListener implements ICheckStateListener {
 	 * @param reference
 	 * @param uncheckedReferences
 	 */
-	private void checkForRequirementsToUncheck(TransformationReference reference,
+	private void checkForRequirementsToUncheck(
+			TransformationReference reference,
 			Set<TransformationReference> uncheckedReferences) {
 		String referenceId = reference.getId();
-		for (TransformationReference otherRef : ExtensionPointTransformationDataSource.instance().getAll()) {
-			for (AbstractRequirement otherReq : otherRef.getRequirements()) {
-				String otherReqId = otherReq.getId();
-				if (otherReqId.equals(referenceId) && !uncheckedReferences.contains(otherRef)) {
-					this.userActions.put(otherRef, false);
-					this.treeViewer.refresh(otherRef);
-					uncheckedReferences.add(otherRef);
-					checkForRequirementsToUncheck(otherRef, uncheckedReferences);
+		for (TransformationDataSource transformationDataSource : TransformationDataSourceManager.INSTANCE
+				.getTransformationDataSources()) {
+			for (TransformationReference otherRef : transformationDataSource
+					.getAll()) {
+				for (AbstractRequirement otherReq : otherRef.getRequirements()) {
+					String otherReqId = otherReq.getId();
+					if (otherReqId.equals(referenceId)
+							&& !uncheckedReferences.contains(otherRef)) {
+						this.userActions.put(otherRef, false);
+						this.treeViewer.refresh(otherRef);
+						uncheckedReferences.add(otherRef);
+						checkForRequirementsToUncheck(otherRef,
+								uncheckedReferences);
+					}
 				}
 			}
 		}
@@ -99,8 +111,8 @@ public class TransformationsTreeCheckListener implements ICheckStateListener {
 
 	public void apply() {
 		for (TransformationReference key : this.userActions.keySet()) {
-			PreferencesTransformationMask.INSTANCE
-					.setTransformationEnabled(key.getId(), this.userActions.get(key));
+			PreferencesTransformationMask.INSTANCE.setTransformationEnabled(
+					key.getId(), this.userActions.get(key));
 		}
 
 	}

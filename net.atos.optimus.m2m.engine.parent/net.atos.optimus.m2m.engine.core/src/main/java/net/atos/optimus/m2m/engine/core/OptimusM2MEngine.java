@@ -21,7 +21,6 @@
  */
 package net.atos.optimus.m2m.engine.core;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -37,18 +36,19 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import net.atos.optimus.m2m.engine.core.adapters.AbstractOptimusAdapter;
 import net.atos.optimus.m2m.engine.core.adapters.EObjectChildAdditionAdapter;
 import net.atos.optimus.m2m.engine.core.adapters.EObjectLockAdapter;
-import net.atos.optimus.m2m.engine.core.ctxinject.impl.ContextElementManager;
 import net.atos.optimus.m2m.engine.core.exceptions.TransformationFailedException;
+import net.atos.optimus.m2m.engine.core.hooks.TransformationExecutionHookManager;
 import net.atos.optimus.m2m.engine.core.logging.EObjectLabelProvider;
 import net.atos.optimus.m2m.engine.core.logging.OptimusM2MEngineMessages;
 import net.atos.optimus.m2m.engine.core.masks.ITransformationMask;
-import net.atos.optimus.m2m.engine.core.masks.PreferencesTransformationMask;
+import net.atos.optimus.m2m.engine.core.masks.TransformationMaskDataSource;
+import net.atos.optimus.m2m.engine.core.masks.TransformationMaskDataSourceManager;
 import net.atos.optimus.m2m.engine.core.requirements.AbstractRequirement;
 import net.atos.optimus.m2m.engine.core.transformations.AbstractTransformation;
-import net.atos.optimus.m2m.engine.core.transformations.ExtensionPointTransformationDataSource;
 import net.atos.optimus.m2m.engine.core.transformations.ITransformationContext;
-import net.atos.optimus.m2m.engine.core.transformations.ITransformationDataSource;
 import net.atos.optimus.m2m.engine.core.transformations.ITransformationFactory;
+import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSource;
+import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSourceManager;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationSet;
 
@@ -162,8 +162,13 @@ public class OptimusM2MEngine {
 	/**
 	 * Instance of transformation data source. Default implementation heads to extension points management
 	 */
-	protected List<ITransformationDataSource> transformationDataSources = new ArrayList<ITransformationDataSource>();
+	protected List<TransformationDataSource> transformationDataSources = TransformationDataSourceManager.INSTANCE.getTransformationDataSources();
 
+	/**
+	 * Instance of transformation mask data source.
+	 */
+	protected List<TransformationMaskDataSource> transformationMaskDataSources = TransformationMaskDataSourceManager.INSTANCE.getTransformationMaskDataSources();
+	
 	/**
 	 * Instance of Mask used to filter the transformations
 	 */
@@ -199,7 +204,6 @@ public class OptimusM2MEngine {
 			this.optimusAdapters.add(new EObjectLockAdapter());
 		if (trackAddition)
 			this.optimusAdapters.add(new EObjectChildAdditionAdapter(this, this.password));
-		this.transformationDataSources.add(ExtensionPointTransformationDataSource.instance());
 	}
 
 	/**
@@ -288,7 +292,7 @@ public class OptimusM2MEngine {
 	 */
 	private void resolveTransformations() {
 		OptimusM2MEngineMessages.TE24.log();
-		for (final ITransformationDataSource transformationDataSource : this.transformationDataSources) {
+		for (final TransformationDataSource transformationDataSource : this.transformationDataSources) {
 			for (final TransformationReference reference : transformationDataSource.getAll()) {
 				String transformationSetID = reference.getTransformationSet().getId();
 				if (this.transformationsSetLimited) {
@@ -421,10 +425,10 @@ public class OptimusM2MEngine {
 
 			cachedTransformationsForEObject.add(transformation);
 			try {
-				ContextElementManager.INSTANCE.inject(transformation, context); // TODO Make it optional!
-				transformation.execute(context);
-				OptimusM2MEngineMessages.TE13.log(reference.getId(), eObjectLabelProvider.getText(eObject));
-				ContextElementManager.INSTANCE.update(transformation, context); // TODO Make it optional!
+				TransformationExecutionHookManager.INSTANCE.beforeExecution(transformation, this.context);
+				transformation.execute(this.context);
+				OptimusM2MEngineMessages.TE13.log(reference.getId(), this.eObjectLabelProvider.getText(eObject));
+				TransformationExecutionHookManager.INSTANCE.afterExecution(transformation, this.context);
 			} catch (Exception e) {
 				throw new TransformationFailedException(reference.getId(), eObject, e);
 			}
@@ -432,7 +436,7 @@ public class OptimusM2MEngine {
 			while (!pendingTransformations.isEmpty()) {
 				PendingTransformation pendingTransformation = pendingTransformations.poll();
 				OptimusM2MEngineMessages.TE14.log(pendingTransformation.reference,
-						eObjectLabelProvider.getText(pendingTransformation.eObject));
+						this.eObjectLabelProvider.getText(pendingTransformation.eObject));
 				this.executeTransformation(pendingTransformation.eObject, pendingTransformation.reference, password);
 			}
 		}
@@ -447,7 +451,11 @@ public class OptimusM2MEngine {
 	 * @return
 	 */
 	private ITransformationMask getTransformationMask() {
-		return this.userTransformationMask != null ? this.userTransformationMask : PreferencesTransformationMask.INSTANCE;
+		ITransformationMask transformationMask = this.userTransformationMask != null ? this.userTransformationMask : TransformationMaskDataSourceManager.INSTANCE.getPreferredTransformationMask().getImplementation();
+ 		if(transformationMask == null){
+ 			OptimusM2MEngineMessages.TE32.log();
+ 		}
+		return transformationMask;
 	}
 
 	/**
@@ -565,7 +573,7 @@ public class OptimusM2MEngine {
 	 * @return implementation
 	 */
 	@Deprecated
-	public ITransformationDataSource getTransformationDataSource() {
+	public TransformationDataSource getTransformationDataSource() {
 		return transformationDataSources.size() > 0 ? transformationDataSources.iterator().next() : null;
 	}
 	
@@ -579,8 +587,8 @@ public class OptimusM2MEngine {
 		if (this.transformationDataSources == null) {
 			return null;
 		}
-		for (Iterator<ITransformationDataSource> iterator = this.transformationDataSources.iterator();iterator.hasNext();) {
-			ITransformationDataSource transformationDataSource = iterator.next();
+		for (Iterator<TransformationDataSource> iterator = this.transformationDataSources.iterator();iterator.hasNext();) {
+			TransformationDataSource transformationDataSource = iterator.next();
 			TransformationReference reference = transformationDataSource != null ? transformationDataSource.getById(transformationReferenceId) : null;
 			if (reference != null) {
 				return reference;

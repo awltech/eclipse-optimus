@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.atos.optimus.m2m.engine.core.transformations.DefaultTransformationSet;
-import net.atos.optimus.m2m.engine.core.transformations.ITransformationDataSource;
+import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSource;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationSet;
 
@@ -34,11 +34,12 @@ import net.atos.optimus.m2m.engine.core.transformations.TransformationSet;
  *  @author Maxence Vanbésien (mvaawl@gmail.com)
  *  @since 1.0
  */
-public class ResolutionTransformationDS implements ITransformationDataSource {
+public class ResolutionTransformationDS extends TransformationDataSource {
 
 	private Map<String, TransformationReference> references = new HashMap<String, TransformationReference>();
 
 	public ResolutionTransformationDS() {
+		super("ResolutionTransformationDS");
 		TransformationSet set = new DefaultTransformationSet();
 		TransformationReference reference = new TransformationReference("transformation", new ResolutionTransformationFactory(),
 				set, null, 0);

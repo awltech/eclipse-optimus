@@ -46,11 +46,34 @@ public abstract class TransformationSet {
 	 * Transformation Set Description
 	 */
 	private String description;
-	
+
 	/**
 	 * TransformationSetContributor
 	 */
 	private String contributor;
+
+	/**
+	 * Parent Data Source
+	 */
+	private TransformationDataSource transformationDataSource;
+
+	/**
+	 * 
+	 * @return parent data source
+	 */
+	public TransformationDataSource getTransformationDataSource() {
+		return transformationDataSource;
+	}
+
+	/**
+	 * 
+	 * @param transformationDataSource
+	 *            parent data source
+	 */
+	public void setTransformationDataSource(
+			TransformationDataSource transformationDataSource) {
+		this.transformationDataSource = transformationDataSource;
+	}
 
 	/**
 	 * 
@@ -59,15 +82,16 @@ public abstract class TransformationSet {
 	public String getContributor() {
 		return contributor;
 	}
-	
+
 	/**
 	 * Sets the process that contributed this extension point
-	 * @param contributor 
+	 * 
+	 * @param contributor
 	 */
 	public void setContributor(String contributor) {
 		this.contributor = contributor;
 	}
-	
+
 	/**
 	 * @return Transformation set ID
 	 */
@@ -81,7 +105,7 @@ public abstract class TransformationSet {
 	 * @param id
 	 *            : ID
 	 */
-	void setId(String id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

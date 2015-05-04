@@ -25,7 +25,7 @@
 <feature
       id="net.atos.optimus.m2m.engine.feature"
       label="Optimus M2M Engine"
-      version="1.1.0.qualifier"
+      version="1.2.0.qualifier"
       provider-name="Atos.net">
 
    <description url="http://www.example.com/description">
@@ -46,6 +46,21 @@
 
    <plugin
          id="net.atos.optimus.m2m.engine.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+         
+            
+   <plugin
+         id="net.atos.optimus.m2m.engine.masks"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+         
+   <plugin
+         id="net.atos.optimus.m2m.engine.ctxinject"
          download-size="0"
          install-size="0"
          version="0.0.0"

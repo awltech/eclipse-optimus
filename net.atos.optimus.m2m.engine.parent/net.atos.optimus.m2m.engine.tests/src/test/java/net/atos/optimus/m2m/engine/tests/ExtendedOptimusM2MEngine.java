@@ -25,7 +25,7 @@ import java.util.Collections;
 
 import net.atos.optimus.m2m.engine.core.OptimusM2MEngine;
 import net.atos.optimus.m2m.engine.core.transformations.ITransformationContext;
-import net.atos.optimus.m2m.engine.core.transformations.ITransformationDataSource;
+import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSource;
 
 /**
  * Extension of the std Optimus engine, to allow user to override Transformation
@@ -38,7 +38,7 @@ import net.atos.optimus.m2m.engine.core.transformations.ITransformationDataSourc
 public class ExtendedOptimusM2MEngine extends OptimusM2MEngine {
 
 	public ExtendedOptimusM2MEngine(ITransformationContext context, boolean lockInput, boolean trackAddition,
-			ITransformationDataSource dataSource) {
+			TransformationDataSource dataSource) {
 		super(context, lockInput, trackAddition);
 		this.transformationDataSources = Collections.singletonList(dataSource);
 	}

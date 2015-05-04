@@ -37,19 +37,38 @@ public class TransformationMaskReference {
 	private String name;
 
 	/**
+	 * Mask description
+	 */
+	private String description;
+
+	/**
 	 * Mask implementation
 	 */
 	private ITransformationMask implementation;
 
 	/**
-	 * Creates new Transformation Mask Reference
+	 * Tell if the mask is editable or not
+	 */
+	private boolean editable;
+
+	/**
+	 * Create a new tranformation mask reference
 	 * 
 	 * @param name
+	 *            the mask name.
+	 * @param description
+	 *            the mask description.
 	 * @param implementation
+	 *            the implementation of the mask.
+	 * @param editable
+	 *            tell if the mask is editable or not.
 	 */
-	public TransformationMaskReference(String name, ITransformationMask implementation) {
+	public TransformationMaskReference(String name, String description, ITransformationMask implementation,
+			boolean editable) {
 		this.name = name;
+		this.description = description;
 		this.implementation = implementation;
+		this.editable = editable;
 	}
 
 	/**
@@ -64,6 +83,20 @@ public class TransformationMaskReference {
 	 */
 	public String getName() {
 		return name;
+	}
+
+	/**
+	 * @return transformation mask description
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * @return true if the mask is editable, false otherwise.
+	 */
+	public boolean isEditable() {
+		return this.editable;
 	}
 
 }

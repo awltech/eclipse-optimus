@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Tools for XA Optimus
 Bundle-SymbolicName: net.atos.optimus.common.core;singleton:=true
-Bundle-Version: 1.1.0.qualifier
+Bundle-Version: 1.2.0.qualifier
 Bundle-Activator: net.atos.optimus.common.tools.Activator
 Bundle-Vendor: Worldline.com
 Require-Bundle: org.eclipse.ui,
@@ -15,6 +15,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: net.atos.optimus.common.tools,
  net.atos.optimus.common.tools.jdt,
+ net.atos.optimus.common.tools.jdt.jstcomp,
  net.atos.optimus.common.tools.logging,
  net.atos.optimus.common.tools.ltk,
  net.atos.optimus.common.tools.swt

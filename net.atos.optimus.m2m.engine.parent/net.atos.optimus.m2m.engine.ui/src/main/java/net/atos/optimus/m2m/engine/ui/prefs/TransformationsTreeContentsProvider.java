@@ -24,7 +24,8 @@ package net.atos.optimus.m2m.engine.ui.prefs;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import net.atos.optimus.m2m.engine.core.transformations.ExtensionPointTransformationDataSource;
+import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSource;
+import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSourceManager;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationSet;
 
@@ -39,10 +40,12 @@ import org.eclipse.jface.viewers.Viewer;
  * @since 1.0
  * 
  */
-public class TransformationsTreeContentsProvider implements ITreeContentProvider {
+public class TransformationsTreeContentsProvider implements
+		ITreeContentProvider {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.viewers.IContentProvider#dispose()
 	 */
 	public void dispose() {
@@ -50,18 +53,27 @@ public class TransformationsTreeContentsProvider implements ITreeContentProvider
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer, java.lang.Object, java.lang.Object)
+	 * 
+	 * @see
+	 * org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface
+	 * .viewers.Viewer, java.lang.Object, java.lang.Object)
 	 */
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getElements(java.lang.Object)
+	 * 
+	 * @see
+	 * org.eclipse.jface.viewers.ITreeContentProvider#getElements(java.lang.
+	 * Object)
 	 */
 	public Object[] getElements(Object inputElement) {
-		if (inputElement instanceof ExtensionPointTransformationDataSource) {
-			Collection<TransformationReference> references = ((ExtensionPointTransformationDataSource) inputElement).getAll();
+		if (inputElement instanceof TransformationDataSourceManager) {
+			return TransformationDataSourceManager.INSTANCE.getTransformationDataSources().toArray();
+		} else if (inputElement instanceof TransformationDataSource) {
+			Collection<TransformationReference> references = ((TransformationDataSource) inputElement)
+					.getAll();
 			Collection<TransformationSet> sets = new ArrayList<TransformationSet>();
 			for (TransformationReference reference : references) {
 				TransformationSet set = reference.getTransformationSet();
@@ -71,7 +83,8 @@ public class TransformationsTreeContentsProvider implements ITreeContentProvider
 			return sets.toArray();
 		} else if (inputElement instanceof TransformationSet) {
 			TransformationSet thisSet = (TransformationSet) inputElement;
-			Collection<TransformationReference> allRefs = ExtensionPointTransformationDataSource.instance().getAll();
+			Collection<TransformationReference> allRefs = thisSet
+					.getTransformationDataSource().getAll();
 			Collection<TransformationReference> refs = new ArrayList<TransformationReference>();
 			for (TransformationReference reference : allRefs)
 				if (reference.getTransformationSet() == thisSet)
@@ -83,7 +96,10 @@ public class TransformationsTreeContentsProvider implements ITreeContentProvider
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
+	 * 
+	 * @see
+	 * org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.
+	 * Object)
 	 */
 	public Object[] getChildren(Object parentElement) {
 		return getElements(parentElement);
@@ -91,21 +107,28 @@ public class TransformationsTreeContentsProvider implements ITreeContentProvider
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
+	 * 
+	 * @see
+	 * org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object
+	 * )
 	 */
 	public Object getParent(Object element) {
 		if (element instanceof TransformationReference) {
 			return ((TransformationReference) element).getTransformationSet();
-
 		} else if (element instanceof TransformationSet) {
-			return ExtensionPointTransformationDataSource.instance();
+			return ((TransformationSet) element).getTransformationDataSource();
+		} else if (element instanceof TransformationDataSource) {
+			return TransformationDataSourceManager.INSTANCE;
 		}
 		return null;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
+	 * 
+	 * @see
+	 * org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.
+	 * Object)
 	 */
 	public boolean hasChildren(Object element) {
 		return getElements(element).length > 0;

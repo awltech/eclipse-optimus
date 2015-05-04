@@ -25,7 +25,6 @@ import static org.eclipse.jdt.core.dom.MethodDeclaration.BODY_PROPERTY;
 import static org.eclipse.jdt.core.dom.MethodDeclaration.JAVADOC_PROPERTY;
 import static org.eclipse.jdt.core.dom.MethodDeclaration.MODIFIERS2_PROPERTY;
 import static org.eclipse.jdt.core.dom.MethodDeclaration.PARAMETERS_PROPERTY;
-import static org.eclipse.jdt.core.dom.MethodDeclaration.THROWN_EXCEPTIONS_PROPERTY;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +32,7 @@ import java.util.Set;
 
 import net.atos.optimus.common.tools.jdt.ASTHelper;
 import net.atos.optimus.common.tools.jdt.JavaCodeHelper;
+import net.atos.optimus.common.tools.jdt.jstcomp.ASTThrownExceptionsHelper;
 import net.atos.optimus.m2t.merger.java.core.internal.Activator;
 import net.atos.optimus.m2t.merger.java.core.internal.MergerLogger;
 import net.atos.optimus.m2t.merger.java.core.internal.MergerLoggerMessages;
@@ -118,7 +118,6 @@ class MethodDeclarationMerger extends BodyDeclarationMerger {
 		return MODIFIERS2_PROPERTY;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void insert(ASTNode parent, BodyDeclaration originalNode) {
 		super.insert(parent, originalNode);
@@ -315,13 +314,12 @@ class MethodDeclarationMerger extends BodyDeclarationMerger {
 	 * @param astr
 	 *            The ASTRewrite object instance containing the merge result
 	 */
-	@SuppressWarnings("unchecked")
 	protected void mergeExceptions(MethodDeclaration existingMethod, MethodDeclaration generatedMethod) {
 
 		List<String> existingExceptions = new ArrayList<String>(3);
 
 		// Create an annotations list in String format.
-		for (Name n : (List<Name>) existingMethod.thrownExceptions()) {
+		for (Name n : ASTThrownExceptionsHelper.getThrownExceptionNames(existingMethod)) {
 			existingExceptions.add(JavaCodeHelper.getSimpleName(n));
 		}
 
@@ -329,10 +327,10 @@ class MethodDeclarationMerger extends BodyDeclarationMerger {
 		 * Get a ListRewrite object used to modify annotations in the existing
 		 * code.
 		 */
-		ListRewrite lw = astr.getListRewrite(existingMethod, THROWN_EXCEPTIONS_PROPERTY);
-
+		ListRewrite lw = astr.getListRewrite(existingMethod, ASTThrownExceptionsHelper.getThrownExceptionsPropertyDescriptor(existingMethod));
+		
 		// For each annotation of the generated source
-		for (Name n : (List<Name>) generatedMethod.thrownExceptions()) {
+		for (Name n : ASTThrownExceptionsHelper.getThrownExceptionNames(generatedMethod)) {
 			if (!existingExceptions.contains(JavaCodeHelper.getSimpleName(n))) {
 				/*
 				 * This exception is containing in the generated code but not in

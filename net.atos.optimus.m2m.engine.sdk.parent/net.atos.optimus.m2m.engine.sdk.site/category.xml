@@ -26,5 +26,5 @@
    <description name="Atos Optimus M2M Engine SDK">
      Atos Optimus M2M Engine SDK
    </description>
-   <feature url="features/net.atos.optimus.m2m.engine.sdk.feature_1.1.0.qualifier.jar" id="net.atos.optimus.m2m.engine.sdk.feature" version="1.1.0.qualifier"/>
+   <feature url="features/net.atos.optimus.m2m.engine.sdk.feature_1.2.0.qualifier.jar" id="net.atos.optimus.m2m.engine.sdk.feature" version="1.2.0.qualifier"/>
 </site>

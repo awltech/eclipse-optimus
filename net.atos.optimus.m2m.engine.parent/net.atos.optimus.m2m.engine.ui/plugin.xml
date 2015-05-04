@@ -29,8 +29,14 @@
       <page
             category="net.atos.optimus.common.core.main"
             class="net.atos.optimus.m2m.engine.ui.prefs.TransformationsPreferencesPage"
-            id="net.atos.optimus.m2m.engine.core.ui.prefs1"
+            id="net.atos.optimus.m2m.engine.core.ui.prefs"
             name="Transformation Engine Configuration">
+      </page>
+      <page
+            category="net.atos.optimus.common.core.main"
+            class="net.atos.optimus.m2m.engine.ui.prefs.masks.TransformationMasksPreferencesPage"
+            id="net.atos.optimus.m2m.engine.core.ui.prefs.masks"
+            name="Transformation Mask Configuration">
       </page>
    </extension>
 </plugin>

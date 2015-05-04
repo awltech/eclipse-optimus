@@ -21,8 +21,8 @@
  */
 package net.atos.optimus.m2m.engine.ui.prefs;
 
-import net.atos.optimus.m2m.engine.core.masks.PreferencesTransformationMask;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
+import net.atos.optimus.m2m.engine.ui.prefs.masks.PreferencesTransformationMask;
 
 import org.eclipse.jface.viewers.ICheckStateProvider;
 

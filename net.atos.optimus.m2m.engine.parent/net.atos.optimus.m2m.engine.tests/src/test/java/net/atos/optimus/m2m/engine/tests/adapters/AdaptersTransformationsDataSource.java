@@ -26,7 +26,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import net.atos.optimus.m2m.engine.core.transformations.DefaultTransformationSet;
-import net.atos.optimus.m2m.engine.core.transformations.ITransformationDataSource;
+import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSource;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationSet;
 
@@ -34,11 +34,12 @@ import net.atos.optimus.m2m.engine.core.transformations.TransformationSet;
  *  @author Maxence Vanbésien (mvaawl@gmail.com)
  *  @since 1.0
  */
-public class AdaptersTransformationsDataSource implements ITransformationDataSource {
+public class AdaptersTransformationsDataSource extends TransformationDataSource {
 
 	Map<String, TransformationReference> transformationReferences = new LinkedHashMap<String, TransformationReference>();
 
 	public AdaptersTransformationsDataSource() {
+		super("AdaptersTransformationsDataSourceTest");
 		TransformationSet transformationSet = new DefaultTransformationSet("adapters");
 		transformationReferences.put("package", new TransformationReference("package",
 				new AdaptersPackageTransformationFactory(), transformationSet, null, 0));
