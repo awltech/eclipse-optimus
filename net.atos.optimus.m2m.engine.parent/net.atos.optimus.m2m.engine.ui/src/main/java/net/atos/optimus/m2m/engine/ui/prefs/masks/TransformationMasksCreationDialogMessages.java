@@ -24,18 +24,17 @@ package net.atos.optimus.m2m.engine.ui.prefs.masks;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
-/** Preferences messages for transformation masks preferences
+/** Messages for input dialog in transformation mask preference
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
  *
  */
-
-public enum TransformationMasksPreferencesMessages {
+public enum TransformationMasksCreationDialogMessages {
 	
-	CHECK_BOX_LABEL,CREATION_BUTTON,MASK_DESCRIPTION,TRANSFORMATIONS_LABEL;
+	CREATION_TITLE,CREATION_MESSAGE,EXTENSION_MESSAGE,NAME_CONFLICT;
 	
-	private static ResourceBundle resourceBundle = ResourceBundle.getBundle("TransformationMasksPreferencesMessages");
+	private static ResourceBundle resourceBundle = ResourceBundle.getBundle("TransformationMasksCreationDialogMessages");
 	
 	public String message() {
 		return resourceBundle.getString(this.toString());

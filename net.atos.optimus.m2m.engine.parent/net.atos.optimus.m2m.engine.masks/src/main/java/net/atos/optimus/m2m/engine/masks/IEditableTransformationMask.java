@@ -19,30 +19,21 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.engine.ui.prefs.masks;
+package net.atos.optimus.m2m.engine.masks;
 
-import java.text.MessageFormat;
-import java.util.ResourceBundle;
+import java.util.Set;
+import java.util.Map.Entry;
 
-/** Preferences messages for transformation masks preferences
- * 
- * @author tnachtergaele <nachtergaele.thomas@gmail.com>
- * 
- *
- */
+import net.atos.optimus.m2m.engine.core.masks.ITransformationMask;
 
-public enum TransformationMasksPreferencesMessages {
-	
-	CHECK_BOX_LABEL,CREATION_BUTTON,MASK_DESCRIPTION,TRANSFORMATIONS_LABEL;
-	
-	private static ResourceBundle resourceBundle = ResourceBundle.getBundle("TransformationMasksPreferencesMessages");
-	
-	public String message() {
-		return resourceBundle.getString(this.toString());
-	}
-	
-	public String message(Object... args) {
-		return MessageFormat.format(message(), args);
-	}
+public interface IEditableTransformationMask extends ITransformationMask {
+
+	/**
+	 * Submit the mask modification
+	 * 
+	 * @param maskModifications
+	 *            the mask modifications.
+	 */
+	public void submitMaskModification(Set<Entry<String, Boolean>> maskModifications);
 
 }

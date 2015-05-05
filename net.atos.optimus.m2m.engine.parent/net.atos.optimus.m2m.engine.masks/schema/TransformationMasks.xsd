@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+	<xsd:complexType name="transformations">
+	
+		<xsd:attribute name="name" type="xsd:string" use="required"/>
+		<xsd:attribute name="enable" type="xsd:boolean" use="required"/>
+	
+	</xsd:complexType>
+	
+	<xsd:complexType name="transformationMasks">
+		
+		<xsd:sequence minOccurs="0" maxOccurs="unbounded">
+		
+			<xsd:element name="transformation" type="transformations" />
+		
+		</xsd:sequence>
+	
+	</xsd:complexType>
+	
+	<xsd:element name="transformationMask" type="transformationMasks"/>
+
+</xsd:schema>
