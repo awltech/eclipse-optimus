@@ -42,7 +42,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 
 /**
- * Implementation of Transformation Masks Extension Point management singleton
+ * Implementation of Transformation Masks Extension Point management
  * 
  * @author mvanbesien
  * @since 1.1
@@ -66,7 +66,7 @@ public class ExtensionPointTransformationMaskDataSource extends TransformationMa
 	 */
 	public ExtensionPointTransformationMaskDataSource() {
 		super(ExtensionPointTransformationMaskDataSource.DESCRIPTION);
-		OptimusM2MMaskMessages.TMEP01.log();
+		OptimusM2MMaskMessages.ML01.log();
 
 		ArrayList<TransformationMaskReference> foundMasks = new ArrayList<TransformationMaskReference>();
 
@@ -75,7 +75,7 @@ public class ExtensionPointTransformationMaskDataSource extends TransformationMa
 
 		for (IExtension extension : extensionPoint.getExtensions()) {
 			String contributorName = extension.getContributor().getName();
-			OptimusM2MMaskMessages.TMEP02.log(contributorName);
+			OptimusM2MMaskMessages.ML02.log(contributorName);
 
 			for (IConfigurationElement configurationElement : extension.getConfigurationElements()) {
 				if ("implementedMask".equals(configurationElement.getName())) {
@@ -85,17 +85,17 @@ public class ExtensionPointTransformationMaskDataSource extends TransformationMa
 						String description = configurationElement.getAttribute("description");
 						Object implementation = configurationElement.createExecutableExtension("implementation");
 						if (implementation instanceof ITransformationMask && name != null) {
-							foundMasks.add(new TransformationMaskReference(name, description, (ITransformationMask) implementation, false));
-							OptimusM2MMaskMessages.TMEP03.log(name, implementation.getClass().getName());
+							foundMasks.add(new TransformationMaskReference(name, description, (ITransformationMask) implementation));
+							OptimusM2MMaskMessages.ML03.log(name, implementation.getClass().getName());
 						} else {
 							if (name == null) {
-								OptimusM2MMaskMessages.TMEP04.log();
+								OptimusM2MMaskMessages.ML04.log();
 							} else {
-								OptimusM2MMaskMessages.TMEP05.log(implementation.getClass());
+								OptimusM2MMaskMessages.ML05.log(implementation.getClass());
 							}
 						}
 					} catch (CoreException e) {
-						OptimusM2MMaskMessages.TMEP06.log(e.getMessage(), contributorName);
+						OptimusM2MMaskMessages.ML06.log(e.getMessage(), contributorName);
 						Activator
 								.getDefault()
 								.getLog()
@@ -109,24 +109,24 @@ public class ExtensionPointTransformationMaskDataSource extends TransformationMa
 					String name = configurationElement.getAttribute("name");
 					String description = configurationElement.getAttribute("description");
 					JavaTransformationMask mask = JavaTransformationMask.allOff();
-					OptimusM2MMaskMessages.TMEP07.log(name);
+					OptimusM2MMaskMessages.ML07.log(name);
 					
 					for (IConfigurationElement child : configurationElement.getChildren()) {
 						if ("includes".equals(child.getName())) {
 							String transformationId = child.getAttribute("transformationId");
 							if (transformationId != null) {
 								mask.withTransformation(transformationId);
-								OptimusM2MMaskMessages.TMEP08.log(name,transformationId);
+								OptimusM2MMaskMessages.ML08.log(name,transformationId);
 							}
 						} else if ("includesSet".equals(child.getName())) {
 							String transformationSetId = child.getAttribute("transformationSetId");
 							if (transformationSetId != null) {
 								mask.withTransformationSet(transformationSetId);
-								OptimusM2MMaskMessages.TMEP09.log(name,transformationSetId);
+								OptimusM2MMaskMessages.ML09.log(name,transformationSetId);
 							}
 						}
 					}
-					foundMasks.add(new TransformationMaskReference(name, description, mask, false));
+					foundMasks.add(new TransformationMaskReference(name, description, mask));
 					
 				} else if ("exclusiveMask".equals(configurationElement.getName())) {
 					// When transformation set is build from extension point,
@@ -134,28 +134,28 @@ public class ExtensionPointTransformationMaskDataSource extends TransformationMa
 					String name = configurationElement.getAttribute("name");
 					String description = configurationElement.getAttribute("description");
 					JavaTransformationMask mask = JavaTransformationMask.allOn();
-					OptimusM2MMaskMessages.TMEP10.log(name);
+					OptimusM2MMaskMessages.ML10.log(name);
 					
 					for (IConfigurationElement child : configurationElement.getChildren()) {
 						if ("excludes".equals(child.getName())) {
 							String transformationId = child.getAttribute("transformationId");
 							if (transformationId != null) {
 								mask.withoutTransformation(transformationId);
-								OptimusM2MMaskMessages.TMEP11.log(name,transformationId);
+								OptimusM2MMaskMessages.ML11.log(name,transformationId);
 							}
 						} else if ("excludesSet".equals(child.getName())) {
 							String transformationSetId = child.getAttribute("transformationSetId");
 							if (transformationSetId != null) {
 								mask.withoutTransformationSet(transformationSetId);
-								OptimusM2MMaskMessages.TMEP12.log(name,transformationSetId);
+								OptimusM2MMaskMessages.ML12.log(name,transformationSetId);
 							}
 						}
 					}
-					foundMasks.add(new TransformationMaskReference(name, description, mask, false));
+					foundMasks.add(new TransformationMaskReference(name, description, mask));
 				}
 			}
 		}
-		OptimusM2MMaskMessages.TMEP13.log();
+		OptimusM2MMaskMessages.ML13.log();
 		this.registeredMasks = Collections.unmodifiableList(foundMasks);
 	}
 

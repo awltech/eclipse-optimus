@@ -11,6 +11,7 @@ Require-Bundle: org.eclipse.ui,
  net.atos.optimus.m2m.engine.core,
  net.atos.optimus.common.core,
  org.eclipse.emf.ecore,
- net.atos.optimus.m2m.engine.masks
+ net.atos.optimus.m2m.engine.masks,
+ org.jdom
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy

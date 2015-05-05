@@ -11,6 +11,9 @@
     <transformationMaskDataSource
           implementation="net.atos.optimus.m2m.engine.masks.extension.ExtensionPointTransformationMaskDataSource">
     </transformationMaskDataSource>
+    <transformationMaskDataSource
+          implementation="net.atos.optimus.m2m.engine.masks.extension.XMLFileTransformationMaskDataSource">
+    </transformationMaskDataSource>
  </extension>
  <extension
        point="net.atos.optimus.m2m.engine.masks.TransformationMasks">

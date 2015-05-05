@@ -22,15 +22,15 @@
 package net.atos.optimus.m2m.engine.ui.prefs.masks;
 
 import java.util.HashSet;
-import java.util.Map.Entry;
 import java.util.Set;
 
+import net.atos.optimus.m2m.engine.core.masks.ITransformationMask;
 import net.atos.optimus.m2m.engine.core.masks.TemporaryTransformationMask;
 import net.atos.optimus.m2m.engine.core.requirements.AbstractRequirement;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSource;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSourceManager;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
-import net.atos.optimus.m2m.engine.masks.JavaTransformationMask;
+import net.atos.optimus.m2m.engine.masks.IEditableTransformationMask;
 
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
@@ -144,14 +144,10 @@ public class TransformationMasksTreeCheckListener implements ICheckStateListener
 	}
 
 	public void apply() {
-		JavaTransformationMask transformationMask = (JavaTransformationMask) this.tmpTransformationMask
-				.getOrginalTransformationMask();
-		for (Entry<String, Boolean> entry : this.tmpTransformationMask.getTransformationMaskModification()) {
-			if (entry.getValue()) {
-				transformationMask.withTransformation(entry.getKey());
-			} else {
-				transformationMask.withoutTransformation(entry.getKey());
-			}
+		ITransformationMask originalTransformationMask = this.tmpTransformationMask.getOrginalTransformationMask();
+		if (originalTransformationMask instanceof IEditableTransformationMask) {
+			((IEditableTransformationMask) originalTransformationMask)
+					.submitMaskModification(this.tmpTransformationMask.getTransformationMaskModification());
 		}
 	}
 

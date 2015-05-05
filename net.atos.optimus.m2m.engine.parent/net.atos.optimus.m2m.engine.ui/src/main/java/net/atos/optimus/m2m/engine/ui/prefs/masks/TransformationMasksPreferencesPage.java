@@ -30,13 +30,14 @@ import net.atos.optimus.m2m.engine.core.masks.TransformationMaskReference;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSourceManager;
 import net.atos.optimus.m2m.engine.ui.prefs.TransformationsTreeContentsProvider;
 import net.atos.optimus.m2m.engine.ui.prefs.TransformationsTreeDoubleClickListener;
-import net.atos.optimus.m2m.engine.ui.prefs.TransformationsTreeLabelProvider;
 
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
@@ -91,10 +92,6 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 		creationButton.setText(TransformationMasksPreferencesMessages.CREATION_BUTTON.message());
 		FormDataBuilder.on(creationButton).top(selectionLabel).right();
 
-		Button extendButton = new Button(composite, SWT.NONE);
-		extendButton.setText(TransformationMasksPreferencesMessages.EXTENSION_BUTTON.message());
-		FormDataBuilder.on(extendButton).top(selectionLabel).right(creationButton);
-
 		this.transformationMaskCombo = new Combo(composite, SWT.READ_ONLY);
 		for (TransformationMaskDataSource transformationMaskDataSource : TransformationMaskDataSourceManager.INSTANCE
 				.getTransformationMaskDataSources()) {
@@ -117,7 +114,7 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 
 		this.tmpTransformationMask = new TemporaryTransformationMask(transformationMaskReference.getImplementation());
 
-		FormDataBuilder.on(this.transformationMaskCombo).top(selectionLabel).left().right(extendButton);
+		FormDataBuilder.on(this.transformationMaskCombo).top(selectionLabel).left().right(creationButton);
 
 		Group descriptionGroup = new Group(composite, SWT.NONE);
 		descriptionGroup.setText(TransformationMasksPreferencesMessages.MASK_DESCRIPTION.message());
@@ -136,7 +133,7 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 		final Tree tree = new Tree(composite, SWT.CHECK | SWT.BORDER);
 		final CheckboxTreeViewer treeViewer = new CheckboxTreeViewer(tree);
 
-		treeViewer.setLabelProvider(new TransformationsTreeLabelProvider());
+		treeViewer.setLabelProvider(new TransformationMasksTreeLabelProvider(this.tmpTransformationMask));
 		treeViewer.setContentProvider(new TransformationsTreeContentsProvider());
 		treeViewer.setCheckStateProvider(new TransformationMasksTreeCheckProvider(this.tmpTransformationMask));
 		treeViewer.addDoubleClickListener(new TransformationsTreeDoubleClickListener());
@@ -158,6 +155,23 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 
 				descriptionLabel.setText(transformationMaskReference.getDescription());
 				treeViewer.refresh();
+			}
+		});
+
+		// Add listener to ask for a new transformation mask name
+		creationButton.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				TransformationMaskCreationDialog transformationMaskCreationDialog = new TransformationMaskCreationDialog(
+						getShell());
+				if (transformationMaskCreationDialog.open() == Window.OK) {
+					TransformationMasksPreferencesPage.this.transformationMaskCombo
+							.add(transformationMaskCreationDialog.getValue());
+				}
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
 			}
 		});
 
