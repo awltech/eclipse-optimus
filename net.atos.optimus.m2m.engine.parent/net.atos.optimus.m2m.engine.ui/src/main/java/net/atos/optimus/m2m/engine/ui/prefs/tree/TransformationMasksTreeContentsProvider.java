@@ -19,7 +19,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.engine.ui.prefs;
+package net.atos.optimus.m2m.engine.ui.prefs.tree;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,7 +40,7 @@ import org.eclipse.jface.viewers.Viewer;
  * @since 1.0
  * 
  */
-public class TransformationsTreeContentsProvider implements
+public class TransformationMasksTreeContentsProvider implements
 		ITreeContentProvider {
 
 	/*

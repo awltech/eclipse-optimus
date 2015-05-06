@@ -19,7 +19,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.engine.ui.prefs.masks;
+package net.atos.optimus.m2m.engine.ui.prefs;
 
 import net.atos.optimus.common.tools.swt.FormDataBuilder;
 import net.atos.optimus.m2m.engine.core.Activator;
@@ -28,8 +28,12 @@ import net.atos.optimus.m2m.engine.core.masks.TransformationMaskDataSource;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskDataSourceManager;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskReference;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSourceManager;
-import net.atos.optimus.m2m.engine.ui.prefs.TransformationsTreeContentsProvider;
-import net.atos.optimus.m2m.engine.ui.prefs.TransformationsTreeDoubleClickListener;
+import net.atos.optimus.m2m.engine.ui.prefs.dialog.TransformationMaskCreationDialog;
+import net.atos.optimus.m2m.engine.ui.prefs.tree.TransformationMasksTreeCheckListener;
+import net.atos.optimus.m2m.engine.ui.prefs.tree.TransformationMasksTreeCheckProvider;
+import net.atos.optimus.m2m.engine.ui.prefs.tree.TransformationMasksTreeContentsProvider;
+import net.atos.optimus.m2m.engine.ui.prefs.tree.TransformationMasksTreeDoubleClickListener;
+import net.atos.optimus.m2m.engine.ui.prefs.tree.TransformationMasksTreeLabelProvider;
 
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
@@ -143,9 +147,9 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 		final CheckboxTreeViewer treeViewer = new CheckboxTreeViewer(tree);
 
 		treeViewer.setLabelProvider(new TransformationMasksTreeLabelProvider(this.tmpTransformationMask));
-		treeViewer.setContentProvider(new TransformationsTreeContentsProvider());
+		treeViewer.setContentProvider(new TransformationMasksTreeContentsProvider());
 		treeViewer.setCheckStateProvider(new TransformationMasksTreeCheckProvider(this.tmpTransformationMask));
-		treeViewer.addDoubleClickListener(new TransformationsTreeDoubleClickListener());
+		treeViewer.addDoubleClickListener(new TransformationMasksTreeDoubleClickListener());
 		this.checkListener = new TransformationMasksTreeCheckListener(treeViewer, this.tmpTransformationMask);
 		treeViewer.addCheckStateListener(this.checkListener);
 		treeViewer.setInput(TransformationDataSourceManager.INSTANCE);

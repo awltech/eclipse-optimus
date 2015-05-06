@@ -25,21 +25,25 @@ import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
 /**
- *  @author Maxence Vanbésien (mvaawl@gmail.com)
- *  @since 1.0
+ * Preferences messages for transformation masks preferences
+ * 
+ * @author tnachtergaele <nachtergaele.thomas@gmail.com>
+ * 
+ *
  */
-public enum TransformationsPreferencesMessages {
 
-	IMPORT_BUTTON, EXPORT_BUTTON, LOGGER_LEVEL, TRANSFORMATIONS_LABEL, DESCRIPTION;
-	
-	private static ResourceBundle resourceBundle = ResourceBundle.getBundle("TransformationsPreferencesMessages");
-	
+public enum TransformationMasksPreferencesMessages {
+
+	IMPORT_BUTTON, IMPORT_WINDOW, EXPORT_BUTTON, EXPORT_WINDOW, CHECK_BOX_LABEL, CREATION_BUTTON, MASK_DESCRIPTION, TRANSFORMATIONS_LABEL;
+
+	private static ResourceBundle resourceBundle = ResourceBundle.getBundle("TransformationMasksPreferencesMessages");
+
 	public String message() {
 		return resourceBundle.getString(this.toString());
 	}
-	
+
 	public String message(Object... args) {
 		return MessageFormat.format(message(), args);
 	}
-	
+
 }

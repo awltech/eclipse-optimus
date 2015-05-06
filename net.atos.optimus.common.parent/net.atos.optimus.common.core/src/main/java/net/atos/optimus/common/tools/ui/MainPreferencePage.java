@@ -23,8 +23,12 @@ package net.atos.optimus.common.tools.ui;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
 
 import net.atos.optimus.common.tools.Activator;
+import net.atos.optimus.common.tools.logging.OptimusLogger;
 import net.atos.optimus.common.tools.swt.FormDataBuilder;
 
 import org.eclipse.core.runtime.IStatus;
@@ -34,8 +38,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.IWorkbench;
@@ -57,8 +63,25 @@ public class MainPreferencePage extends PreferencePage implements IWorkbenchPref
 
 	private static final String WLTECH_IMAGE_PATH = "images/optimus-logo.png";
 
+	// List of levels
+	private List<Level> levels = new ArrayList<Level>();
+
+	// Temp value corresponding to the level chosen by user.
+	private int newLevel = -1;
+
 	@Override
 	public void init(IWorkbench workbench) {
+		setPreferenceStore(Activator.getDefault().getPreferenceStore());
+		levels.clear();
+		levels.add(Level.OFF);
+		levels.add(Level.SEVERE);
+		levels.add(Level.WARNING);
+		levels.add(Level.INFO);
+		levels.add(Level.CONFIG);
+		levels.add(Level.FINE);
+		levels.add(Level.FINER);
+		levels.add(Level.FINEST);
+		levels.add(Level.ALL);
 	}
 
 	@Override
@@ -74,6 +97,17 @@ public class MainPreferencePage extends PreferencePage implements IWorkbenchPref
 		Link moreInfo1 = new Link(background, SWT.RIGHT);
 		Link moreInfo2 = new Link(background, SWT.RIGHT);
 
+		Group levelGroup = new Group(background, SWT.NONE);
+		levelGroup.setLayout(new FormLayout());
+		
+		Label labelLog = new Label(levelGroup, SWT.NONE);
+		labelLog.setText(MainPreferencePageMessages.LOGGER_LEVEL.value());
+		final Combo comboLog = new Combo(levelGroup, SWT.READ_ONLY);
+		for (Level level : levels){
+			comboLog.add(level.getName());
+		}
+		comboLog.select(levels.indexOf(OptimusLogger.logger.getLevel()));
+
 		description.setText(MainPreferencePageMessages.DESCRIPTION.value());
 		moreInfo.setText(MainPreferencePageMessages.MORE_INFO.value());
 		moreInfo1.setText(MainPreferencePageMessages.MORE_INFO_1.value());
@@ -85,13 +119,36 @@ public class MainPreferencePage extends PreferencePage implements IWorkbenchPref
 		moreInfo2.addSelectionListener(new OpenLinkActionSelectionAdapter());
 
 		FormDataBuilder.on(title).top().left().right();
-		FormDataBuilder.on(description).top(title).left().right().bottom(image);
+		FormDataBuilder.on(description).top(title).left().right().bottom(levelGroup);
 		FormDataBuilder.on(image).left().bottom().width(140).height(55);
 		FormDataBuilder.on(moreInfo).bottom(moreInfo1).right();
 		FormDataBuilder.on(moreInfo1).bottom(moreInfo2).right();
 		FormDataBuilder.on(moreInfo2).bottom().right();
+		
+		FormDataBuilder.on(levelGroup).bottom(image).left();
+		FormDataBuilder.on(labelLog).left().top().bottom().right(comboLog);
+		FormDataBuilder.on(comboLog).top().width(120).bottom().right();
+
+		// Add a listener to save the user selection
+		comboLog.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				newLevel = comboLog.getSelectionIndex();
+			}
+		});
 
 		return background;
+	}
+
+	@Override
+	public boolean performOk() {
+		int currentLevel = levels.indexOf(OptimusLogger.logger.getLevel());
+		if (this.newLevel != currentLevel && this.newLevel > -1) {
+			OptimusLogger.logger.setLevel(levels.get(newLevel));
+			this.getPreferenceStore()
+					.setValue(OptimusLogger.LOGGER_LEVEL_KEY, this.levels.get(this.newLevel).getName());
+		}
+		return super.performOk();
 	}
 
 	private static final class OpenLinkActionSelectionAdapter extends SelectionAdapter {

@@ -19,29 +19,27 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.engine.ui.prefs.masks;
+package net.atos.optimus.m2m.engine.ui.prefs.dialog;
 
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
-/**
- * Preferences messages for transformation masks preferences
+/** Messages for input dialog in transformation mask preference
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
  *
  */
-
-public enum TransformationMasksPreferencesMessages {
-
-	IMPORT_BUTTON, IMPORT_WINDOW, EXPORT_BUTTON, EXPORT_WINDOW, CHECK_BOX_LABEL, CREATION_BUTTON, MASK_DESCRIPTION, TRANSFORMATIONS_LABEL;
-
-	private static ResourceBundle resourceBundle = ResourceBundle.getBundle("TransformationMasksPreferencesMessages");
-
+public enum TransformationMasksCreationDialogMessages {
+	
+	CREATION_TITLE,CREATION_MESSAGE,EXTENSION_MESSAGE,NAME_CONFLICT;
+	
+	private static ResourceBundle resourceBundle = ResourceBundle.getBundle("TransformationMasksCreationDialogMessages");
+	
 	public String message() {
 		return resourceBundle.getString(this.toString());
 	}
-
+	
 	public String message(Object... args) {
 		return MessageFormat.format(message(), args);
 	}

@@ -5,7 +5,7 @@ import java.util.ResourceBundle;
 import java.text.MessageFormat;
 
 public enum MainPreferencePageMessages {
-	DESCRIPTION, MORE_INFO, MORE_INFO_1, MORE_INFO_2, BROWSER_TEXT
+	DESCRIPTION, MORE_INFO, MORE_INFO_1, MORE_INFO_2, BROWSER_TEXT, LOGGER_LEVEL
 	;
 	
 	/*
