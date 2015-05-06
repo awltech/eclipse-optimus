@@ -33,8 +33,9 @@ import net.atos.optimus.m2m.engine.ui.prefs.TransformationsTreeDoubleClickListen
 
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
-import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -88,9 +89,17 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 		selectionLabel.setText(TransformationMasksPreferencesMessages.CHECK_BOX_LABEL.message());
 		FormDataBuilder.on(selectionLabel).top();
 
+		Button exportButton = new Button(composite, SWT.PUSH);
+		exportButton.setText(TransformationMasksPreferencesMessages.EXPORT_BUTTON.message());
+		FormDataBuilder.on(exportButton).top(selectionLabel).right();
+
+		Button importButton = new Button(composite, SWT.PUSH);
+		importButton.setText(TransformationMasksPreferencesMessages.IMPORT_BUTTON.message());
+		FormDataBuilder.on(importButton).top(selectionLabel).right(exportButton);
+
 		Button creationButton = new Button(composite, SWT.NONE);
 		creationButton.setText(TransformationMasksPreferencesMessages.CREATION_BUTTON.message());
-		FormDataBuilder.on(creationButton).top(selectionLabel).right();
+		FormDataBuilder.on(creationButton).top(selectionLabel).right(importButton);
 
 		this.transformationMaskCombo = new Combo(composite, SWT.READ_ONLY);
 		for (TransformationMaskDataSource transformationMaskDataSource : TransformationMaskDataSourceManager.INSTANCE
@@ -158,16 +167,57 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 			}
 		});
 
+		this.transformationMaskCombo.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusLost(FocusEvent e) {
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				String transformationName = TransformationMasksPreferencesPage.this.transformationMaskCombo.getText();
+				TransformationMasksPreferencesPage.this.transformationMaskCombo.removeAll();
+				for (TransformationMaskDataSource transformationMaskDataSource : TransformationMaskDataSourceManager.INSTANCE
+						.getTransformationMaskDataSources()) {
+					for (TransformationMaskReference transformationMaskReference : transformationMaskDataSource
+							.getAllMasks()) {
+						TransformationMasksPreferencesPage.this.transformationMaskCombo.add(transformationMaskReference
+								.getName());
+					}
+				}
+				int indexMaskName = 0;
+				String[] maskNames = TransformationMasksPreferencesPage.this.transformationMaskCombo.getItems();
+				while (indexMaskName < maskNames.length - 1 && !transformationName.equals(maskNames[indexMaskName])) {
+					indexMaskName++;
+				}
+				TransformationMasksPreferencesPage.this.transformationMaskCombo.select(indexMaskName);
+			}
+		});
+
+		exportButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				TransformationMaskReference transformationMaskReference = TransformationMaskDataSourceManager.INSTANCE
+						.getTransformationMaskById(TransformationMasksPreferencesPage.this.transformationMaskCombo
+								.getText());
+				TransformationMasksPreferencesImex.exportTransformationMask(transformationMaskReference);
+			}
+		});
+
+		importButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				TransformationMasksPreferencesImex.importTransformationMask();
+			}
+		});
+
 		// Add listener to ask for a new transformation mask name
 		creationButton.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				TransformationMaskCreationDialog transformationMaskCreationDialog = new TransformationMaskCreationDialog(
 						getShell());
-				if (transformationMaskCreationDialog.open() == Window.OK) {
-					TransformationMasksPreferencesPage.this.transformationMaskCombo
-							.add(transformationMaskCreationDialog.getValue());
-				}
+				transformationMaskCreationDialog.open();
 			}
 
 			@Override

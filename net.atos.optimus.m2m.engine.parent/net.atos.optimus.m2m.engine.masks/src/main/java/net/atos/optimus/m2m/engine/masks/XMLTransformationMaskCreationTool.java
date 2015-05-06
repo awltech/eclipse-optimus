@@ -47,7 +47,7 @@ import org.jdom.output.XMLOutputter;
  *
  */
 
-public class UserTransformationMaskCreationTool {
+public class XMLTransformationMaskCreationTool {
 
 	public static final String TRANSFORMATION_MASK_DIRECTORY = ResourcesPlugin.getWorkspace().getRoot().getLocation()
 			+ "/.metadata/.plugins/" + Activator.PLUGIN_ID + "/";
@@ -60,7 +60,7 @@ public class UserTransformationMaskCreationTool {
 	 * @return the file associated to the mask with the specified name.
 	 */
 	public static File giveAssociatedXMLFile(String maskName) {
-		return new File(UserTransformationMaskCreationTool.TRANSFORMATION_MASK_DIRECTORY + maskName + ".xml");
+		return new File(XMLTransformationMaskCreationTool.TRANSFORMATION_MASK_DIRECTORY + maskName + ".xml");
 	}
 
 	/**
@@ -80,8 +80,8 @@ public class UserTransformationMaskCreationTool {
 	 * Configure the file system to create user transformation mask
 	 * 
 	 */
-	private static void configureFileSystem() {
-		File transformationMaskDirectory = new File(UserTransformationMaskCreationTool.TRANSFORMATION_MASK_DIRECTORY);
+	public static void configureFileSystem() {
+		File transformationMaskDirectory = new File(XMLTransformationMaskCreationTool.TRANSFORMATION_MASK_DIRECTORY);
 		if (!transformationMaskDirectory.exists()) {
 			if (transformationMaskDirectory.mkdirs()) {
 				OptimusM2MMaskMessages.UM01.log();
@@ -147,28 +147,28 @@ public class UserTransformationMaskCreationTool {
 	 *            the extended transformation mask.
 	 */
 	public static void createUserTransformationMask(String maskName, ITransformationMask extendedTransformationMask) {
-		UserTransformationMaskCreationTool.configureFileSystem();
-		File transformationMaskFile = UserTransformationMaskCreationTool.giveAssociatedXMLFile(maskName);
+		XMLTransformationMaskCreationTool.configureFileSystem();
+		File transformationMaskFile = XMLTransformationMaskCreationTool.giveAssociatedXMLFile(maskName);
 		if (transformationMaskFile.exists()) {
 			OptimusM2MMaskMessages.UM06.log(maskName);
 		} else {
-			Document document = UserTransformationMaskCreationTool
+			Document document = XMLTransformationMaskCreationTool
 					.createXMLDocumentWithMask(extendedTransformationMask);
-			UserTransformationMaskCreationTool.writeTransformationMask(transformationMaskFile, document);
+			XMLTransformationMaskCreationTool.writeTransformationMask(transformationMaskFile, document);
 			OptimusM2MMaskMessages.UM04.log(maskName);
 		}
 	}
 	
-	/** Update a XML file containing a transformation mask
+	/** Create an XML file containing a transformation mask
 	 * 
-	 * @param transformationMaskFile the file containing the transformation mask to update.
+	 * @param transformationMaskFile the file containing the transformation mask.
 	 * @param newTransformationMask the new transformation mask.
 	 */
-	public static void updateUserTransformationMask(File transformationMaskFile, ITransformationMask newTransformationMask){
-		UserTransformationMaskCreationTool.configureFileSystem();
-		Document document = UserTransformationMaskCreationTool
+	public static void createUserTransformationMask(File transformationMaskFile, ITransformationMask newTransformationMask){
+		XMLTransformationMaskCreationTool.configureFileSystem();
+		Document document = XMLTransformationMaskCreationTool
 				.createXMLDocumentWithMask(newTransformationMask);
-		UserTransformationMaskCreationTool.writeTransformationMask(transformationMaskFile, document);
+		XMLTransformationMaskCreationTool.writeTransformationMask(transformationMaskFile, document);
 		OptimusM2MMaskMessages.UM20.log(transformationMaskFile.getName());
 	}
 
