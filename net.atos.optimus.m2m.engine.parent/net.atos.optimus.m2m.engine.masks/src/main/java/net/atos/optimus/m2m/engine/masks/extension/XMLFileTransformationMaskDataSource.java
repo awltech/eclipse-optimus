@@ -41,7 +41,7 @@ import net.atos.optimus.m2m.engine.core.masks.ITransformationMask;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskDataSource;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskReference;
 import net.atos.optimus.m2m.engine.masks.Activator;
-import net.atos.optimus.m2m.engine.masks.XMLTransformationMaskCreationTool;
+import net.atos.optimus.m2m.engine.masks.UserTransformationMaskTool;
 import net.atos.optimus.m2m.engine.masks.XMLTransformationMask;
 import net.atos.optimus.m2m.engine.masks.logging.OptimusM2MMaskMessages;
 
@@ -102,12 +102,12 @@ public class XMLFileTransformationMaskDataSource extends TransformationMaskDataS
 	 * Load the user transformation masks from XML files
 	 */
 	protected void loadTransformationUserMasks() {
-		File transformationMaskDirectory = new File(XMLTransformationMaskCreationTool.TRANSFORMATION_MASK_DIRECTORY);
+		File transformationMaskDirectory = new File(UserTransformationMaskTool.TRANSFORMATION_MASK_DIRECTORY);
 		if (transformationMaskDirectory.exists()) {
 
 			// Check if XML transformation mask files still exist
 			for (String transformationName : this.transformationMaskReferences.keySet()) {
-				File transformationMaskFile = XMLTransformationMaskCreationTool.giveAssociatedXMLFile(transformationName);
+				File transformationMaskFile = UserTransformationMaskTool.giveAssociatedXMLFile(transformationName);
 				if (!transformationMaskFile.exists()) {
 					OptimusM2MMaskMessages.UM09.log(transformationMaskFile.getPath());
 					transformationMaskReferences.remove(transformationName);
@@ -127,7 +127,7 @@ public class XMLFileTransformationMaskDataSource extends TransformationMaskDataS
 
 			// Check if new XML transformation mask files exists
 			for (File transformationMaskFile : transformationMaskDirectory.listFiles()) {
-				String transformationMaskName = XMLTransformationMaskCreationTool.giveAssociatedMaskName(transformationMaskFile);
+				String transformationMaskName = UserTransformationMaskTool.giveAssociatedMaskName(transformationMaskFile);
 				if (!transformationMaskReferences.containsKey(transformationMaskName)) {
 					Source source = new StreamSource(transformationMaskFile);
 					try {

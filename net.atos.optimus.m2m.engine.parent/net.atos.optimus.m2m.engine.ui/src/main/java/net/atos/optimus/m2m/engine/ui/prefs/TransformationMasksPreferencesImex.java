@@ -29,7 +29,7 @@ import java.io.IOException;
 
 import net.atos.optimus.m2m.engine.core.Activator;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskReference;
-import net.atos.optimus.m2m.engine.masks.XMLTransformationMaskCreationTool;
+import net.atos.optimus.m2m.engine.masks.UserTransformationMaskTool;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.Display;
@@ -84,7 +84,7 @@ public class TransformationMasksPreferencesImex {
 		String fullpath = newPathName + File.separator + newfileName;
 		File transformationMaskFile = new File(fullpath);
 
-		XMLTransformationMaskCreationTool.createUserTransformationMask(transformationMaskFile,
+		UserTransformationMaskTool.createUserTransformationMask(transformationMaskFile,
 				exportedMask.getImplementation());
 	}
 
@@ -117,10 +117,10 @@ public class TransformationMasksPreferencesImex {
 		String fullPath = newPathName + File.separator + newFileName;
 		File importMaskFile = new File(fullPath);
 
-		File transformationMaskFile = XMLTransformationMaskCreationTool.giveAssociatedXMLFile(newFileName.replace(
+		File transformationMaskFile = UserTransformationMaskTool.giveAssociatedXMLFile(newFileName.replace(
 				".xml", ""));
 
-		XMLTransformationMaskCreationTool.configureFileSystem();
+		UserTransformationMaskTool.configureFileSystem();
 		FileInputStream sourceFile;
 		try {
 			sourceFile = new FileInputStream(importMaskFile);

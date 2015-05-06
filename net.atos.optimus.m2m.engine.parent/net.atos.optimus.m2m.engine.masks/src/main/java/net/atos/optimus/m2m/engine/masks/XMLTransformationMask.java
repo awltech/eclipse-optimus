@@ -89,18 +89,15 @@ public class XMLTransformationMask implements IEditableTransformationMask {
 					this.lastModificationDate = transformationMaskFilename.lastModified();
 				} catch (IOException e) {
 					OptimusM2MMaskMessages.UM15.message(this.transformationMaskFilename.getPath(), e.getMessage());
-					XMLTransformationMaskCreationTool.createUserTransformationMask(this.transformationMaskFilename, this);
+					UserTransformationMaskTool.createUserTransformationMask(this.transformationMaskFilename, this);
 				} catch (SAXException e) {
 					OptimusM2MMaskMessages.UM16.message(this.transformationMaskFilename.getPath(), e.getMessage());
-					XMLTransformationMaskCreationTool.createUserTransformationMask(this.transformationMaskFilename, this);
+					UserTransformationMaskTool.createUserTransformationMask(this.transformationMaskFilename, this);
 				} catch (JDOMException e) {
 					OptimusM2MMaskMessages.UM15.message(this.transformationMaskFilename.getPath(), e.getMessage());
-					XMLTransformationMaskCreationTool.createUserTransformationMask(this.transformationMaskFilename, this);
+					UserTransformationMaskTool.createUserTransformationMask(this.transformationMaskFilename, this);
 				}
 			}
-		}
-		else{
-			XMLTransformationMaskCreationTool.createUserTransformationMask(this.transformationMaskFilename, this);
 		}
 	}
 
@@ -139,7 +136,7 @@ public class XMLTransformationMask implements IEditableTransformationMask {
 		for(Entry<String, Boolean> modification : maskModifications){
 			this.transformationMask.put(modification.getKey(), modification.getValue());
 		}
-		XMLTransformationMaskCreationTool.createUserTransformationMask(this.transformationMaskFilename, this);
+		UserTransformationMaskTool.createUserTransformationMask(this.transformationMaskFilename, this);
 	}
 
 }

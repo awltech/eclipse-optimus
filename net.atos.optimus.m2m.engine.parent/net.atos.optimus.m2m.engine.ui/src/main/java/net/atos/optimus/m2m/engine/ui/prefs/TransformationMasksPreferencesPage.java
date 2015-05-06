@@ -28,6 +28,8 @@ import net.atos.optimus.m2m.engine.core.masks.TransformationMaskDataSource;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskDataSourceManager;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskReference;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSourceManager;
+import net.atos.optimus.m2m.engine.masks.IEditableTransformationMask;
+import net.atos.optimus.m2m.engine.masks.UserTransformationMaskTool;
 import net.atos.optimus.m2m.engine.ui.prefs.dialog.TransformationMaskCreationDialog;
 import net.atos.optimus.m2m.engine.ui.prefs.tree.TransformationMasksTreeCheckListener;
 import net.atos.optimus.m2m.engine.ui.prefs.tree.TransformationMasksTreeCheckProvider;
@@ -70,6 +72,9 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 	/** The combo box displaying the available transformation masks */
 	protected Combo transformationMaskCombo;
 
+	/** The tree viewer holding transformations */
+	protected CheckboxTreeViewer transformationsTreeViewer;
+
 	/** The temporary transformation mask */
 	private TemporaryTransformationMask tmpTransformationMask;
 
@@ -91,19 +96,14 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 
 		Label selectionLabel = new Label(composite, SWT.NONE);
 		selectionLabel.setText(TransformationMasksPreferencesMessages.CHECK_BOX_LABEL.message());
-		FormDataBuilder.on(selectionLabel).top();
-
 		Button exportButton = new Button(composite, SWT.PUSH);
 		exportButton.setText(TransformationMasksPreferencesMessages.EXPORT_BUTTON.message());
-		FormDataBuilder.on(exportButton).top(selectionLabel).right();
-
 		Button importButton = new Button(composite, SWT.PUSH);
 		importButton.setText(TransformationMasksPreferencesMessages.IMPORT_BUTTON.message());
-		FormDataBuilder.on(importButton).top(selectionLabel).right(exportButton);
-
+		final Button deleteButton = new Button(composite, SWT.NONE);
+		deleteButton.setText(TransformationMasksPreferencesMessages.DELETE_BUTTON.message());
 		Button creationButton = new Button(composite, SWT.NONE);
 		creationButton.setText(TransformationMasksPreferencesMessages.CREATION_BUTTON.message());
-		FormDataBuilder.on(creationButton).top(selectionLabel).right(importButton);
 
 		this.transformationMaskCombo = new Combo(composite, SWT.READ_ONLY);
 		for (TransformationMaskDataSource transformationMaskDataSource : TransformationMaskDataSourceManager.INSTANCE
@@ -112,7 +112,6 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 				this.transformationMaskCombo.add(transformationMaskReference.getName());
 			}
 		}
-
 		TransformationMaskReference transformationMaskReference = TransformationMaskDataSourceManager.INSTANCE
 				.getPreferredTransformationMask();
 		int indexMaskName = 0;
@@ -126,35 +125,42 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 				.getTransformationMaskById(this.transformationMaskCombo.getText());
 
 		this.tmpTransformationMask = new TemporaryTransformationMask(transformationMaskReference.getImplementation());
-
-		FormDataBuilder.on(this.transformationMaskCombo).top(selectionLabel).left().right(creationButton);
+		deleteButton.setEnabled(transformationMaskReference.getImplementation() instanceof IEditableTransformationMask);
 
 		Group descriptionGroup = new Group(composite, SWT.NONE);
 		descriptionGroup.setText(TransformationMasksPreferencesMessages.MASK_DESCRIPTION.message());
 		descriptionGroup.setLayout(new FormLayout());
 
 		final Label descriptionLabel = new Label(descriptionGroup, SWT.WRAP);
-		FormDataBuilder.on(descriptionLabel).height(TransformationMasksPreferencesPage.DESCRIPTION_SIZE);
 		descriptionLabel.setText(transformationMaskReference.getDescription());
-
-		FormDataBuilder.on(descriptionGroup).top(this.transformationMaskCombo).horizontal();
-
 		Label transformationListLabel = new Label(composite, SWT.NONE);
 		transformationListLabel.setText(TransformationMasksPreferencesMessages.TRANSFORMATIONS_LABEL.message());
+
+		Tree transformationsTree = new Tree(composite, SWT.CHECK | SWT.BORDER);
+		this.transformationsTreeViewer = new CheckboxTreeViewer(transformationsTree);
+		this.transformationsTreeViewer.setLabelProvider(new TransformationMasksTreeLabelProvider(
+				this.tmpTransformationMask));
+		this.transformationsTreeViewer.setContentProvider(new TransformationMasksTreeContentsProvider());
+		this.transformationsTreeViewer.setCheckStateProvider(new TransformationMasksTreeCheckProvider(
+				this.tmpTransformationMask));
+		this.transformationsTreeViewer.addDoubleClickListener(new TransformationMasksTreeDoubleClickListener());
+		this.checkListener = new TransformationMasksTreeCheckListener(this.transformationsTreeViewer,
+				this.tmpTransformationMask);
+		this.transformationsTreeViewer.addCheckStateListener(this.checkListener);
+		this.transformationsTreeViewer.setInput(TransformationDataSourceManager.INSTANCE);
+
+		FormDataBuilder.on(selectionLabel).top();
+		FormDataBuilder.on(exportButton).top(selectionLabel).right();
+		FormDataBuilder.on(importButton).top(selectionLabel).right(exportButton);
+		FormDataBuilder.on(deleteButton).top(selectionLabel).right(importButton);
+		FormDataBuilder.on(creationButton).top(selectionLabel).right(deleteButton);
+		FormDataBuilder.on(this.transformationMaskCombo).top(selectionLabel).left().right(creationButton);
+
+		FormDataBuilder.on(descriptionLabel).height(TransformationMasksPreferencesPage.DESCRIPTION_SIZE);
+		FormDataBuilder.on(descriptionGroup).top(this.transformationMaskCombo).horizontal();
 		FormDataBuilder.on(transformationListLabel).top(descriptionGroup);
 
-		final Tree tree = new Tree(composite, SWT.CHECK | SWT.BORDER);
-		final CheckboxTreeViewer treeViewer = new CheckboxTreeViewer(tree);
-
-		treeViewer.setLabelProvider(new TransformationMasksTreeLabelProvider(this.tmpTransformationMask));
-		treeViewer.setContentProvider(new TransformationMasksTreeContentsProvider());
-		treeViewer.setCheckStateProvider(new TransformationMasksTreeCheckProvider(this.tmpTransformationMask));
-		treeViewer.addDoubleClickListener(new TransformationMasksTreeDoubleClickListener());
-		this.checkListener = new TransformationMasksTreeCheckListener(treeViewer, this.tmpTransformationMask);
-		treeViewer.addCheckStateListener(this.checkListener);
-		treeViewer.setInput(TransformationDataSourceManager.INSTANCE);
-
-		FormDataBuilder.on(tree).top(transformationListLabel).bottom().horizontal();
+		FormDataBuilder.on(transformationsTree).top(transformationListLabel).bottom().horizontal();
 
 		// Add a listener to display the description of the selected mask
 		this.transformationMaskCombo.addSelectionListener(new SelectionAdapter() {
@@ -165,9 +171,10 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 								.getText());
 				TransformationMasksPreferencesPage.this.tmpTransformationMask
 						.resetTransformationMask(transformationMaskReference.getImplementation());
+				deleteButton.setEnabled(transformationMaskReference.getImplementation() instanceof IEditableTransformationMask);
 
 				descriptionLabel.setText(transformationMaskReference.getDescription());
-				treeViewer.refresh();
+				TransformationMasksPreferencesPage.this.transformationsTreeViewer.refresh();
 			}
 		});
 
@@ -181,6 +188,7 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 			public void focusGained(FocusEvent e) {
 				String transformationName = TransformationMasksPreferencesPage.this.transformationMaskCombo.getText();
 				TransformationMasksPreferencesPage.this.transformationMaskCombo.removeAll();
+				TransformationMasksPreferencesPage.this.setErrorMessage(null);
 				for (TransformationMaskDataSource transformationMaskDataSource : TransformationMaskDataSourceManager.INSTANCE
 						.getTransformationMaskDataSources()) {
 					for (TransformationMaskReference transformationMaskReference : transformationMaskDataSource
@@ -215,7 +223,29 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 			}
 		});
 
-		// Add listener to ask for a new transformation mask name
+		deleteButton.addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				String maskName = TransformationMasksPreferencesPage.this.transformationMaskCombo.getText();
+				if (maskName.equals(TransformationMaskDataSourceManager.INSTANCE.getPreferredTransformationMask()
+						.getName())) {
+					TransformationMasksPreferencesPage.this.setErrorMessage("Can't delete the current preferred mask");
+				} else {
+					UserTransformationMaskTool.suppressUserTransformationMask(maskName);
+					TransformationMasksPreferencesPage.this.transformationMaskCombo.select(0);
+					TransformationMaskReference transformationMaskReference = TransformationMaskDataSourceManager.INSTANCE
+							.getTransformationMaskById(TransformationMasksPreferencesPage.this.transformationMaskCombo
+									.getText());
+					deleteButton.setEnabled(transformationMaskReference.getImplementation() instanceof IEditableTransformationMask);
+				}
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+		});
+
 		creationButton.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -233,10 +263,27 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 	}
 
 	@Override
-	public boolean performOk() {
+	protected void performDefaults() {
+		this.tmpTransformationMask.resetTransformationMask(this.tmpTransformationMask.getOrginalTransformationMask());
+		this.transformationsTreeViewer.refresh();
+	}
+
+	@Override
+	public boolean performCancel() {
+		this.performDefaults();
+		return super.performCancel();
+	};
+
+	@Override
+	protected void performApply() {
 		this.checkListener.apply();
 		this.getPreferenceStore().putValue(TransformationMaskDataSourceManager.PREFERED_MASK_STORE_KEY,
 				this.transformationMaskCombo.getText());
+	};
+
+	@Override
+	public boolean performOk() {
+		this.performApply();
 		return super.performOk();
 	}
 

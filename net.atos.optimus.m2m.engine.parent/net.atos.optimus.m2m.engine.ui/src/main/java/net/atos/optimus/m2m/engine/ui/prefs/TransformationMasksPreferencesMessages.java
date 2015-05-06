@@ -34,7 +34,7 @@ import java.util.ResourceBundle;
 
 public enum TransformationMasksPreferencesMessages {
 
-	IMPORT_BUTTON, IMPORT_WINDOW, EXPORT_BUTTON, EXPORT_WINDOW, CHECK_BOX_LABEL, CREATION_BUTTON, MASK_DESCRIPTION, TRANSFORMATIONS_LABEL;
+	IMPORT_BUTTON, IMPORT_WINDOW, EXPORT_BUTTON, EXPORT_WINDOW, CHECK_BOX_LABEL, DELETE_BUTTON, CREATION_BUTTON, MASK_DESCRIPTION, TRANSFORMATIONS_LABEL;
 
 	private static ResourceBundle resourceBundle = ResourceBundle.getBundle("TransformationMasksPreferencesMessages");
 

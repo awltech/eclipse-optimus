@@ -25,7 +25,7 @@ import net.atos.optimus.common.tools.swt.FormDataBuilder;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskDataSource;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskDataSourceManager;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskReference;
-import net.atos.optimus.m2m.engine.masks.XMLTransformationMaskCreationTool;
+import net.atos.optimus.m2m.engine.masks.UserTransformationMaskTool;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -139,7 +139,7 @@ public class TransformationMaskCreationDialog extends Dialog {
 		String extendedMaskName = this.transformationMaskExtensionCombo.getText();
 		TransformationMaskReference extendedTransformationMask = TransformationMaskDataSourceManager.INSTANCE
 				.getTransformationMaskById(extendedMaskName);
-		XMLTransformationMaskCreationTool.createUserTransformationMask(maskName,
+		UserTransformationMaskTool.createUserTransformationMask(maskName,
 				extendedTransformationMask.getImplementation());
 		this.newMaskName = maskName;
 		super.okPressed();
