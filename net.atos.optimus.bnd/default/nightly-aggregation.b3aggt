@@ -3,38 +3,39 @@
   <validationSets label="eclipse-optimus">
     <contributions label="eclipse-optimus">
       <repositories location="@@WORKSPACE@@/net.atos.optimus.common.parent/net.atos.optimus.common.site/target/repository/">
-        <features name="net.atos.optimus.common.feature.feature.group" versionRange="1.0.0.201308071332-kepler-SNAPSHOT" categories="//@customCategories[identifier='eclipse-optimus']"/>
-        <features name="net.atos.optimus.common.source.feature.feature.group" versionRange="1.0.0.201308080824-kepler-SNAPSHOT" categories="//@customCategories[identifier='eclipse-optimus-sources']"/>
+        <features name="net.atos.optimus.common.feature.feature.group" versionRange="1.0.0.qualifier" categories="//@customCategories[identifier='eclipse-optimus']"/>
+        <features name="net.atos.optimus.common.source.feature.feature.group" versionRange="1.0.0.qualifier" categories="//@customCategories[identifier='eclipse-optimus-sources']"/>
       </repositories>
       <repositories location="@@WORKSPACE@@/net.atos.optimus.m2m.engine.parent/net.atos.optimus.m2m.engine.site/target/repository/">
-        <features name="net.atos.optimus.m2m.engine.feature.feature.group" versionRange="1.0.0.201308071338-kepler-SNAPSHOT" categories="//@customCategories[identifier='eclipse-optimus']"/>
-        <features name="net.atos.optimus.m2m.engine.source.feature.feature.group" versionRange="1.0.0.201308071338-kepler-SNAPSHOT" categories="//@customCategories[identifier='eclipse-optimus-sources']"/>
+        <features name="net.atos.optimus.m2m.engine.feature.feature.group" versionRange="1.0.0.qualifier" categories="//@customCategories[identifier='eclipse-optimus']"/>
+        <features name="net.atos.optimus.m2m.engine.source.feature.feature.group" versionRange="1.0.0.qualifier" categories="//@customCategories[identifier='eclipse-optimus-sources']"/>
       </repositories>
       <repositories location="@@WORKSPACE@@/net.atos.optimus.m2m.javaxmi.parent/net.atos.optimus.m2m.javaxmi.site/target/repository/">
-        <features name="net.atos.optimus.m2m.javaxmi.feature.feature.group" versionRange="1.0.0.201308071343-kepler-SNAPSHOT" categories="//@customCategories[identifier='eclipse-optimus']"/>
-        <features name="net.atos.optimus.m2m.javaxmi.source.feature.feature.group" versionRange="1.0.0.201308071343-kepler-SNAPSHOT" categories="//@customCategories[identifier='eclipse-optimus-sources']"/>
+        <features name="net.atos.optimus.m2m.javaxmi.feature.feature.group" versionRange="1.0.0.qualifier" categories="//@customCategories[identifier='eclipse-optimus']"/>
+        <features name="net.atos.optimus.m2m.javaxmi.source.feature.feature.group" versionRange="1.0.0.qualifier" categories="//@customCategories[identifier='eclipse-optimus-sources']"/>
       </repositories>
       <repositories location="@@WORKSPACE@@/net.atos.optimus.m2t.java.parent/net.atos.optimus.m2t.java.site/target/repository/">
-        <features name="net.atos.optimus.m2t.java.feature.feature.group" versionRange="1.0.0.201308071352-kepler-SNAPSHOT" categories="//@customCategories[identifier='eclipse-optimus']"/>
-        <features name="net.atos.optimus.m2t.java.source.feature.feature.group" versionRange="1.0.0.201308071352-kepler-SNAPSHOT" categories="//@customCategories[identifier='eclipse-optimus-sources']"/>
+        <features name="net.atos.optimus.m2t.java.feature.feature.group" versionRange="1.0.0.qualifier" categories="//@customCategories[identifier='eclipse-optimus']"/>
+        <features name="net.atos.optimus.m2t.java.source.feature.feature.group" versionRange="1.0.0.qualifier" categories="//@customCategories[identifier='eclipse-optimus-sources']"/>
       </repositories>
       <repositories location="@@WORKSPACE@@/net.atos.optimus.m2t.merger.java.parent/net.atos.optimus.m2t.merger.java.site/target/repository/">
-        <features name="net.atos.optimus.m2t.merger.java.feature.feature.group" versionRange="1.0.0.201308071349-kepler-SNAPSHOT" categories="//@customCategories[identifier='eclipse-optimus']"/>
-        <features name="net.atos.optimus.m2t.merger.java.source.feature.feature.group" versionRange="1.0.0.201308080842-kepler-SNAPSHOT" categories="//@customCategories[identifier='eclipse-optimus-sources']"/>
+        <features name="net.atos.optimus.m2t.merger.java.feature.feature.group" versionRange="1.0.0.qualifier" categories="//@customCategories[identifier='eclipse-optimus']"/>
+        <features name="net.atos.optimus.m2t.merger.java.source.feature.feature.group" versionRange="1.0.0.qualifier" categories="//@customCategories[identifier='eclipse-optimus-sources']"/>
       </repositories>
       <repositories location="@@WORKSPACE@@/net.atos.optimus.m2t.selector.parent/net.atos.optimus.m2t.selector.site/target/repository/">
-        <features name="net.atos.optimus.m2t.selector.feature.feature.group" versionRange="1.0.0.201308071346-kepler-SNAPSHOT" categories="//@customCategories[identifier='eclipse-optimus']"/>
-        <features name="net.atos.optimus.m2t.selector.source.feature.feature.group" versionRange="1.0.0.201308071346-kepler-SNAPSHOT" categories="//@customCategories[identifier='eclipse-optimus-sources']"/>
+        <features name="net.atos.optimus.m2t.selector.feature.feature.group" versionRange="1.0.0.qualifier" categories="//@customCategories[identifier='eclipse-optimus']"/>
+        <features name="net.atos.optimus.m2t.selector.source.feature.feature.group" versionRange="1.0.0.qualifier" categories="//@customCategories[identifier='eclipse-optimus-sources']"/>
       </repositories>
       <repositories location="@@WORKSPACE@@/net.atos.optimus.t2m.java.parent/net.atos.optimus.t2m.java.site/target/repository/">
-        <features name="net.atos.optimus.t2m.java.feature.feature.group" versionRange="1.0.0.201308071335-kepler-SNAPSHOT" categories="//@customCategories[identifier='eclipse-optimus']"/>
-        <features name="net.atos.optimus.t2m.java.source.feature.feature.group" versionRange="1.0.0.201308071335-kepler-SNAPSHOT" categories="//@customCategories[identifier='eclipse-optimus-sources']"/>
+        <features name="net.atos.optimus.t2m.java.feature.feature.group" versionRange="1.0.0.qualifier" categories="//@customCategories[identifier='eclipse-optimus']"/>
+        <features name="net.atos.optimus.t2m.java.source.feature.feature.group" versionRange="1.0.0.qualifier" categories="//@customCategories[identifier='eclipse-optimus-sources']"/>
       </repositories>
       <repositories location="@@WORKSPACE@@/net.atos.optimus.m2m.engine.sdk.parent/net.atos.optimus.m2m.engine.sdk.site/target/repository/">
-        <features name="net.atos.optimus.m2m.engine.sdk.feature.feature.group" versionRange="1.0.0.201308071356-kepler-SNAPSHOT" categories="//@customCategories[identifier='eclipse-optimus-sdk']"/>
+        <features name="net.atos.optimus.m2m.engine.sdk.feature.feature.group" versionRange="1.0.0.qualifier" categories="//@customCategories[identifier='eclipse-optimus-sdk']"/>
+        <features name="net.atos.optimus.m2m.engine.sdk.tom.feature.feature.group" versionRange="1.0.0.qualifier" categories="//@customCategories[identifier='eclipse-optimus-sdk']"/>
       </repositories>
        <repositories location="@@WORKSPACE@@/net.atos.optimus.emf.metamodels.parent/net.atos.optimus.emf.metamodels.repository/target/repository/">
-        <features name="net.atos.optimus.emf.metamodels.properties.feature.feature.group" versionRange="1.0.0.201308071356-kepler-SNAPSHOT" categories="//@customCategories[identifier='eclipse-metamodels']"/>
+        <features name="net.atos.optimus.emf.metamodels.properties.feature.feature.group" versionRange="1.0.0.qualifier" categories="//@customCategories[identifier='eclipse-metamodels']"/>
       </repositories>
     </contributions>
     <validationRepositories location="http://download.eclipse.org/releases/kepler"/>
