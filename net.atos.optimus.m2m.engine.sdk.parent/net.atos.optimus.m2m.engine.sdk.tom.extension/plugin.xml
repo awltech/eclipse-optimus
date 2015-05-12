@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="TransformationDependencyDiagrams" name="TransformationDependencyDiagrams" schema="schema/TransformationDependencyDiagrams.exsd"/>
+   <extension
+         point="net.atos.optimus.m2m.engine.core.TransformationSources">
+      <transformationDataSource
+            implementation="net.atos.optimus.m2m.engine.sdk.tom.extension.datasource.ExtensionPointTransformationDiagramDataSource">
+      </transformationDataSource>
+   </extension>
+
+</plugin>

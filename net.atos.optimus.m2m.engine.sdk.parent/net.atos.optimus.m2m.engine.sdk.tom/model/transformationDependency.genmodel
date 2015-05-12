@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/net.atos.optimus.m2m.engine.sdk.tom/src/main/java"
+    editDirectory="/net.atos.optimus.m2m.engine.sdk.tom.edit/src/main/java" editorDirectory="/net.atos.optimus.m2m.engine.sdk.tom.editor/src/main/java"
+    modelPluginID="net.atos.optimus.m2m.engine.sdk.tom" modelName="TransformationDependency"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" testsDirectory="/net.atos.optimus.m2m.engine.sdk.tom.tests/src/main/java"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="6.0" copyrightFields="false"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>transformationDependency.ecore</foreignModel>
+  <genPackages prefix="Tom" basePackage="net.atos.optimus.m2m.engine.sdk" disposableProviderFactory="true"
+      ecorePackage="transformationDependency.ecore#/">
+    <genClasses ecoreClass="transformationDependency.ecore#//TransformationSets">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference transformationDependency.ecore#//TransformationSets/transformationSets"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference transformationDependency.ecore#//TransformationSets/transformationSetExtensions"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference transformationDependency.ecore#//TransformationSets/externalTransformations"/>
+    </genClasses>
+    <genClasses ecoreClass="transformationDependency.ecore#//TransformationSet">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute transformationDependency.ecore#//TransformationSet/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute transformationDependency.ecore#//TransformationSet/description"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute transformationDependency.ecore#//TransformationSet/implementation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference transformationDependency.ecore#//TransformationSet/transformations"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute transformationDependency.ecore#//TransformationSet/private"/>
+    </genClasses>
+    <genClasses ecoreClass="transformationDependency.ecore#//TransformationSetExtension">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute transformationDependency.ecore#//TransformationSetExtension/transformationSetId"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference transformationDependency.ecore#//TransformationSetExtension/transformations"/>
+    </genClasses>
+    <genClasses ecoreClass="transformationDependency.ecore#//Transformation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute transformationDependency.ecore#//Transformation/description"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute transformationDependency.ecore#//Transformation/factory"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute transformationDependency.ecore#//Transformation/priority"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference transformationDependency.ecore#//Transformation/requirements"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="transformationDependency.ecore#//Requirement">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference transformationDependency.ecore#//Requirement/reference"/>
+    </genClasses>
+    <genClasses ecoreClass="transformationDependency.ecore#//SelfRequirement"/>
+    <genClasses ecoreClass="transformationDependency.ecore#//ParentRequirement"/>
+    <genClasses ecoreClass="transformationDependency.ecore#//CustomRequirement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute transformationDependency.ecore#//CustomRequirement/implementation"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="transformationDependency.ecore#//TransformationReference">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute transformationDependency.ecore#//TransformationReference/name"/>
+    </genClasses>
+    <genClasses ecoreClass="transformationDependency.ecore#//ExternalTransformation"/>
+  </genPackages>
+</genmodel:GenModel>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gmftool:ToolRegistry
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:gmftool="http://www.eclipse.org/gmf/2005/ToolDefinition">
+  <palette
+      title="transformationsPalette">
+    <tools
+        xsi:type="gmftool:ToolGroup"
+        title="transformations">
+      <tools
+          xsi:type="gmftool:CreationTool"
+          title="TransformationSet"
+          description="Create new TransformationSet">
+        <smallIcon
+            xsi:type="gmftool:BundleImage"
+            path="/icons/full/obj16/TransformationSet.gif"
+            bundle="net.atos.optimus.m2m.engine.sdk.tom.edit"/>
+      </tools>
+      <tools
+          xsi:type="gmftool:CreationTool"
+          title="TransformationSetExtension"
+          description="Create new TransformationSetExtension">
+        <smallIcon
+            xsi:type="gmftool:BundleImage"
+            path="/icons/full/obj16/TransformationSetExtension.gif"
+            bundle="net.atos.optimus.m2m.engine.sdk.tom.edit"/>
+      </tools>
+      <tools
+          xsi:type="gmftool:CreationTool"
+          title="Transformation"
+          description="Create new Transformation">
+        <smallIcon
+            xsi:type="gmftool:BundleImage"
+            path="/icons/full/obj16/Transformation.gif"
+            bundle="net.atos.optimus.m2m.engine.sdk.tom.edit"/>
+      </tools>
+      <tools
+          xsi:type="gmftool:CreationTool"
+          title="External Transformation"
+          description="Create new External Transformation">
+        <smallIcon
+            xsi:type="gmftool:BundleImage"
+            path="/icons/full/obj16/ExternalTransformation.gif"
+            bundle="net.atos.optimus.m2m.engine.sdk.tom.edit"/>
+      </tools>
+      <tools
+          xsi:type="gmftool:CreationTool"
+          title="SelfRequirement"
+          description="Create new SelfRequirement">
+        <smallIcon
+            xsi:type="gmftool:BundleImage"
+            path="/icons/full/obj16/SelfRequirement.gif"
+            bundle="net.atos.optimus.m2m.engine.sdk.tom.edit"/>
+      </tools>
+      <tools
+          xsi:type="gmftool:CreationTool"
+          title="ParentRequirement"
+          description="Create new ParentRequirement">
+        <smallIcon
+            xsi:type="gmftool:BundleImage"
+            path="/icons/full/obj16/ParentRequirement.gif"
+            bundle="net.atos.optimus.m2m.engine.sdk.tom.edit"/>
+      </tools>
+      <tools
+          xsi:type="gmftool:CreationTool"
+          title="CustomRequirement"
+          description="Create new CustomRequirement">
+        <smallIcon
+            xsi:type="gmftool:BundleImage"
+            path="/icons/full/obj16/CustomRequirement.gif"
+            bundle="net.atos.optimus.m2m.engine.sdk.tom.edit"/>
+      </tools>
+    </tools>
+  </palette>
+</gmftool:ToolRegistry>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension point="org.eclipse.ui.views.properties.tabbed.propertyContributor">
+      <propertyContributor contributorId="net.atos.optimus.m2m.engine.sdk.tom.diagram">
+         <propertyCategory category="default"></propertyCategory>
+      </propertyContributor>
+   </extension>
+   <extension point="org.eclipse.ui.views.properties.tabbed.propertyTabs">
+      <propertyTabs contributorId="net.atos.optimus.m2m.engine.sdk.tom.diagram">
+         <propertyTab category="default" id="GeneralTab" label="General">
+         </propertyTab>
+      </propertyTabs>
+   </extension>
+   <extension point="org.eclipse.ui.views.properties.tabbed.propertySections">
+      <propertySections contributorId="net.atos.optimus.m2m.engine.sdk.tom.diagram">
+         <propertySection class="net.atos.optimus.m2m.engine.sdk.tom.properties.sections.TransformationSetBasePropertySection" filter="net.atos.optimus.m2m.engine.sdk.tom.properties.filters.TransformationSetBasePropertyFilter" id="TransformationSetSection" tab="GeneralTab">
+         </propertySection>
+         <propertySection class="net.atos.optimus.m2m.engine.sdk.tom.properties.sections.TransformationSetExtensionBasePropertySection" filter="net.atos.optimus.m2m.engine.sdk.tom.properties.filters.TransformationSetExtensionBasePropertyFilter" id="TransformationSetExtensionSection" tab="GeneralTab">
+         </propertySection>
+         <propertySection class="net.atos.optimus.m2m.engine.sdk.tom.properties.sections.TransformationBasePropertySection" filter="net.atos.optimus.m2m.engine.sdk.tom.properties.filters.TransformationBasePropertyFilter" id="TransformationSection" tab="GeneralTab">
+         </propertySection>
+         <propertySection
+               class="net.atos.optimus.m2m.engine.sdk.tom.properties.sections.ExternalTransformationBasePropertySection"
+               filter="net.atos.optimus.m2m.engine.sdk.tom.properties.filters.ExternalTransformationBasePropertyFilter"
+               id="ExternalTransformationSection"
+               tab="GeneralTab">
+         </propertySection>
+         <propertySection class="net.atos.optimus.m2m.engine.sdk.tom.properties.sections.CustomRequirementBasePropertySection" filter="net.atos.optimus.m2m.engine.sdk.tom.properties.filters.CustomRequirementBasePropertyFilter" id="CustomRequirementSection" tab="GeneralTab">
+         </propertySection>
+         <propertySection class="net.atos.optimus.m2m.engine.sdk.tom.properties.sections.ParentRequirementBasePropertySection" filter="net.atos.optimus.m2m.engine.sdk.tom.properties.filters.ParentRequirementBasePropertyFilter" id="ParentRequirementSection" tab="GeneralTab">
+         </propertySection>
+         <propertySection class="net.atos.optimus.m2m.engine.sdk.tom.properties.sections.SelfRequirementBasePropertySection" filter="net.atos.optimus.m2m.engine.sdk.tom.properties.filters.SelfRequirementBasePropertyFilter" id="SelfRequirementSection" tab="GeneralTab">
+         </propertySection>
+      </propertySections>
+   </extension>
+
+</plugin>

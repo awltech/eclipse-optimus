@@ -1,0 +1,7 @@
+# Tracing options for the net.atos.optimus.m2m.engine.sdk.tom.diagram plug-in
+
+# Common issues
+net.atos.optimus.m2m.engine.sdk.tom.diagram/debug=false
+
+# Visual IDs
+net.atos.optimus.m2m.engine.sdk.tom.diagram/debug/visualID=false

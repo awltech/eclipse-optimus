@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated transformationDependency -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="net.atos.optimus.m2m.engine.sdk.tom.presentation.TomModelWizardID"
+            name="%_UI_TomModelWizard_label"
+            class="net.atos.optimus.m2m.engine.sdk.tom.presentation.TomModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/TomModelFile.gif">
+         <description>%_UI_TomModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated transformationDependency -->
+      <editor
+            id="net.atos.optimus.m2m.engine.sdk.tom.presentation.TomEditorID"
+            name="%_UI_TomEditor_label"
+            icon="icons/full/obj16/TomModelFile.gif"
+            extensions="tom"
+            class="net.atos.optimus.m2m.engine.sdk.tom.presentation.TomEditor"
+            contributorClass="net.atos.optimus.m2m.engine.sdk.tom.presentation.TomActionBarContributor">
+      </editor>
+   </extension>
+
+</plugin>

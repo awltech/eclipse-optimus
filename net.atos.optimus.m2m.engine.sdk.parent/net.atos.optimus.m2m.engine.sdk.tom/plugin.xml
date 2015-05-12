@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.ui.popupMenus" id="add-to-plugin-action">
+      <?gmfgen generated="true"?>
+      <objectContribution
+            id="net.atos.optimus.m2m.engine.sdk.tom.action.AddToPlugin"
+            nameFilter="*.tom"
+            objectClass="org.eclipse.core.resources.IFile">
+         <menu
+               id="net.atos.xa.optimus.menu"
+               label="Optimus">
+            <separator
+                  name="Diagram">
+            </separator>
+         </menu>
+         <action
+               label="Add to plugin.xml"
+               class="net.atos.optimus.m2m.engine.sdk.tom.action.AddDiagramToPluginAction"
+               menubarPath="net.atos.xa.optimus.menu/Diagram"
+               enablesFor="*"
+               id="net.atos.optimus.m2m.engine.sdk.tom.action.AddToPluginAction">
+         </action>
+      </objectContribution>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated transformationDependency -->
+      <package
+            uri="http://www.eclipse.org/emf/net/atos/optimus/"
+            class="net.atos.optimus.m2m.engine.sdk.tom.TomPackage"
+            genModel="model/transformationDependency.genmodel"/>
+   </extension>
+
+</plugin>

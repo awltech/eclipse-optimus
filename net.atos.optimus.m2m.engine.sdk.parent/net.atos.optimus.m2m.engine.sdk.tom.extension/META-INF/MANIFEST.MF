@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Extension
+Bundle-SymbolicName: net.atos.optimus.m2m.engine.sdk.tom.extension;singleton:=true
+Bundle-Version: 1.2.0.qualifier
+Bundle-Activator: net.atos.optimus.m2m.engine.sdk.tom.extension.Activator
+Bundle-Vendor: WORLDLINE
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ net.atos.optimus.m2m.engine.core,
+ org.eclipse.emf.ecore,
+ net.atos.optimus.m2m.engine.sdk.tom,
+ net.atos.optimus.common.core
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Export-Package: net.atos.optimus.m2m.engine.sdk.tom.extension.datasource

@@ -12,5 +12,12 @@
   	<module>net.atos.optimus.m2m.engine.sdk.wizards</module>
   	<module>net.atos.optimus.m2m.engine.sdk.feature</module>
   	<module>net.atos.optimus.m2m.engine.sdk.site</module>
+  	<module>net.atos.optimus.m2m.engine.sdk.tom</module>
+  	<module>net.atos.optimus.m2m.engine.sdk.tom.diagram</module>
+  	<module>net.atos.optimus.m2m.engine.sdk.tom.edit</module>
+  	<module>net.atos.optimus.m2m.engine.sdk.tom.editor</module>
+  	<module>net.atos.optimus.m2m.engine.sdk.tom.extension</module>
+  	<module>net.atos.optimus.m2m.engine.sdk.tom.feature</module>
+  	<module>net.atos.optimus.m2m.engine.sdk.tom.properties</module>
   </modules>
 </project>

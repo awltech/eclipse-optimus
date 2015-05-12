@@ -54,6 +54,11 @@
 			<layout>p2</layout>
 			<url>http://download.eclipse.org/releases/luna</url>
 		</repository>
+		<repository>
+      		<id>wlTech</id>
+      		<layout>p2</layout>
+      		<url>http://eclipse.worldline.com/nightly/all</url>
+    	</repository>
 	</repositories>
 
 	<build>
