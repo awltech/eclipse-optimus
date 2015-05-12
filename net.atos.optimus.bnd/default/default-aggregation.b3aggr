@@ -32,6 +32,7 @@
       </repositories>
       <repositories location="platform:/resource/net.atos.optimus.m2m.engine.sdk.parent/net.atos.optimus.m2m.engine.sdk.site/target/repository">
         <features name="net.atos.optimus.m2m.engine.sdk.feature.feature.group" versionRange="1.0.0.201308071356-kepler-SNAPSHOT" categories="//@customCategories[identifier='eclipse-optimus-sdk']"/>
+        <features name="net.atos.optimus.m2m.engine.sdk.tom.feature.feature.group" versionRange="1.0.0.201308071356-kepler-SNAPSHOT" categories="//@customCategories[identifier='eclipse-optimus-sdk']"/>
       </repositories>
     </contributions>
     <validationRepositories location="http://download.eclipse.org/releases/kepler"/>
