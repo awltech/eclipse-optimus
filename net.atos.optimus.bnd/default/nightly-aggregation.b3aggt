@@ -34,11 +34,14 @@
         <features name="net.atos.optimus.m2m.engine.sdk.feature.feature.group" versionRange="1.0.0.qualifier" categories="//@customCategories[identifier='eclipse-optimus-sdk']"/>
         <features name="net.atos.optimus.m2m.engine.sdk.tom.feature.feature.group" versionRange="1.0.0.qualifier" categories="//@customCategories[identifier='eclipse-optimus-sdk']"/>
       </repositories>
-       <repositories location="@@WORKSPACE@@/net.atos.optimus.emf.metamodels.parent/net.atos.optimus.emf.metamodels.repository/target/repository/">
+      <repositories location="@@WORKSPACE@@/net.atos.optimus.emf.metamodels.parent/net.atos.optimus.emf.metamodels.repository/target/repository/">
         <features name="net.atos.optimus.emf.metamodels.properties.feature.feature.group" versionRange="1.0.0.qualifier" categories="//@customCategories[identifier='eclipse-metamodels']"/>
       </repositories>
     </contributions>
     <validationRepositories location="http://download.eclipse.org/releases/kepler"/>
+    <validationRepositories location="http://eclipse.worldline.com/releases/kepler/resourceselector/"/>
+    <validationRepositories location="http://eclipse.worldline.com/releases/kepler/gmf-propertiesviews/"/>
+    <validationRepositories location="http://download.eclipse.org/tools/orbit/downloads/drops/R20150124073747/repository/"/>
   </validationSets>
   <configurations/>
   <configurations architecture="x86_64"/>
