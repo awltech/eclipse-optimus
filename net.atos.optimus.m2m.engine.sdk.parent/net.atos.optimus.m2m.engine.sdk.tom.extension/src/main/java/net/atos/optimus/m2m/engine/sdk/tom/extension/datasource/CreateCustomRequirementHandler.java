@@ -28,7 +28,6 @@ public class CreateCustomRequirementHandler extends CreateAbstractRequirementHan
 			return null;
 		}
 		AbstractRequirement abstractRequirement = null;
-		System.out.println(((CustomRequirement) requirement).getImplementation());
 		try {
 			abstractRequirement = (AbstractRequirement) bundle.loadClass(
 					((CustomRequirement) requirement).getImplementation()).newInstance();

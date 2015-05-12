@@ -59,7 +59,7 @@ public class TemporaryTransformationMask implements ITransformationMask {
 	 * 
 	 * @return the original transformation mask.
 	 */
-	public ITransformationMask getOrginalTransformationMask() {
+	public ITransformationMask getOriginalTransformationMask() {
 		return this.originalTransformationMask;
 	}
 

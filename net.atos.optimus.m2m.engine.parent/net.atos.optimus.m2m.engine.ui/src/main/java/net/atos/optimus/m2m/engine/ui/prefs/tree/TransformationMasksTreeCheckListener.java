@@ -70,14 +70,29 @@ public class TransformationMasksTreeCheckListener implements ICheckStateListener
 	@Override
 	public void checkStateChanged(CheckStateChangedEvent event) {
 		if (event.getElement() instanceof TransformationReference) {
-			TransformationReference transformationReference = (TransformationReference) event.getElement();
-			this.tmpTransformationMask.setCheckedTransformation(transformationReference.getId(), event.getChecked());
-			if (event.getChecked()) {
-				Set<TransformationReference> checkedReferences = new HashSet<TransformationReference>();
-				this.checkForRequirementsToCheck((TransformationReference) event.getElement(), checkedReferences);
+			// Test if the current mask is editable
+			if (this.tmpTransformationMask.getOriginalTransformationMask() instanceof IEditableTransformationMask) {
+				TransformationReference transformationReference = (TransformationReference) event.getElement();
+				this.tmpTransformationMask
+						.setCheckedTransformation(transformationReference.getId(), event.getChecked());
+				if (event.getChecked()) {
+					Set<TransformationReference> checkedReferences = new HashSet<TransformationReference>();
+					this.checkForRequirementsToCheck((TransformationReference) event.getElement(), checkedReferences);
+				} else {
+					Set<TransformationReference> uncheckedReferences = new HashSet<TransformationReference>();
+					this.checkForRequirementsToUncheck((TransformationReference) event.getElement(),
+							uncheckedReferences);
+				}
 			} else {
-				Set<TransformationReference> uncheckedReferences = new HashSet<TransformationReference>();
-				this.checkForRequirementsToUncheck((TransformationReference) event.getElement(), uncheckedReferences);
+				if (event.getSource() instanceof CheckboxTreeViewer) {
+					if (event.getChecked()) {
+						CheckboxTreeViewer checkBox = (CheckboxTreeViewer) event.getSource();
+						checkBox.setChecked(event.getElement(), false);
+					} else {
+						CheckboxTreeViewer checkBox = (CheckboxTreeViewer) event.getSource();
+						checkBox.setChecked(event.getElement(), true);
+					}
+				}
 			}
 		}
 	}
@@ -144,7 +159,7 @@ public class TransformationMasksTreeCheckListener implements ICheckStateListener
 	}
 
 	public void apply() {
-		ITransformationMask originalTransformationMask = this.tmpTransformationMask.getOrginalTransformationMask();
+		ITransformationMask originalTransformationMask = this.tmpTransformationMask.getOriginalTransformationMask();
 		if (originalTransformationMask instanceof IEditableTransformationMask) {
 			((IEditableTransformationMask) originalTransformationMask)
 					.submitMaskModification(this.tmpTransformationMask.getTransformationMaskModification());

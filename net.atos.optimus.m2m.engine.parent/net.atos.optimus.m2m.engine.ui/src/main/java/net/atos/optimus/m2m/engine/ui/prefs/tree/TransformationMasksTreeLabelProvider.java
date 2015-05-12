@@ -21,18 +21,13 @@
  */
 package net.atos.optimus.m2m.engine.ui.prefs.tree;
 
-import net.atos.optimus.m2m.engine.core.masks.TemporaryTransformationMask;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSource;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationSet;
-import net.atos.optimus.m2m.engine.masks.IEditableTransformationMask;
 import net.atos.optimus.m2m.engine.ui.Activator;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.widgets.Display;
 
 /**
  * Label provider used in the preference page dedicated to transformation masks
@@ -47,19 +42,6 @@ public class TransformationMasksTreeLabelProvider extends ColumnLabelProvider {
 	private static final String ICONS_TRN_GIF = "icons/trn.gif";
 	private static final String ICONS_TRNSET_PUBLIC_GIF = "icons/trnset-public.gif";
 	private static final String ICONS_TRNSET_PRIVATE_GIF = "icons/trnset-private.gif";
-
-	/** The temporary transformation mask */
-	private TemporaryTransformationMask tmpTransformationMask;
-
-	/**
-	 * Constructor
-	 * 
-	 * @param tmpTransformationMask
-	 *            the temporary transformation mask.
-	 */
-	public TransformationMasksTreeLabelProvider(TemporaryTransformationMask tmpTransformationMask) {
-		this.tmpTransformationMask = tmpTransformationMask;
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -100,13 +82,5 @@ public class TransformationMasksTreeLabelProvider extends ColumnLabelProvider {
 		}
 		return null;
 	};
-
-	@Override
-	public Color getForeground(Object element) {
-		if (tmpTransformationMask.getOrginalTransformationMask() instanceof IEditableTransformationMask) {
-			return super.getBackground(element);
-		}
-		return new Color(Display.getCurrent(), new RGB(176, 176, 176));
-	}
 
 }
