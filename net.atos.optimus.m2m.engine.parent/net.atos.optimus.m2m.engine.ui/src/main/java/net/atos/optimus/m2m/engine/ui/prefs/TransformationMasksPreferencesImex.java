@@ -91,8 +91,10 @@ public class TransformationMasksPreferencesImex {
 	/**
 	 * Import a transformation mask describing in an XML file
 	 * 
+	 * @return the name of the imported mask.
+	 * 
 	 */
-	public static void importTransformationMask() {
+	public static String importTransformationMask() {
 		IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
 		FileDialog dialog = new FileDialog(new Shell(Display.getDefault()));
 		String pathName = preferenceStore.getString(TransformationMasksPreferencesImex.IMPORT_PATH_PREF);
@@ -117,8 +119,7 @@ public class TransformationMasksPreferencesImex {
 		String fullPath = newPathName + File.separator + newFileName;
 		File importMaskFile = new File(fullPath);
 
-		File transformationMaskFile = UserTransformationMaskTool.giveAssociatedXMLFile(newFileName.replace(
-				".xml", ""));
+		File transformationMaskFile = UserTransformationMaskTool.giveAssociatedXMLFile(newFileName.replace(".xml", ""));
 
 		UserTransformationMaskTool.configureFileSystem();
 		FileInputStream sourceFile;
@@ -133,9 +134,12 @@ public class TransformationMasksPreferencesImex {
 			sourceFile.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+			return null;
 		} catch (IOException e) {
 			e.printStackTrace();
+			return null;
 		}
 
+		return newFileName.replace(".xml", "");
 	}
 }

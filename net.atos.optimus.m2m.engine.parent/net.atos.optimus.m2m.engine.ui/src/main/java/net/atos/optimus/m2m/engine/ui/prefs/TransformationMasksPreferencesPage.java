@@ -29,14 +29,15 @@ import net.atos.optimus.m2m.engine.core.masks.TransformationMaskDataSourceManage
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskReference;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSourceManager;
 import net.atos.optimus.m2m.engine.masks.IEditableTransformationMask;
-import net.atos.optimus.m2m.engine.masks.UserTransformationMaskTool;
 import net.atos.optimus.m2m.engine.ui.prefs.dialog.TransformationMaskCreationDialog;
+import net.atos.optimus.m2m.engine.ui.prefs.dialog.TransformationMaskDeletionDialog;
 import net.atos.optimus.m2m.engine.ui.prefs.tree.TransformationMasksTreeCheckListener;
 import net.atos.optimus.m2m.engine.ui.prefs.tree.TransformationMasksTreeCheckProvider;
 import net.atos.optimus.m2m.engine.ui.prefs.tree.TransformationMasksTreeContentsProvider;
 import net.atos.optimus.m2m.engine.ui.prefs.tree.TransformationMasksTreeDoubleClickListener;
 import net.atos.optimus.m2m.engine.ui.prefs.tree.TransformationMasksTreeLabelProvider;
 
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
 import org.eclipse.jface.window.Window;
@@ -209,7 +210,12 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 		importButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				TransformationMasksPreferencesImex.importTransformationMask();
+				String maskName = TransformationMasksPreferencesImex.importTransformationMask();
+				TransformationMasksPreferencesPage.this.transformationMaskCombo.add(maskName);
+				TransformationMaskReference transformationMaskReference = TransformationMaskDataSourceManager.INSTANCE
+						.getTransformationMaskById(maskName);
+				TransformationMasksPreferencesPage.this
+						.refreshTransformationMaskPreferencePage(transformationMaskReference);
 			}
 		});
 
@@ -218,16 +224,11 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				String maskName = TransformationMasksPreferencesPage.this.transformationMaskCombo.getText();
-				if (maskName.equals(TransformationMaskDataSourceManager.INSTANCE.getPreferredTransformationMask()
-						.getName())) {
-					TransformationMasksPreferencesPage.this.setErrorMessage("Can't delete the current preferred mask");
-				} else {
-					UserTransformationMaskTool.suppressUserTransformationMask(maskName);
+				Dialog transformationMaskDeletionDialog = new TransformationMaskDeletionDialog(getShell(), maskName);
+				if (transformationMaskDeletionDialog.open() == Window.OK) {
 					TransformationMasksPreferencesPage.this.transformationMaskCombo.remove(maskName);
-					TransformationMasksPreferencesPage.this.transformationMaskCombo.select(0);
 					TransformationMaskReference transformationMaskReference = TransformationMaskDataSourceManager.INSTANCE
-							.getTransformationMaskById(TransformationMasksPreferencesPage.this.transformationMaskCombo
-									.getText());
+							.getPreferredTransformationMask();
 					TransformationMasksPreferencesPage.this
 							.refreshTransformationMaskPreferencePage(transformationMaskReference);
 				}
@@ -246,9 +247,10 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 				if (transformationMaskCreationDialog.open() == Window.OK) {
 					TransformationMaskReference transformationMaskReference = TransformationMaskDataSourceManager.INSTANCE
 							.getTransformationMaskById(transformationMaskCreationDialog.getValue());
-					TransformationMasksPreferencesPage.this.transformationMaskCombo.add(transformationMaskReference.getName());
+					TransformationMasksPreferencesPage.this.transformationMaskCombo.add(transformationMaskReference
+							.getName());
 					TransformationMasksPreferencesPage.this
-					.refreshTransformationMaskPreferencePage(transformationMaskReference);
+							.refreshTransformationMaskPreferencePage(transformationMaskReference);
 				}
 			}
 

@@ -64,6 +64,17 @@ public class UserTransformationMaskTool {
 	}
 
 	/**
+	 * Give the old file associated to the mask with the specified name
+	 * 
+	 * @param maskName
+	 *            the name of the mask.
+	 * @return the old file associated to the mask with the specified name.
+	 */
+	public static File giveAssociatedOldFile(String maskName) {
+		return new File(UserTransformationMaskTool.TRANSFORMATION_MASK_DIRECTORY + maskName + ".old");
+	}
+
+	/**
 	 * Give the mask name associated to the transformation file
 	 * 
 	 * @param transformationMaskFile
@@ -178,9 +189,11 @@ public class UserTransformationMaskTool {
 
 	public static void suppressUserTransformationMask(String maskName) {
 		File transformationMaskFile = UserTransformationMaskTool.giveAssociatedXMLFile(maskName);
-		if (transformationMaskFile.exists()) {
-			transformationMaskFile.delete();
+		File transformationOldMaskFile = UserTransformationMaskTool.giveAssociatedOldFile(maskName);
+		if (transformationOldMaskFile.exists()) {
+			transformationOldMaskFile.delete();
 		}
+		transformationMaskFile.renameTo(transformationOldMaskFile);
 	}
 
 }

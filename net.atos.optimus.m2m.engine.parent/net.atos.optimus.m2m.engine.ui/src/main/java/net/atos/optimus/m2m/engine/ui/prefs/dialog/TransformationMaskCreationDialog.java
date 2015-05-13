@@ -83,7 +83,7 @@ public class TransformationMaskCreationDialog extends Dialog {
 		creationContainer.setLayout(new FormLayout());
 
 		Label creationLabel = new Label(creationContainer, SWT.NONE);
-		creationLabel.setText(TransformationMasksCreationDialogMessages.CREATION_MESSAGE.message());
+		creationLabel.setText(TransformationMasksDialogMessages.CREATION_MESSAGE.message());
 		FormDataBuilder.on(creationLabel).left().vertical().width(TransformationMaskCreationDialog.LABEL_WIDTH);
 
 		this.creationText = new Text(creationContainer, SWT.NONE);
@@ -95,7 +95,7 @@ public class TransformationMaskCreationDialog extends Dialog {
 		extensionContainer.setLayout(new FormLayout());
 
 		Label extensionLabel = new Label(extensionContainer, SWT.NONE);
-		extensionLabel.setText(TransformationMasksCreationDialogMessages.EXTENSION_MESSAGE.message());
+		extensionLabel.setText(TransformationMasksDialogMessages.EXTENSION_MESSAGE.message());
 		FormDataBuilder.on(extensionLabel).left().top(7).bottom().width(TransformationMaskCreationDialog.LABEL_WIDTH);
 
 		this.transformationMaskExtensionCombo = new Combo(extensionContainer, SWT.READ_ONLY);
@@ -148,7 +148,7 @@ public class TransformationMaskCreationDialog extends Dialog {
 	@Override
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
-		newShell.setText(TransformationMasksCreationDialogMessages.CREATION_TITLE.message());
+		newShell.setText(TransformationMasksDialogMessages.CREATION_TITLE.message());
 	}
 
 	@Override
