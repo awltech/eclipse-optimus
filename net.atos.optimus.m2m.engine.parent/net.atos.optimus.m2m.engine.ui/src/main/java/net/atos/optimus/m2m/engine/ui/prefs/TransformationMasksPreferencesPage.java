@@ -246,7 +246,7 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 						getShell());
 				if (transformationMaskCreationDialog.open() == Window.OK) {
 					TransformationMaskReference transformationMaskReference = TransformationMaskDataSourceManager.INSTANCE
-							.getTransformationMaskById(transformationMaskCreationDialog.getValue());
+							.getTransformationMaskById(transformationMaskCreationDialog.getMaskName());
 					TransformationMasksPreferencesPage.this.transformationMaskCombo.add(transformationMaskReference
 							.getName());
 					TransformationMasksPreferencesPage.this

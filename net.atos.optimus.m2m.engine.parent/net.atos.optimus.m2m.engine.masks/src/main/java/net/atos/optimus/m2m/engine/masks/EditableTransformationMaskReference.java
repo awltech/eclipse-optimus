@@ -19,32 +19,19 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.engine.core.masks;
+package net.atos.optimus.m2m.engine.masks;
+
+import net.atos.optimus.m2m.engine.core.masks.TransformationMaskReference;
 
 /**
- * This class is mainly a wrapper. It is used to name the transformation masks,
- * for user reusability
+ * Models an editable transformation masks reference
  * 
- * @author mvanbesien
- * @since 1.1
+ * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
+ *
  */
-public class TransformationMaskReference {
 
-	/**
-	 * Mask Name
-	 */
-	protected String name;
-
-	/**
-	 * Mask description
-	 */
-	protected String description;
-
-	/**
-	 * Mask implementation
-	 */
-	protected ITransformationMask implementation;
+public class EditableTransformationMaskReference extends TransformationMaskReference {
 
 	/**
 	 * Create a new transformation mask reference
@@ -56,31 +43,19 @@ public class TransformationMaskReference {
 	 * @param implementation
 	 *            the implementation of the mask.
 	 */
-	public TransformationMaskReference(String name, String description, ITransformationMask implementation) {
-		this.name = name;
-		this.description = description;
-		this.implementation = implementation;
+	public EditableTransformationMaskReference(String name, String description,
+			IEditableTransformationMask implementation) {
+		super(name, description, implementation);
 	}
 
 	/**
-	 * @return transformation mask implementation
+	 * Set a new description to the transformation mask reference
+	 * 
+	 * @param newDescription
+	 *            the new description to the transformation mask reference.
 	 */
-	public ITransformationMask getImplementation() {
-		return implementation;
-	}
-
-	/**
-	 * @return transformation mask name
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
-	 * @return transformation mask description
-	 */
-	public String getDescription() {
-		return description;
+	public void setDescription(String newDescription) {
+		this.description = newDescription;
 	}
 
 }

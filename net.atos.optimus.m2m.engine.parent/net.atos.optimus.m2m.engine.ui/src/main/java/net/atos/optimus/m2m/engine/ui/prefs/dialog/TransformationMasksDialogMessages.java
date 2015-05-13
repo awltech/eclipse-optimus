@@ -34,7 +34,7 @@ import java.util.ResourceBundle;
 
 public enum TransformationMasksDialogMessages {
 
-	CREATION_TITLE, CREATION_MESSAGE, EXTENSION_MESSAGE, NAME_CONFLICT, DELETION_TITLE, DELETION_MESSAGE, PREFERRED_MASK_WARNING;
+	CREATION_TITLE, CREATION_MESSAGE, CREATION_DESCRIPTION, EXTENSION_MESSAGE, NAME_CONFLICT, DELETION_TITLE, DELETION_MESSAGE, PREFERRED_MASK_WARNING;
 
 	private static ResourceBundle resourceBundle = ResourceBundle.getBundle("TransformationMasksDialogMessages");
 

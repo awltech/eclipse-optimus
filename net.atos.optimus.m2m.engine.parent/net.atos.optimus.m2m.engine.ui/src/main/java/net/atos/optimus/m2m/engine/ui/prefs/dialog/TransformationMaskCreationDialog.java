@@ -22,6 +22,7 @@
 package net.atos.optimus.m2m.engine.ui.prefs.dialog;
 
 import net.atos.optimus.common.tools.swt.FormDataBuilder;
+import net.atos.optimus.m2m.engine.core.masks.ITransformationMask;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskDataSource;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskDataSourceManager;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskReference;
@@ -57,6 +58,9 @@ public class TransformationMaskCreationDialog extends Dialog {
 	/** The text area holding the transformation mask name */
 	protected Text creationText;
 
+	/** The text area holding the transformation mask description */
+	protected Text descriptionText;
+
 	/** The combo box holding the available transformation masks */
 	protected Combo transformationMaskExtensionCombo;
 
@@ -75,28 +79,40 @@ public class TransformationMaskCreationDialog extends Dialog {
 
 	@Override
 	protected Control createDialogArea(Composite parent) {
-
+		
 		Composite mainContainer = (Composite) super.createDialogArea(parent);
 		mainContainer.setLayout(new FormLayout());
-
+		
 		Composite creationContainer = new Composite(mainContainer, SWT.NONE);
 		creationContainer.setLayout(new FormLayout());
 
 		Label creationLabel = new Label(creationContainer, SWT.NONE);
 		creationLabel.setText(TransformationMasksDialogMessages.CREATION_MESSAGE.message());
-		FormDataBuilder.on(creationLabel).left().vertical().width(TransformationMaskCreationDialog.LABEL_WIDTH);
+		FormDataBuilder.on(creationLabel).left().top().width(TransformationMaskCreationDialog.LABEL_WIDTH);
 
 		this.creationText = new Text(creationContainer, SWT.NONE);
 		FormDataBuilder.on(creationText).left(creationLabel).right().vertical();
 
 		FormDataBuilder.on(creationContainer).top().horizontal();
+		
+		Composite descriptionContainer = new Composite(mainContainer, SWT.NONE);
+		descriptionContainer.setLayout(new FormLayout());
+
+		Label descriptionLabel = new Label(descriptionContainer, SWT.NONE);
+		descriptionLabel.setText(TransformationMasksDialogMessages.CREATION_DESCRIPTION.message());
+		FormDataBuilder.on(descriptionLabel).left().top().width(TransformationMaskCreationDialog.LABEL_WIDTH);
+
+		this.descriptionText = new Text(descriptionContainer, SWT.BORDER | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);
+		FormDataBuilder.on(descriptionText).left(descriptionLabel).right().height(50);
+
+		FormDataBuilder.on(descriptionContainer).top(creationContainer).horizontal();
 
 		Composite extensionContainer = new Composite(mainContainer, SWT.NONE);
 		extensionContainer.setLayout(new FormLayout());
 
 		Label extensionLabel = new Label(extensionContainer, SWT.NONE);
 		extensionLabel.setText(TransformationMasksDialogMessages.EXTENSION_MESSAGE.message());
-		FormDataBuilder.on(extensionLabel).left().top(7).bottom().width(TransformationMaskCreationDialog.LABEL_WIDTH);
+		FormDataBuilder.on(extensionLabel).left().top(15).bottom().width(TransformationMaskCreationDialog.LABEL_WIDTH);
 
 		this.transformationMaskExtensionCombo = new Combo(extensionContainer, SWT.READ_ONLY);
 		for (TransformationMaskDataSource transformationMaskDataSource : TransformationMaskDataSourceManager.INSTANCE
@@ -108,7 +124,7 @@ public class TransformationMaskCreationDialog extends Dialog {
 		transformationMaskExtensionCombo.select(0);
 		FormDataBuilder.on(transformationMaskExtensionCombo).left(extensionLabel).right().vertical();
 
-		FormDataBuilder.on(extensionContainer).top(creationContainer).horizontal();
+		FormDataBuilder.on(extensionContainer).top(descriptionContainer).horizontal();
 
 		final Label errorLabel = new Label(mainContainer, SWT.NONE);
 		FormDataBuilder.on(errorLabel).horizontal().top(extensionContainer);
@@ -135,13 +151,15 @@ public class TransformationMaskCreationDialog extends Dialog {
 
 	@Override
 	protected void okPressed() {
-		String maskName = this.creationText.getText();
+		this.newMaskName = this.creationText.getText();
+		String maskDescription = this.descriptionText.getText();
 		String extendedMaskName = this.transformationMaskExtensionCombo.getText();
 		TransformationMaskReference extendedTransformationMask = TransformationMaskDataSourceManager.INSTANCE
 				.getTransformationMaskById(extendedMaskName);
-		UserTransformationMaskTool.createUserTransformationMask(maskName,
-				extendedTransformationMask.getImplementation());
-		this.newMaskName = maskName;
+		ITransformationMask maskImplementation = extendedTransformationMask.getImplementation();
+		TransformationMaskReference newTransformationMask = new TransformationMaskReference(this.newMaskName,
+				maskDescription, maskImplementation);
+		UserTransformationMaskTool.createUserTransformationMask(newTransformationMask);
 		super.okPressed();
 	}
 
@@ -153,10 +171,15 @@ public class TransformationMaskCreationDialog extends Dialog {
 
 	@Override
 	protected Point getInitialSize() {
-		return new Point(300, 200);
+		return new Point(400, 250);
 	}
 
-	public String getValue() {
+	/**
+	 * The last created transformation mask name
+	 * 
+	 * @return the last created transformation mask name.
+	 */
+	public String getMaskName() {
 		return this.newMaskName;
 	}
 

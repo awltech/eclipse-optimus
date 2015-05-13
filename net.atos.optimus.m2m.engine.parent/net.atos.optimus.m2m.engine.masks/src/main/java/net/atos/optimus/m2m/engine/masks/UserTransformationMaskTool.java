@@ -26,6 +26,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import net.atos.optimus.m2m.engine.core.masks.ITransformationMask;
+import net.atos.optimus.m2m.engine.core.masks.TransformationMaskReference;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSource;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSourceManager;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
@@ -103,18 +104,24 @@ public class UserTransformationMaskTool {
 	}
 
 	/**
-	 * Create the XML document with an initial transformation mask
+	 * Create the XML document with an initial transformation mask reference
 	 * 
-	 * @param initialTransformationMask
-	 *            the transformation mask.
-	 * @return the XML document associated to the transformation mask.
+	 * @param transformationMaskReference
+	 *            the transformation mask reference.
+	 * @return the XML document associated to the reference transformation mask.
 	 */
-	private static Document createXMLDocumentWithMask(ITransformationMask initialTransformationMask) {
+	private static Document createXMLDocumentWithMaskReference(TransformationMaskReference transformationMaskReference) {
 		// Creating the root element
 		Element transformationMaskRoot = new Element("transformationMask");
 
 		// Creating the XML document
 		Document document = new Document(transformationMaskRoot);
+
+		Element descriptionElement = new Element("description");
+		descriptionElement.setText(transformationMaskReference.getDescription());
+		transformationMaskRoot.addContent(descriptionElement);
+
+		ITransformationMask initialTransformationMask = transformationMaskReference.getImplementation();
 		for (TransformationDataSource transformationDataSource : TransformationDataSourceManager.INSTANCE
 				.getTransformationDataSources()) {
 			for (TransformationReference transformationReference : transformationDataSource.getAll()) {
@@ -152,20 +159,21 @@ public class UserTransformationMaskTool {
 	}
 
 	/**
-	 * Create an user transformation mask extended another transformation mask
+	 * Create an user transformation mask reference extended another
+	 * transformation mask reference
 	 * 
-	 * @param maskName
-	 *            the name of the mask.
-	 * @param initialTransformationMask
-	 *            the extended transformation mask.
+	 * @param extendedTransformationMaskReference
+	 *            the extended transformation mask reference.
 	 */
-	public static void createUserTransformationMask(String maskName, ITransformationMask extendedTransformationMask) {
+	public static void createUserTransformationMask(TransformationMaskReference extendedTransformationMaskReference) {
+		String maskName = extendedTransformationMaskReference.getName();
 		UserTransformationMaskTool.configureFileSystem();
 		File transformationMaskFile = UserTransformationMaskTool.giveAssociatedXMLFile(maskName);
 		if (transformationMaskFile.exists()) {
 			OptimusM2MMaskMessages.UM06.log(maskName);
 		} else {
-			Document document = UserTransformationMaskTool.createXMLDocumentWithMask(extendedTransformationMask);
+			Document document = UserTransformationMaskTool
+					.createXMLDocumentWithMaskReference(extendedTransformationMaskReference);
 			UserTransformationMaskTool.writeTransformationMask(transformationMaskFile, document);
 			OptimusM2MMaskMessages.UM04.log(maskName);
 		}
@@ -176,13 +184,14 @@ public class UserTransformationMaskTool {
 	 * 
 	 * @param transformationMaskFile
 	 *            the file containing the transformation mask.
-	 * @param newTransformationMask
+	 * @param newTransformationMaskReference
 	 *            the new transformation mask.
 	 */
 	public static void createUserTransformationMask(File transformationMaskFile,
-			ITransformationMask newTransformationMask) {
+			TransformationMaskReference newTransformationMaskReference) {
 		UserTransformationMaskTool.configureFileSystem();
-		Document document = UserTransformationMaskTool.createXMLDocumentWithMask(newTransformationMask);
+		Document document = UserTransformationMaskTool
+				.createXMLDocumentWithMaskReference(newTransformationMaskReference);
 		UserTransformationMaskTool.writeTransformationMask(transformationMaskFile, document);
 		OptimusM2MMaskMessages.UM20.log(transformationMaskFile.getName());
 	}

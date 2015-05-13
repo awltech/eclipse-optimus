@@ -10,10 +10,16 @@
 	</xsd:complexType>
 	
 	<xsd:complexType name="transformationMasks">
+	
+		<xsd:sequence minOccurs="1" maxOccurs="1">
+	
+			<xsd:element name="description" type="xsd:string"/>
+			
+			<xsd:sequence minOccurs="0" maxOccurs="unbounded">
 		
-		<xsd:sequence minOccurs="0" maxOccurs="unbounded">
+				<xsd:element name="transformation" type="transformations" />
 		
-			<xsd:element name="transformation" type="transformations" />
+			</xsd:sequence>
 		
 		</xsd:sequence>
 	

@@ -26,6 +26,13 @@ import java.util.Map.Entry;
 
 import net.atos.optimus.m2m.engine.core.masks.ITransformationMask;
 
+/** Models an editable transformation mask
+ * 
+ * @author tnachtergaele <nachtergaele.thomas@gmail.com>
+ * 
+ *
+ */
+
 public interface IEditableTransformationMask extends ITransformationMask {
 
 	/**

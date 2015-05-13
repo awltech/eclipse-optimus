@@ -33,6 +33,7 @@ import java.util.Set;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 
+import net.atos.optimus.m2m.engine.core.masks.TransformationMaskReference;
 import net.atos.optimus.m2m.engine.masks.extension.XMLFileTransformationMaskDataSource;
 import net.atos.optimus.m2m.engine.masks.logging.OptimusM2MMaskMessages;
 
@@ -64,15 +65,32 @@ public class XMLTransformationMask implements IEditableTransformationMask {
 	/** The map holding the enabled/disabled transformations */
 	protected Map<String, Boolean> transformationMask;
 
-	/** Constructor
+	/** The transformation mask reference associated to the transformation mask */
+	protected TransformationMaskReference associatedTransformationMaskReference;
+
+	/**
+	 * Constructor
 	 * 
-	 * @param transformationMaskFilename the file containing the transformation mask.
+	 * @param transformationMaskFilename
+	 *            the file containing the transformation mask.
 	 */
 	public XMLTransformationMask(File transformationMaskFilename) {
 		this.transformationMaskFilename = transformationMaskFilename;
 		this.lastModificationDate = -1;
 		this.transformationMask = new HashMap<String, Boolean>();
 		this.loadUserTransformationMask();
+	}
+
+	/**
+	 * Associate the transformation mask reference with the transformation mask
+	 * 
+	 * @param associatedTransformationMaskReference
+	 *            the transformation mask reference associated to the
+	 *            transformation mask.
+	 */
+	public void setAssociatedTransformationMaskReference(
+			TransformationMaskReference associatedTransformationMaskReference) {
+		this.associatedTransformationMaskReference = associatedTransformationMaskReference;
 	}
 
 	/**
@@ -89,13 +107,16 @@ public class XMLTransformationMask implements IEditableTransformationMask {
 					this.lastModificationDate = transformationMaskFilename.lastModified();
 				} catch (IOException e) {
 					OptimusM2MMaskMessages.UM15.message(this.transformationMaskFilename.getPath(), e.getMessage());
-					UserTransformationMaskTool.createUserTransformationMask(this.transformationMaskFilename, this);
+					UserTransformationMaskTool.createUserTransformationMask(this.transformationMaskFilename,
+							this.associatedTransformationMaskReference);
 				} catch (SAXException e) {
 					OptimusM2MMaskMessages.UM16.message(this.transformationMaskFilename.getPath(), e.getMessage());
-					UserTransformationMaskTool.createUserTransformationMask(this.transformationMaskFilename, this);
+					UserTransformationMaskTool.createUserTransformationMask(this.transformationMaskFilename,
+							this.associatedTransformationMaskReference);
 				} catch (JDOMException e) {
 					OptimusM2MMaskMessages.UM15.message(this.transformationMaskFilename.getPath(), e.getMessage());
-					UserTransformationMaskTool.createUserTransformationMask(this.transformationMaskFilename, this);
+					UserTransformationMaskTool.createUserTransformationMask(this.transformationMaskFilename,
+							this.associatedTransformationMaskReference);
 				}
 			}
 		}
@@ -130,13 +151,14 @@ public class XMLTransformationMask implements IEditableTransformationMask {
 		this.loadUserTransformationMask();
 		return this.transformationMask.containsKey(id) ? this.transformationMask.get(id) : true;
 	}
-	
+
 	@Override
-	public void submitMaskModification(Set<Entry<String, Boolean>> maskModifications){
-		for(Entry<String, Boolean> modification : maskModifications){
+	public void submitMaskModification(Set<Entry<String, Boolean>> maskModifications) {
+		for (Entry<String, Boolean> modification : maskModifications) {
 			this.transformationMask.put(modification.getKey(), modification.getValue());
 		}
-		UserTransformationMaskTool.createUserTransformationMask(this.transformationMaskFilename, this);
+		UserTransformationMaskTool.createUserTransformationMask(this.transformationMaskFilename,
+				this.associatedTransformationMaskReference);
 	}
 
 }

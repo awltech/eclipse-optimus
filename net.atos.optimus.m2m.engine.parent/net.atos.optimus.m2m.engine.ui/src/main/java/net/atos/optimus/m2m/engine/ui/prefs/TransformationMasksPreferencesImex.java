@@ -84,8 +84,7 @@ public class TransformationMasksPreferencesImex {
 		String fullpath = newPathName + File.separator + newfileName;
 		File transformationMaskFile = new File(fullpath);
 
-		UserTransformationMaskTool.createUserTransformationMask(transformationMaskFile,
-				exportedMask.getImplementation());
+		UserTransformationMaskTool.createUserTransformationMask(transformationMaskFile, exportedMask);
 	}
 
 	/**

@@ -37,12 +37,11 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
-import net.atos.optimus.m2m.engine.core.masks.ITransformationMask;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskDataSource;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskReference;
 import net.atos.optimus.m2m.engine.masks.Activator;
 import net.atos.optimus.m2m.engine.masks.UserTransformationMaskTool;
-import net.atos.optimus.m2m.engine.masks.XMLTransformationMask;
+import net.atos.optimus.m2m.engine.masks.XMLTransformationMaskReference;
 import net.atos.optimus.m2m.engine.masks.logging.OptimusM2MMaskMessages;
 
 import org.xml.sax.InputSource;
@@ -127,18 +126,17 @@ public class XMLFileTransformationMaskDataSource extends TransformationMaskDataS
 
 			// Check if new XML transformation mask files exists
 			for (File transformationMaskFile : transformationMaskDirectory.listFiles()) {
-				if(transformationMaskFile.getName().endsWith(".xml")){
-					String transformationMaskName = UserTransformationMaskTool.giveAssociatedMaskName(transformationMaskFile);
+				if (transformationMaskFile.getName().endsWith(".xml")) {
+					String transformationMaskName = UserTransformationMaskTool
+							.giveAssociatedMaskName(transformationMaskFile);
 					if (!transformationMaskReferences.containsKey(transformationMaskName)) {
 						Source source = new StreamSource(transformationMaskFile);
 						try {
 							XMLFileTransformationMaskDataSource.validatorXMLTransformationMask.validate(source);
-							ITransformationMask transformationMask = new XMLTransformationMask(transformationMaskFile);
+							TransformationMaskReference transformationMaskReference = new XMLTransformationMaskReference(
+									transformationMaskFile);
 							OptimusM2MMaskMessages.UM12.log(transformationMaskName, transformationMaskFile.getPath());
-							TransformationMaskReference transformationMaskReference = new TransformationMaskReference(
-									transformationMaskName, "", transformationMask);
-							this.transformationMaskReferences.put(transformationMaskName,
-									transformationMaskReference);
+							this.transformationMaskReferences.put(transformationMaskName, transformationMaskReference);
 						} catch (IOException e) {
 							OptimusM2MMaskMessages.UM13.log(transformationMaskFile.getPath(), e.getMessage());
 						} catch (SAXException e) {
