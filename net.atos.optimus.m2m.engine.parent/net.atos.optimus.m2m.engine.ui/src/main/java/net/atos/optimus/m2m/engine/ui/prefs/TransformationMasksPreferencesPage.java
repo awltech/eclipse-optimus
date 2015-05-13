@@ -117,13 +117,13 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new FormLayout());
 
-		Group maskSelectionGroup = new Group(composite, SWT.NONE);
-		maskSelectionGroup.setLayout(new FormLayout());
+		Composite maskSelectionComposite = new Composite(composite, SWT.NONE);
+		maskSelectionComposite.setLayout(new FormLayout());
 
-		Label selectionLabel = new Label(maskSelectionGroup, SWT.NONE);
+		Label selectionLabel = new Label(maskSelectionComposite, SWT.NONE);
 		selectionLabel.setText(TransformationMasksPreferencesMessages.CHECK_BOX_LABEL.message());
 
-		this.transformationMaskCombo = new Combo(maskSelectionGroup, SWT.READ_ONLY);
+		this.transformationMaskCombo = new Combo(maskSelectionComposite, SWT.READ_ONLY);
 		for (TransformationMaskDataSource transformationMaskDataSource : TransformationMaskDataSourceManager.INSTANCE
 				.getTransformationMaskDataSources()) {
 			for (TransformationMaskReference transformationMaskReferenceFind : transformationMaskDataSource
@@ -132,13 +132,13 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 			}
 		}
 
-		Button creationButton = new Button(maskSelectionGroup, SWT.NONE);
+		Button creationButton = new Button(maskSelectionComposite, SWT.NONE);
 		creationButton.setText(TransformationMasksPreferencesMessages.CREATION_BUTTON.message());
-		this.deleteButton = new Button(maskSelectionGroup, SWT.NONE);
+		this.deleteButton = new Button(maskSelectionComposite, SWT.NONE);
 		this.deleteButton.setText(TransformationMasksPreferencesMessages.DELETE_BUTTON.message());
-		Button importButton = new Button(maskSelectionGroup, SWT.PUSH);
+		Button importButton = new Button(maskSelectionComposite, SWT.PUSH);
 		importButton.setText(TransformationMasksPreferencesMessages.IMPORT_BUTTON.message());
-		Button exportButton = new Button(maskSelectionGroup, SWT.PUSH);
+		Button exportButton = new Button(maskSelectionComposite, SWT.PUSH);
 		exportButton.setText(TransformationMasksPreferencesMessages.EXPORT_BUTTON.message());
 
 		this.editableStateLabel = new Label(composite, SWT.NONE);
@@ -173,10 +173,10 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 
 		FormDataBuilder.on(this.editableStateLabel).right().bottom(descriptionGroup).height(80).width(80);
 
-		FormDataBuilder.on(maskSelectionGroup).top().left().right(editableStateLabel);
+		FormDataBuilder.on(maskSelectionComposite).top().left().right(editableStateLabel);
 
-		FormDataBuilder.on(this.descriptionLabel).height(TransformationMasksPreferencesPage.DESCRIPTION_SIZE);
-		FormDataBuilder.on(descriptionGroup).horizontal().top(maskSelectionGroup);
+		FormDataBuilder.on(this.descriptionLabel).top(7).left().height(TransformationMasksPreferencesPage.DESCRIPTION_SIZE);
+		FormDataBuilder.on(descriptionGroup).horizontal().top(maskSelectionComposite);
 
 		FormDataBuilder.on(transformationListLabel).top(descriptionGroup);
 

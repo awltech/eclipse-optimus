@@ -125,8 +125,8 @@ public class MainPreferencePage extends PreferencePage implements IWorkbenchPref
 		FormDataBuilder.on(moreInfo1).bottom(moreInfo2).right();
 		FormDataBuilder.on(moreInfo2).bottom().right();
 		
-		FormDataBuilder.on(levelGroup).bottom(image).left();
-		FormDataBuilder.on(labelLog).left().top().bottom().right(comboLog);
+		FormDataBuilder.on(levelGroup).bottom(moreInfo).right();
+		FormDataBuilder.on(labelLog).left().top(15).bottom().right(comboLog);
 		FormDataBuilder.on(comboLog).top().width(120).bottom().right();
 
 		// Add a listener to save the user selection
