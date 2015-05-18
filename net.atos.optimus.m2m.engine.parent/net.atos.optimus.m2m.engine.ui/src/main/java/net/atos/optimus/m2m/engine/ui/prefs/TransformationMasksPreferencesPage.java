@@ -28,6 +28,7 @@ import net.atos.optimus.m2m.engine.core.masks.TransformationMaskDataSource;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskDataSourceManager;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskReference;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSourceManager;
+import net.atos.optimus.m2m.engine.masks.EditableTransformationMaskReference;
 import net.atos.optimus.m2m.engine.masks.IEditableTransformationMask;
 import net.atos.optimus.m2m.engine.ui.prefs.dialog.TransformationMaskCreationDialog;
 import net.atos.optimus.m2m.engine.ui.prefs.dialog.TransformationMaskDeletionDialog;
@@ -52,6 +53,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
@@ -78,8 +80,8 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 	/** The combo box displaying the available transformation masks */
 	protected Combo transformationMaskCombo;
 
-	/** The label holding the description of the mask */
-	protected Label descriptionLabel;
+	/** The text holding the description of the mask */
+	protected Text descriptionText;
 
 	/** The label holding the image with the editable state of the mask */
 	protected Label editableStateLabel;
@@ -147,7 +149,7 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 		descriptionGroup.setText(TransformationMasksPreferencesMessages.MASK_DESCRIPTION.message());
 		descriptionGroup.setLayout(new FormLayout());
 
-		this.descriptionLabel = new Label(descriptionGroup, SWT.WRAP);
+		this.descriptionText = new Text(descriptionGroup, SWT.NONE);
 		Label transformationListLabel = new Label(composite, SWT.NONE);
 		transformationListLabel.setText(TransformationMasksPreferencesMessages.TRANSFORMATIONS_LABEL.message());
 
@@ -175,7 +177,8 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 
 		FormDataBuilder.on(maskSelectionComposite).top().left().right(editableStateLabel);
 
-		FormDataBuilder.on(this.descriptionLabel).top(7).left().height(TransformationMasksPreferencesPage.DESCRIPTION_SIZE);
+		FormDataBuilder.on(this.descriptionText).top(7).horizontal()
+				.height(TransformationMasksPreferencesPage.DESCRIPTION_SIZE);
 		FormDataBuilder.on(descriptionGroup).horizontal().top(maskSelectionComposite);
 
 		FormDataBuilder.on(transformationListLabel).top(descriptionGroup);
@@ -297,7 +300,8 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 				.setEnabled(transformationMaskReference.getImplementation() instanceof IEditableTransformationMask);
 
 		// Update the description of the mask
-		this.descriptionLabel.setText(transformationMaskReference.getDescription());
+		this.descriptionText.setText(transformationMaskReference.getDescription());
+		this.descriptionText.setEditable(transformationMaskReference instanceof EditableTransformationMaskReference);
 
 		// Reset the temporary mask
 		this.tmpTransformationMask.resetTransformationMask(transformationMaskReference.getImplementation());
@@ -321,7 +325,16 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 
 	@Override
 	protected void performApply() {
+		/* Update the description */
+		TransformationMaskReference transformationMaskReference = TransformationMaskDataSourceManager.INSTANCE
+				.getTransformationMaskById(TransformationMasksPreferencesPage.this.transformationMaskCombo.getText());
+		if (transformationMaskReference instanceof EditableTransformationMaskReference) {
+			((EditableTransformationMaskReference) transformationMaskReference).setDescription(this.descriptionText
+					.getText());
+		}
+		/* Update the enabled/disables transformations */
 		this.checkListener.apply();
+		/* Update the preferred mask */
 		this.getPreferenceStore().putValue(TransformationMaskDataSourceManager.PREFERED_MASK_STORE_KEY,
 				this.transformationMaskCombo.getText());
 	};
