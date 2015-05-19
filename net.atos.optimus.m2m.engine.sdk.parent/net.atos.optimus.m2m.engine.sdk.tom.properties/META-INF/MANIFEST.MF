@@ -14,6 +14,10 @@ Require-Bundle: org.eclipse.ui,
  org.eclipselabs.resourceselector.core,
  org.eclipse.jdt.core,
  net.atos.optimus.m2m.engine.core,
- org.eclipselabs.resourceselector.processor.java
+ org.eclipselabs.resourceselector.processor.java,
+ org.eclipse.jdt.ui,
+ net.atos.optimus.m2t.java.core,
+ net.atos.optimus.m2m.javaxmi.core,
+ net.atos.optimus.m2m.engine.sdk.wizards
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy

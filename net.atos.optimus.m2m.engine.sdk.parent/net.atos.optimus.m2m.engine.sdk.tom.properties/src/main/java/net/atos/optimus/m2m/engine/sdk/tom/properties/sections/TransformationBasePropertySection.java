@@ -1,11 +1,32 @@
+/**
+ * Optimus, framework for Model Transformation
+ *
+ * Copyright (C) 2013 Worldline or third-party contributors as
+ * indicated by the @author tags or express copyright attribution
+ * statements applied by the authors.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+ */
 package net.atos.optimus.m2m.engine.sdk.tom.properties.sections;
 
 import net.atos.optimus.m2m.engine.sdk.tom.TomPackage;
 import net.atos.optimus.m2m.engine.sdk.tom.properties.resourceselectors.ClassResourceProcessorFactory;
+import net.atos.optimus.m2m.engine.sdk.tom.properties.zones.TransformationGeneratorSelectorZone;
 import net.atos.optimus.m2m.engine.sdk.tom.properties.zones.InputIntegerZone;
 import net.atos.optimus.m2m.engine.sdk.tom.properties.zones.InputLargeTextZone;
 import net.atos.optimus.m2m.engine.sdk.tom.properties.zones.InputTextWithLabelZone;
-import net.atos.optimus.m2m.engine.sdk.tom.properties.zones.ResourceSelectorZone;
 
 import org.eclipselabs.resourceselector.core.processor.ResourceProcessorFactory;
 
@@ -35,20 +56,17 @@ public class TransformationBasePropertySection extends AbstractSection {
 						.getTransformationReference_Name(), "Name :", TransformationBasePropertySection.LABEL_WIDTH));
 		this.getZones().put(
 				"descriptionZone",
-				new InputLargeTextZone(getBackGround(), false, TomPackage.eINSTANCE
-						.getTransformation_Description(), "Description :",
-						TransformationBasePropertySection.LABEL_WIDTH));
-		this.getZones()
-				.put("factoryZone",
-						new ResourceSelectorZone(getBackGround(), false, TomPackage.eINSTANCE
-								.getTransformation_Factory(), "Factory :",
-								TransformationBasePropertySection.LABEL_WIDTH, false,
-								TransformationBasePropertySection.TITLE_RESOURCE_SELECTOR,
-								factoryClassResourceProcessor));
+				new InputLargeTextZone(getBackGround(), false, TomPackage.eINSTANCE.getTransformation_Description(),
+						"Description :", TransformationBasePropertySection.LABEL_WIDTH));
+		this.getZones().put(
+				"factoryZone",
+				new TransformationGeneratorSelectorZone(getBackGround(), false, TomPackage.eINSTANCE.getTransformation_Factory(),
+						"Factory :", TransformationBasePropertySection.LABEL_WIDTH, false,
+						TransformationBasePropertySection.TITLE_RESOURCE_SELECTOR, factoryClassResourceProcessor));
 		this.getZones().put(
 				"priorityZone",
-				new InputIntegerZone(getBackGround(), false, TomPackage.eINSTANCE
-						.getTransformation_Priority(), "Priority :", TransformationBasePropertySection.LABEL_WIDTH));
+				new InputIntegerZone(getBackGround(), false, TomPackage.eINSTANCE.getTransformation_Priority(),
+						"Priority :", TransformationBasePropertySection.LABEL_WIDTH));
 	}
 
 	@Override

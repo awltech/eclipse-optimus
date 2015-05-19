@@ -19,25 +19,33 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.engine.sdk.tom.properties.sections;
+package net.atos.optimus.m2m.engine.sdk.tom.properties.transformations;
 
-import com.worldline.gmf.propertysections.core.AbstractSection;
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
 /**
- * Models the base section for parent requirement
+ * Contains message for the transformation generation process
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
+ * 
  *
  */
 
-public class ParentRequirementBasePropertySection extends AbstractSection {
+public enum TransformationDialogMessages {
 
-	@Override
-	protected void initParts() {
+	JOBNAME, JOBTASK, JOB_SUBTASK_1, JOB_SUBTASK_2, JOB_SUBTASK_3, DIALOG_TITLE, JAVAPACK_LABEL, JAVAPACK_TOOLTIP, JAVAPACK_BUTTON, TRNCLASS_LABEL, TRNCLASS_TOOLTIP, TRNFACT_LABEL, TRNFACT_TOOLTIP, TRNELT_LABEL, TRNELT_TOOLTIP, TRNELT_BUTTON, JAVAPACK_SELECTOR_LABEL, TRNELT_SELECTOR_LABEL;
+
+	private static ResourceBundle bundle = ResourceBundle.getBundle("TransformationGeneratorMessages");
+
+	public String message() {
+		String key = this.toString();
+		return bundle.containsKey(key) ? bundle.getString(key) : key;
 	}
 
-	@Override
-	protected void addLayoutsToParts() {
+	public String message(Object... args) {
+		String key = this.toString();
+		return bundle.containsKey(key) ? MessageFormat.format(bundle.getString(key), args) : key;
 	}
 
 }

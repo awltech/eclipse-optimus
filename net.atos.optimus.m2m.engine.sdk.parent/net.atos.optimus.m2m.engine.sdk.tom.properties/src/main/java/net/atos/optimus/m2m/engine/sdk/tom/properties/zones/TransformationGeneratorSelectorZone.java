@@ -21,9 +21,12 @@
  */
 package net.atos.optimus.m2m.engine.sdk.tom.properties.zones;
 
-import net.atos.optimus.m2m.engine.sdk.tom.properties.listeners.ResourceSelectorListener;
+import net.atos.optimus.m2m.engine.sdk.tom.properties.listeners.TransformationGeneratorListener;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.workspace.util.WorkspaceSynchronizer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FormAttachment;
@@ -35,30 +38,20 @@ import org.eclipselabs.resourceselector.core.processor.ResourceProcessorFactory;
 import com.worldline.gmf.propertysections.core.tools.FormDataBuilder;
 
 /**
- * Models a zone displaying a resource selector with a selection button at right and a
- * label at left
+ * Models a zone displaying a resource selector with transformation generation and
+ * selection buttons at right and a label at left
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
+ * 
  *
  */
 
-public class ResourceSelectorZone extends InputTextWithLabelZone {
+public class TransformationGeneratorSelectorZone extends ResourceSelectorZone {
 
-	public static final int BUTTON_WIDTH = 60;
+	public static final String BUTTON_CREATION_TEXT = "Generate";
 
-	public static final String BUTTON_SELECTION_TEXT = "Browse";
-
-	/** The button launching the resource selector */
-	protected Button researchButton;
-
-	/** Tell if the input field is enable */
-	protected boolean inputFieldEnable;
-
-	/** The title of the resource selector */
-	protected String titleResourceSelector;
-
-	/** The factory used to create the resource processor */
-	protected ResourceProcessorFactory resourceFactory;
+	/** The button launching the creation pop-up */
+	protected Button creationButton;
 
 	/**
 	 * Constructor
@@ -81,54 +74,46 @@ public class ResourceSelectorZone extends InputTextWithLabelZone {
 	 * @param resourceFactory
 	 *            the factory used to create the resource processor.
 	 */
-	public ResourceSelectorZone(Composite parent, boolean isGroup, EStructuralFeature associatedModelFeature,
-			String labelText, int labelWidth, boolean inputFieldEnable, String titleResourceSelector,
-			ResourceProcessorFactory resourceFactory) {
-		super(parent, isGroup, associatedModelFeature, labelText, labelWidth);
-		this.inputFieldEnable = inputFieldEnable;
-		this.titleResourceSelector = titleResourceSelector;
-		this.resourceFactory = resourceFactory;
-	}
-	
-	/** The title of the resource selector
-	 * 
-	 * @return the title of the current resource selector.
-	 */
-	public String getTitleResourceSelector(){
-		return this.titleResourceSelector;
-	}
-
-	/**
-	 * The factory used to create the resource processor
-	 * 
-	 * @return the factory used to create the resource processor.
-	 */
-	public ResourceProcessorFactory getResourceProcessorFactory() {
-		return this.resourceFactory;
+	public TransformationGeneratorSelectorZone(Composite parent, boolean isGroup,
+			EStructuralFeature associatedModelFeature, String labelText, int labelWidth, boolean inputFieldEnable,
+			String titleResourceSelector, ResourceProcessorFactory resourceFactory) {
+		super(parent, isGroup, associatedModelFeature, labelText, labelWidth, inputFieldEnable, titleResourceSelector,
+				resourceFactory);
 	}
 
 	@Override
 	public void addItemsToZone() {
 		super.addItemsToZone();
-		this.input.setEnabled(this.inputFieldEnable);
-		this.researchButton = this.getWidgetFactory().createButton(getZone(), ResourceSelectorZone.BUTTON_SELECTION_TEXT,
-				SWT.NONE);
+		this.creationButton = this.getWidgetFactory().createButton(getZone(),
+				TransformationGeneratorSelectorZone.BUTTON_CREATION_TEXT, SWT.NONE);
+	}
+
+	@Override
+	public void updateItemsValues() {
+		super.updateItemsValues();
+		IProject project = WorkspaceSynchronizer.getFile(this.giveEObject().eResource()).getProject();
+		try {
+			this.creationButton.setEnabled(project.isNatureEnabled("org.eclipse.jdt.core.javanature"));
+		} catch (CoreException e) {
+			this.creationButton.setEnabled(false);
+		}
 	}
 
 	@Override
 	public void addLayoutsToItems() {
 		super.addLayoutsToItems();
-		((FormData) this.input.getLayoutData()).right = new FormAttachment(this.researchButton);
-		FormDataBuilder.on(this.researchButton).right().top().bottom().width(ResourceSelectorZone.BUTTON_WIDTH);
+		((FormData) this.input.getLayoutData()).right = new FormAttachment(this.creationButton);
+		FormDataBuilder.on(this.creationButton).right(this.researchButton).top().bottom()
+				.width(ResourceSelectorZone.BUTTON_WIDTH);
 	}
 
 	@Override
 	public void addListenersToItems() {
 		super.addListenersToItems();
-		SelectionListener selectionChangeListener = new ResourceSelectorListener(this);
+		SelectionListener selectionChangeListener = new TransformationGeneratorListener(this);
 
 		/* Listener setting */
-		this.researchButton.addSelectionListener(selectionChangeListener);
+		this.creationButton.addSelectionListener(selectionChangeListener);
 	}
 
 }
