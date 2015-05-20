@@ -43,6 +43,7 @@ import net.atos.optimus.m2m.engine.core.logging.OptimusM2MEngineMessages;
 import net.atos.optimus.m2m.engine.core.masks.ITransformationMask;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskDataSource;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskDataSourceManager;
+import net.atos.optimus.m2m.engine.core.masks.TransformationMaskReference;
 import net.atos.optimus.m2m.engine.core.requirements.AbstractRequirement;
 import net.atos.optimus.m2m.engine.core.transformations.AbstractTransformation;
 import net.atos.optimus.m2m.engine.core.transformations.ITransformationContext;
@@ -160,20 +161,23 @@ public class OptimusM2MEngine {
 	private LabelProvider eObjectLabelProvider = new EObjectLabelProvider();
 
 	/**
-	 * Instance of transformation data source. Default implementation heads to extension points management
+	 * Instance of transformation data source. Default implementation heads to
+	 * extension points management
 	 */
-	protected List<TransformationDataSource> transformationDataSources = TransformationDataSourceManager.INSTANCE.getTransformationDataSources();
+	protected List<TransformationDataSource> transformationDataSources = TransformationDataSourceManager.INSTANCE
+			.getTransformationDataSources();
 
 	/**
 	 * Instance of transformation mask data source.
 	 */
-	protected List<TransformationMaskDataSource> transformationMaskDataSources = TransformationMaskDataSourceManager.INSTANCE.getTransformationMaskDataSources();
-	
+	protected List<TransformationMaskDataSource> transformationMaskDataSources = TransformationMaskDataSourceManager.INSTANCE
+			.getTransformationMaskDataSources();
+
 	/**
 	 * Instance of Mask used to filter the transformations
 	 */
-	private ITransformationMask userTransformationMask = null;
-	
+	private TransformationMaskReference userTransformationMaskReference = null;
+
 	/**
 	 * Creates new transformation engine, with provided context implementation
 	 * 
@@ -220,7 +224,7 @@ public class OptimusM2MEngine {
 		OptimusM2MEngineMessages.TE03.log(Arrays.toString(transformationSetIDs));
 		return this;
 	}
-	
+
 	/**
 	 * Applies a mask on the transformations, to prevent them from being
 	 * enabled. Applying a mask will NOT go over the user configuration
@@ -228,12 +232,28 @@ public class OptimusM2MEngine {
 	 * 
 	 * @param transformationMask
 	 * @return
+	 * @see applyTransformationMask(ITransformationMask, String)
 	 */
+	@Deprecated
 	public OptimusM2MEngine applyTransformationMask(ITransformationMask transformationMask) {
-		this.userTransformationMask = transformationMask;
+		return applyTransformationMask(transformationMask,
+				String.valueOf("<UserTransformationMask-" + System.currentTimeMillis() + ">"));
+	}
+
+	/**
+	 * Applies a mask on the transformations, to prevent them from being
+	 * enabled. Applying a mask will NOT go over the user configuration
+	 * specified in the Optimus preferences...
+	 * 
+	 * @param transformationMask
+	 * @param name
+	 * @return
+	 */
+	public OptimusM2MEngine applyTransformationMask(ITransformationMask transformationMask, String name) {
+		this.userTransformationMaskReference = new TransformationMaskReference(name, null, transformationMask);
 		return this;
 	}
-	
+
 	/**
 	 * Sets user selection
 	 * 
@@ -257,7 +277,7 @@ public class OptimusM2MEngine {
 		this.selectedElements.add(selectedElement);
 		return this;
 	}
-	
+
 	/**
 	 * Executes the transformations for the user selection
 	 * 
@@ -446,15 +466,20 @@ public class OptimusM2MEngine {
 	/**
 	 * Returns the transformation mask to apply for this execution.
 	 * 
-	 * If none is defined by the user, it returns the one selected through preferences.
+	 * If none is defined by the user, it returns the one selected through
+	 * preferences.
 	 * 
 	 * @return
 	 */
 	private ITransformationMask getTransformationMask() {
-		ITransformationMask transformationMask = this.userTransformationMask != null ? this.userTransformationMask : TransformationMaskDataSourceManager.INSTANCE.getPreferredTransformationMask().getImplementation();
- 		if(transformationMask == null){
- 			OptimusM2MEngineMessages.TE32.log();
- 		}
+		TransformationMaskReference tmr = this.userTransformationMaskReference != null ? this.userTransformationMaskReference
+				: TransformationMaskDataSourceManager.INSTANCE.getPreferredTransformationMask();
+		ITransformationMask transformationMask = tmr.getImplementation();
+		if (transformationMask == null) {
+			OptimusM2MEngineMessages.TE32.log();
+		} else {
+			OptimusM2MEngineMessages.TE33.log(tmr.getName());
+		}
 		return transformationMask;
 	}
 
@@ -576,9 +601,10 @@ public class OptimusM2MEngine {
 	public TransformationDataSource getTransformationDataSource() {
 		return transformationDataSources.size() > 0 ? transformationDataSources.iterator().next() : null;
 	}
-	
+
 	/**
-	 * Returns a transformation reference from its id. It tries to locate it in all the transformation data sources identified in this engine.
+	 * Returns a transformation reference from its id. It tries to locate it in
+	 * all the transformation data sources identified in this engine.
 	 * 
 	 * @param transformationReferenceId
 	 * @return
@@ -587,9 +613,11 @@ public class OptimusM2MEngine {
 		if (this.transformationDataSources == null) {
 			return null;
 		}
-		for (Iterator<TransformationDataSource> iterator = this.transformationDataSources.iterator();iterator.hasNext();) {
+		for (Iterator<TransformationDataSource> iterator = this.transformationDataSources.iterator(); iterator
+				.hasNext();) {
 			TransformationDataSource transformationDataSource = iterator.next();
-			TransformationReference reference = transformationDataSource != null ? transformationDataSource.getById(transformationReferenceId) : null;
+			TransformationReference reference = transformationDataSource != null ? transformationDataSource
+					.getById(transformationReferenceId) : null;
 			if (reference != null) {
 				return reference;
 			}

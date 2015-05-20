@@ -43,7 +43,7 @@ public enum OptimusM2MEngineMessages implements OptimusMessage {
 			Level.WARNING), TE13(Level.INFO), TE14(Level.INFO), TE15(Level.INFO), TE16(Level.INFO), TE17(Level.INFO), TE18(
 			Level.INFO), TE19(Level.INFO), TE20(Level.WARNING), TE21(Level.INFO), TE22(Level.SEVERE), TE23(Level.SEVERE), TE24(
 			Level.INFO), TE25(Level.INFO), TE26(Level.INFO), TE27(Level.INFO), TE28(Level.INFO), TE29(Level.INFO), TE30(
-			Level.INFO), TE31(Level.INFO), TE32(Level.WARNING), 
+			Level.INFO), TE31(Level.INFO), TE32(Level.WARNING),TE33(Level.INFO), 
 
 	// Messages related to the Transformation Adapters
 	AD01(Level.FINE), AD02(Level.FINE), AD03(Level.SEVERE), AD04(Level.INFO), AD05(Level.INFO),
