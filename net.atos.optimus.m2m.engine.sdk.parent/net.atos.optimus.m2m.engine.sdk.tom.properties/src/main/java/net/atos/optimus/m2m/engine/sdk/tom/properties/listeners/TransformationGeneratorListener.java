@@ -21,8 +21,10 @@
  */
 package net.atos.optimus.m2m.engine.sdk.tom.properties.listeners;
 
-import net.atos.optimus.m2m.engine.sdk.tom.properties.transformations.TransformationGeneratorDialog;
+import net.atos.optimus.m2m.engine.sdk.tom.Transformation;
+import net.atos.optimus.m2m.engine.sdk.tom.properties.transformations.TransformationGenerationData;
 import net.atos.optimus.m2m.engine.sdk.tom.properties.transformations.TransformationGenerationJob;
+import net.atos.optimus.m2m.engine.sdk.tom.properties.transformations.TransformationGeneratorDialog;
 import net.atos.optimus.m2m.engine.sdk.tom.properties.zones.TransformationGeneratorSelectorZone;
 
 import org.eclipse.core.resources.IProject;
@@ -61,12 +63,45 @@ public class TransformationGeneratorListener implements SelectionListener {
 
 	@Override
 	public void widgetSelected(SelectionEvent e) {
-		IProject project = WorkspaceSynchronizer.getFile(this.textZone.giveEObject().eResource()).getProject();
+		if (!(this.textZone.giveEObject() instanceof Transformation)) {
+			return;
+		}
+
+		Transformation transformation = (Transformation) this.textZone.giveEObject();
+
+		// Retrieve the java project
+		IProject project = WorkspaceSynchronizer.getFile(transformation.eResource()).getProject();
 		IJavaProject javaProject = JavaCore.create(project);
+
+		// Create a new shell
 		Shell shell = new Shell(Display.getCurrent() != null ? Display.getCurrent() : Display.getDefault(),
 				SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM | SWT.RESIZE);
-		TransformationGeneratorDialog dialog = new TransformationGeneratorDialog(shell, javaProject);
-		if(dialog.open() ==  Window.OK){
+
+		// Initialize the transformation data
+		TransformationGenerationData transformationData = new TransformationGenerationData();
+		String transformationName = transformation.getName();
+		if (transformationName != null) {
+			transformationData.setTrn(transformationName);
+			transformationData.setFactory(transformationName + TransformationGenerationData.FACTORYDEFAULT);
+		}
+
+		String transformationFactoryFullName = transformation.getFactory();
+		if (transformationFactoryFullName != null && transformationFactoryFullName.endsWith(TransformationGenerationData.FACTORYDEFAULT)) {
+			int indexEndPackage = transformationFactoryFullName.lastIndexOf('.');
+			if (indexEndPackage != -1) {
+				String packageName = transformationFactoryFullName.substring(0, indexEndPackage);
+				String factoryName = transformationFactoryFullName.substring(indexEndPackage + 1);
+				transformationData.setPackage(packageName);
+				transformationData.setFactory(factoryName);
+				if (transformationData.getTrn() == "") {
+					int indexFactory = factoryName.lastIndexOf(TransformationGenerationData.FACTORYDEFAULT);
+					transformationData.setTrn(factoryName.substring(0, indexFactory));
+				}
+			}
+		}
+
+		TransformationGeneratorDialog dialog = new TransformationGeneratorDialog(shell, javaProject, transformationData);
+		if (dialog.open() == Window.OK) {
 			TransformationGenerationJob job = new TransformationGenerationJob();
 			job.setFragment(dialog.getFragment());
 			job.setFactoryName(dialog.getFactory());

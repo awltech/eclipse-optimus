@@ -31,8 +31,8 @@ import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
@@ -62,12 +62,6 @@ public class TransformationGeneratorDialog extends Dialog {
 
 	/** The java project */
 	private final IJavaProject javaProject;
-	
-	/** The default factory name */
-	private static final String FACTORYDEFAULT = "org.eclipse.emf.ecore.EObject";
-	
-	/** The default element */
-	private static final String ELEMENTDEFAULT = "org.eclipse.emf.ecore.EObject";
 
 	/** The text containing the package name */
 	private Text packageText;
@@ -93,15 +87,25 @@ public class TransformationGeneratorDialog extends Dialog {
 	/** The type name of the transformed element */
 	private String type;
 
+	/** The transformation data used in the generating process */
+	private TransformationGenerationData transformationData;
+
 	/**
 	 * Constructor
 	 * 
 	 * @param parentShell
+	 *            the container shell.
+	 * @param javaProject
+	 *            the current java project.
+	 * @param transformationData
+	 *            the transformation data with initialization.
 	 */
-	public TransformationGeneratorDialog(Shell parentShell, IJavaProject javaProject) {
+	public TransformationGeneratorDialog(Shell parentShell, IJavaProject javaProject,
+			TransformationGenerationData transformationData) {
 		super(parentShell);
 		this.myShell = parentShell;
 		this.javaProject = javaProject;
+		this.transformationData = transformationData;
 		this.setShellStyle(getShellStyle() | SWT.RESIZE);
 	}
 
@@ -116,6 +120,7 @@ public class TransformationGeneratorDialog extends Dialog {
 		packageLabel.setText(TransformationDialogMessages.JAVAPACK_LABEL.message());
 		packageLabel.setToolTipText(TransformationDialogMessages.JAVAPACK_TOOLTIP.message());
 		this.packageText = new Text(background, SWT.BORDER);
+		this.packageText.setText(transformationData.getPackage());
 		final Button packageButton = new Button(background, SWT.PUSH);
 		packageButton.setText(TransformationDialogMessages.JAVAPACK_BUTTON.message());
 
@@ -125,6 +130,7 @@ public class TransformationGeneratorDialog extends Dialog {
 		trnLabel.setToolTipText(TransformationDialogMessages.TRNCLASS_TOOLTIP.message());
 
 		this.trnText = new Text(background, SWT.BORDER);
+		this.trnText.setText(transformationData.getTrn());
 
 		// Manage the Transformation Class Name
 		final Label factoryLabel = new Label(background, SWT.NONE);
@@ -132,14 +138,14 @@ public class TransformationGeneratorDialog extends Dialog {
 		factoryLabel.setToolTipText(TransformationDialogMessages.TRNFACT_TOOLTIP.message());
 
 		this.factoryText = new Text(background, SWT.BORDER);
-		this.factoryText.setText(TransformationGeneratorDialog.FACTORYDEFAULT);
-		
+		this.factoryText.setText(transformationData.getFactory());
+
 		// Manage the type of transformed object
 		final Label typeLabel = new Label(background, SWT.NONE);
 		typeLabel.setText(TransformationDialogMessages.TRNELT_LABEL.message());
 		typeLabel.setToolTipText(TransformationDialogMessages.TRNELT_TOOLTIP.message());
 		this.typeText = new Text(background, SWT.BORDER);
-		this.typeText.setText(TransformationGeneratorDialog.ELEMENTDEFAULT);
+		this.typeText.setText(transformationData.getType());
 		this.typeText.setEnabled(false);
 		final Button typeButton = new Button(background, SWT.PUSH);
 		typeButton.setText(TransformationDialogMessages.TRNELT_BUTTON.message());
@@ -160,20 +166,22 @@ public class TransformationGeneratorDialog extends Dialog {
 		FormDataBuilder.on(this.typeText).top(this.factoryText).left(typeLabel).right(typeButton);
 		FormDataBuilder.on(typeButton).top(this.factoryText).right().width(80).height(22);
 
-		this.factoryText.addFocusListener(new FocusListener() {
-			
+		this.factoryText.addModifyListener(new ModifyListener() {
+
+			private String oldText = TransformationGeneratorDialog.this.factoryText.getText();
+
 			@Override
-			public void focusLost(FocusEvent e) {
-				String factoryName = TransformationGeneratorDialog.this.factoryText.getText();
-				if(!factoryName.endsWith("Factory")){
-					TransformationGeneratorDialog.this.factoryText.setText(factoryName+"Factory");
+			public void modifyText(ModifyEvent e) {
+				String newText = TransformationGeneratorDialog.this.factoryText.getText();
+				if (newText.endsWith(TransformationGenerationData.FACTORYDEFAULT)) {
+					this.oldText = newText;
+				} else {
+					TransformationGeneratorDialog.this.factoryText.setText(this.oldText);
 				}
+
 			}
-			
-			@Override
-			public void focusGained(FocusEvent e) {}
 		});
-		
+
 		packageButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
@@ -205,7 +213,7 @@ public class TransformationGeneratorDialog extends Dialog {
 				try {
 					final IType eObjectType = TransformationGeneratorDialog.this.javaProject
 							.findType("org.eclipse.emf.ecore.EObject");
-					if(eObjectType != null){
+					if (eObjectType != null) {
 						final Shell childShell = new Shell(TransformationGeneratorDialog.this.myShell);
 						final SelectionDialog createTypeDialog = JavaUI.createTypeDialog(childShell, null,
 								SearchEngine.createHierarchyScope(eObjectType),
@@ -215,8 +223,7 @@ public class TransformationGeneratorDialog extends Dialog {
 						if ((createTypeDialog.open() == Window.OK) && (createTypeDialog.getResult().length > 0)) {
 							final Object o = createTypeDialog.getResult()[0];
 							if (o instanceof IType) {
-								TransformationGeneratorDialog.this.typeText.setText(((IType) o)
-										.getFullyQualifiedName());
+								TransformationGeneratorDialog.this.typeText.setText(((IType) o).getFullyQualifiedName());
 								TransformationGeneratorDialog.this.typeText.update();
 							}
 						}

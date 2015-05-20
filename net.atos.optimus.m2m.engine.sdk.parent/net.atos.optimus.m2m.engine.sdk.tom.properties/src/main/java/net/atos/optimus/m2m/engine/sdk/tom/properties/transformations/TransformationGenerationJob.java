@@ -23,7 +23,6 @@ package net.atos.optimus.m2m.engine.sdk.tom.properties.transformations;
 
 import java.util.Properties;
 
-import net.atos.optimus.m2m.engine.sdk.tom.properties.Activator;
 import net.atos.optimus.m2m.javaxmi.core.templating.PackageChunker;
 import net.atos.optimus.m2m.javaxmi.core.templating.TemplateVariableReplacer;
 import net.atos.optimus.m2t.java.core.JavaGenerator;
@@ -62,8 +61,6 @@ public class TransformationGenerationJob extends WorkspaceJob {
 	private static final String VAR_TRANSFO_CLASSNAME = "${transformationClassName}";
 
 	private static final String VAR_TRANSFO_FACTORYNAME = "${transformationFactoryName}";
-
-	private static final String MODEL2USE_FILEPATH = "/models/transformationCreator.javaxmi";
 
 	/** The package fragment of the generated transformation */
 	private IPackageFragment fragment;
@@ -123,8 +120,8 @@ public class TransformationGenerationJob extends WorkspaceJob {
 	private void generateJava(ResourceSet resourceSet, Properties properties) throws CoreException {
 		JavaGenerator javaGenerator = new JavaGenerator();
 		IPath outputPath = fragment.getAncestor(IJavaElement.PACKAGE_FRAGMENT_ROOT).getResource().getLocation();
-
-		URI uri = URI.createPlatformPluginURI(Activator.PLUGIN_ID + MODEL2USE_FILEPATH, true);
+		
+		URI uri = URI.createPlatformPluginURI("net.atos.optimus.m2m.engine.sdk.wizards/models/transformationCreator.javaxmi", true);
 		Resource resource = resourceSet.getResource(uri, true);
 
 		EObject root = resource.getContents().get(0);
