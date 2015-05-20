@@ -21,14 +21,23 @@
  */
 package net.atos.optimus.m2m.engine.sdk.tom.properties.listeners;
 
+import net.atos.optimus.m2m.engine.sdk.tom.TomPackage;
 import net.atos.optimus.m2m.engine.sdk.tom.Transformation;
+import net.atos.optimus.m2m.engine.sdk.tom.properties.Activator;
 import net.atos.optimus.m2m.engine.sdk.tom.properties.transformations.TransformationGenerationData;
 import net.atos.optimus.m2m.engine.sdk.tom.properties.transformations.TransformationGenerationJob;
 import net.atos.optimus.m2m.engine.sdk.tom.properties.transformations.TransformationGeneratorDialog;
 import net.atos.optimus.m2m.engine.sdk.tom.properties.zones.TransformationGeneratorSelectorZone;
 
+import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.workspace.util.WorkspaceSynchronizer;
+import org.eclipse.gmf.runtime.emf.type.core.commands.SetValueCommand;
+import org.eclipse.gmf.runtime.emf.type.core.requests.SetRequest;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.window.Window;
@@ -107,6 +116,42 @@ public class TransformationGeneratorListener implements SelectionListener {
 			job.setProject(javaProject);
 			job.schedule();
 		}
+
+		Object factoryFullName = transformationData.getPackage() + "." + transformationData.getFactory();
+		EStructuralFeature factoryFeature = this.textZone.getAssociatedFeature();
+
+		/* Set the value in the model */
+		SetRequest request = new SetRequest(this.textZone.giveEditingDomain(), this.textZone.giveEObject(),
+				factoryFeature, factoryFullName);
+		SetValueCommand command = new SetValueCommand(request);
+		try {
+			command.execute(new NullProgressMonitor(), null);
+		} catch (ExecutionException e1) {
+			Activator
+					.getDefault()
+					.getLog()
+					.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Listener creation fail on the feature : "
+							+ factoryFeature.getClass().getCanonicalName(), e1));
+		}
+
+		EStructuralFeature nameFeature = TomPackage.eINSTANCE.getTransformationReference_Name();
+
+		/* Set the value in the model */
+		request = new SetRequest(this.textZone.giveEditingDomain(), this.textZone.giveEObject(), nameFeature,
+				transformationData.getTrn());
+		command = new SetValueCommand(request);
+		try {
+			command.execute(new NullProgressMonitor(), null);
+		} catch (ExecutionException e1) {
+			Activator
+					.getDefault()
+					.getLog()
+					.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Listener creation fail on the feature : "
+							+ factoryFeature.getClass().getCanonicalName(), e1));
+		}
+
+		this.textZone.refreshZoneAndDiagram();
+
 	}
 
 	@Override
