@@ -23,6 +23,7 @@ package net.atos.optimus.m2m.engine.sdk.tom.properties.transformations;
 
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.SearchEngine;
@@ -38,6 +39,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -56,12 +58,17 @@ import com.worldline.gmf.propertysections.core.tools.FormDataBuilder;
  */
 
 public class TransformationGeneratorDialog extends Dialog {
+	
+	private static String PREFERRED_SOURCE_FOLDER = "";
 
 	/** The shell of the dialog */
 	private Shell myShell;
 
 	/** The java project */
 	private final IJavaProject javaProject;
+
+	/** The combo box containing the source folder */
+	private Combo sourceFolderCombo;
 
 	/** The text containing the package name */
 	private Text packageText;
@@ -75,8 +82,11 @@ public class TransformationGeneratorDialog extends Dialog {
 	/** The text containing the type of the transformed element */
 	private Text typeText;
 
-	/** The package fragment of the generated transformation */
-	private IPackageFragment fragment;
+	/** The source folder name */
+	private String sourceFolderName;
+	
+	/** The package name */
+	private String packageName;
 
 	/** The factory name */
 	private String factory;
@@ -115,6 +125,30 @@ public class TransformationGeneratorDialog extends Dialog {
 		Composite background = (Composite) super.createDialogArea(parent);
 		background.setLayout(new FormLayout());
 
+		// Manage the Transformation Source Folder
+		final Label sourceFolderLabel = new Label(background, SWT.NONE);
+		sourceFolderLabel.setText(TransformationDialogMessages.SOURCEFOLDER_LABEL.message());
+		sourceFolderLabel.setToolTipText(TransformationDialogMessages.SOURCEFOLDER_TOOLTIP.message());
+		this.sourceFolderCombo = new Combo(background, SWT.READ_ONLY);
+		final Button sourceFolderButton = new Button(background, SWT.PUSH);
+		sourceFolderButton.setText(TransformationDialogMessages.SOURCEFOLDER_BUTTON.message());
+
+		// Fill the combo box with available source folder
+		try {
+			for (IPackageFragmentRoot packageFragmentRoot : this.javaProject.getAllPackageFragmentRoots()) {
+				if (packageFragmentRoot.getKind() == IPackageFragmentRoot.K_SOURCE) {
+					sourceFolderCombo.add(packageFragmentRoot.getElementName());
+					sourceFolderCombo.select(0);
+				}
+			}
+		} catch (JavaModelException e2) {
+			e2.printStackTrace();
+		}
+		int indexSourceFolder = this.sourceFolderCombo.indexOf(TransformationGeneratorDialog.PREFERRED_SOURCE_FOLDER);
+		if (indexSourceFolder != -1) {
+			sourceFolderCombo.select(indexSourceFolder);
+		}
+
 		// Manage the transformation package
 		final Label packageLabel = new Label(background, SWT.NONE);
 		packageLabel.setText(TransformationDialogMessages.JAVAPACK_LABEL.message());
@@ -152,9 +186,13 @@ public class TransformationGeneratorDialog extends Dialog {
 
 		// Define the layout between all the objects.
 
-		FormDataBuilder.on(packageLabel).top().left().width(200);
-		FormDataBuilder.on(this.packageText).top().left(packageLabel).right(packageButton);
-		FormDataBuilder.on(packageButton).top().right().width(80).height(22);
+		FormDataBuilder.on(sourceFolderLabel).top().left().width(200);
+		FormDataBuilder.on(this.sourceFolderCombo).top().left(sourceFolderLabel).right(sourceFolderButton);
+		FormDataBuilder.on(sourceFolderButton).top().right().width(80).height(22);
+
+		FormDataBuilder.on(packageLabel).top(this.sourceFolderCombo).left().width(200);
+		FormDataBuilder.on(this.packageText).top(this.sourceFolderCombo).left(packageLabel).right(packageButton);
+		FormDataBuilder.on(packageButton).top(this.sourceFolderCombo).right().width(80).height(22);
 
 		FormDataBuilder.on(trnLabel).top(this.packageText).left().width(200);
 		FormDataBuilder.on(this.trnText).top(this.packageText).left(trnLabel).width(600).right();
@@ -195,7 +233,6 @@ public class TransformationGeneratorDialog extends Dialog {
 					if ((createPackageDialog.open() == Window.OK) && (createPackageDialog.getResult().length > 0)) {
 						final Object o = createPackageDialog.getResult()[0];
 						if (o instanceof IPackageFragment) {
-							TransformationGeneratorDialog.this.fragment = (IPackageFragment) o;
 							TransformationGeneratorDialog.this.packageText.setText(((IPackageFragment) o)
 									.getElementName());
 							TransformationGeneratorDialog.this.packageText.update();
@@ -235,7 +272,6 @@ public class TransformationGeneratorDialog extends Dialog {
 		});
 
 		return background;
-
 	}
 
 	@Override
@@ -246,6 +282,9 @@ public class TransformationGeneratorDialog extends Dialog {
 
 	@Override
 	protected void okPressed() {
+		TransformationGeneratorDialog.PREFERRED_SOURCE_FOLDER = this.sourceFolderCombo.getText();
+		this.sourceFolderName = this.sourceFolderCombo.getText();
+		this.packageName = this.packageText.getText();
 		this.trn = this.trnText.getText();
 		this.factory = this.factoryText.getText();
 		this.type = this.typeText.getText();
@@ -254,11 +293,15 @@ public class TransformationGeneratorDialog extends Dialog {
 
 	@Override
 	protected Point getInitialSize() {
-		return new Point(600, 200);
+		return new Point(600, 250);
+	}
+	
+	public String getSourceFolder(){
+		return this.sourceFolderName;
 	}
 
-	public IPackageFragment getFragment() {
-		return this.fragment;
+	public String getPackage() {
+		return this.packageName;
 	}
 
 	public String getTrn() {

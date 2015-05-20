@@ -37,6 +37,9 @@ public class TransformationGenerationData {
 	/** The default element */
 	public static final String ELEMENTDEFAULT = "org.eclipse.emf.ecore.EObject";
 	
+	/** The source folder */
+	private String sourceFolder;
+	
 	/** The package name */
 	private String packageName;
 
@@ -54,6 +57,11 @@ public class TransformationGenerationData {
 		this.factory = TransformationGenerationData.FACTORYDEFAULT;
 		this.trn = "";
 		this.type = TransformationGenerationData.ELEMENTDEFAULT;
+		this.sourceFolder = "";
+	}
+	
+	public String getSourceFolder(){
+		return this.sourceFolder;
 	}
 	
 	public String getPackage() {
@@ -70,6 +78,10 @@ public class TransformationGenerationData {
 
 	public String getType() {
 		return this.type;
+	}
+	
+	public void setSourceFolder(String sourceFolder){
+		this.sourceFolder = sourceFolder;
 	}
 
 	public void setPackage(String packageName) {

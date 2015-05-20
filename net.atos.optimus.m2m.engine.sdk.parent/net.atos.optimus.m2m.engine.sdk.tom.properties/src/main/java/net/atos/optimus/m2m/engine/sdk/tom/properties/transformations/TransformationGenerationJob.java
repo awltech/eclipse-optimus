@@ -41,6 +41,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.gmt.modisco.java.Model;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 
@@ -62,8 +63,17 @@ public class TransformationGenerationJob extends WorkspaceJob {
 
 	private static final String VAR_TRANSFO_FACTORYNAME = "${transformationFactoryName}";
 
-	/** The package fragment of the generated transformation */
-	private IPackageFragment fragment;
+	/** The java project */
+	private IJavaProject javaProject;
+
+	/** The source folder of the generated transformation */
+	private String sourceFolder;
+
+	/** The fragment associated to the package of the generated transformation */
+	private IPackageFragment packageFragment;
+
+	/** The package of the generated transformation */
+	private String packageName;
 
 	/** The class name of the generated transformation */
 	private String className;
@@ -87,15 +97,19 @@ public class TransformationGenerationJob extends WorkspaceJob {
 
 		monitor.subTask(TransformationDialogMessages.JOB_SUBTASK_1.message());
 
-		if (!fragment.exists()) {
-			IPackageFragmentRoot root = (IPackageFragmentRoot) this.fragment
-					.getAncestor(IJavaElement.PACKAGE_FRAGMENT_ROOT);
-			this.fragment = root.createPackageFragment(this.fragment.getElementName(), false, monitor);
-			root.getResource().refreshLocal(IResource.DEPTH_ONE, monitor);
+		IPath sourceFolderPath = this.javaProject.getPath().append(IPath.SEPARATOR + this.sourceFolder);
+		IPath packagePath = sourceFolderPath.append(IPath.SEPARATOR + this.packageName);
+
+		this.packageFragment = this.javaProject.findPackageFragment(packagePath);
+
+		if (packageFragment == null) {
+			IPackageFragmentRoot sourceFolderFragment = this.javaProject.findPackageFragmentRoot(sourceFolderPath);
+			this.packageFragment = sourceFolderFragment.createPackageFragment(this.packageName, false, monitor);
 		}
+		this.packageFragment.getResource().refreshLocal(IResource.DEPTH_ONE, monitor);
 
 		Properties properties = new Properties();
-		properties.put(VAR_PACKAGENAME, this.fragment.getElementName());
+		properties.put(VAR_PACKAGENAME, this.packageName);
 		properties.put(VAR_TRANSFO_ELT_FQN, elementType);
 		properties.put(VAR_TRANSFO_CLASSNAME, className);
 		properties.put(VAR_TRANSFO_FACTORYNAME, factoryName);
@@ -119,9 +133,11 @@ public class TransformationGenerationJob extends WorkspaceJob {
 
 	private void generateJava(ResourceSet resourceSet, Properties properties) throws CoreException {
 		JavaGenerator javaGenerator = new JavaGenerator();
-		IPath outputPath = fragment.getAncestor(IJavaElement.PACKAGE_FRAGMENT_ROOT).getResource().getLocation();
-		
-		URI uri = URI.createPlatformPluginURI("net.atos.optimus.m2m.engine.sdk.wizards/models/transformationCreator.javaxmi", true);
+		IPath outputPath = this.packageFragment.getAncestor(IJavaElement.PACKAGE_FRAGMENT_ROOT).getResource()
+				.getLocation();
+
+		URI uri = URI.createPlatformPluginURI(
+				"net.atos.optimus.m2m.engine.sdk.wizards/models/transformationCreator.javaxmi", true);
 		Resource resource = resourceSet.getResource(uri, true);
 
 		EObject root = resource.getContents().get(0);
@@ -129,11 +145,16 @@ public class TransformationGenerationJob extends WorkspaceJob {
 		PackageChunker.chunkPackages((Model) root);
 		javaGenerator.generate((Model) root, outputPath);
 
-		this.fragment.getResource().refreshLocal(IResource.DEPTH_INFINITE, null);
+		this.packageFragment.getResource().refreshLocal(IResource.DEPTH_INFINITE, null);
 	}
 
-	public TransformationGenerationJob setFragment(IPackageFragment fragment) {
-		this.fragment = fragment;
+	public TransformationGenerationJob setSourceFolder(String sourceFolder) {
+		this.sourceFolder = sourceFolder;
+		return this;
+	}
+
+	public TransformationGenerationJob setPackage(String packageName) {
+		this.packageName = packageName;
 		return this;
 	}
 
@@ -149,6 +170,11 @@ public class TransformationGenerationJob extends WorkspaceJob {
 
 	public TransformationGenerationJob setElementName(String elementType) {
 		this.elementType = elementType;
+		return this;
+	}
+
+	public TransformationGenerationJob setProject(IJavaProject javaProject) {
+		this.javaProject = javaProject;
 		return this;
 	}
 

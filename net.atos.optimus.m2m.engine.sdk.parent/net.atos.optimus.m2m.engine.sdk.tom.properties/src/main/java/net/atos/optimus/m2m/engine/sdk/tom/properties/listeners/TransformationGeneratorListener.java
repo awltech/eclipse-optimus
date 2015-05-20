@@ -86,7 +86,8 @@ public class TransformationGeneratorListener implements SelectionListener {
 		}
 
 		String transformationFactoryFullName = transformation.getFactory();
-		if (transformationFactoryFullName != null && transformationFactoryFullName.endsWith(TransformationGenerationData.FACTORYDEFAULT)) {
+		if (transformationFactoryFullName != null
+				&& transformationFactoryFullName.endsWith(TransformationGenerationData.FACTORYDEFAULT)) {
 			int indexEndPackage = transformationFactoryFullName.lastIndexOf('.');
 			if (indexEndPackage != -1) {
 				String packageName = transformationFactoryFullName.substring(0, indexEndPackage);
@@ -103,10 +104,8 @@ public class TransformationGeneratorListener implements SelectionListener {
 		TransformationGeneratorDialog dialog = new TransformationGeneratorDialog(shell, javaProject, transformationData);
 		if (dialog.open() == Window.OK) {
 			TransformationGenerationJob job = new TransformationGenerationJob();
-			job.setFragment(dialog.getFragment());
-			job.setFactoryName(dialog.getFactory());
-			job.setClassName(dialog.getTrn());
-			job.setElementName(dialog.getType());
+			job.setSourceFolder(dialog.getSourceFolder()).setPackage(dialog.getPackage()).setFactoryName(dialog.getFactory()).setClassName(dialog.getTrn())
+					.setElementName(dialog.getType()).setProject(javaProject);
 			job.schedule();
 		}
 	}
