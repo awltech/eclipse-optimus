@@ -58,7 +58,7 @@ import com.worldline.gmf.propertysections.core.tools.FormDataBuilder;
  */
 
 public class TransformationGeneratorDialog extends Dialog {
-	
+
 	private static String PREFERRED_SOURCE_FOLDER = "";
 
 	/** The shell of the dialog */
@@ -81,21 +81,6 @@ public class TransformationGeneratorDialog extends Dialog {
 
 	/** The text containing the type of the transformed element */
 	private Text typeText;
-
-	/** The source folder name */
-	private String sourceFolderName;
-	
-	/** The package name */
-	private String packageName;
-
-	/** The factory name */
-	private String factory;
-
-	/** The transformation name */
-	private String trn;
-
-	/** The type name of the transformed element */
-	private String type;
 
 	/** The transformation data used in the generating process */
 	private TransformationGenerationData transformationData;
@@ -283,37 +268,17 @@ public class TransformationGeneratorDialog extends Dialog {
 	@Override
 	protected void okPressed() {
 		TransformationGeneratorDialog.PREFERRED_SOURCE_FOLDER = this.sourceFolderCombo.getText();
-		this.sourceFolderName = this.sourceFolderCombo.getText();
-		this.packageName = this.packageText.getText();
-		this.trn = this.trnText.getText();
-		this.factory = this.factoryText.getText();
-		this.type = this.typeText.getText();
+		this.transformationData.setSourceFolder(this.sourceFolderCombo.getText());
+		this.transformationData.setPackage(this.packageText.getText());
+		this.transformationData.setTrn(this.trnText.getText());
+		this.transformationData.setFactory(this.factoryText.getText());
+		this.transformationData.setType(this.typeText.getText());
 		super.okPressed();
 	}
 
 	@Override
 	protected Point getInitialSize() {
 		return new Point(600, 250);
-	}
-	
-	public String getSourceFolder(){
-		return this.sourceFolderName;
-	}
-
-	public String getPackage() {
-		return this.packageName;
-	}
-
-	public String getTrn() {
-		return this.trn;
-	}
-
-	public String getFactory() {
-		return this.factory;
-	}
-
-	public String getType() {
-		return this.type;
 	}
 
 }

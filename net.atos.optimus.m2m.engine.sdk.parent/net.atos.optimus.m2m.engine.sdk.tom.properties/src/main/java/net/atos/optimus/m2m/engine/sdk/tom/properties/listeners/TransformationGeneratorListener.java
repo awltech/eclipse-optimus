@@ -103,9 +103,8 @@ public class TransformationGeneratorListener implements SelectionListener {
 
 		TransformationGeneratorDialog dialog = new TransformationGeneratorDialog(shell, javaProject, transformationData);
 		if (dialog.open() == Window.OK) {
-			TransformationGenerationJob job = new TransformationGenerationJob();
-			job.setSourceFolder(dialog.getSourceFolder()).setPackage(dialog.getPackage()).setFactoryName(dialog.getFactory()).setClassName(dialog.getTrn())
-					.setElementName(dialog.getType()).setProject(javaProject);
+			TransformationGenerationJob job = new TransformationGenerationJob(transformationData);
+			job.setProject(javaProject);
 			job.schedule();
 		}
 	}

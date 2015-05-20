@@ -66,28 +66,23 @@ public class TransformationGenerationJob extends WorkspaceJob {
 	/** The java project */
 	private IJavaProject javaProject;
 
-	/** The source folder of the generated transformation */
-	private String sourceFolder;
-
 	/** The fragment associated to the package of the generated transformation */
 	private IPackageFragment packageFragment;
 
-	/** The package of the generated transformation */
-	private String packageName;
+	/** The transformation data used in the generating process */
+	private TransformationGenerationData transformationData;
 
-	/** The class name of the generated transformation */
-	private String className;
-
-	/** The factory name of the generated transformation */
-	private String factoryName;
-
-	/** The type name of the transformed element */
-	private String elementType;
-
-	public TransformationGenerationJob() {
+	/**
+	 * Constructor
+	 * 
+	 * @param transformationData
+	 *            the transformation data with user input.
+	 */
+	public TransformationGenerationJob(TransformationGenerationData transformationData) {
 		super(TransformationDialogMessages.JOBNAME.message());
 		this.setPriority(BUILD);
 		this.setUser(true);
+		this.transformationData = transformationData;
 	}
 
 	@Override
@@ -97,22 +92,22 @@ public class TransformationGenerationJob extends WorkspaceJob {
 
 		monitor.subTask(TransformationDialogMessages.JOB_SUBTASK_1.message());
 
-		IPath sourceFolderPath = this.javaProject.getPath().append(IPath.SEPARATOR + this.sourceFolder);
-		IPath packagePath = sourceFolderPath.append(IPath.SEPARATOR + this.packageName);
+		IPath sourceFolderPath = this.javaProject.getPath().append(IPath.SEPARATOR + this.transformationData.getSourceFolder());
+		IPath packagePath = sourceFolderPath.append(IPath.SEPARATOR + this.transformationData.getPackage());
 
 		this.packageFragment = this.javaProject.findPackageFragment(packagePath);
 
 		if (packageFragment == null) {
 			IPackageFragmentRoot sourceFolderFragment = this.javaProject.findPackageFragmentRoot(sourceFolderPath);
-			this.packageFragment = sourceFolderFragment.createPackageFragment(this.packageName, false, monitor);
+			this.packageFragment = sourceFolderFragment.createPackageFragment(this.transformationData.getPackage(), false, monitor);
 		}
 		this.packageFragment.getResource().refreshLocal(IResource.DEPTH_ONE, monitor);
 
 		Properties properties = new Properties();
-		properties.put(VAR_PACKAGENAME, this.packageName);
-		properties.put(VAR_TRANSFO_ELT_FQN, elementType);
-		properties.put(VAR_TRANSFO_CLASSNAME, className);
-		properties.put(VAR_TRANSFO_FACTORYNAME, factoryName);
+		properties.put(VAR_PACKAGENAME, this.transformationData.getPackage());
+		properties.put(VAR_TRANSFO_ELT_FQN, this.transformationData.getType());
+		properties.put(VAR_TRANSFO_CLASSNAME, this.transformationData.getTrn());
+		properties.put(VAR_TRANSFO_FACTORYNAME, this.transformationData.getFactory());
 		ResourceSet resourceSet = new ResourceSetImpl();
 		monitor.worked(1);
 
@@ -146,31 +141,6 @@ public class TransformationGenerationJob extends WorkspaceJob {
 		javaGenerator.generate((Model) root, outputPath);
 
 		this.packageFragment.getResource().refreshLocal(IResource.DEPTH_INFINITE, null);
-	}
-
-	public TransformationGenerationJob setSourceFolder(String sourceFolder) {
-		this.sourceFolder = sourceFolder;
-		return this;
-	}
-
-	public TransformationGenerationJob setPackage(String packageName) {
-		this.packageName = packageName;
-		return this;
-	}
-
-	public TransformationGenerationJob setClassName(String className) {
-		this.className = className;
-		return this;
-	}
-
-	public TransformationGenerationJob setFactoryName(String factoryName) {
-		this.factoryName = factoryName;
-		return this;
-	}
-
-	public TransformationGenerationJob setElementName(String elementType) {
-		this.elementType = elementType;
-		return this;
 	}
 
 	public TransformationGenerationJob setProject(IJavaProject javaProject) {
