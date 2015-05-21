@@ -137,18 +137,6 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 		selectionLabel.setText(TransformationMasksPreferencesMessages.CHECK_BOX_LABEL.message());
 
 		this.transformationMaskCombo = new Combo(maskSelectionComposite, SWT.READ_ONLY);
-		for (TransformationMaskDataSource transformationMaskDataSource : TransformationMaskDataSourceManager.INSTANCE
-				.getTransformationMaskDataSources()) {
-			for (TransformationMaskReference transformationMaskReferenceFind : transformationMaskDataSource
-					.getAllMasks()) {
-				if (transformationMaskReferenceFind instanceof EditableTransformationMaskReference) {
-					this.transformationMaskCombo.add(transformationMaskReferenceFind.getName());
-				} else {
-					this.transformationMaskCombo.add(transformationMaskReferenceFind.getName() + " "
-							+ TransformationMasksPreferencesMessages.NON_EDITABLE_MASK.message());
-				}
-			}
-		}
 
 		Button creationButton = new Button(maskSelectionComposite, SWT.NONE);
 		creationButton.setText(TransformationMasksPreferencesMessages.CREATION_BUTTON.message());
@@ -297,6 +285,21 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 		// Update the preferred mask
 		this.currentPreferredMaskLabel.setText(TransformationMaskDataSourceManager.INSTANCE
 				.getPreferredTransformationMask().getName());
+		
+		// Update the combo box field
+		this.transformationMaskCombo.removeAll();
+		for (TransformationMaskDataSource transformationMaskDataSource : TransformationMaskDataSourceManager.INSTANCE
+				.getTransformationMaskDataSources()) {
+			for (TransformationMaskReference transformationMaskReferenceFind : transformationMaskDataSource
+					.getAllMasks()) {
+				if (transformationMaskReferenceFind instanceof EditableTransformationMaskReference) {
+					this.transformationMaskCombo.add(transformationMaskReferenceFind.getName());
+				} else {
+					this.transformationMaskCombo.add(transformationMaskReferenceFind.getName() + " "
+							+ TransformationMasksPreferencesMessages.NON_EDITABLE_MASK.message());
+				}
+			}
+		}
 
 		// Find the transformation mask index in the combo box, doesn't add the
 		// mask if not found
