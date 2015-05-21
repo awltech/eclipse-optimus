@@ -126,6 +126,7 @@ public enum TransformationMaskDataSourceManager {
 	 *         parameter or null if it doesn't exist.
 	 */
 	public TransformationMaskReference getTransformationMaskById(String id) {
+		id = id.replace(" (non editable mask)", "");
 		TransformationMaskReference transformationMaskReference = null;
 		for (TransformationMaskDataSource transformationMaskDataSource : this.getTransformationMaskDataSources()) {
 			transformationMaskReference = transformationMaskDataSource.getMaskById(id);

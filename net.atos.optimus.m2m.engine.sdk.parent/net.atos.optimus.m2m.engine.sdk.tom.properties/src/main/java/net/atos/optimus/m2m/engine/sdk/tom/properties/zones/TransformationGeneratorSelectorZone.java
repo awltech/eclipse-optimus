@@ -102,7 +102,7 @@ public class TransformationGeneratorSelectorZone extends ResourceSelectorZone {
 	@Override
 	public void addLayoutsToItems() {
 		super.addLayoutsToItems();
-		((FormData) this.input.getLayoutData()).right = new FormAttachment(this.creationButton);
+		((FormData) this.input.getLayoutData()).right = new FormAttachment(this.creationButton,-5);
 		FormDataBuilder.on(this.creationButton).right(this.researchButton).top().bottom()
 				.width(ResourceSelectorZone.BUTTON_WIDTH);
 	}

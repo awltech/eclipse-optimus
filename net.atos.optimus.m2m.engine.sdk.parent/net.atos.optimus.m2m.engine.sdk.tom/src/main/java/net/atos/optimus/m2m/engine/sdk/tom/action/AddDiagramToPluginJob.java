@@ -29,6 +29,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import net.atos.optimus.m2m.engine.sdk.tom.logging.OptimusOrchestrationModelerMessages;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.WorkspaceJob;
@@ -38,9 +40,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.Attribute;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
@@ -80,17 +82,23 @@ public class AddDiagramToPluginJob extends WorkspaceJob {
 		for (IFile targetFile : this.targetFiles) {
 			IProject project = targetFile.getProject();
 			IFile pluginFile = project.getFile("plugin.xml");
+			IPath makeRelativeTo = targetFile.getLocation().makeRelativeTo(project.getLocation());
 			if (pluginFile.exists()) {
-				IPath makeRelativeTo = targetFile.getLocation().makeRelativeTo(project.getLocation());
 				try {
 					this.addDiagramToPlugin(pluginFile.getLocation().toFile(), makeRelativeTo);
 				} catch (JDOMException e) {
-					e.printStackTrace();
+					OptimusOrchestrationModelerMessages.OM01.log(makeRelativeTo, e.getMessage());
+					return Status.CANCEL_STATUS;
 				} catch (IOException e) {
-					e.printStackTrace();
+					OptimusOrchestrationModelerMessages.OM02.log(makeRelativeTo, e.getMessage());
+					return Status.CANCEL_STATUS;
 				}
+			} else {
+				OptimusOrchestrationModelerMessages.OM04.log(makeRelativeTo);
+				return Status.CANCEL_STATUS;
 			}
 		}
+
 		return Status.OK_STATUS;
 	}
 
@@ -158,6 +166,7 @@ public class AddDiagramToPluginJob extends WorkspaceJob {
 			FileOutputStream outputStream = new FileOutputStream(pluginFile);
 			output.output(document, outputStream);
 			outputStream.close();
+			OptimusOrchestrationModelerMessages.OM03.log(diagramPath);
 		}
 	}
 

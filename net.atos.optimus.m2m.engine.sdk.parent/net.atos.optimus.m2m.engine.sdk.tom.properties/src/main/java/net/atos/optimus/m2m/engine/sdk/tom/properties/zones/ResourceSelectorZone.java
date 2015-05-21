@@ -118,7 +118,7 @@ public class ResourceSelectorZone extends InputTextWithLabelZone {
 	@Override
 	public void addLayoutsToItems() {
 		super.addLayoutsToItems();
-		((FormData) this.input.getLayoutData()).right = new FormAttachment(this.researchButton);
+		((FormData) this.input.getLayoutData()).right = new FormAttachment(this.researchButton,-5);
 		FormDataBuilder.on(this.researchButton).right().top().bottom().width(ResourceSelectorZone.BUTTON_WIDTH);
 	}
 

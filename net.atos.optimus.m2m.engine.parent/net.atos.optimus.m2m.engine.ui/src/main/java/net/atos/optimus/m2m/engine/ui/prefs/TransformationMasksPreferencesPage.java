@@ -69,13 +69,16 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public class TransformationMasksPreferencesPage extends PreferencePage implements IWorkbenchPreferencePage {
 
 	/** The height size of description windows */
-	public static final int DESCRIPTION_SIZE = 50;
+	public static final int DESCRIPTION_SIZE = 70;
 
 	/** The icon for the editable mask */
 	public static final String ICONS_EDITABLE_PNG = "icons/editable.png";
 
 	/** The icon for the non editable mask */
 	public static final String ICONS_NON_EDITABLE_PNG = "icons/non-editable.png";
+
+	/** The label holding the preferred mask */
+	protected Label currentPreferredMaskLabel;
 
 	/** The combo box displaying the available transformation masks */
 	protected Combo transformationMaskCombo;
@@ -109,7 +112,7 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 	@Override
 	protected Control createContents(Composite parent) {
 
-		// Find the prefered transformation reference and initialize the
+		// Find the preferred transformation reference and initialize the
 		// temporary transformation mask
 		TransformationMaskReference transformationMaskReference = TransformationMaskDataSourceManager.INSTANCE
 				.getPreferredTransformationMask();
@@ -118,6 +121,14 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 		// SWT controls creation
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new FormLayout());
+
+		Composite preferredMaskComposite = new Composite(composite, SWT.NONE);
+		preferredMaskComposite.setLayout(new FormLayout());
+
+		Label preferredMaskLabel = new Label(preferredMaskComposite, SWT.NONE);
+		preferredMaskLabel.setText(TransformationMasksPreferencesMessages.PREFERRED_MASK_LABEL.message());
+
+		this.currentPreferredMaskLabel = new Label(preferredMaskComposite, SWT.NONE);
 
 		Composite maskSelectionComposite = new Composite(composite, SWT.NONE);
 		maskSelectionComposite.setLayout(new FormLayout());
@@ -130,7 +141,12 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 				.getTransformationMaskDataSources()) {
 			for (TransformationMaskReference transformationMaskReferenceFind : transformationMaskDataSource
 					.getAllMasks()) {
-				this.transformationMaskCombo.add(transformationMaskReferenceFind.getName());
+				if (transformationMaskReferenceFind instanceof EditableTransformationMaskReference) {
+					this.transformationMaskCombo.add(transformationMaskReferenceFind.getName());
+				} else {
+					this.transformationMaskCombo.add(transformationMaskReferenceFind.getName() + " "
+							+ TransformationMasksPreferencesMessages.NON_EDITABLE_MASK.message());
+				}
 			}
 		}
 
@@ -149,7 +165,7 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 		descriptionGroup.setText(TransformationMasksPreferencesMessages.MASK_DESCRIPTION.message());
 		descriptionGroup.setLayout(new FormLayout());
 
-		this.descriptionText = new Text(descriptionGroup, SWT.NONE);
+		this.descriptionText = new Text(descriptionGroup, SWT.BORDER | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);
 		Label transformationListLabel = new Label(composite, SWT.NONE);
 		transformationListLabel.setText(TransformationMasksPreferencesMessages.TRANSFORMATIONS_LABEL.message());
 
@@ -166,6 +182,11 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 		this.transformationsTreeViewer.setInput(TransformationDataSourceManager.INSTANCE);
 
 		// Layout configuration
+		FormDataBuilder.on(preferredMaskLabel).vertical().left();
+		FormDataBuilder.on(this.currentPreferredMaskLabel).vertical().left(preferredMaskLabel).right();
+
+		FormDataBuilder.on(preferredMaskComposite).top().horizontal();
+
 		FormDataBuilder.on(selectionLabel).top().horizontal();
 		FormDataBuilder.on(this.transformationMaskCombo).top(selectionLabel).horizontal();
 		FormDataBuilder.on(creationButton).top(this.transformationMaskCombo).left();
@@ -173,13 +194,13 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 		FormDataBuilder.on(importButton).top(this.transformationMaskCombo).left(this.deleteButton);
 		FormDataBuilder.on(exportButton).top(this.transformationMaskCombo).left(importButton);
 
-		FormDataBuilder.on(this.editableStateLabel).right().bottom(descriptionGroup).height(80).width(80);
+		FormDataBuilder.on(this.editableStateLabel).right().bottom(descriptionGroup).height(70).width(70);
 
-		FormDataBuilder.on(maskSelectionComposite).top().left().right(editableStateLabel);
+		FormDataBuilder.on(maskSelectionComposite).top(preferredMaskComposite, 0).left().right(editableStateLabel);
 
-		FormDataBuilder.on(this.descriptionText).top(7).horizontal()
+		FormDataBuilder.on(this.descriptionText).vertical().horizontal();
+		FormDataBuilder.on(descriptionGroup).horizontal().top(maskSelectionComposite)
 				.height(TransformationMasksPreferencesPage.DESCRIPTION_SIZE);
-		FormDataBuilder.on(descriptionGroup).horizontal().top(maskSelectionComposite);
 
 		FormDataBuilder.on(transformationListLabel).top(descriptionGroup);
 
@@ -273,12 +294,17 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 	 *            the transformation mask currently chosen.
 	 */
 	protected void refreshTransformationMaskPreferencePage(TransformationMaskReference transformationMaskReference) {
+		// Update the preferred mask
+		this.currentPreferredMaskLabel.setText(TransformationMaskDataSourceManager.INSTANCE
+				.getPreferredTransformationMask().getName());
+
 		// Find the transformation mask index in the combo box, doesn't add the
 		// mask if not found
 		int indexMaskName = 0;
 		String[] maskNames = this.transformationMaskCombo.getItems();
 		while (indexMaskName < maskNames.length - 1
-				&& !transformationMaskReference.getName().equals(maskNames[indexMaskName])) {
+				&& !transformationMaskReference.getName().equals(
+						maskNames[indexMaskName].replace(" (non editable mask)", ""))) {
 			indexMaskName++;
 		}
 		// Update the combo box value
@@ -325,18 +351,14 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 
 	@Override
 	protected void performApply() {
-		/* Update the description */
-		TransformationMaskReference transformationMaskReference = TransformationMaskDataSourceManager.INSTANCE
-				.getTransformationMaskById(TransformationMasksPreferencesPage.this.transformationMaskCombo.getText());
-		if (transformationMaskReference instanceof EditableTransformationMaskReference) {
-			((EditableTransformationMaskReference) transformationMaskReference).setDescription(this.descriptionText
-					.getText());
-		}
-		/* Update the enabled/disables transformations */
+		/* Save the changes in transformation enabled/disabled */
 		this.checkListener.apply();
 		/* Update the preferred mask */
 		this.getPreferenceStore().putValue(TransformationMaskDataSourceManager.PREFERED_MASK_STORE_KEY,
 				this.transformationMaskCombo.getText());
+		TransformationMaskReference transformationMaskReference = TransformationMaskDataSourceManager.INSTANCE
+				.getTransformationMaskById(TransformationMasksPreferencesPage.this.transformationMaskCombo.getText());
+		this.refreshTransformationMaskPreferencePage(transformationMaskReference);
 	};
 
 	@Override

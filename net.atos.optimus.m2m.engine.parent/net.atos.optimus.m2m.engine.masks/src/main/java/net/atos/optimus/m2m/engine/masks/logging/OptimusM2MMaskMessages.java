@@ -46,9 +46,9 @@ public enum OptimusM2MMaskMessages implements OptimusMessage {
 
 	// Message related to Specified by User Transformation Mask
 	UM01(Level.INFO), UM02(Level.WARNING), UM03(Level.INFO), UM04(Level.INFO), UM05(Level.WARNING), UM06(Level.WARNING), UM07(
-			Level.SEVERE), UM08(Level.SEVERE), UM09(Level.INFO), UM10(Level.WARNING), UM11(Level.WARNING), UM12(
-			Level.INFO), UM13(Level.WARNING), UM14(Level.WARNING), UM15(Level.WARNING), UM16(Level.WARNING), UM17(
-			Level.FINE), UM18(Level.FINE), UM19(Level.INFO), UM20(Level.INFO);
+			Level.SEVERE), UM08(Level.SEVERE), UM09(Level.FINE), UM10(Level.WARNING), UM11(Level.WARNING), UM12(
+			Level.FINE), UM13(Level.WARNING), UM14(Level.WARNING), UM15(Level.WARNING), UM16(Level.WARNING), UM17(
+			Level.FINE), UM18(Level.FINE), UM19(Level.FINE), UM20(Level.FINE);
 
 	/**
 	 * Message bundle

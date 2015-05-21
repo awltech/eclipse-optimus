@@ -75,7 +75,6 @@ public class TransformationMaskDeletionDialog extends Dialog {
 		Label warningPreferredMask = new Label(mainContainer, SWT.ICON_WARNING);
 		warningPreferredMask.setText(TransformationMasksDialogMessages.PREFERRED_MASK_WARNING.message(TransformationMaskDataSourceManager.DEFAULT_MASK_NAME));
 		
-		
 		FormDataBuilder.on(deletionLabel).top().horizontal();
 		FormDataBuilder.on(warningImage).top(deletionLabel).left().right(warningPreferredMask);
 		FormDataBuilder.on(warningPreferredMask).top(deletionLabel).right();

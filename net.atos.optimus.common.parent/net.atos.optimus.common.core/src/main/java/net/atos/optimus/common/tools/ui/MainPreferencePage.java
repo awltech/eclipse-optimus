@@ -41,7 +41,6 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.IWorkbench;
@@ -97,13 +96,10 @@ public class MainPreferencePage extends PreferencePage implements IWorkbenchPref
 		Link moreInfo1 = new Link(background, SWT.RIGHT);
 		Link moreInfo2 = new Link(background, SWT.RIGHT);
 
-		Group levelGroup = new Group(background, SWT.NONE);
-		levelGroup.setLayout(new FormLayout());
-		
-		Label labelLog = new Label(levelGroup, SWT.NONE);
+		Label labelLog = new Label(background, SWT.NONE);
 		labelLog.setText(MainPreferencePageMessages.LOGGER_LEVEL.value());
-		final Combo comboLog = new Combo(levelGroup, SWT.READ_ONLY);
-		for (Level level : levels){
+		final Combo comboLog = new Combo(background, SWT.READ_ONLY);
+		for (Level level : levels) {
 			comboLog.add(level.getName());
 		}
 		comboLog.select(levels.indexOf(OptimusLogger.logger.getLevel()));
@@ -119,15 +115,14 @@ public class MainPreferencePage extends PreferencePage implements IWorkbenchPref
 		moreInfo2.addSelectionListener(new OpenLinkActionSelectionAdapter());
 
 		FormDataBuilder.on(title).top().left().right();
-		FormDataBuilder.on(description).top(title).left().right().bottom(levelGroup);
+		FormDataBuilder.on(description).top(title).left().right();
 		FormDataBuilder.on(image).left().bottom().width(140).height(55);
 		FormDataBuilder.on(moreInfo).bottom(moreInfo1).right();
 		FormDataBuilder.on(moreInfo1).bottom(moreInfo2).right();
 		FormDataBuilder.on(moreInfo2).bottom().right();
-		
-		FormDataBuilder.on(levelGroup).bottom(moreInfo).right();
-		FormDataBuilder.on(labelLog).left().top(15).bottom().right(comboLog);
-		FormDataBuilder.on(comboLog).top().width(120).bottom().right();
+
+		FormDataBuilder.on(labelLog).left().bottom(image,-35);
+		FormDataBuilder.on(comboLog).left(labelLog).width(120).bottom(image,-30);
 
 		// Add a listener to save the user selection
 		comboLog.addSelectionListener(new SelectionAdapter() {
