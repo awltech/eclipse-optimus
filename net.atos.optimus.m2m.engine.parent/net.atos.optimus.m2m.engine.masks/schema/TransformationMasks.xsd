@@ -12,6 +12,8 @@
 	<xsd:complexType name="transformationMasks">
 	
 		<xsd:sequence minOccurs="1" maxOccurs="1">
+		
+			<xsd:element name="name" type="xsd:string"/>
 	
 			<xsd:element name="description" type="xsd:string"/>
 			

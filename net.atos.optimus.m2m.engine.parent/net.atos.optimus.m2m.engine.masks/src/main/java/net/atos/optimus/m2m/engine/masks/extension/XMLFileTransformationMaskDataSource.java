@@ -28,6 +28,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -63,7 +65,7 @@ public class XMLFileTransformationMaskDataSource extends TransformationMaskDataS
 	public static final String DESCRIPTION = "Optimus User Transformation Mask";
 
 	/** The map holding the transformation mask preference */
-	protected Map<String, TransformationMaskReference> transformationMaskReferences;
+	protected Map<String, XMLTransformationMaskReference> transformationMaskReferences;
 
 	/** The schema validator of transformation mask */
 	public static final Validator validatorXMLTransformationMask;
@@ -96,7 +98,7 @@ public class XMLFileTransformationMaskDataSource extends TransformationMaskDataS
 	 */
 	public XMLFileTransformationMaskDataSource() {
 		super(XMLFileTransformationMaskDataSource.DESCRIPTION);
-		this.transformationMaskReferences = new HashMap<String, TransformationMaskReference>();
+		this.transformationMaskReferences = new HashMap<String, XMLTransformationMaskReference>();
 	}
 
 	/**
@@ -109,7 +111,8 @@ public class XMLFileTransformationMaskDataSource extends TransformationMaskDataS
 			// Check if XML transformation mask files still exist
 			Set<String> transformationToRemove = new HashSet<String>();
 			for (String transformationName : this.transformationMaskReferences.keySet()) {
-				File transformationMaskFile = UserTransformationMaskTool.giveAssociatedXMLFile(transformationName);
+				File transformationMaskFile = this.transformationMaskReferences.get(transformationName)
+						.getTransformationMaskFile();
 				if (!transformationMaskFile.exists()) {
 					OptimusM2MMaskMessages.UM09.log(transformationMaskFile.getPath());
 					transformationToRemove.add(transformationName);
@@ -126,31 +129,28 @@ public class XMLFileTransformationMaskDataSource extends TransformationMaskDataS
 					}
 				}
 			}
-			for(String transformationName : transformationToRemove){
+			for (String transformationName : transformationToRemove) {
 				this.transformationMaskReferences.remove(transformationName);
 			}
 
 			// Check if new XML transformation mask files exists
 			for (File transformationMaskFile : transformationMaskDirectory.listFiles()) {
 				if (transformationMaskFile.getName().endsWith(".xml")) {
-					String transformationMaskName = UserTransformationMaskTool
-							.giveAssociatedMaskName(transformationMaskFile);
-					if (!transformationMaskReferences.containsKey(transformationMaskName)) {
-						Source source = new StreamSource(transformationMaskFile);
-						try {
-							XMLFileTransformationMaskDataSource.validatorXMLTransformationMask.validate(source);
-							TransformationMaskReference transformationMaskReference = new XMLTransformationMaskReference(
-									transformationMaskFile);
-							OptimusM2MMaskMessages.UM12.log(transformationMaskName, transformationMaskFile.getPath());
-							this.transformationMaskReferences.put(transformationMaskName, transformationMaskReference);
-						} catch (IOException e) {
-							OptimusM2MMaskMessages.UM13.log(transformationMaskFile.getPath(), e.getMessage());
-						} catch (SAXException e) {
-							OptimusM2MMaskMessages.UM14.log(transformationMaskFile.getPath(), e.getMessage());
-						}
+					Source source = new StreamSource(transformationMaskFile);
+					try {
+						XMLFileTransformationMaskDataSource.validatorXMLTransformationMask.validate(source);
+						XMLTransformationMaskReference transformationMaskReference = new XMLTransformationMaskReference(
+								transformationMaskFile);
+						OptimusM2MMaskMessages.UM12.log(transformationMaskReference.getName(), transformationMaskFile.getPath());
+						this.transformationMaskReferences.put(transformationMaskReference.getName(), transformationMaskReference);
+					} catch (IOException e) {
+						OptimusM2MMaskMessages.UM13.log(transformationMaskFile.getPath(), e.getMessage());
+					} catch (SAXException e) {
+						OptimusM2MMaskMessages.UM14.log(transformationMaskFile.getPath(), e.getMessage());
 					}
 				}
 			}
+
 		} else {
 			this.transformationMaskReferences.clear();
 		}
@@ -165,7 +165,11 @@ public class XMLFileTransformationMaskDataSource extends TransformationMaskDataS
 	@Override
 	public Collection<TransformationMaskReference> getAllMasks() {
 		this.loadTransformationUserMasks();
-		return Collections.unmodifiableCollection(this.transformationMaskReferences.values());
+		List<TransformationMaskReference> transformationMaskReferencesResult = new LinkedList<TransformationMaskReference>();
+		for(TransformationMaskReference transformationMaskReference : this.transformationMaskReferences.values()){
+			transformationMaskReferencesResult.add(transformationMaskReference);
+		}
+		return Collections.unmodifiableCollection(transformationMaskReferencesResult);
 	}
 
 }

@@ -31,7 +31,7 @@ import net.atos.optimus.m2m.engine.core.masks.TransformationMaskReference;
  *
  */
 
-public class EditableTransformationMaskReference extends TransformationMaskReference {
+public abstract class EditableTransformationMaskReference extends TransformationMaskReference {
 
 	/**
 	 * Create a new transformation mask reference
@@ -49,6 +49,16 @@ public class EditableTransformationMaskReference extends TransformationMaskRefer
 	}
 
 	/**
+	 * Set a new name to the transformation mask reference
+	 * 
+	 * @param newName
+	 *            the new name to the transformation mask reference.
+	 */
+	public void setName(String newName) {
+		this.name = newName;
+	}
+
+	/**
 	 * Set a new description to the transformation mask reference
 	 * 
 	 * @param newDescription
@@ -57,5 +67,11 @@ public class EditableTransformationMaskReference extends TransformationMaskRefer
 	public void setDescription(String newDescription) {
 		this.description = newDescription;
 	}
+
+	/**
+	 * Suppress the current transformation mask reference
+	 * 
+	 */
+	public abstract void suppressTransformationMaskReference();
 
 }

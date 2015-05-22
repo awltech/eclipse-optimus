@@ -46,8 +46,8 @@ import org.xml.sax.SAXException;
 
 public class XMLTransformationMaskReference extends EditableTransformationMaskReference {
 
-	/** The file of the transformation mask filename */
-	protected File transformationMaskFilename;
+	/** The file of the transformation mask */
+	protected File transformationMaskFile;
 
 	/**
 	 * The date of the last modification of the file associated to the
@@ -66,9 +66,8 @@ public class XMLTransformationMaskReference extends EditableTransformationMaskRe
 	 *            the file containing the transformation mask.
 	 */
 	public XMLTransformationMaskReference(File transformationMaskFilename) {
-		super(UserTransformationMaskTool.giveAssociatedMaskName(transformationMaskFilename), "",
-				new XMLTransformationMask(transformationMaskFilename));
-		this.transformationMaskFilename = transformationMaskFilename;
+		super("", "", new XMLTransformationMask(transformationMaskFilename));
+		this.transformationMaskFile = transformationMaskFilename;
 		this.lastModificationDate = -1;
 		((XMLTransformationMask) this.implementation).setAssociatedTransformationMaskReference(this);
 		this.loadUserTransformationMaskReference();
@@ -79,22 +78,22 @@ public class XMLTransformationMaskReference extends EditableTransformationMaskRe
 	 * 
 	 */
 	protected void loadUserTransformationMaskReference() {
-		if (this.transformationMaskFilename.exists()) {
-			if (this.lastModificationDate != this.transformationMaskFilename.lastModified()) {
-				Source source = new StreamSource(this.transformationMaskFilename);
+		if (this.transformationMaskFile.exists()) {
+			if (this.lastModificationDate != this.transformationMaskFile.lastModified()) {
+				Source source = new StreamSource(this.transformationMaskFile);
 				try {
 					XMLFileTransformationMaskDataSource.validatorXMLTransformationMask.validate(source);
 					this.updateTransformationMaskReference();
-					this.lastModificationDate = transformationMaskFilename.lastModified();
+					this.lastModificationDate = transformationMaskFile.lastModified();
 				} catch (IOException e) {
-					OptimusM2MMaskMessages.UM15.message(this.transformationMaskFilename.getPath(), e.getMessage());
-					UserTransformationMaskTool.createUserTransformationMask(this.transformationMaskFilename, this);
+					OptimusM2MMaskMessages.UM15.message(this.transformationMaskFile.getPath(), e.getMessage());
+					UserTransformationMaskTool.createUserTransformationMask(this.transformationMaskFile, this);
 				} catch (SAXException e) {
-					OptimusM2MMaskMessages.UM16.message(this.transformationMaskFilename.getPath(), e.getMessage());
-					UserTransformationMaskTool.createUserTransformationMask(this.transformationMaskFilename, this);
+					OptimusM2MMaskMessages.UM16.message(this.transformationMaskFile.getPath(), e.getMessage());
+					UserTransformationMaskTool.createUserTransformationMask(this.transformationMaskFile, this);
 				} catch (JDOMException e) {
-					OptimusM2MMaskMessages.UM15.message(this.transformationMaskFilename.getPath(), e.getMessage());
-					UserTransformationMaskTool.createUserTransformationMask(this.transformationMaskFilename, this);
+					OptimusM2MMaskMessages.UM15.message(this.transformationMaskFile.getPath(), e.getMessage());
+					UserTransformationMaskTool.createUserTransformationMask(this.transformationMaskFile, this);
 				}
 			}
 		}
@@ -106,17 +105,40 @@ public class XMLTransformationMaskReference extends EditableTransformationMaskRe
 	 */
 	protected void updateTransformationMaskReference() throws JDOMException, IOException {
 		SAXBuilder sxb = new SAXBuilder();
-		Document document = sxb.build(this.transformationMaskFilename);
+		Document document = sxb.build(this.transformationMaskFile);
 		Element transformationMask = document.getRootElement();
+		Element nameElement = transformationMask.getChild("name");
+		this.setName(nameElement.getValue());
 		Element descriptionElement = transformationMask.getChild("description");
 		this.setDescription(descriptionElement.getValue());
-		OptimusM2MMaskMessages.UM19.log(this.transformationMaskFilename.getName());
+		OptimusM2MMaskMessages.UM19.log(this.transformationMaskFile.getName());
+	}
+	
+	public File getTransformationMaskFile() {
+		return this.transformationMaskFile;
+	}
+	
+	@Override
+	public String getName() {
+		this.loadUserTransformationMaskReference();
+		return super.getName();
 	}
 
 	@Override
 	public String getDescription() {
 		this.loadUserTransformationMaskReference();
 		return super.getDescription();
+	}
+
+	@Override
+	public void suppressTransformationMaskReference() {
+		File transformationOldMaskFile = new File(this.transformationMaskFile + ".old");
+		if (transformationOldMaskFile.exists()) {
+			transformationOldMaskFile.delete();
+		}
+		if (this.transformationMaskFile.exists()) {
+			this.transformationMaskFile.renameTo(transformationOldMaskFile);
+		}
 	}
 
 }

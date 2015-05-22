@@ -24,6 +24,7 @@ package net.atos.optimus.m2m.engine.masks;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.UUID;
 
 import net.atos.optimus.m2m.engine.core.masks.ITransformationMask;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskReference;
@@ -54,38 +55,13 @@ public class UserTransformationMaskTool {
 			+ "/.metadata/.plugins/" + Activator.PLUGIN_ID + "/";
 
 	/**
-	 * Give the file associated to the mask with the specified name
+	 * Generate a filename for the mask with the specified name
 	 * 
-	 * @param maskName
-	 *            the name of the mask.
-	 * @return the file associated to the mask with the specified name.
+	 * @return the generated filename for the mask with the specified name.
 	 */
-	public static File giveAssociatedXMLFile(String maskName) {
-		return new File(UserTransformationMaskTool.TRANSFORMATION_MASK_DIRECTORY + maskName + ".xml");
-	}
-
-	/**
-	 * Give the old file associated to the mask with the specified name
-	 * 
-	 * @param maskName
-	 *            the name of the mask.
-	 * @return the old file associated to the mask with the specified name.
-	 */
-	public static File giveAssociatedOldFile(String maskName) {
-		return new File(UserTransformationMaskTool.TRANSFORMATION_MASK_DIRECTORY + maskName + ".old");
-	}
-
-	/**
-	 * Give the mask name associated to the transformation file
-	 * 
-	 * @param transformationMaskFile
-	 *            the transformation mask file.
-	 * @return the mask name associated to the transformation file.
-	 */
-	public static String giveAssociatedMaskName(File transformationMaskFile) {
-		String maskName = transformationMaskFile.getName();
-		maskName = maskName.substring(0, maskName.lastIndexOf(".xml"));
-		return maskName;
+	public static String generateXMLFileName() {
+		return UserTransformationMaskTool.TRANSFORMATION_MASK_DIRECTORY + UUID.randomUUID().getMostSignificantBits()
+				+ ".xml";
 	}
 
 	/**
@@ -116,6 +92,10 @@ public class UserTransformationMaskTool {
 
 		// Creating the XML document
 		Document document = new Document(transformationMaskRoot);
+
+		Element nameElement = new Element("name");
+		nameElement.setText(transformationMaskReference.getName());
+		transformationMaskRoot.addContent(nameElement);
 
 		Element descriptionElement = new Element("description");
 		descriptionElement.setText(transformationMaskReference.getDescription());
@@ -166,19 +146,17 @@ public class UserTransformationMaskTool {
 	 *            the extended transformation mask reference.
 	 */
 	public static void createUserTransformationMask(TransformationMaskReference extendedTransformationMaskReference) {
-		String maskName = extendedTransformationMaskReference.getName();
 		UserTransformationMaskTool.configureFileSystem();
-		File transformationMaskFile = UserTransformationMaskTool.giveAssociatedXMLFile(maskName);
-		if (transformationMaskFile.exists()) {
-			OptimusM2MMaskMessages.UM06.log(maskName);
-		} else {
-			Document document = UserTransformationMaskTool
-					.createXMLDocumentWithMaskReference(extendedTransformationMaskReference);
-			UserTransformationMaskTool.writeTransformationMask(transformationMaskFile, document);
-			OptimusM2MMaskMessages.UM04.log(maskName);
+		File transformationMaskFile = new File(UserTransformationMaskTool.generateXMLFileName());
+		while (transformationMaskFile.exists()) {
+			transformationMaskFile = new File(UserTransformationMaskTool.generateXMLFileName());
 		}
+		Document document = UserTransformationMaskTool
+				.createXMLDocumentWithMaskReference(extendedTransformationMaskReference);
+		UserTransformationMaskTool.writeTransformationMask(transformationMaskFile, document);
+		OptimusM2MMaskMessages.UM04.log(extendedTransformationMaskReference.getName());
 	}
-
+	
 	/**
 	 * Create an XML file containing a transformation mask
 	 * 
@@ -193,16 +171,7 @@ public class UserTransformationMaskTool {
 		Document document = UserTransformationMaskTool
 				.createXMLDocumentWithMaskReference(newTransformationMaskReference);
 		UserTransformationMaskTool.writeTransformationMask(transformationMaskFile, document);
-		OptimusM2MMaskMessages.UM20.log(transformationMaskFile.getName());
-	}
-
-	public static void suppressUserTransformationMask(String maskName) {
-		File transformationMaskFile = UserTransformationMaskTool.giveAssociatedXMLFile(maskName);
-		File transformationOldMaskFile = UserTransformationMaskTool.giveAssociatedOldFile(maskName);
-		if (transformationOldMaskFile.exists()) {
-			transformationOldMaskFile.delete();
-		}
-		transformationMaskFile.renameTo(transformationOldMaskFile);
+		OptimusM2MMaskMessages.UM20.log(newTransformationMaskReference.getName());
 	}
 
 }

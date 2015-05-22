@@ -118,7 +118,7 @@ public class TransformationMasksPreferencesImex {
 		String fullPath = newPathName + File.separator + newFileName;
 		File importMaskFile = new File(fullPath);
 
-		File transformationMaskFile = UserTransformationMaskTool.giveAssociatedXMLFile(newFileName.replace(".xml", ""));
+		File transformationMaskFile = new File(UserTransformationMaskTool.generateXMLFileName());
 
 		UserTransformationMaskTool.configureFileSystem();
 		FileInputStream sourceFile;

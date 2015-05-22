@@ -223,7 +223,6 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				String maskName = TransformationMasksPreferencesImex.importTransformationMask();
-				TransformationMasksPreferencesPage.this.transformationMaskCombo.add(maskName);
 				TransformationMaskReference transformationMaskReference = TransformationMaskDataSourceManager.INSTANCE
 						.getTransformationMaskById(maskName);
 				TransformationMasksPreferencesPage.this

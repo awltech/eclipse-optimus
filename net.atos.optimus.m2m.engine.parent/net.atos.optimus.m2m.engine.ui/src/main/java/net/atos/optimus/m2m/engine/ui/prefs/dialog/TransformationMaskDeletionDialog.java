@@ -23,7 +23,8 @@ package net.atos.optimus.m2m.engine.ui.prefs.dialog;
 
 import net.atos.optimus.common.tools.swt.FormDataBuilder;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskDataSourceManager;
-import net.atos.optimus.m2m.engine.masks.UserTransformationMaskTool;
+import net.atos.optimus.m2m.engine.core.masks.TransformationMaskReference;
+import net.atos.optimus.m2m.engine.masks.EditableTransformationMaskReference;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
@@ -44,7 +45,7 @@ import org.eclipse.swt.widgets.Shell;
  */
 
 public class TransformationMaskDeletionDialog extends Dialog {
-	
+
 	/** The name of the mask to delete */
 	protected String maskName;
 
@@ -71,27 +72,31 @@ public class TransformationMaskDeletionDialog extends Dialog {
 
 		Label warningImage = new Label(mainContainer, SWT.ICON_WARNING);
 		warningImage.setImage(Display.getDefault().getSystemImage(SWT.ICON_WARNING));
-		
+
 		Label warningPreferredMask = new Label(mainContainer, SWT.ICON_WARNING);
-		warningPreferredMask.setText(TransformationMasksDialogMessages.PREFERRED_MASK_WARNING.message(TransformationMaskDataSourceManager.DEFAULT_MASK_NAME));
-		
+		warningPreferredMask.setText(TransformationMasksDialogMessages.PREFERRED_MASK_WARNING
+				.message(TransformationMaskDataSourceManager.DEFAULT_MASK_NAME));
+
 		FormDataBuilder.on(deletionLabel).top().horizontal();
 		FormDataBuilder.on(warningImage).top(deletionLabel).left().right(warningPreferredMask);
 		FormDataBuilder.on(warningPreferredMask).top(deletionLabel).right();
-		
+
 		// Show the warning only if necessary
-		if (!maskName.equals(TransformationMaskDataSourceManager.INSTANCE.getPreferredTransformationMask()
-				.getName())) {
+		if (!maskName.equals(TransformationMaskDataSourceManager.INSTANCE.getPreferredTransformationMask().getName())) {
 			warningImage.setVisible(false);
 			warningPreferredMask.setVisible(false);
 		}
-		
+
 		return mainContainer;
 	}
-	
+
 	@Override
 	protected void okPressed() {
-		UserTransformationMaskTool.suppressUserTransformationMask(maskName);
+		TransformationMaskReference transformationMaskReference = TransformationMaskDataSourceManager.INSTANCE
+				.getTransformationMaskById(this.maskName);
+		if (transformationMaskReference instanceof EditableTransformationMaskReference) {
+			((EditableTransformationMaskReference) transformationMaskReference).suppressTransformationMaskReference();
+		}
 		super.okPressed();
 	}
 
