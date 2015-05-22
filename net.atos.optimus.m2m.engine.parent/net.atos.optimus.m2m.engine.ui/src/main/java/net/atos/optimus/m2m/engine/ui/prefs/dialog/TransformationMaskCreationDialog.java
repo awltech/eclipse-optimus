@@ -64,6 +64,9 @@ public class TransformationMaskCreationDialog extends Dialog {
 	/** The combo viewer holding transformation masks */
 	protected ComboViewer transformationMasksComboViewer;
 
+	/** The new mask name */
+	protected String newMaskName;
+
 	/**
 	 * Constructor
 	 * 
@@ -126,13 +129,13 @@ public class TransformationMaskCreationDialog extends Dialog {
 
 	@Override
 	protected void okPressed() {
-		String newMaskName = this.creationText.getText();
+		this.newMaskName = this.creationText.getText();
 		String maskDescription = this.descriptionText.getText();
 		IStructuredSelection selection = (IStructuredSelection) this.transformationMasksComboViewer.getSelection();
 		TransformationMaskReference extendedTransformationMask = (TransformationMaskReference) selection
 				.getFirstElement();
 		ITransformationMask maskImplementation = extendedTransformationMask.getImplementation();
-		TransformationMaskReference newTransformationMask = new TransformationMaskReference(newMaskName,
+		TransformationMaskReference newTransformationMask = new TransformationMaskReference(this.newMaskName,
 				maskDescription, maskImplementation);
 		UserTransformationMaskTool.createUserTransformationMask(newTransformationMask);
 		super.okPressed();
@@ -147,6 +150,15 @@ public class TransformationMaskCreationDialog extends Dialog {
 	@Override
 	protected Point getInitialSize() {
 		return new Point(400, 250);
+	}
+
+	/**
+	 * The name of the new created mask
+	 * 
+	 * @return the name of the new created mask.
+	 */
+	public String getNewMaskName() {
+		return this.newMaskName;
 	}
 
 }

@@ -21,7 +21,10 @@
  */
 package net.atos.optimus.m2m.engine.ui.prefs;
 
+import java.io.IOException;
+
 import net.atos.optimus.common.tools.swt.FormDataBuilder;
+import net.atos.optimus.m2m.engine.core.masks.ITransformationMask;
 import net.atos.optimus.m2m.engine.core.masks.TemporaryTransformationMask;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskDataSourceManager;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskReference;
@@ -33,11 +36,11 @@ import net.atos.optimus.m2m.engine.ui.prefs.dialog.TransformationMaskDeletionDia
 import net.atos.optimus.m2m.engine.ui.prefs.masks.list.TransformationMasksCheckProvider;
 import net.atos.optimus.m2m.engine.ui.prefs.masks.list.TransformationMasksContentsProvider;
 import net.atos.optimus.m2m.engine.ui.prefs.masks.list.TransformationMasksLabelProvider;
-import net.atos.optimus.m2m.engine.ui.prefs.transformations.tree.TransformationsTreeCheckListener;
 import net.atos.optimus.m2m.engine.ui.prefs.transformations.tree.TransformationsCheckProvider;
 import net.atos.optimus.m2m.engine.ui.prefs.transformations.tree.TransformationsContentsProvider;
-import net.atos.optimus.m2m.engine.ui.prefs.transformations.tree.TransformationsTreeDoubleClickListener;
 import net.atos.optimus.m2m.engine.ui.prefs.transformations.tree.TransformationsLabelProvider;
+import net.atos.optimus.m2m.engine.ui.prefs.transformations.tree.TransformationsTreeCheckListener;
+import net.atos.optimus.m2m.engine.ui.prefs.transformations.tree.TransformationsTreeDoubleClickListener;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.preference.PreferencePage;
@@ -65,6 +68,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.xml.sax.SAXException;
 
 /**
  * Preference Page, for the transformation mask configuration
@@ -117,9 +121,9 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 	protected Control createContents(Composite parent) {
 		// Find the preferred transformation reference and initialize the
 		// temporary transformation mask
-		TransformationMaskReference transformationMaskReference = TransformationMaskDataSourceManager.INSTANCE
+		TransformationMaskReference preferredTransformationMask = TransformationMaskDataSourceManager.INSTANCE
 				.getPreferredTransformationMask();
-		this.tmpTransformationMask = new TemporaryTransformationMask(transformationMaskReference.getImplementation());
+		this.tmpTransformationMask = new TemporaryTransformationMask(preferredTransformationMask.getImplementation());
 
 		// SWT controls creation
 		Composite composite = new Composite(parent, SWT.NONE);
@@ -227,16 +231,35 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 			public void widgetSelected(SelectionEvent e) {
 
 				TransformationMasksPreferencesImex.exportTransformationMask(TransformationMasksPreferencesPage.this
-						.getSelectedTransformationMask());
+						.getSelectedTransformationMaskReference());
 			}
 		});
 
 		importButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				TransformationMasksPreferencesImex.importTransformationMask();
-				TransformationMasksPreferencesPage.this.refreshTransformationMaskPreferencePage();
-
+				try {
+					String maskName = TransformationMasksPreferencesImex.importTransformationMask();
+					TransformationMasksPreferencesPage.this.refreshTransformationMaskPreferencePage();
+					int index = 0;
+					TransformationMaskReference transformationMaskReference;
+					do {
+						transformationMaskReference = (TransformationMaskReference) TransformationMasksPreferencesPage.this.transformationMasksTableViewer
+								.getElementAt(index);
+						index++;
+					} while (transformationMaskReference != null
+							&& !maskName.equals(transformationMaskReference.getName()));
+					if (transformationMaskReference != null) {
+						TransformationMasksPreferencesPage.this.transformationMasksTableViewer
+								.setSelection(new StructuredSelection(transformationMaskReference));
+					}
+				} catch (SAXException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 
@@ -245,7 +268,7 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				TransformationMaskReference transformationMaskReference = TransformationMasksPreferencesPage.this
-						.getSelectedTransformationMask();
+						.getSelectedTransformationMaskReference();
 				if (transformationMaskReference instanceof EditableTransformationMaskReference) {
 					Dialog transformationMaskDeletionDialog = new TransformationMaskDeletionDialog(getShell(),
 							(EditableTransformationMaskReference) transformationMaskReference);
@@ -271,6 +294,19 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 						getShell());
 				if (transformationMaskCreationDialog.open() == Window.OK) {
 					TransformationMasksPreferencesPage.this.refreshTransformationMaskPreferencePage();
+					String maskName = transformationMaskCreationDialog.getNewMaskName();
+					int index = 0;
+					TransformationMaskReference transformationMaskReference;
+					do {
+						transformationMaskReference = (TransformationMaskReference) TransformationMasksPreferencesPage.this.transformationMasksTableViewer
+								.getElementAt(index);
+						index++;
+					} while (transformationMaskReference != null
+							&& !maskName.equals(transformationMaskReference.getName()));
+					if (transformationMaskReference != null) {
+						TransformationMasksPreferencesPage.this.transformationMasksTableViewer
+								.setSelection(new StructuredSelection(transformationMaskReference));
+					}
 				}
 
 			}
@@ -281,7 +317,7 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 		});
 
 		// Refresh dynamic contents
-		this.refreshTransformationMaskPreferencePage(transformationMaskReference);
+		this.refreshTransformationMaskPreferencePage(preferredTransformationMask);
 
 		return composite;
 	}
@@ -292,7 +328,7 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 	 * 
 	 */
 	protected void refreshTransformationMaskPreferencePage() {
-		TransformationMaskReference transformationMaskReference = this.getSelectedTransformationMask();
+		TransformationMaskReference transformationMaskReference = this.getSelectedTransformationMaskReference();
 
 		// Update the preferred mask
 		this.currentPreferredMaskLabel.setText(TransformationMaskDataSourceManager.INSTANCE
@@ -330,7 +366,7 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 
 	@Override
 	protected void performDefaults() {
-		this.refreshTransformationMaskPreferencePage(this.getSelectedTransformationMask());
+		this.refreshTransformationMaskPreferencePage(this.getSelectedTransformationMaskReference());
 	}
 
 	@Override
@@ -341,6 +377,12 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 
 	@Override
 	protected void performApply() {
+		TransformationMaskReference transformationMaskReference = this.getSelectedTransformationMaskReference();
+		ITransformationMask mask = this.tmpTransformationMask.getOriginalTransformationMask();
+		if (transformationMaskReference instanceof EditableTransformationMaskReference) {
+			((EditableTransformationMaskReference) transformationMaskReference).setDescription(this.descriptionText
+					.getText());
+		}
 		/* Save the changes in transformation enabled/disabled */
 		this.checkListener.apply();
 	};
@@ -352,12 +394,13 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 	}
 
 	/**
-	 * Get the selected transformation mask in the transformation mask table
+	 * Get the selected transformation mask reference in the transformation mask
+	 * table
 	 * 
-	 * @return the selected transformation mask in the transformation mask
-	 *         table.
+	 * @return the selected transformation mask reference in the transformation
+	 *         mask table.
 	 */
-	private TransformationMaskReference getSelectedTransformationMask() {
+	private TransformationMaskReference getSelectedTransformationMaskReference() {
 		IStructuredSelection selection = (IStructuredSelection) this.transformationMasksTableViewer.getSelection();
 		if (!selection.isEmpty() && selection.getFirstElement() instanceof TransformationMaskReference) {
 			return (TransformationMaskReference) selection.getFirstElement();

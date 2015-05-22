@@ -142,7 +142,9 @@ public class XMLFileTransformationMaskDataSource extends TransformationMaskDataS
 						XMLTransformationMaskReference transformationMaskReference = new XMLTransformationMaskReference(
 								transformationMaskFile);
 						OptimusM2MMaskMessages.UM12.log(transformationMaskReference.getName(), transformationMaskFile.getPath());
-						this.transformationMaskReferences.put(transformationMaskReference.getName(), transformationMaskReference);
+						if(!this.transformationMaskReferences.containsKey(transformationMaskReference.getName())){
+							this.transformationMaskReferences.put(transformationMaskReference.getName(), transformationMaskReference);
+						}
 					} catch (IOException e) {
 						OptimusM2MMaskMessages.UM13.log(transformationMaskFile.getPath(), e.getMessage());
 					} catch (SAXException e) {

@@ -40,7 +40,7 @@ public class TransformationMasksCheckProvider implements ICheckStateProvider {
 	@Override
 	public boolean isChecked(Object element) {
 		if (element instanceof TransformationMaskReference) {
-			return element == TransformationMaskDataSourceManager.INSTANCE.getPreferredTransformationMask();
+			return element.equals(TransformationMaskDataSourceManager.INSTANCE.getPreferredTransformationMask());
 		}
 		return false;
 	}

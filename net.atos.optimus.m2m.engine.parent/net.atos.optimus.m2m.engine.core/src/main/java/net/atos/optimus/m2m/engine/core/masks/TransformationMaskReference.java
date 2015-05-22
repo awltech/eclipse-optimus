@@ -82,5 +82,13 @@ public class TransformationMaskReference {
 	public String getDescription() {
 		return description;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof TransformationMaskReference){
+			return this.getName().equals(((TransformationMaskReference)obj).getName());
+		}
+		return false;
+	}
 
 }

@@ -83,8 +83,8 @@ public class TransformationMaskDeletionDialog extends Dialog {
 		FormDataBuilder.on(warningPreferredMask).top(deletionLabel).right();
 
 		// Show the warning only if necessary
-		if (this.transformationMaskReference == TransformationMaskDataSourceManager.INSTANCE
-				.getPreferredTransformationMask()) {
+		if (!this.transformationMaskReference.equals(TransformationMaskDataSourceManager.INSTANCE
+				.getPreferredTransformationMask())) {
 			warningImage.setVisible(false);
 			warningPreferredMask.setVisible(false);
 		}

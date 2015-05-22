@@ -23,18 +23,23 @@ package net.atos.optimus.m2m.engine.ui.prefs;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamSource;
 
 import net.atos.optimus.m2m.engine.core.Activator;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskReference;
 import net.atos.optimus.m2m.engine.masks.UserTransformationMaskTool;
+import net.atos.optimus.m2m.engine.masks.XMLTransformationMaskReference;
+import net.atos.optimus.m2m.engine.masks.extension.XMLFileTransformationMaskDataSource;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
+import org.xml.sax.SAXException;
 
 /**
  * Imex for import/export transformation masks
@@ -91,9 +96,11 @@ public class TransformationMasksPreferencesImex {
 	 * Import a transformation mask describing in an XML file
 	 * 
 	 * @return the name of the imported mask.
+	 * @throws IOException
+	 * @throws SAXException
 	 * 
 	 */
-	public static String importTransformationMask() {
+	public static String importTransformationMask() throws SAXException, IOException {
 		IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
 		FileDialog dialog = new FileDialog(new Shell(Display.getDefault()));
 		String pathName = preferenceStore.getString(TransformationMasksPreferencesImex.IMPORT_PATH_PREF);
@@ -118,27 +125,24 @@ public class TransformationMasksPreferencesImex {
 		String fullPath = newPathName + File.separator + newFileName;
 		File importMaskFile = new File(fullPath);
 
+		Source source = new StreamSource(importMaskFile);
+		XMLFileTransformationMaskDataSource.validatorXMLTransformationMask.validate(source);
+		XMLTransformationMaskReference transformationMaskReference = new XMLTransformationMaskReference(importMaskFile);
+
 		File transformationMaskFile = new File(UserTransformationMaskTool.generateXMLFileName());
 
 		UserTransformationMaskTool.configureFileSystem();
 		FileInputStream sourceFile;
-		try {
-			sourceFile = new FileInputStream(importMaskFile);
-			int c;
-			FileOutputStream destFile = new FileOutputStream(transformationMaskFile);
-			while ((c = sourceFile.read()) != -1) {
-				destFile.write(c);
-			}
-			destFile.close();
-			sourceFile.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			return null;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
 
-		return newFileName.replace(".xml", "");
+		sourceFile = new FileInputStream(importMaskFile);
+		int c;
+		FileOutputStream destFile = new FileOutputStream(transformationMaskFile);
+		while ((c = sourceFile.read()) != -1) {
+			destFile.write(c);
+		}
+		destFile.close();
+		sourceFile.close();
+
+		return transformationMaskReference.getName();
 	}
 }
