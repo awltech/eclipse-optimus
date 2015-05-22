@@ -157,12 +157,6 @@ public class XMLFileTransformationMaskDataSource extends TransformationMaskDataS
 	}
 
 	@Override
-	public TransformationMaskReference getMaskById(String id) {
-		this.loadTransformationUserMasks();
-		return this.transformationMaskReferences.get(id);
-	}
-
-	@Override
 	public Collection<TransformationMaskReference> getAllMasks() {
 		this.loadTransformationUserMasks();
 		List<TransformationMaskReference> transformationMaskReferencesResult = new LinkedList<TransformationMaskReference>();

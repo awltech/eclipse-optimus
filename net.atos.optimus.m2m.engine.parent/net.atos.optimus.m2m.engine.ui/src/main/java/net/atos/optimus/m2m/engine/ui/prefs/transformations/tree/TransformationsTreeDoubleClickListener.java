@@ -19,7 +19,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.engine.ui.prefs.tree;
+package net.atos.optimus.m2m.engine.ui.prefs.transformations.tree;
 
 import net.atos.optimus.m2m.engine.core.requirements.AbstractRequirement;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
@@ -38,7 +38,7 @@ import org.eclipse.swt.widgets.Shell;
  * @author mvanbesien
  *
  */
-public class TransformationMasksTreeDoubleClickListener implements IDoubleClickListener {
+public class TransformationsTreeDoubleClickListener implements IDoubleClickListener {
 
 	/*
 	 * (non-Javadoc)

@@ -19,7 +19,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.engine.ui.prefs.tree;
+package net.atos.optimus.m2m.engine.ui.prefs.transformations.tree;
 
 import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSource;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
@@ -30,14 +30,14 @@ import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 /**
- * Label provider used in the preference page dedicated to transformation masks
+ * Label provider used in the tree dedicated to transformations
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
  *
  */
 
-public class TransformationMasksTreeLabelProvider extends ColumnLabelProvider {
+public class TransformationsLabelProvider extends ColumnLabelProvider {
 
 	private static final String ICONS_TRN_GIF = "icons/trn.gif";
 	private static final String ICONS_TRNSET_PUBLIC_GIF = "icons/trnset-public.gif";

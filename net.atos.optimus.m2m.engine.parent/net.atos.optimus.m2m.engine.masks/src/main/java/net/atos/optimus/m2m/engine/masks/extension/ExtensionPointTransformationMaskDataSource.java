@@ -160,16 +160,6 @@ public class ExtensionPointTransformationMaskDataSource extends TransformationMa
 	}
 
 	@Override
-	public TransformationMaskReference getMaskById(String id) {
-		for (TransformationMaskReference reference : this.registeredMasks) {
-			if (id == null ? reference.getName() == null : id.equals(reference.getName())) {
-				return reference;
-			}
-		}
-		return null;
-	}
-
-	@Override
 	public Collection<TransformationMaskReference> getAllMasks() {
 		return registeredMasks;
 	}

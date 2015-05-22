@@ -58,7 +58,7 @@ public enum TransformationMaskDataSourceManager {
 	 * The key in the Optimus preference store associated to the transformation
 	 * mask choose in the preference
 	 */
-	public static final String PREFERED_MASK_STORE_KEY = "Transformation Mask Preference";
+	private static final String PREFERED_MASK_STORE_KEY = "Transformation Mask Preference";
 
 	/** The name of the default mask */
 	public static final String DEFAULT_MASK_NAME = "Default all On mask";
@@ -117,27 +117,6 @@ public enum TransformationMaskDataSourceManager {
 	}
 
 	/**
-	 * Returns the transformation mask reference with the id provided as
-	 * parameter
-	 * 
-	 * @param id
-	 *            transformation mask id.
-	 * @return the transformation mask reference with the id provided as
-	 *         parameter or null if it doesn't exist.
-	 */
-	public TransformationMaskReference getTransformationMaskById(String id) {
-		id = id.replace(" (non editable mask)", "");
-		TransformationMaskReference transformationMaskReference = null;
-		for (TransformationMaskDataSource transformationMaskDataSource : this.getTransformationMaskDataSources()) {
-			transformationMaskReference = transformationMaskDataSource.getMaskById(id);
-			if (transformationMaskReference != null) {
-				return transformationMaskReference;
-			}
-		}
-		return transformationMaskReference;
-	}
-
-	/**
 	 * Returns the transformation mask reference selected via the preference
 	 * window or the filter on all if nothing was selected
 	 * 
@@ -147,10 +126,44 @@ public enum TransformationMaskDataSourceManager {
 	public TransformationMaskReference getPreferredTransformationMask() {
 		String maskName = Activator.getDefault().getPreferenceStore()
 				.getString(TransformationMaskDataSourceManager.PREFERED_MASK_STORE_KEY);
-		TransformationMaskReference transformationMaskReference = TransformationMaskDataSourceManager.INSTANCE
-				.getTransformationMaskById(maskName);
+		TransformationMaskReference transformationMaskReference = this.findTransformationMaskByName(maskName);
 		return transformationMaskReference != null ? transformationMaskReference : this
-				.getTransformationMaskById(TransformationMaskDataSourceManager.DEFAULT_MASK_NAME);
+				.findTransformationMaskByName(TransformationMaskDataSourceManager.DEFAULT_MASK_NAME);
+	}
+
+	/**
+	 * Find a transformation mask with his name
+	 * 
+	 * @param maskName
+	 *            the mask name.
+	 * @return the transformation mask with the specified name if exists, null
+	 *         otherwise.
+	 */
+	private TransformationMaskReference findTransformationMaskByName(String maskName) {
+		for (TransformationMaskDataSource transformationMaskDataSource : TransformationMaskDataSourceManager.INSTANCE
+				.getTransformationMaskDataSources()) {
+			for (TransformationMaskReference transformationMaskReferenceFound : transformationMaskDataSource
+					.getAllMasks()) {
+				if (maskName.equals(transformationMaskReferenceFound.getName())) {
+					return transformationMaskReferenceFound;
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Set the preferred transformation mask reference
+	 * 
+	 * @param transformationMaskReference
+	 *            the new preferred transformation mask reference.
+	 */
+	public void setPreferredTransformationMask(TransformationMaskReference transformationMaskReference) {
+		Activator
+				.getDefault()
+				.getPreferenceStore()
+				.putValue(TransformationMaskDataSourceManager.PREFERED_MASK_STORE_KEY,
+						transformationMaskReference.getName());
 	}
 
 }
