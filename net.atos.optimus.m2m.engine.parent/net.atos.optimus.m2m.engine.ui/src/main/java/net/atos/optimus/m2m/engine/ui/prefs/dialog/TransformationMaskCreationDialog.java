@@ -30,17 +30,24 @@ import net.atos.optimus.m2m.engine.ui.prefs.masks.list.TransformationMasksConten
 import net.atos.optimus.m2m.engine.ui.prefs.masks.list.TransformationMasksLabelProvider;
 
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Widget;
 
 /**
  * Dialog window used to create a new user transformation mask
@@ -54,6 +61,9 @@ public class TransformationMaskCreationDialog extends Dialog {
 
 	/** The label width */
 	public static final int LABEL_WIDTH = 70;
+	
+	/** The extended transformation mask by default */
+	protected TransformationMaskReference transformationMask;
 
 	/** The text area holding the transformation mask name */
 	protected Text creationText;
@@ -71,9 +81,12 @@ public class TransformationMaskCreationDialog extends Dialog {
 	 * Constructor
 	 * 
 	 * @param parentShell
+	 * @param transformationMask
+	 *            the extended transformation mask by default.
 	 */
-	public TransformationMaskCreationDialog(Shell parentShell) {
+	public TransformationMaskCreationDialog(Shell parentShell, TransformationMaskReference transformationMask) {
 		super(parentShell);
+		this.transformationMask = transformationMask;
 		this.setShellStyle(getShellStyle() | SWT.RESIZE);
 	}
 
@@ -105,10 +118,15 @@ public class TransformationMaskCreationDialog extends Dialog {
 		this.transformationMasksComboViewer.setLabelProvider(new TransformationMasksLabelProvider());
 		this.transformationMasksComboViewer.setContentProvider(new TransformationMasksContentsProvider());
 		this.transformationMasksComboViewer.setInput(TransformationMaskDataSourceManager.INSTANCE);
-		transformationMaskExtensionCombo.select(0);
+		ISelection selection = new StructuredSelection(this.transformationMask);
+		this.transformationMasksComboViewer.setSelection(selection);
 
-		final Label errorLabel = new Label(mainContainer, SWT.NONE);
-		errorLabel.setVisible(false);
+		final Composite errorContainer = new Composite(mainContainer, SWT.NONE);
+		errorContainer.setLayout(new FormLayout());
+		Label errorImage = new Label(errorContainer, SWT.ICON_ERROR);
+		errorImage.setImage(Display.getDefault().getSystemImage(SWT.ICON_ERROR));
+		final Label errorLabel = new Label(errorContainer, SWT.NONE);
+		errorContainer.setVisible(false);
 
 		FormDataBuilder.on(creationLabel).left().top().width(TransformationMaskCreationDialog.LABEL_WIDTH);
 		FormDataBuilder.on(this.creationText).left(creationLabel).right().vertical();
@@ -122,7 +140,27 @@ public class TransformationMaskCreationDialog extends Dialog {
 		FormDataBuilder.on(transformationMaskExtensionCombo).left(extensionLabel).right().vertical();
 		FormDataBuilder.on(extensionContainer).top(descriptionContainer).horizontal();
 
-		FormDataBuilder.on(errorLabel).horizontal().top(extensionContainer);
+		FormDataBuilder.on(errorImage).top().left();
+		FormDataBuilder.on(errorLabel).top(20).left(errorImage).right();
+		FormDataBuilder.on(errorContainer).top(extensionContainer).horizontal();
+
+		creationText.addModifyListener(new ModifyListener() {
+
+			@Override
+			public void modifyText(ModifyEvent e) {
+				String transformationName = TransformationMaskCreationDialog.this.creationText.getText().trim();
+				TransformationMaskReference transformationMaskReference = new TransformationMaskReference(transformationName,"",null);
+				Widget widget = TransformationMaskCreationDialog.this.transformationMasksComboViewer.testFindItem(transformationMaskReference);
+				if (widget != null) {
+					TransformationMaskCreationDialog.this.getButton(IDialogConstants.OK_ID).setEnabled(false);
+					errorLabel.setText(TransformationMasksDialogMessages.NAME_CONFLICT.message(transformationName));
+					errorContainer.setVisible(true);
+				} else {
+					TransformationMaskCreationDialog.this.getButton(IDialogConstants.OK_ID).setEnabled(true);
+					errorContainer.setVisible(false);
+				}
+			}
+		});
 
 		return mainContainer;
 	}
@@ -149,7 +187,7 @@ public class TransformationMaskCreationDialog extends Dialog {
 
 	@Override
 	protected Point getInitialSize() {
-		return new Point(400, 250);
+		return new Point(400, 280);
 	}
 
 	/**

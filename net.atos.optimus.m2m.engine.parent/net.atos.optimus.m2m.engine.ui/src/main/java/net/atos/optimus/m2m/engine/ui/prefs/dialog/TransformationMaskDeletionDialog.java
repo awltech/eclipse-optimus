@@ -101,8 +101,7 @@ public class TransformationMaskDeletionDialog extends Dialog {
 	@Override
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
-		newShell.setText(TransformationMasksDialogMessages.DELETION_TITLE.message(this.transformationMaskReference
-				.getName()));
+		newShell.setText(TransformationMasksDialogMessages.DELETION_TITLE.message());
 	}
 
 	@Override

@@ -139,7 +139,7 @@ public enum TransformationMaskDataSourceManager {
 	 * @return the transformation mask with the specified name if exists, null
 	 *         otherwise.
 	 */
-	private TransformationMaskReference findTransformationMaskByName(String maskName) {
+	public TransformationMaskReference findTransformationMaskByName(String maskName) {
 		for (TransformationMaskDataSource transformationMaskDataSource : TransformationMaskDataSourceManager.INSTANCE
 				.getTransformationMaskDataSources()) {
 			for (TransformationMaskReference transformationMaskReferenceFound : transformationMaskDataSource
