@@ -23,7 +23,6 @@ package net.atos.optimus.m2m.engine.ui.prefs.dialog;
 
 import net.atos.optimus.common.tools.swt.FormDataBuilder;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskDataSourceManager;
-import net.atos.optimus.m2m.engine.core.masks.TransformationMaskReference;
 import net.atos.optimus.m2m.engine.masks.EditableTransformationMaskReference;
 
 import org.eclipse.jface.dialogs.Dialog;
@@ -47,19 +46,20 @@ import org.eclipse.swt.widgets.Shell;
 public class TransformationMaskDeletionDialog extends Dialog {
 
 	/** The name of the mask to delete */
-	protected String maskName;
+	protected EditableTransformationMaskReference transformationMaskReference;
 
 	/**
 	 * Constructor
 	 * 
 	 * @param parentShell
-	 * @param maskName
-	 *            the name of the mask to delete.
+	 * @param transformationMaskReference
+	 *            the transformation mask reference to delete.
 	 */
-	public TransformationMaskDeletionDialog(Shell parentShell, String maskName) {
+	public TransformationMaskDeletionDialog(Shell parentShell,
+			EditableTransformationMaskReference transformationMaskReference) {
 		super(parentShell);
 		this.setShellStyle(getShellStyle() | SWT.RESIZE);
-		this.maskName = maskName;
+		this.transformationMaskReference = transformationMaskReference;
 	}
 
 	@Override
@@ -68,7 +68,8 @@ public class TransformationMaskDeletionDialog extends Dialog {
 		mainContainer.setLayout(new FormLayout());
 
 		Label deletionLabel = new Label(mainContainer, SWT.NONE);
-		deletionLabel.setText(TransformationMasksDialogMessages.DELETION_MESSAGE.message(maskName));
+		deletionLabel.setText(TransformationMasksDialogMessages.DELETION_MESSAGE
+				.message(this.transformationMaskReference.getName()));
 
 		Label warningImage = new Label(mainContainer, SWT.ICON_WARNING);
 		warningImage.setImage(Display.getDefault().getSystemImage(SWT.ICON_WARNING));
@@ -82,7 +83,8 @@ public class TransformationMaskDeletionDialog extends Dialog {
 		FormDataBuilder.on(warningPreferredMask).top(deletionLabel).right();
 
 		// Show the warning only if necessary
-		if (!maskName.equals(TransformationMaskDataSourceManager.INSTANCE.getPreferredTransformationMask().getName())) {
+		if (!this.transformationMaskReference.equals(TransformationMaskDataSourceManager.INSTANCE
+				.getPreferredTransformationMask())) {
 			warningImage.setVisible(false);
 			warningPreferredMask.setVisible(false);
 		}
@@ -92,18 +94,14 @@ public class TransformationMaskDeletionDialog extends Dialog {
 
 	@Override
 	protected void okPressed() {
-		TransformationMaskReference transformationMaskReference = TransformationMaskDataSourceManager.INSTANCE
-				.getTransformationMaskById(this.maskName);
-		if (transformationMaskReference instanceof EditableTransformationMaskReference) {
-			((EditableTransformationMaskReference) transformationMaskReference).suppressTransformationMaskReference();
-		}
+		this.transformationMaskReference.suppressTransformationMaskReference();
 		super.okPressed();
 	}
 
 	@Override
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
-		newShell.setText(TransformationMasksDialogMessages.DELETION_TITLE.message(this.maskName));
+		newShell.setText(TransformationMasksDialogMessages.DELETION_TITLE.message());
 	}
 
 	@Override

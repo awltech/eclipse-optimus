@@ -19,7 +19,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.engine.ui.prefs.tree;
+package net.atos.optimus.m2m.engine.ui.prefs.transformations.tree;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -45,7 +45,7 @@ import org.eclipse.jface.viewers.ICheckStateListener;
  *
  */
 
-public class TransformationMasksTreeCheckListener implements ICheckStateListener {
+public class TransformationsTreeCheckListener implements ICheckStateListener {
 
 	/* The temporary transformation mask */
 	private TemporaryTransformationMask tmpTransformationMask;
@@ -61,7 +61,7 @@ public class TransformationMasksTreeCheckListener implements ICheckStateListener
 	 * @param tmpTransformationMask
 	 *            the temporary transformation mask.
 	 */
-	public TransformationMasksTreeCheckListener(CheckboxTreeViewer treeViewer,
+	public TransformationsTreeCheckListener(CheckboxTreeViewer treeViewer,
 			TemporaryTransformationMask tmpTransformationMask) {
 		this.treeViewer = treeViewer;
 		this.tmpTransformationMask = tmpTransformationMask;

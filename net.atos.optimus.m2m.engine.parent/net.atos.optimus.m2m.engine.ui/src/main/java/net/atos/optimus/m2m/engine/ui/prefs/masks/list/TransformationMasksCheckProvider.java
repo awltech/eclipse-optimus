@@ -19,49 +19,35 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.engine.ui.prefs.tree;
+package net.atos.optimus.m2m.engine.ui.prefs.masks.list;
 
-import net.atos.optimus.m2m.engine.core.masks.TemporaryTransformationMask;
-import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
+import net.atos.optimus.m2m.engine.core.masks.TransformationMaskDataSourceManager;
+import net.atos.optimus.m2m.engine.core.masks.TransformationMaskReference;
 
 import org.eclipse.jface.viewers.ICheckStateProvider;
 
 /**
  * Check State Provider, used to give values to the check boxes according to
- * selected transformation mask
+ * preferred transformation mask
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
  *
  */
 
-public class TransformationMasksTreeCheckProvider implements ICheckStateProvider {
-
-	/** The temporary transformation mask */
-	private TemporaryTransformationMask tmpTransformationMask;
-
-	/**
-	 * Constructor
-	 * 
-	 * @param tmpTransformationMask
-	 *            the temporary transformation mask.
-	 */
-	public TransformationMasksTreeCheckProvider(TemporaryTransformationMask tmpTransformationMask) {
-		this.tmpTransformationMask = tmpTransformationMask;
-	}
+public class TransformationMasksCheckProvider implements ICheckStateProvider {
 
 	@Override
 	public boolean isChecked(Object element) {
-		if (element instanceof TransformationReference) {
-			TransformationReference reference = (TransformationReference) element;
-			return tmpTransformationMask.isTransformationEnabled(reference.getId());
+		if (element instanceof TransformationMaskReference) {
+			return element.equals(TransformationMaskDataSourceManager.INSTANCE.getPreferredTransformationMask());
 		}
 		return false;
 	}
 
 	@Override
 	public boolean isGrayed(Object element) {
-		return !(element instanceof TransformationReference);
+		return false;
 	}
 
 }

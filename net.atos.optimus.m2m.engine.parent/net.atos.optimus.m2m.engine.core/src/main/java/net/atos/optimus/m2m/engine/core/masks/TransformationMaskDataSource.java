@@ -60,17 +60,6 @@ public abstract class TransformationMaskDataSource {
 	}
 
 	/**
-	 * Returns the transformation mask reference with the id provided as
-	 * parameter
-	 * 
-	 * @param id
-	 *            transformation mask id.
-	 * @return the transformation mask reference with the id provided as
-	 *         parameter.
-	 */
-	public abstract TransformationMaskReference getMaskById(String id);
-
-	/**
 	 * Returns the list of all the transformations masks
 	 * 
 	 * @return the list of all the transformations masks.
