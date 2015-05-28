@@ -30,7 +30,6 @@ import net.atos.optimus.m2m.engine.sdk.tom.properties.transformations.Transforma
 import net.atos.optimus.m2m.engine.sdk.tom.properties.zones.TransformationGeneratorSelectorZone;
 
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -80,11 +79,7 @@ public class TransformationGeneratorListener implements SelectionListener {
 		Transformation transformation = (Transformation) this.textZone.giveEObject();
 
 		// Retrieve the java project
-		IContainer diagramContainer = WorkspaceSynchronizer.getFile(transformation.eResource()).getParent();
-		while(!(diagramContainer instanceof IProject)){
-			diagramContainer = diagramContainer.getParent();
-		}
-		IProject project = (IProject) diagramContainer;
+		IProject project = WorkspaceSynchronizer.getFile(transformation.eResource()).getProject();
 		IJavaProject javaProject = JavaCore.create(project);
 
 		// Create a new shell

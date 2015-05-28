@@ -120,7 +120,7 @@ public class TransformationGeneratorDialog extends Dialog {
 
 		// Fill the combo box with available source folder
 		try {
-			for (IPackageFragmentRoot packageFragmentRoot : this.javaProject.getAllPackageFragmentRoots()) {
+			for (IPackageFragmentRoot packageFragmentRoot : this.javaProject.getPackageFragmentRoots()) {
 				if (packageFragmentRoot.getKind() == IPackageFragmentRoot.K_SOURCE) {
 					sourceFolderCombo.add(packageFragmentRoot.getPath().removeFirstSegments(1).makeRelative()
 							.toString());
@@ -212,8 +212,7 @@ public class TransformationGeneratorDialog extends Dialog {
 				try {
 					final SelectionDialog createPackageDialog = JavaUI.createPackageDialog(new Shell(
 							TransformationGeneratorDialog.this.myShell),
-							TransformationGeneratorDialog.this.javaProject,
-							IJavaElementSearchConstants.CONSIDER_REQUIRED_PROJECTS);
+							TransformationGeneratorDialog.this.javaProject, 0);
 					createPackageDialog.setMessage(TransformationDialogMessages.JAVAPACK_SELECTOR_LABEL.message());
 					createPackageDialog.setTitle(TransformationDialogMessages.DIALOG_TITLE.message());
 					if ((createPackageDialog.open() == Window.OK) && (createPackageDialog.getResult().length > 0)) {
