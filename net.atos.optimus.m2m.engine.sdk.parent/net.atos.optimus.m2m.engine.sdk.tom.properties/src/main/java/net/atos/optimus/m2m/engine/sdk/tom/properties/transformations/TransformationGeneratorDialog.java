@@ -122,7 +122,8 @@ public class TransformationGeneratorDialog extends Dialog {
 		try {
 			for (IPackageFragmentRoot packageFragmentRoot : this.javaProject.getAllPackageFragmentRoots()) {
 				if (packageFragmentRoot.getKind() == IPackageFragmentRoot.K_SOURCE) {
-					sourceFolderCombo.add(packageFragmentRoot.getElementName());
+					sourceFolderCombo.add(packageFragmentRoot.getPath().removeFirstSegments(1).makeRelative()
+							.toString());
 					sourceFolderCombo.select(0);
 				}
 			}
@@ -175,17 +176,17 @@ public class TransformationGeneratorDialog extends Dialog {
 		FormDataBuilder.on(this.sourceFolderCombo).top().left(sourceFolderLabel).right(sourceFolderButton);
 		FormDataBuilder.on(sourceFolderButton).top().right().width(80).height(22);
 
-		FormDataBuilder.on(packageLabel).top(this.sourceFolderCombo,10).left().width(200);
+		FormDataBuilder.on(packageLabel).top(this.sourceFolderCombo, 10).left().width(200);
 		FormDataBuilder.on(this.packageText).top(this.sourceFolderCombo).left(packageLabel).right(packageButton);
 		FormDataBuilder.on(packageButton).top(this.sourceFolderCombo).right().width(80).height(22);
 
-		FormDataBuilder.on(trnLabel).top(this.packageText,10).left().width(200);
+		FormDataBuilder.on(trnLabel).top(this.packageText, 10).left().width(200);
 		FormDataBuilder.on(this.trnText).top(this.packageText).left(trnLabel).width(600).right();
 
-		FormDataBuilder.on(factoryLabel).top(this.trnText,10).left().width(200);
+		FormDataBuilder.on(factoryLabel).top(this.trnText, 10).left().width(200);
 		FormDataBuilder.on(this.factoryText).top(this.trnText).left(factoryLabel).width(600).right();
 
-		FormDataBuilder.on(typeLabel).top(this.factoryText,10).left().width(200);
+		FormDataBuilder.on(typeLabel).top(this.factoryText, 10).left().width(200);
 		FormDataBuilder.on(this.typeText).top(this.factoryText).left(typeLabel).right(typeButton);
 		FormDataBuilder.on(typeButton).top(this.factoryText).right().width(80).height(22);
 

@@ -6,7 +6,7 @@ Require-Bundle: org.eclipse.ui,org.eclipse.core.runtime,org.eclipse.jd
  ptimus.m2m.engine.core,org.eclipse.uml2.uml
 Bundle-Vendor: Worldline.com
 Bundle-ActivationPolicy: lazy
-Bundle-Version: 1.2.0.201505211033-SNAPSHOT
+Bundle-Version: 1.2.0.201505280653-SNAPSHOT
 Bundle-Name: Wizards for M2M Transformation Framework
 Bundle-Activator: net.atos.optimus.m2m.engine.sdk.wizards.Activator
 Bundle-ManifestVersion: 2

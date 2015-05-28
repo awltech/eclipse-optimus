@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <units size='2'>
-  <unit id='net.atos.optimus.m2m.engine.sdk.feature.feature.group' version='1.2.0.201505211033-SNAPSHOT' singleton='false'>
-    <update id='net.atos.optimus.m2m.engine.sdk.feature.feature.group' range='[0.0.0,1.2.0.201505211033-SNAPSHOT)' severity='0'/>
+  <unit id='net.atos.optimus.m2m.engine.sdk.feature.feature.group' version='1.2.0.201505280653-SNAPSHOT' singleton='false'>
+    <update id='net.atos.optimus.m2m.engine.sdk.feature.feature.group' range='[0.0.0,1.2.0.201505280653-SNAPSHOT)' severity='0'/>
     <properties size='8'>
       <property name='org.eclipse.equinox.p2.name' value='Optimus M2M Engine Transformations Generator'/>
       <property name='org.eclipse.equinox.p2.description' value='This SDK contains the a wizard to create transformations'/>
@@ -13,12 +13,12 @@
       <property name='maven-version' value='1.2.0-SNAPSHOT'/>
     </properties>
     <provides size='1'>
-      <provided namespace='org.eclipse.equinox.p2.iu' name='net.atos.optimus.m2m.engine.sdk.feature.feature.group' version='1.2.0.201505211033-SNAPSHOT'/>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='net.atos.optimus.m2m.engine.sdk.feature.feature.group' version='1.2.0.201505280653-SNAPSHOT'/>
     </provides>
     <requires size='3'>
-      <required namespace='org.eclipse.equinox.p2.iu' name='net.atos.optimus.m2m.engine.sdk.wizards' range='[1.2.0.201505211033-SNAPSHOT,1.2.0.201505211033-SNAPSHOT]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='net.atos.optimus.m2m.engine.sdk.wizards.source' range='[1.2.0.201505211033-SNAPSHOT,1.2.0.201505211033-SNAPSHOT]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='net.atos.optimus.m2m.engine.sdk.feature.feature.jar' range='[1.2.0.201505211033-SNAPSHOT,1.2.0.201505211033-SNAPSHOT]'>
+      <required namespace='org.eclipse.equinox.p2.iu' name='net.atos.optimus.m2m.engine.sdk.wizards' range='[1.2.0.201505280653-SNAPSHOT,1.2.0.201505280653-SNAPSHOT]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='net.atos.optimus.m2m.engine.sdk.wizards.source' range='[1.2.0.201505280653-SNAPSHOT,1.2.0.201505280653-SNAPSHOT]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='net.atos.optimus.m2m.engine.sdk.feature.feature.jar' range='[1.2.0.201505280653-SNAPSHOT,1.2.0.201505280653-SNAPSHOT]'>
         <filter>
           (org.eclipse.update.install.features=true)
         </filter>
@@ -34,7 +34,7 @@
       [Enter Copyright Description here.]
     </copyright>
   </unit>
-  <unit id='net.atos.optimus.m2m.engine.sdk.feature.feature.jar' version='1.2.0.201505211033-SNAPSHOT'>
+  <unit id='net.atos.optimus.m2m.engine.sdk.feature.feature.jar' version='1.2.0.201505280653-SNAPSHOT'>
     <properties size='7'>
       <property name='org.eclipse.equinox.p2.name' value='Optimus M2M Engine Transformations Generator'/>
       <property name='org.eclipse.equinox.p2.description' value='This SDK contains the a wizard to create transformations'/>
@@ -45,15 +45,15 @@
       <property name='maven-version' value='1.2.0-SNAPSHOT'/>
     </properties>
     <provides size='3'>
-      <provided namespace='org.eclipse.equinox.p2.iu' name='net.atos.optimus.m2m.engine.sdk.feature.feature.jar' version='1.2.0.201505211033-SNAPSHOT'/>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='net.atos.optimus.m2m.engine.sdk.feature.feature.jar' version='1.2.0.201505280653-SNAPSHOT'/>
       <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='feature' version='1.0.0'/>
-      <provided namespace='org.eclipse.update.feature' name='net.atos.optimus.m2m.engine.sdk.feature' version='1.2.0.201505211033-SNAPSHOT'/>
+      <provided namespace='org.eclipse.update.feature' name='net.atos.optimus.m2m.engine.sdk.feature' version='1.2.0.201505280653-SNAPSHOT'/>
     </provides>
     <filter>
       (org.eclipse.update.install.features=true)
     </filter>
     <artifacts size='1'>
-      <artifact classifier='org.eclipse.update.feature' id='net.atos.optimus.m2m.engine.sdk.feature' version='1.2.0.201505211033-SNAPSHOT'/>
+      <artifact classifier='org.eclipse.update.feature' id='net.atos.optimus.m2m.engine.sdk.feature' version='1.2.0.201505280653-SNAPSHOT'/>
     </artifacts>
     <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
     <touchpointData size='1'>
