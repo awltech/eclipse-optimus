@@ -58,6 +58,9 @@ public class TransformationMaskRenameDialog extends Dialog {
 	/** The text area holding the new transformation mask name */
 	protected Text renameText;
 
+	/** Te modified mask name */
+	protected String modifiedName;
+
 	/**
 	 * Constructor
 	 * 
@@ -82,7 +85,7 @@ public class TransformationMaskRenameDialog extends Dialog {
 		Label oldNameLabel = new Label(oldNameContainer, SWT.NONE);
 		oldNameLabel.setText(TransformationMasksDialogMessages.RENAME_OLD_NAME.message(this.transformationMaskReference
 				.getName()));
-		Label oldText = new Label(oldNameContainer, SWT.NONE);
+		final Label oldText = new Label(oldNameContainer, SWT.NONE);
 		oldText.setText(this.transformationMaskReference.getName());
 
 		Composite newNameContainer = new Composite(mainContainer, SWT.NONE);
@@ -92,7 +95,14 @@ public class TransformationMaskRenameDialog extends Dialog {
 				.getName()));
 		this.renameText = new Text(newNameContainer, SWT.NONE);
 		this.renameText.setText(this.transformationMaskReference.getName());
-		
+
+		Composite infoContainer = new Composite(mainContainer, SWT.NONE);
+		infoContainer.setLayout(new FormLayout());
+		Label infoImage = new Label(infoContainer, SWT.ICON_WARNING);
+		infoImage.setImage(Display.getDefault().getSystemImage(SWT.ICON_WARNING));
+		Label infoLabel = new Label(infoContainer, SWT.NONE);
+		infoLabel.setText(TransformationMasksDialogMessages.RENAME_INFO.message());
+
 		final Composite errorContainer = new Composite(mainContainer, SWT.NONE);
 		errorContainer.setLayout(new FormLayout());
 		Label errorImage = new Label(errorContainer, SWT.ICON_ERROR);
@@ -108,9 +118,13 @@ public class TransformationMaskRenameDialog extends Dialog {
 		FormDataBuilder.on(this.renameText).left(newNameLabel).right().vertical();
 		FormDataBuilder.on(newNameContainer).top(oldNameContainer).horizontal();
 
+		FormDataBuilder.on(infoImage).top().left();
+		FormDataBuilder.on(infoLabel).top(20).left(infoImage).right();
+		FormDataBuilder.on(infoContainer).top(newNameContainer).horizontal();
+
 		FormDataBuilder.on(errorImage).top().left();
 		FormDataBuilder.on(errorLabel).top(20).left(errorImage).right();
-		FormDataBuilder.on(errorContainer).top(newNameContainer).horizontal();
+		FormDataBuilder.on(errorContainer).top(infoContainer).horizontal();
 
 		this.renameText.addModifyListener(new ModifyListener() {
 
@@ -120,7 +134,8 @@ public class TransformationMaskRenameDialog extends Dialog {
 				if ("".equals(newMaskName)) {
 					TransformationMaskRenameDialog.this.getButton(IDialogConstants.OK_ID).setEnabled(false);
 					errorContainer.setVisible(false);
-				} else if(TransformationMaskDataSourceManager.INSTANCE.findTransformationMaskByName(newMaskName) != null){
+				} else if (!oldText.getText().equals(newMaskName)
+						&& TransformationMaskDataSourceManager.INSTANCE.findTransformationMaskByName(newMaskName) != null) {
 					TransformationMaskRenameDialog.this.getButton(IDialogConstants.OK_ID).setEnabled(false);
 					errorLabel.setText(TransformationMasksDialogMessages.NAME_CONFLICT.message(newMaskName));
 					errorContainer.setVisible(true);
@@ -136,8 +151,12 @@ public class TransformationMaskRenameDialog extends Dialog {
 
 	@Override
 	protected void okPressed() {
-		this.transformationMaskReference.setName(this.renameText.getText());
+		this.modifiedName = this.renameText.getText();
 		super.okPressed();
+	}
+
+	public String getModifiedName() {
+		return this.modifiedName;
 	}
 
 	@Override
@@ -148,7 +167,7 @@ public class TransformationMaskRenameDialog extends Dialog {
 
 	@Override
 	protected Point getInitialSize() {
-		return new Point(500, 200);
+		return new Point(500, 250);
 	}
 
 }

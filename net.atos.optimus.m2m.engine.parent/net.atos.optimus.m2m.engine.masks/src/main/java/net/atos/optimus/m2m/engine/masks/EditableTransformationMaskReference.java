@@ -21,6 +21,9 @@
  */
 package net.atos.optimus.m2m.engine.masks;
 
+import java.util.Set;
+import java.util.Map.Entry;
+
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskReference;
 
 /**
@@ -46,6 +49,16 @@ public abstract class EditableTransformationMaskReference extends Transformation
 	public EditableTransformationMaskReference(String name, String description,
 			IEditableTransformationMask implementation) {
 		super(name, description, implementation);
+	}
+	
+	/**
+	 * Submit the mask modification on the implementation of the mask reeference
+	 * 
+	 * @param maskModifications
+	 *            the mask modifications.
+	 */
+	public void submitMaskModification(Set<Entry<String, Boolean>> maskModifications){
+		((IEditableTransformationMask) this.implementation).submitMaskModification(maskModifications);
 	}
 
 	/**

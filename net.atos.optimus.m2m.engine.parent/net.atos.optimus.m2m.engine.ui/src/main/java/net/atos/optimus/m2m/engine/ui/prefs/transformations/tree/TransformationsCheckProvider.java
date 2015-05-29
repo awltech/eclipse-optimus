@@ -21,7 +21,7 @@
  */
 package net.atos.optimus.m2m.engine.ui.prefs.transformations.tree;
 
-import net.atos.optimus.m2m.engine.core.masks.TemporaryTransformationMask;
+import net.atos.optimus.m2m.engine.core.masks.TransformationMaskReferenceInput;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
 
 import org.eclipse.jface.viewers.ICheckStateProvider;
@@ -38,7 +38,7 @@ import org.eclipse.jface.viewers.ICheckStateProvider;
 public class TransformationsCheckProvider implements ICheckStateProvider {
 
 	/** The temporary transformation mask */
-	private TemporaryTransformationMask tmpTransformationMask;
+	private TransformationMaskReferenceInput tmpTransformationMask;
 
 	/**
 	 * Constructor
@@ -46,7 +46,7 @@ public class TransformationsCheckProvider implements ICheckStateProvider {
 	 * @param tmpTransformationMask
 	 *            the temporary transformation mask.
 	 */
-	public TransformationsCheckProvider(TemporaryTransformationMask tmpTransformationMask) {
+	public TransformationsCheckProvider(TransformationMaskReferenceInput tmpTransformationMask) {
 		this.tmpTransformationMask = tmpTransformationMask;
 	}
 

@@ -24,8 +24,7 @@ package net.atos.optimus.m2m.engine.ui.prefs.transformations.tree;
 import java.util.HashSet;
 import java.util.Set;
 
-import net.atos.optimus.m2m.engine.core.masks.ITransformationMask;
-import net.atos.optimus.m2m.engine.core.masks.TemporaryTransformationMask;
+import net.atos.optimus.m2m.engine.core.masks.TransformationMaskReferenceInput;
 import net.atos.optimus.m2m.engine.core.requirements.AbstractRequirement;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSource;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSourceManager;
@@ -48,7 +47,7 @@ import org.eclipse.jface.viewers.ICheckStateListener;
 public class TransformationsTreeCheckListener implements ICheckStateListener {
 
 	/* The temporary transformation mask */
-	private TemporaryTransformationMask tmpTransformationMask;
+	private TransformationMaskReferenceInput transformationMaskReferenceInput;
 
 	/** The listened tree viewer */
 	private CheckboxTreeViewer treeViewer;
@@ -58,23 +57,23 @@ public class TransformationsTreeCheckListener implements ICheckStateListener {
 	 * 
 	 * @param treeViewer
 	 *            the listened tree viewer.
-	 * @param tmpTransformationMask
-	 *            the temporary transformation mask.
+	 * @param transformationMaskReferenceInput
+	 *            the transformation mask reference input.
 	 */
 	public TransformationsTreeCheckListener(CheckboxTreeViewer treeViewer,
-			TemporaryTransformationMask tmpTransformationMask) {
+			TransformationMaskReferenceInput transformationMaskReferenceInput) {
 		this.treeViewer = treeViewer;
-		this.tmpTransformationMask = tmpTransformationMask;
+		this.transformationMaskReferenceInput = transformationMaskReferenceInput;
 	}
 
 	@Override
 	public void checkStateChanged(CheckStateChangedEvent event) {
 		if (event.getElement() instanceof TransformationReference) {
 			// Test if the current mask is editable
-			if (this.tmpTransformationMask.getOriginalTransformationMask() instanceof IEditableTransformationMask) {
+			if (this.transformationMaskReferenceInput.getOriginalTransformationMask() instanceof IEditableTransformationMask) {
 				TransformationReference transformationReference = (TransformationReference) event.getElement();
-				this.tmpTransformationMask
-						.setCheckedTransformation(transformationReference.getId(), event.getChecked());
+				this.transformationMaskReferenceInput.setCheckedTransformation(transformationReference.getId(),
+						event.getChecked());
 				if (event.getChecked()) {
 					Set<TransformationReference> checkedReferences = new HashSet<TransformationReference>();
 					this.checkForRequirementsToCheck((TransformationReference) event.getElement(), checkedReferences);
@@ -117,7 +116,7 @@ public class TransformationsTreeCheckListener implements ICheckStateListener {
 			String otherReqId = otherReq.getId();
 			TransformationReference otherRef = TransformationDataSourceManager.INSTANCE.getById(otherReqId);
 			if (otherReqId != null && !checkedReferences.contains(otherRef)) {
-				this.tmpTransformationMask.setCheckedTransformation(otherRef.getId(), true);
+				this.transformationMaskReferenceInput.setCheckedTransformation(otherRef.getId(), true);
 				this.treeViewer.refresh(otherRef);
 				checkedReferences.add(otherRef);
 				checkForRequirementsToCheck(otherRef, checkedReferences);
@@ -148,21 +147,13 @@ public class TransformationsTreeCheckListener implements ICheckStateListener {
 				for (AbstractRequirement otherReq : otherRef.getRequirements()) {
 					String otherReqId = otherReq.getId();
 					if (otherReqId.equals(referenceId) && !uncheckedReferences.contains(otherRef)) {
-						this.tmpTransformationMask.setCheckedTransformation(otherRef.getId(), false);
+						this.transformationMaskReferenceInput.setCheckedTransformation(otherRef.getId(), false);
 						this.treeViewer.refresh(otherRef);
 						uncheckedReferences.add(otherRef);
 						checkForRequirementsToUncheck(otherRef, uncheckedReferences);
 					}
 				}
 			}
-		}
-	}
-
-	public void apply() {
-		ITransformationMask originalTransformationMask = this.tmpTransformationMask.getOriginalTransformationMask();
-		if (originalTransformationMask instanceof IEditableTransformationMask) {
-			((IEditableTransformationMask) originalTransformationMask)
-					.submitMaskModification(this.tmpTransformationMask.getTransformationMaskModification());
 		}
 	}
 

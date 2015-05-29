@@ -27,20 +27,26 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 /**
- * Implementation of Transformation mask dedicated to cache the user selection.
+ * A tool dedicated to cache the user input on transformation mask reference.
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
  *
  */
 
-public class TemporaryTransformationMask implements ITransformationMask {
+public class TransformationMaskReferenceInput {
+
+	/** The input mask name */
+	private String inputMaskName;
+
+	/** The input description */
+	private String inputDescription;
 
 	/** The map holding the temporary mask */
 	private Map<String, Boolean> tmpTransformationMask;
 
-	/** The original transformation mask */
-	private ITransformationMask originalTransformationMask;
+	/** The original transformation mask reference */
+	private TransformationMaskReference originalTransformationMaskReference;
 
 	/**
 	 * Constructor
@@ -49,9 +55,20 @@ public class TemporaryTransformationMask implements ITransformationMask {
 	 *            the original transformation mask of the temporary
 	 *            transformation mask.
 	 */
-	public TemporaryTransformationMask(ITransformationMask originalTransformationMask) {
+	public TransformationMaskReferenceInput(TransformationMaskReference originalTransformationMaskReference) {
+		this.inputMaskName = null;
+		this.inputDescription = null;
 		this.tmpTransformationMask = new HashMap<String, Boolean>();
-		this.originalTransformationMask = originalTransformationMask;
+		this.originalTransformationMaskReference = originalTransformationMaskReference;
+	}
+
+	/**
+	 * Give the original transformation mask
+	 * 
+	 * @return the original transformation mask.
+	 */
+	public TransformationMaskReference getOriginalTransformationMaskReference() {
+		return this.originalTransformationMaskReference;
 	}
 
 	/**
@@ -60,7 +77,49 @@ public class TemporaryTransformationMask implements ITransformationMask {
 	 * @return the original transformation mask.
 	 */
 	public ITransformationMask getOriginalTransformationMask() {
-		return this.originalTransformationMask;
+		return this.originalTransformationMaskReference.getImplementation();
+	}
+
+	/**
+	 * Give the current name of the transformation mask according to the input
+	 * 
+	 * @return the current name of the transformation mask according to the
+	 *         input.
+	 */
+	public String getName() {
+		return this.inputMaskName == null ? this.originalTransformationMaskReference.getName() : this.inputMaskName;
+	}
+
+	/**
+	 * Set the name of the mask
+	 * 
+	 * @param inputMaskName
+	 *            the new input mask name.
+	 */
+	public void setName(String inputMaskName) {
+		this.inputMaskName = inputMaskName;
+	}
+
+	/**
+	 * Give the current description of the transformation mask according to the
+	 * input
+	 * 
+	 * @return the current description of the transformation mask according to
+	 *         the input.
+	 */
+	public String getDescription() {
+		return this.inputDescription == null ? this.originalTransformationMaskReference.getDescription()
+				: this.inputDescription;
+	}
+
+	/**
+	 * Set the description of the mask
+	 * 
+	 * @param inputDescription
+	 *            the new description of the mask.
+	 */
+	public void setDescription(String inputDescription) {
+		this.inputDescription = inputDescription;
 	}
 
 	/**
@@ -69,15 +128,16 @@ public class TemporaryTransformationMask implements ITransformationMask {
 	 * @param originalTransformationMask
 	 *            the new original transformation mask.
 	 */
-	public void resetTransformationMask(ITransformationMask originalTransformationMask) {
-		this.originalTransformationMask = originalTransformationMask;
+	public void resetTransformationMask(TransformationMaskReference originalTransformationMaskReference) {
+		this.inputMaskName = null;
+		this.inputDescription = null;
+		this.originalTransformationMaskReference = originalTransformationMaskReference;
 		this.tmpTransformationMask.clear();
 	}
 
-	@Override
 	public boolean isTransformationEnabled(String id) {
-		return this.tmpTransformationMask.containsKey(id) ? tmpTransformationMask.get(id)
-				: this.originalTransformationMask.isTransformationEnabled(id);
+		return this.tmpTransformationMask.containsKey(id) ? tmpTransformationMask.get(id) : this
+				.getOriginalTransformationMask().isTransformationEnabled(id);
 	}
 
 	/**

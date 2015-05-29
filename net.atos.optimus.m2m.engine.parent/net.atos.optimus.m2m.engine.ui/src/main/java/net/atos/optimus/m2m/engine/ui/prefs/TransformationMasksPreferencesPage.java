@@ -24,8 +24,8 @@ package net.atos.optimus.m2m.engine.ui.prefs;
 import java.io.IOException;
 
 import net.atos.optimus.common.tools.swt.FormDataBuilder;
-import net.atos.optimus.m2m.engine.core.masks.TemporaryTransformationMask;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskDataSourceManager;
+import net.atos.optimus.m2m.engine.core.masks.TransformationMaskReferenceInput;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskReference;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSourceManager;
 import net.atos.optimus.m2m.engine.masks.EditableTransformationMaskReference;
@@ -55,6 +55,8 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -109,7 +111,7 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 	protected CheckboxTreeViewer transformationsTreeViewer;
 
 	/** The temporary transformation mask */
-	private TemporaryTransformationMask tmpTransformationMask;
+	private TransformationMaskReferenceInput transformationMaskReferenceInput;
 
 	/**
 	 * The check listener used to detect user actions of check boxes associated
@@ -127,7 +129,7 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 		// temporary transformation mask
 		TransformationMaskReference preferredTransformationMask = TransformationMaskDataSourceManager.INSTANCE
 				.getPreferredTransformationMask();
-		this.tmpTransformationMask = new TemporaryTransformationMask(preferredTransformationMask.getImplementation());
+		this.transformationMaskReferenceInput = new TransformationMaskReferenceInput(preferredTransformationMask);
 
 		// SWT controls creation
 		Composite composite = new Composite(parent, SWT.NONE);
@@ -175,10 +177,10 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 		this.transformationsTreeViewer.setLabelProvider(new TransformationsLabelProvider());
 		this.transformationsTreeViewer.setContentProvider(new TransformationsContentsProvider());
 		this.transformationsTreeViewer.setCheckStateProvider(new TransformationsCheckProvider(
-				this.tmpTransformationMask));
+				this.transformationMaskReferenceInput));
 		this.transformationsTreeViewer.addDoubleClickListener(new TransformationsTreeDoubleClickListener());
 		this.checkListener = new TransformationsTreeCheckListener(this.transformationsTreeViewer,
-				this.tmpTransformationMask);
+				this.transformationMaskReferenceInput);
 		this.transformationsTreeViewer.addCheckStateListener(this.checkListener);
 		this.transformationsTreeViewer.setInput(TransformationDataSourceManager.INSTANCE);
 
@@ -234,12 +236,22 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 			}
 		});
 
+		this.descriptionText.addModifyListener(new ModifyListener() {
+
+			@Override
+			public void modifyText(ModifyEvent e) {
+				String description = TransformationMasksPreferencesPage.this.descriptionText.getText();
+				TransformationMasksPreferencesPage.this.transformationMaskReferenceInput.setDescription(description);
+			}
+		});
+
 		exportButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				TransformationMasksPreferencesImex.exportTransformationMask(TransformationMasksPreferencesPage.this
-						.getSelectedTransformationMaskReference());
+				TransformationMasksPreferencesImex
+						.exportTransformationMask(TransformationMasksPreferencesPage.this.transformationMaskReferenceInput
+								.getOriginalTransformationMaskReference());
 			}
 		});
 
@@ -267,8 +279,8 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				TransformationMaskReference transformationMaskReference = TransformationMasksPreferencesPage.this
-						.getSelectedTransformationMaskReference();
+				TransformationMaskReference transformationMaskReference = TransformationMasksPreferencesPage.this.transformationMaskReferenceInput
+						.getOriginalTransformationMaskReference();
 				if (transformationMaskReference instanceof EditableTransformationMaskReference) {
 					Dialog transformationMaskDeletionDialog = new TransformationMaskDeletionDialog(getShell(),
 							(EditableTransformationMaskReference) transformationMaskReference);
@@ -290,14 +302,15 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				TransformationMaskReference transformationMaskReference = TransformationMasksPreferencesPage.this
-						.getSelectedTransformationMaskReference();
+				TransformationMaskReference transformationMaskReference = TransformationMasksPreferencesPage.this.transformationMaskReferenceInput
+						.getOriginalTransformationMaskReference();
 				if (transformationMaskReference instanceof EditableTransformationMaskReference) {
-					Dialog TransformationMaskRenameDialog = new TransformationMaskRenameDialog(getShell(),
-							(EditableTransformationMaskReference) transformationMaskReference);
+					TransformationMaskRenameDialog TransformationMaskRenameDialog = new TransformationMaskRenameDialog(
+							getShell(), (EditableTransformationMaskReference) transformationMaskReference);
 					if (TransformationMaskRenameDialog.open() == Window.OK) {
-						TransformationMasksPreferencesPage.this
-								.refreshTransformationMaskPreferencePage(transformationMaskReference);
+						TransformationMasksPreferencesPage.this.transformationMaskReferenceInput
+								.setName(TransformationMaskRenameDialog.getModifiedName());
+						TransformationMasksPreferencesPage.this.performApply();
 					}
 				}
 			}
@@ -312,7 +325,8 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 			public void widgetSelected(SelectionEvent e) {
 
 				TransformationMaskCreationDialog transformationMaskCreationDialog = new TransformationMaskCreationDialog(
-						getShell(), TransformationMasksPreferencesPage.this.getSelectedTransformationMaskReference());
+						getShell(), TransformationMasksPreferencesPage.this.transformationMaskReferenceInput
+								.getOriginalTransformationMaskReference());
 				if (transformationMaskCreationDialog.open() == Window.OK) {
 					TransformationMasksPreferencesPage.this.refreshTransformationMaskPreferencePage();
 					TransformationMaskReference transformationMaskReference = new TransformationMaskReference(
@@ -346,25 +360,27 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 		this.currentPreferredMaskLabel.setText(TransformationMaskDataSourceManager.INSTANCE
 				.getPreferredTransformationMask().getName());
 
+		// Reset the temporary mask
+		this.transformationMaskReferenceInput.resetTransformationMask(transformationMaskReference);
+
 		// Update the rename button
 		this.renameButton
-				.setEnabled(transformationMaskReference.getImplementation() instanceof IEditableTransformationMask);
+				.setEnabled(this.transformationMaskReferenceInput.getOriginalTransformationMask() instanceof IEditableTransformationMask);
 
 		// Update the deletion button
 		this.deleteButton
-				.setEnabled(transformationMaskReference.getImplementation() instanceof IEditableTransformationMask);
+				.setEnabled(this.transformationMaskReferenceInput.getOriginalTransformationMask() instanceof IEditableTransformationMask);
 
 		// Update the description of the mask
-		this.descriptionText.setText(transformationMaskReference.getDescription());
-		this.descriptionText.setEditable(transformationMaskReference instanceof EditableTransformationMaskReference);
-
-		// Reset the temporary mask
-		this.tmpTransformationMask.resetTransformationMask(transformationMaskReference.getImplementation());
+		this.descriptionText.setText(this.transformationMaskReferenceInput.getDescription());
+		this.descriptionText
+				.setEditable(this.transformationMaskReferenceInput.getOriginalTransformationMaskReference() instanceof EditableTransformationMaskReference);
 
 		// Update the tree with transformations list
 		this.transformationsTreeViewer.refresh();
 
 		// Update the table with transformation masks list
+		System.out.println();
 		this.transformationMasksTableViewer.refresh();
 	}
 
@@ -382,7 +398,8 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 
 	@Override
 	protected void performDefaults() {
-		this.refreshTransformationMaskPreferencePage(this.getSelectedTransformationMaskReference());
+		this.refreshTransformationMaskPreferencePage(this.transformationMaskReferenceInput
+				.getOriginalTransformationMaskReference());
 	}
 
 	@Override
@@ -393,13 +410,16 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 
 	@Override
 	protected void performApply() {
-		TransformationMaskReference transformationMaskReference = this.getSelectedTransformationMaskReference();
+		TransformationMaskReference transformationMaskReference = this.transformationMaskReferenceInput
+				.getOriginalTransformationMaskReference();
 		if (transformationMaskReference instanceof EditableTransformationMaskReference) {
-			((EditableTransformationMaskReference) transformationMaskReference).setDescription(this.descriptionText
-					.getText());
+			EditableTransformationMaskReference editableTransformationMaskReference = (EditableTransformationMaskReference) transformationMaskReference;
+			editableTransformationMaskReference.setName(this.transformationMaskReferenceInput.getName());
+			editableTransformationMaskReference.setDescription(this.transformationMaskReferenceInput.getDescription());
+			editableTransformationMaskReference.submitMaskModification(this.transformationMaskReferenceInput
+					.getTransformationMaskModification());
 		}
-		/* Save the changes in transformation enabled/disabled */
-		this.checkListener.apply();
+		this.refreshTransformationMaskPreferencePage(transformationMaskReference);
 	};
 
 	@Override
