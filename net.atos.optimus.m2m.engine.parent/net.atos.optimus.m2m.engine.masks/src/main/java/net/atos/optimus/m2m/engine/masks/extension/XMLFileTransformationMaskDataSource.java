@@ -34,6 +34,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.xml.XMLConstants;
+import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamSource;
@@ -48,6 +49,8 @@ import net.atos.optimus.m2m.engine.masks.UserTransformationMaskTool;
 import net.atos.optimus.m2m.engine.masks.XMLTransformationMaskReference;
 import net.atos.optimus.m2m.engine.masks.logging.OptimusM2MMaskMessages;
 
+import org.w3c.dom.ls.LSResourceResolver;
+import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -87,7 +90,31 @@ public class XMLFileTransformationMaskDataSource extends TransformationMaskDataS
 			OptimusM2MMaskMessages.UM08.log(e.getMessage());
 		}
 		if (schemaXSD == null) {
-			validatorXMLTransformationMask = null;
+			validatorXMLTransformationMask = new Validator(){
+
+				@Override
+				public ErrorHandler getErrorHandler() {
+					return null;
+				}
+
+				@Override
+				public LSResourceResolver getResourceResolver() {
+					return null;
+				}
+
+				@Override
+				public void reset() {}
+
+				@Override
+				public void setErrorHandler(ErrorHandler errorHandler) {}
+
+				@Override
+				public void setResourceResolver(LSResourceResolver resourceResolver) {}
+
+				@Override
+				public void validate(Source source, Result result) throws SAXException, IOException {}
+				
+			};
 		} else {
 			validatorXMLTransformationMask = schemaXSD.newValidator();
 		}
