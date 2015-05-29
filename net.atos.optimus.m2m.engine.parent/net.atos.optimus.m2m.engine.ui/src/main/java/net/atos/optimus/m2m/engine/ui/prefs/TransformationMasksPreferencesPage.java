@@ -21,12 +21,10 @@
  */
 package net.atos.optimus.m2m.engine.ui.prefs;
 
-import java.io.IOException;
-
 import net.atos.optimus.common.tools.swt.FormDataBuilder;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskDataSourceManager;
-import net.atos.optimus.m2m.engine.core.masks.TransformationMaskReferenceInput;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskReference;
+import net.atos.optimus.m2m.engine.core.masks.TransformationMaskReferenceInput;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSourceManager;
 import net.atos.optimus.m2m.engine.masks.EditableTransformationMaskReference;
 import net.atos.optimus.m2m.engine.masks.IEditableTransformationMask;
@@ -71,7 +69,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-import org.xml.sax.SAXException;
 
 /**
  * Preference Page, for the transformation mask configuration
@@ -258,19 +255,13 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 		importButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				try {
-					String maskName = TransformationMasksPreferencesImex.importTransformationMask();
+				String maskName = TransformationMasksPreferencesImex.importTransformationMask();
+				if (maskName != null) {
 					TransformationMasksPreferencesPage.this.refreshTransformationMaskPreferencePage();
 					TransformationMaskReference transformationMaskReference = new TransformationMaskReference(maskName,
 							"", null);
 					ISelection selection = new StructuredSelection(transformationMaskReference);
 					TransformationMasksPreferencesPage.this.transformationMasksTableViewer.setSelection(selection);
-				} catch (SAXException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
 				}
 			}
 		});

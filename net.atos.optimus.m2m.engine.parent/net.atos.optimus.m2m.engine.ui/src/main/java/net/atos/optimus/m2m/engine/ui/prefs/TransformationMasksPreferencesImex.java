@@ -30,12 +30,15 @@ import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 
 import net.atos.optimus.m2m.engine.core.Activator;
+import net.atos.optimus.m2m.engine.core.masks.TransformationMaskDataSourceManager;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskReference;
 import net.atos.optimus.m2m.engine.masks.UserTransformationMaskTool;
 import net.atos.optimus.m2m.engine.masks.XMLTransformationMaskReference;
 import net.atos.optimus.m2m.engine.masks.extension.XMLFileTransformationMaskDataSource;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
@@ -50,6 +53,8 @@ import org.xml.sax.SAXException;
  */
 
 public class TransformationMasksPreferencesImex {
+
+	public static final String MESSAGE_DIALOG_TITLE = "Error when importing transformation mask";
 
 	public static final String EXPORT_PREF = "PreferencesExportPath";
 
@@ -95,14 +100,15 @@ public class TransformationMasksPreferencesImex {
 	/**
 	 * Import a transformation mask describing in an XML file
 	 * 
-	 * @return the name of the imported mask.
-	 * @throws IOException
-	 * @throws SAXException
+	 * @return the name of the imported mask, null if an error occurs.
 	 * 
 	 */
-	public static String importTransformationMask() throws SAXException, IOException {
+	public static String importTransformationMask() {
 		IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
-		FileDialog dialog = new FileDialog(new Shell(Display.getDefault()));
+		Shell shell = new Shell(Display.getCurrent() != null ? Display.getCurrent() : Display.getDefault(),
+				SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM | SWT.RESIZE);
+		FileDialog dialog = new FileDialog(shell);
+
 		String pathName = preferenceStore.getString(TransformationMasksPreferencesImex.IMPORT_PATH_PREF);
 		String fileName = preferenceStore.getString(TransformationMasksPreferencesImex.IMPORT_NAME_PREF);
 
@@ -126,22 +132,56 @@ public class TransformationMasksPreferencesImex {
 		File importMaskFile = new File(fullPath);
 
 		Source source = new StreamSource(importMaskFile);
-		XMLFileTransformationMaskDataSource.validatorXMLTransformationMask.validate(source);
+		try {
+			XMLFileTransformationMaskDataSource.validatorXMLTransformationMask.validate(source);
+		} catch (SAXException e) {
+			(new MessageDialog(shell, TransformationMasksPreferencesImex.MESSAGE_DIALOG_TITLE, null,
+					"Invalid transformation mask file : " + e.getMessage(), MessageDialog.ERROR, new String[] { "Ok" },
+					0)).open();
+			return null;
+		} catch (IOException e) {
+			(new MessageDialog(shell, TransformationMasksPreferencesImex.MESSAGE_DIALOG_TITLE, null,
+					"I/O error when reading the imported file", MessageDialog.ERROR, new String[] { "Ok" },
+					0)).open();
+			return null;
+		}
 		XMLTransformationMaskReference transformationMaskReference = new XMLTransformationMaskReference(importMaskFile);
+
+		if("".equals(transformationMaskReference.getName().trim())){
+			(new MessageDialog(shell, TransformationMasksPreferencesImex.MESSAGE_DIALOG_TITLE, null,
+					"No name set for this imported mask", MessageDialog.ERROR, new String[] { "Ok" },
+					0)).open();
+			return null;
+		}
+		
+		if (TransformationMaskDataSourceManager.INSTANCE.findTransformationMaskByName(transformationMaskReference
+				.getName()) != null) {
+			(new MessageDialog(shell, TransformationMasksPreferencesImex.MESSAGE_DIALOG_TITLE, null,
+					"A mask with the name "+transformationMaskReference.getName()+" already exists", MessageDialog.ERROR, new String[] { "Ok" },
+					0)).open();
+			return null;
+		}
 
 		File transformationMaskFile = new File(UserTransformationMaskTool.generateXMLFileName());
 
 		UserTransformationMaskTool.configureFileSystem();
 		FileInputStream sourceFile;
 
-		sourceFile = new FileInputStream(importMaskFile);
-		int c;
-		FileOutputStream destFile = new FileOutputStream(transformationMaskFile);
-		while ((c = sourceFile.read()) != -1) {
-			destFile.write(c);
+		try {
+			sourceFile = new FileInputStream(importMaskFile);
+			int c;
+			FileOutputStream destFile = new FileOutputStream(transformationMaskFile);
+			while ((c = sourceFile.read()) != -1) {
+				destFile.write(c);
+			}
+			destFile.close();
+			sourceFile.close();
+		} catch (IOException e) {
+			(new MessageDialog(shell, TransformationMasksPreferencesImex.MESSAGE_DIALOG_TITLE, null,
+					"I/O error when copying the imported file", MessageDialog.ERROR, new String[] { "Ok" },
+					0)).open();
+			return null;
 		}
-		destFile.close();
-		sourceFile.close();
 
 		return transformationMaskReference.getName();
 	}
