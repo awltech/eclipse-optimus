@@ -200,17 +200,23 @@ public class ExtensionPointTransformationDiagramDataSource extends Transformatio
 
 					/* Optimus transformation set creation */
 					net.atos.optimus.m2m.engine.core.transformations.TransformationSet optimusTransformationSet = null;
-					try {
-						optimusTransformationSet = (net.atos.optimus.m2m.engine.core.transformations.TransformationSet) bundle
-								.loadClass(transformationSet.getImplementation()).newInstance();
-					} catch (InstantiationException e) {
-						DependencyDiagramMessages.EP08.log(transformationSet.getName());
-						optimusTransformationSet = new DefaultTransformationSet();
-					} catch (IllegalAccessException e) {
-						DependencyDiagramMessages.EP08.log(transformationSet.getName());
-						optimusTransformationSet = new DefaultTransformationSet();
-					} catch (ClassNotFoundException e) {
-						DependencyDiagramMessages.EP08.log(transformationSet.getName());
+					if (transformationSet.getName() == null || "".equals(transformationSet.getName().trim())) {
+						DependencyDiagramMessages.EP20.log();
+					} else if (transformationSet.getImplementation() == null || "".equals(transformationSet.getImplementation().trim())) {
+						DependencyDiagramMessages.EP21.log();
+					} else {
+						try {
+							optimusTransformationSet = (net.atos.optimus.m2m.engine.core.transformations.TransformationSet) bundle
+									.loadClass(transformationSet.getImplementation()).newInstance();
+						} catch (InstantiationException e) {
+							DependencyDiagramMessages.EP08.log(transformationSet.getName());
+						} catch (IllegalAccessException e) {
+							DependencyDiagramMessages.EP08.log(transformationSet.getName());
+						} catch (ClassNotFoundException e) {
+							DependencyDiagramMessages.EP08.log(transformationSet.getName());
+						}
+					}
+					if(optimusTransformationSet == null){
 						optimusTransformationSet = new DefaultTransformationSet();
 					}
 
@@ -231,6 +237,7 @@ public class ExtensionPointTransformationDiagramDataSource extends Transformatio
 					for (Transformation transformation : transformationSet.getTransformations()) {
 						this.loadTransformationReference(transformation, optimusTransformationSet.getId());
 					}
+
 				}
 			}
 		}
@@ -287,8 +294,14 @@ public class ExtensionPointTransformationDiagramDataSource extends Transformatio
 				.get(transformationSetName);
 		Bundle bundle = this.bundlesMap.get(optimusTransformationSet.getContributor());
 
+		if (transformation.getName() == null || "".equals(transformation.getName().trim())) {
+			DependencyDiagramMessages.EP22.log();
+		} else if (transformation.getFactory() == null || "".equals(transformation.getFactory().trim())) {
+			DependencyDiagramMessages.EP23.log();
+		}
 		/* Test the priority of the transformation if exists already one */
-		if (transformationReference == null || transformationReference.getPriority() < transformation.getPriority()) {
+		else if (transformationReference == null
+				|| transformationReference.getPriority() < transformation.getPriority()) {
 
 			/* Transformation factory creation */
 			ITransformationFactory transformationFactory = null;
@@ -359,12 +372,12 @@ public class ExtensionPointTransformationDiagramDataSource extends Transformatio
 				.get(transformationSetName);
 		Bundle bundle = this.bundlesMap.get(optimusTransformationSet.getContributor());
 
-		if (transformationReference.getPriority() == transformation.getPriority()) {
+		if (transformationReference != null && transformationReference.getPriority() == transformation.getPriority()) {
 			for (Requirement requirement : transformation.getRequirements()) {
 				if (this.transformationReferencesMap.containsKey(requirement.getReference().getName())) {
 					AbstractRequirement abstractRequirement = AbstractRequirementChainFactory.INSTANCE
 							.createAbstractRequirement(transformationReference, requirement, bundle);
-					if(abstractRequirement != null){
+					if (abstractRequirement != null) {
 						transformationReference.addRequirement(abstractRequirement);
 					}
 				} else {

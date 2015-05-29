@@ -40,9 +40,9 @@ public enum DependencyDiagramMessages implements OptimusMessage {
 
 	// Messages related to Extension Point loading process
 	EP01(Level.INFO), EP02(Level.INFO), EP03(Level.INFO), EP04(Level.INFO), EP05(Level.INFO), EP06(Level.INFO), EP07(
-			Level.INFO), EP08(Level.SEVERE), EP09(Level.INFO), EP10(Level.SEVERE), EP11(Level.INFO), EP12(Level.SEVERE), EP13(
-			Level.INFO), EP14(Level.INFO), EP15(Level.INFO), EP16(Level.INFO), EP17(Level.SEVERE), EP18(Level.SEVERE), EP19(
-			Level.WARNING);
+			Level.INFO), EP08(Level.WARNING), EP09(Level.INFO), EP10(Level.WARNING), EP11(Level.INFO), EP12(Level.WARNING), EP13(
+			Level.INFO), EP14(Level.INFO), EP15(Level.INFO), EP16(Level.INFO), EP17(Level.WARNING), EP18(Level.WARNING), EP19(
+			Level.WARNING), EP20(Level.WARNING), EP21(Level.WARNING), EP22(Level.WARNING), EP23(Level.WARNING), EP24(Level.WARNING);
 
 	/**
 	 * Priority level

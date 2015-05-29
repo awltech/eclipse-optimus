@@ -45,7 +45,11 @@ public class CreateCustomRequirementHandler extends CreateAbstractRequirementHan
 	@Override
 	public AbstractRequirement createAbstractRequirement(TransformationReference transformationReference,
 			Requirement requirement, Bundle bundle) {
-		if (!(requirement instanceof CustomRequirement) || ((CustomRequirement) requirement).getImplementation() == null) {
+		if (!(requirement instanceof CustomRequirement)) {
+			return null;
+		}
+		if(((CustomRequirement) requirement).getImplementation() == null){
+			DependencyDiagramMessages.EP24.log();
 			return null;
 		}
 		AbstractRequirement abstractRequirement = null;
