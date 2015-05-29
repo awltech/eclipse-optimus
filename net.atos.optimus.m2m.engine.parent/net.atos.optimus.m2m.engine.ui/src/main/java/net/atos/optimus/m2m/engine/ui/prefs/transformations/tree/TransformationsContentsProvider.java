@@ -40,8 +40,7 @@ import org.eclipse.jface.viewers.Viewer;
  * @since 1.0
  * 
  */
-public class TransformationsContentsProvider implements
-		ITreeContentProvider {
+public class TransformationsContentsProvider implements ITreeContentProvider {
 
 	/*
 	 * (non-Javadoc)
@@ -70,21 +69,20 @@ public class TransformationsContentsProvider implements
 	 */
 	public Object[] getElements(Object inputElement) {
 		if (inputElement instanceof TransformationDataSourceManager) {
-			return TransformationDataSourceManager.INSTANCE.getTransformationDataSources().toArray();
-		} else if (inputElement instanceof TransformationDataSource) {
-			Collection<TransformationReference> references = ((TransformationDataSource) inputElement)
-					.getAll();
 			Collection<TransformationSet> sets = new ArrayList<TransformationSet>();
-			for (TransformationReference reference : references) {
-				TransformationSet set = reference.getTransformationSet();
-				if (!sets.contains(set))
-					sets.add(set);
+			for (TransformationDataSource transformationDataSource : TransformationDataSourceManager.INSTANCE
+					.getTransformationDataSources()) {
+				Collection<TransformationReference> references = transformationDataSource.getAll();
+				for (TransformationReference reference : references) {
+					TransformationSet set = reference.getTransformationSet();
+					if (!sets.contains(set))
+						sets.add(set);
+				}
 			}
 			return sets.toArray();
 		} else if (inputElement instanceof TransformationSet) {
 			TransformationSet thisSet = (TransformationSet) inputElement;
-			Collection<TransformationReference> allRefs = thisSet
-					.getTransformationDataSource().getAll();
+			Collection<TransformationReference> allRefs = thisSet.getTransformationDataSource().getAll();
 			Collection<TransformationReference> refs = new ArrayList<TransformationReference>();
 			for (TransformationReference reference : allRefs)
 				if (reference.getTransformationSet() == thisSet)
