@@ -95,6 +95,10 @@ public class TransformationMaskDeletionDialog extends Dialog {
 	@Override
 	protected void okPressed() {
 		this.transformationMaskReference.suppressTransformationMaskReference();
+		if(this.transformationMaskReference.equals(TransformationMaskDataSourceManager.INSTANCE
+				.getPreferredTransformationMask())){
+			TransformationMaskDataSourceManager.INSTANCE.reinitializePreferredTransformationMask();
+		}
 		super.okPressed();
 	}
 

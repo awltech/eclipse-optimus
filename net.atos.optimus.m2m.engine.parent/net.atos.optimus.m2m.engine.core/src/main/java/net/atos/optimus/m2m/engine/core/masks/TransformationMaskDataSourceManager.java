@@ -174,5 +174,13 @@ public enum TransformationMaskDataSourceManager {
 				.putValue(TransformationMaskDataSourceManager.PREFERED_MASK_STORE_KEY,
 						transformationMaskReference.getName());
 	}
+	
+	public void reinitializePreferredTransformationMask(){
+		Activator
+		.getDefault()
+		.getPreferenceStore()
+		.putValue(TransformationMaskDataSourceManager.PREFERED_MASK_STORE_KEY,
+				TransformationMaskDataSourceManager.DEFAULT_MASK_NAME);
+	}
 
 }
