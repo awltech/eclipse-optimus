@@ -21,10 +21,12 @@
  */
 package net.atos.optimus.m2m.engine.masks.extension;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import net.atos.optimus.m2m.engine.core.masks.ITransformationMask;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskDataSource;
@@ -68,7 +70,7 @@ public class ExtensionPointTransformationMaskDataSource extends TransformationMa
 		super(ExtensionPointTransformationMaskDataSource.DESCRIPTION);
 		OptimusM2MMaskMessages.ML01.log();
 
-		ArrayList<TransformationMaskReference> foundMasks = new ArrayList<TransformationMaskReference>();
+		Map<String,TransformationMaskReference> foundMasks = new HashMap<String,TransformationMaskReference>();
 
 		IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(Activator.PLUGIN_ID,
 				ExtensionPointTransformationMaskDataSource.EXTENSION_POINT_NAME);
@@ -85,13 +87,18 @@ public class ExtensionPointTransformationMaskDataSource extends TransformationMa
 						String description = configurationElement.getAttribute("description");
 						Object implementation = configurationElement.createExecutableExtension("implementation");
 						if (implementation instanceof ITransformationMask && name != null) {
-							foundMasks.add(new TransformationMaskReference(name, description, (ITransformationMask) implementation));
-							OptimusM2MMaskMessages.ML03.log(name, implementation.getClass().getName());
+							if (foundMasks.containsKey(name)) {
+								OptimusM2MMaskMessages.ML14.log(name);
+							} else {
+								foundMasks.put(name, new TransformationMaskReference(name, description,
+										(ITransformationMask) implementation));
+								OptimusM2MMaskMessages.ML03.log(name, implementation.getClass().getName());
+							}
 						} else {
 							if (name == null) {
 								OptimusM2MMaskMessages.ML04.log();
 							} else {
-								OptimusM2MMaskMessages.ML05.log(implementation.getClass());
+								OptimusM2MMaskMessages.ML05.log(implementation.getClass().getName());
 							}
 						}
 					} catch (CoreException e) {
@@ -109,54 +116,68 @@ public class ExtensionPointTransformationMaskDataSource extends TransformationMa
 					String name = configurationElement.getAttribute("name");
 					String description = configurationElement.getAttribute("description");
 					JavaTransformationMask mask = JavaTransformationMask.allOff();
-					OptimusM2MMaskMessages.ML07.log(name);
-					
-					for (IConfigurationElement child : configurationElement.getChildren()) {
-						if ("includes".equals(child.getName())) {
-							String transformationId = child.getAttribute("transformationId");
-							if (transformationId != null) {
-								mask.withTransformation(transformationId);
-								OptimusM2MMaskMessages.ML08.log(name,transformationId);
-							}
-						} else if ("includesSet".equals(child.getName())) {
-							String transformationSetId = child.getAttribute("transformationSetId");
-							if (transformationSetId != null) {
-								mask.withTransformationSet(transformationSetId);
-								OptimusM2MMaskMessages.ML09.log(name,transformationSetId);
+
+					if (foundMasks.containsKey(name)) {
+						OptimusM2MMaskMessages.ML14.log(name);
+					} else {
+						OptimusM2MMaskMessages.ML07.log(name);
+
+						for (IConfigurationElement child : configurationElement.getChildren()) {
+							if ("includes".equals(child.getName())) {
+								String transformationId = child.getAttribute("transformationId");
+								if (transformationId != null) {
+									mask.withTransformation(transformationId);
+									OptimusM2MMaskMessages.ML08.log(name, transformationId);
+								}
+							} else if ("includesSet".equals(child.getName())) {
+								String transformationSetId = child.getAttribute("transformationSetId");
+								if (transformationSetId != null) {
+									mask.withTransformationSet(transformationSetId);
+									OptimusM2MMaskMessages.ML09.log(name, transformationSetId);
+								}
 							}
 						}
+						foundMasks.put(name, new TransformationMaskReference(name, description, mask));
 					}
-					foundMasks.add(new TransformationMaskReference(name, description, mask));
-					
+
 				} else if ("exclusiveMask".equals(configurationElement.getName())) {
 					// When transformation set is build from extension point,
 					// starting with all and excluding elements
 					String name = configurationElement.getAttribute("name");
 					String description = configurationElement.getAttribute("description");
 					JavaTransformationMask mask = JavaTransformationMask.allOn();
-					OptimusM2MMaskMessages.ML10.log(name);
-					
-					for (IConfigurationElement child : configurationElement.getChildren()) {
-						if ("excludes".equals(child.getName())) {
-							String transformationId = child.getAttribute("transformationId");
-							if (transformationId != null) {
-								mask.withoutTransformation(transformationId);
-								OptimusM2MMaskMessages.ML11.log(name,transformationId);
-							}
-						} else if ("excludesSet".equals(child.getName())) {
-							String transformationSetId = child.getAttribute("transformationSetId");
-							if (transformationSetId != null) {
-								mask.withoutTransformationSet(transformationSetId);
-								OptimusM2MMaskMessages.ML12.log(name,transformationSetId);
+
+					if (foundMasks.containsKey(name)) {
+						OptimusM2MMaskMessages.ML14.log(name);
+					} else {
+						OptimusM2MMaskMessages.ML10.log(name);
+
+						for (IConfigurationElement child : configurationElement.getChildren()) {
+							if ("excludes".equals(child.getName())) {
+								String transformationId = child.getAttribute("transformationId");
+								if (transformationId != null) {
+									mask.withoutTransformation(transformationId);
+									OptimusM2MMaskMessages.ML11.log(name, transformationId);
+								}
+							} else if ("excludesSet".equals(child.getName())) {
+								String transformationSetId = child.getAttribute("transformationSetId");
+								if (transformationSetId != null) {
+									mask.withoutTransformationSet(transformationSetId);
+									OptimusM2MMaskMessages.ML12.log(name, transformationSetId);
+								}
 							}
 						}
+						foundMasks.put(name, new TransformationMaskReference(name, description, mask));
 					}
-					foundMasks.add(new TransformationMaskReference(name, description, mask));
 				}
 			}
 		}
 		OptimusM2MMaskMessages.ML13.log();
-		this.registeredMasks = Collections.unmodifiableList(foundMasks);
+		List<TransformationMaskReference> transformationMaskReferencesResult = new LinkedList<TransformationMaskReference>();
+		for (TransformationMaskReference transformationMaskReference : foundMasks.values()) {
+			transformationMaskReferencesResult.add(transformationMaskReference);
+		}
+		this.registeredMasks = Collections.unmodifiableList(transformationMaskReferencesResult);
 	}
 
 	@Override

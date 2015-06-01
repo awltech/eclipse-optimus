@@ -146,8 +146,9 @@ public class TransformationMasksPreferencesImex {
 			return null;
 		}
 		XMLTransformationMaskReference transformationMaskReference = new XMLTransformationMaskReference(importMaskFile);
-
-		if("".equals(transformationMaskReference.getName().trim())){
+		String importedMaskName = transformationMaskReference.getName();
+		
+		if("".equals(importedMaskName.trim())){
 			(new MessageDialog(shell, TransformationMasksPreferencesImex.MESSAGE_DIALOG_TITLE, null,
 					"No name set for this imported mask", MessageDialog.ERROR, new String[] { "Ok" },
 					0)).open();
@@ -157,7 +158,7 @@ public class TransformationMasksPreferencesImex {
 		if (TransformationMaskDataSourceManager.INSTANCE.findTransformationMaskByName(transformationMaskReference
 				.getName()) != null) {
 			(new MessageDialog(shell, TransformationMasksPreferencesImex.MESSAGE_DIALOG_TITLE, null,
-					"A mask with the name "+transformationMaskReference.getName()+" already exists", MessageDialog.ERROR, new String[] { "Ok" },
+					"A mask with the name "+importedMaskName+" already exists", MessageDialog.ERROR, new String[] { "Ok" },
 					0)).open();
 			return null;
 		}
@@ -183,6 +184,6 @@ public class TransformationMasksPreferencesImex {
 			return null;
 		}
 
-		return transformationMaskReference.getName();
+		return importedMaskName;
 	}
 }

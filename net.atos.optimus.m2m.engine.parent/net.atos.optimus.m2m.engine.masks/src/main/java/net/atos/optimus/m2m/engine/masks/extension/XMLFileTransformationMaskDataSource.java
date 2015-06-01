@@ -152,19 +152,23 @@ public class XMLFileTransformationMaskDataSource extends TransformationMaskDataS
 					/* Corrected the key if the name has change */
 					XMLTransformationMaskReference transformationMaskReference = this.transformationMaskReferences
 							.get(transformationName);
-					if (!transformationName.equals(transformationMaskReference.getName())) {
+					String maskName = transformationMaskReference.getName();
+					if (!transformationName.equals(maskName)) {
 						transformationToRemove.add(transformationName);
-						this.transformationMaskReferences.put(transformationMaskReference.getName(),
-								transformationMaskReference);
+						if (this.transformationMaskReferences.get(maskName) != null) {
+							OptimusM2MMaskMessages.UM06.log(maskName);
+						} else {
+							this.transformationMaskReferences.put(maskName, transformationMaskReference);
+						}
 					}
 					try {
 						XMLFileTransformationMaskDataSource.validatorXMLTransformationMask.validate(source);
 
 					} catch (IOException e) {
-						transformationToRemove.add(transformationName);
+						transformationToRemove.add(transformationMaskReference.getName());
 						OptimusM2MMaskMessages.UM10.log(transformationMaskFile.getPath(), e.getMessage());
 					} catch (SAXException e) {
-						transformationToRemove.add(transformationName);
+						transformationToRemove.add(transformationMaskReference.getName());
 						OptimusM2MMaskMessages.UM11.log(transformationMaskFile.getPath(), e.getMessage());
 					}
 				}
@@ -174,6 +178,7 @@ public class XMLFileTransformationMaskDataSource extends TransformationMaskDataS
 			}
 
 			// Check if new XML transformation mask files exists
+			Set<String> existingMasks = new HashSet<String>();
 			for (File transformationMaskFile : transformationMaskDirectory.listFiles()) {
 				if (transformationMaskFile.getName().endsWith(".xml")) {
 					Source source = new StreamSource(transformationMaskFile);
@@ -181,11 +186,17 @@ public class XMLFileTransformationMaskDataSource extends TransformationMaskDataS
 						XMLFileTransformationMaskDataSource.validatorXMLTransformationMask.validate(source);
 						XMLTransformationMaskReference transformationMaskReference = new XMLTransformationMaskReference(
 								transformationMaskFile);
-						OptimusM2MMaskMessages.UM12.log(transformationMaskReference.getName(),
-								transformationMaskFile.getPath());
-						if (!this.transformationMaskReferences.containsKey(transformationMaskReference.getName())) {
-							this.transformationMaskReferences.put(transformationMaskReference.getName(),
-									transformationMaskReference);
+						String maskName = transformationMaskReference.getName();
+						if (!this.transformationMaskReferences.containsKey(maskName)) {
+							OptimusM2MMaskMessages.UM12.log(maskName, transformationMaskFile.getPath());
+							this.transformationMaskReferences.put(maskName, transformationMaskReference);
+							existingMasks.add(maskName);
+						} else {
+							if (existingMasks.contains(maskName)) {
+								OptimusM2MMaskMessages.UM06.log(maskName);
+							} else {
+								existingMasks.add(maskName);
+							}
 						}
 					} catch (IOException e) {
 						OptimusM2MMaskMessages.UM13.log(transformationMaskFile.getPath(), e.getMessage());

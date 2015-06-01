@@ -371,7 +371,6 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 		this.transformationsTreeViewer.refresh();
 
 		// Update the table with transformation masks list
-		System.out.println();
 		this.transformationMasksTableViewer.refresh();
 	}
 

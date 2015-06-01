@@ -53,6 +53,9 @@ public enum TransformationMaskDataSourceManager {
 
 	/** The name of the element in the extension */
 	public static final String EXTENSION_ELEMENT = "transformationMaskDataSource";
+	
+	/** The last known preferred mask preference */
+	public TransformationMaskReference preferredMaskReference;
 
 	/**
 	 * The key in the Optimus preference store associated to the transformation
@@ -126,9 +129,15 @@ public enum TransformationMaskDataSourceManager {
 	public TransformationMaskReference getPreferredTransformationMask() {
 		String maskName = Activator.getDefault().getPreferenceStore()
 				.getString(TransformationMaskDataSourceManager.PREFERED_MASK_STORE_KEY);
-		TransformationMaskReference transformationMaskReference = this.findTransformationMaskByName(maskName);
-		return transformationMaskReference != null ? transformationMaskReference : this
-				.findTransformationMaskByName(TransformationMaskDataSourceManager.DEFAULT_MASK_NAME);
+		if(this.preferredMaskReference == null || !this.preferredMaskReference.getName().equals(maskName)){
+			this.preferredMaskReference = this.findTransformationMaskByName(maskName);
+			if(this.preferredMaskReference == null){
+				this.preferredMaskReference = this
+						.findTransformationMaskByName(TransformationMaskDataSourceManager.DEFAULT_MASK_NAME);
+				this.setPreferredTransformationMask(this.preferredMaskReference);
+			}
+		}
+		return this.preferredMaskReference; 
 	}
 
 	/**
