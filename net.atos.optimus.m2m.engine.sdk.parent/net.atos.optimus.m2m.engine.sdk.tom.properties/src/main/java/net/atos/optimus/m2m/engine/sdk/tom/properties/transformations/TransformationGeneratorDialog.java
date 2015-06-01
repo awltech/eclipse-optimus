@@ -30,10 +30,13 @@ import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.ui.IJavaElementSearchConstants;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
@@ -189,6 +192,21 @@ public class TransformationGeneratorDialog extends Dialog {
 		FormDataBuilder.on(typeLabel).top(this.factoryText, 10).left().width(200);
 		FormDataBuilder.on(this.typeText).top(this.factoryText).left(typeLabel).right(typeButton);
 		FormDataBuilder.on(typeButton).top(this.factoryText).right().width(80).height(22);
+		
+		this.trnText.addModifyListener(new ModifyListener() {
+
+			@Override
+			public void modifyText(ModifyEvent e) {
+				String packageName = TransformationGeneratorDialog.this.packageText.getText().trim();
+				String transformationName = TransformationGeneratorDialog.this.trnText.getText().trim();
+				String factoryName = TransformationGeneratorDialog.this.factoryText.getText().trim();
+				TransformationGeneratorDialog.this
+						.getButton(IDialogConstants.OK_ID)
+						.setEnabled(
+								!("".equals(packageName) || "".equals(transformationName) || TransformationGenerationData.FACTORYDEFAULT
+										.equals(factoryName)));
+			}
+		});
 
 		this.factoryText.addModifyListener(new ModifyListener() {
 
@@ -196,13 +214,35 @@ public class TransformationGeneratorDialog extends Dialog {
 
 			@Override
 			public void modifyText(ModifyEvent e) {
-				String newText = TransformationGeneratorDialog.this.factoryText.getText();
-				if (newText.endsWith(TransformationGenerationData.FACTORYDEFAULT)) {
-					this.oldText = newText;
+				String packageName = TransformationGeneratorDialog.this.packageText.getText().trim();
+				String transformationName = TransformationGeneratorDialog.this.trnText.getText().trim();
+				String factoryName = TransformationGeneratorDialog.this.factoryText.getText().trim();
+				TransformationGeneratorDialog.this
+						.getButton(IDialogConstants.OK_ID)
+						.setEnabled(
+								!("".equals(packageName) || "".equals(transformationName) || TransformationGenerationData.FACTORYDEFAULT
+										.equals(factoryName)));
+				if (factoryName.endsWith(TransformationGenerationData.FACTORYDEFAULT)) {
+					this.oldText = factoryName;
 				} else {
 					TransformationGeneratorDialog.this.factoryText.setText(this.oldText);
 				}
 
+			}
+		});
+
+		this.packageText.addModifyListener(new ModifyListener() {
+
+			@Override
+			public void modifyText(ModifyEvent e) {
+				String packageName = TransformationGeneratorDialog.this.packageText.getText().trim();
+				String transformationName = TransformationGeneratorDialog.this.trnText.getText().trim();
+				String factoryName = TransformationGeneratorDialog.this.factoryText.getText().trim();
+				TransformationGeneratorDialog.this
+						.getButton(IDialogConstants.OK_ID)
+						.setEnabled(
+								!("".equals(packageName) || "".equals(transformationName) || TransformationGenerationData.FACTORYDEFAULT
+										.equals(factoryName)));
 			}
 		});
 
@@ -253,6 +293,21 @@ public class TransformationGeneratorDialog extends Dialog {
 				} catch (final JavaModelException e1) {
 					e1.printStackTrace();
 				}
+			}
+		});
+		
+		background.addPaintListener(new PaintListener() {
+			
+			@Override
+			public void paintControl(PaintEvent e) {
+				String packageName = TransformationGeneratorDialog.this.packageText.getText().trim();
+				String transformationName = TransformationGeneratorDialog.this.trnText.getText().trim();
+				String factoryName = TransformationGeneratorDialog.this.factoryText.getText().trim();
+				TransformationGeneratorDialog.this
+						.getButton(IDialogConstants.OK_ID)
+						.setEnabled(
+								!("".equals(packageName) || "".equals(transformationName) || TransformationGenerationData.FACTORYDEFAULT
+										.equals(factoryName)));
 			}
 		});
 

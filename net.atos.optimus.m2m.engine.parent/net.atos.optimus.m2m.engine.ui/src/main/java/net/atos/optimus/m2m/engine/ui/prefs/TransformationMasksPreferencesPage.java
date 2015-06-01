@@ -110,6 +110,9 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 	/** The temporary transformation mask */
 	private TransformationMaskReferenceInput transformationMaskReferenceInput;
 
+	/** The selection listener on the transformation mask table */
+	private ISelectionChangedListener selectionListenerOnTransformationMask;
+
 	/**
 	 * The check listener used to detect user actions of check boxes associated
 	 * to the transformation enables/disables in the mask
@@ -225,13 +228,15 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 			}
 		});
 
-		this.transformationMasksTableViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+		this.selectionListenerOnTransformationMask = new ISelectionChangedListener() {
 
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				TransformationMasksPreferencesPage.this.refreshTransformationMaskPreferencePage();
 			}
-		});
+		};
+
+		this.transformationMasksTableViewer.addSelectionChangedListener(this.selectionListenerOnTransformationMask);
 
 		this.descriptionText.addModifyListener(new ModifyListener() {
 
@@ -371,7 +376,9 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 		this.transformationsTreeViewer.refresh();
 
 		// Update the table with transformation masks list
+		this.transformationMasksTableViewer.removeSelectionChangedListener(this.selectionListenerOnTransformationMask);
 		this.transformationMasksTableViewer.refresh();
+		this.transformationMasksTableViewer.addSelectionChangedListener(this.selectionListenerOnTransformationMask);
 	}
 
 	/**

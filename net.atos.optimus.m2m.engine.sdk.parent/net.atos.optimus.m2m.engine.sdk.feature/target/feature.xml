@@ -25,7 +25,7 @@
 <feature
       id="net.atos.optimus.m2m.engine.sdk.feature"
       label="Optimus M2M Engine Transformations Generator"
-      version="1.2.0.201505290757-SNAPSHOT"
+      version="1.2.0.201506011409-SNAPSHOT"
       provider-name="Atos.net">
 
    <description url="http://www.example.com/description">
@@ -44,14 +44,14 @@
          id="net.atos.optimus.m2m.engine.sdk.wizards"
          download-size="33"
          install-size="72"
-         version="1.2.0.201505290757-SNAPSHOT"
+         version="1.2.0.201506011409-SNAPSHOT"
          unpack="false"/>
 
    <plugin
          id="net.atos.optimus.m2m.engine.sdk.wizards.source"
          download-size="19"
          install-size="49"
-         version="1.2.0.201505290757-SNAPSHOT"
+         version="1.2.0.201506011409-SNAPSHOT"
          unpack="false"/>
 
 </feature>
