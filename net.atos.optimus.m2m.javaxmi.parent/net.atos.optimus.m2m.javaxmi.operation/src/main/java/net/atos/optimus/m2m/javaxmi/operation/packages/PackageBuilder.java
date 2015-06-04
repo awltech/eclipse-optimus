@@ -26,7 +26,7 @@ import org.eclipse.gmt.modisco.java.Package;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
 
 /**
- * A builder dedicated to package of modisco model
+ * A builder dedicated to create package of modisco model
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
@@ -38,6 +38,10 @@ public class PackageBuilder {
 	/** The build package */
 	private Package buildPackage;
 
+	/** Give a new package builder
+	 * 
+	 * @return a new package builder.
+	 */
 	public static PackageBuilder builder() {
 		return new PackageBuilder();
 	}
