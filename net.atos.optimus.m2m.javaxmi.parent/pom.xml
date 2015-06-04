@@ -6,6 +6,7 @@
   <modules>
   	<module>net.atos.optimus.m2m.javaxmi.core</module>
   	<module>net.atos.optimus.m2m.javaxmi.feature</module>
+  	<module>net.atos.optimus.m2m.javaxmi.operation</module>
   	<module>net.atos.optimus.m2m.javaxmi.site</module>
   	<module>net.atos.optimus.m2m.javaxmi.source.feature</module>
   </modules>
