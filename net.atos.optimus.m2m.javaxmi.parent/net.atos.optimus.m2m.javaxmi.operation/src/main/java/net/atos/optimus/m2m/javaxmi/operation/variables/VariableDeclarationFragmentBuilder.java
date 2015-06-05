@@ -75,5 +75,18 @@ public class VariableDeclarationFragmentBuilder {
 		this.buildVariableDeclarationFragment.setName(name);
 		return this;
 	}
+	
+	/**
+	 * Set the proxy state of the variable declaration fragment under construction
+	 * 
+	 * @param isProxy
+	 *            the proxy state of the variable declaration fragment under
+	 *            construction.
+	 * @return the builder.
+	 */
+	public VariableDeclarationFragmentBuilder setProxy(boolean isProxy) {
+		this.buildVariableDeclarationFragment.setProxy(isProxy);
+		return this;
+	}
 
 }

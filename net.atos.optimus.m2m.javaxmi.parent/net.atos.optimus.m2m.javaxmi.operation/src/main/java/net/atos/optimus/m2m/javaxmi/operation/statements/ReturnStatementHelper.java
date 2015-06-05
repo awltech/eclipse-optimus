@@ -21,6 +21,8 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.statements;
 
+import net.atos.optimus.m2m.javaxmi.operation.fields.FieldAccessHelper;
+
 import org.eclipse.gmt.modisco.java.BooleanLiteral;
 import org.eclipse.gmt.modisco.java.NullLiteral;
 import org.eclipse.gmt.modisco.java.ReturnStatement;
@@ -71,6 +73,18 @@ public class ReturnStatementHelper {
 		StringLiteral literal = JavaFactory.eINSTANCE.createStringLiteral();
 		literal.setEscapedValue(value);
 		return ReturnStatementBuilder.builder().setExpression(literal).build();
+	}
+
+	/**
+	 * Create a field return statement
+	 * 
+	 * @param fieldName
+	 *            the name of the return field.
+	 * @return the created field return statement returning the field with the
+	 *         specified name.
+	 */
+	public static ReturnStatement createFieldReturnStatement(String fieldName) {
+		return ReturnStatementBuilder.builder().setExpression(FieldAccessHelper.createFieldAccess(fieldName)).build();
 	}
 
 }
