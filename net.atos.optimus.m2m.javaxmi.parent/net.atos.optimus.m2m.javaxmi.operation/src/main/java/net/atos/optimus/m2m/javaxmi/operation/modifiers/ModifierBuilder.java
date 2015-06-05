@@ -21,6 +21,7 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.modifiers;
 
+import org.eclipse.gmt.modisco.java.CompilationUnit;
 import org.eclipse.gmt.modisco.java.Modifier;
 import org.eclipse.gmt.modisco.java.VisibilityKind;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
@@ -73,6 +74,18 @@ public class ModifierBuilder {
 	 */
 	public ModifierBuilder setVisibility(VisibilityKind visibility) {
 		this.buildModifier.setVisibility(visibility);
+		return this;
+	}
+
+	/**
+	 * Set the compilation unit of the modifier under construction
+	 * 
+	 * @param compilationUnit
+	 *            the compilation unit of the modifier under construction.
+	 * @return the builder.
+	 */
+	public ModifierBuilder setCompilationUnit(CompilationUnit compilationUnit) {
+		this.buildModifier.setOriginalCompilationUnit(compilationUnit);
 		return this;
 	}
 

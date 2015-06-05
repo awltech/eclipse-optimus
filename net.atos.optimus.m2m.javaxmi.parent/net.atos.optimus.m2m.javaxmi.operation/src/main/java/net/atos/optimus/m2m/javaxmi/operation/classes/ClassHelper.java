@@ -31,7 +31,7 @@ import org.eclipse.gmt.modisco.java.Modifier;
 import org.eclipse.gmt.modisco.java.VisibilityKind;
 
 /**
- * The purpose of such class is to help with the creation of class
+ * The purpose of such class is to help with the creation of classes
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
