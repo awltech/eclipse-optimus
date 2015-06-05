@@ -26,7 +26,6 @@ import java.util.List;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.statements.BlockBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.types.PrimitiveTypeBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.types.PrimitiveTypeName;
 import net.atos.optimus.m2m.javaxmi.operation.types.TypeAccessBuilder;
 
 import org.eclipse.gmt.modisco.java.Block;
@@ -56,15 +55,11 @@ public class MethodHelper {
 	 *            the class where is the created method.
 	 * @param methodName
 	 *            the name of the created method.
-	 * @param returnType
-	 *            the return type the created method.
-	 * @param visibility
-	 *            the visibility the created method.
 	 * @return the created public void method accordingly to the specified
 	 *         parameters.
 	 */
 	public static MethodDeclaration createMethod(ClassDeclaration javaClass, String methodName) {
-		return MethodHelper.createMethod(javaClass, methodName, PrimitiveTypeName.VOID, VisibilityKind.PUBLIC);
+		return MethodHelper.createMethod(javaClass, VisibilityKind.PUBLIC, "void", methodName);
 	}
 
 	/**
@@ -72,16 +67,15 @@ public class MethodHelper {
 	 * 
 	 * @param javaClass
 	 *            the class where is the created method.
+	 * @param returnTypeName
+	 *            the return type name of the created method.
 	 * @param methodName
 	 *            the name of the created method.
-	 * @param returnType
-	 *            the return type the created method.
 	 * @return the created public method accordingly to the specified
 	 *         parameters.
 	 */
-	public static MethodDeclaration createMethod(ClassDeclaration javaClass, String methodName,
-			PrimitiveTypeName returnType) {
-		return MethodHelper.createMethod(javaClass, methodName, returnType, VisibilityKind.PUBLIC);
+	public static MethodDeclaration createMethod(ClassDeclaration javaClass, String returnTypeName, String methodName) {
+		return MethodHelper.createMethod(javaClass, VisibilityKind.PUBLIC, returnTypeName, methodName);
 	}
 
 	/**
@@ -89,15 +83,15 @@ public class MethodHelper {
 	 * 
 	 * @param javaClass
 	 *            the class where is the created method.
-	 * @param methodName
-	 *            the name of the created method.
 	 * @param visibility
 	 *            the visibility the created method.
+	 * @param methodName
+	 *            the name of the created method.
 	 * @return the created void method accordingly to the specified parameters.
 	 */
-	public static MethodDeclaration createMethod(ClassDeclaration javaClass, String methodName,
-			VisibilityKind visibility) {
-		return MethodHelper.createMethod(javaClass, methodName, PrimitiveTypeName.VOID, visibility);
+	public static MethodDeclaration createMethod(ClassDeclaration javaClass, VisibilityKind visibility,
+			String methodName) {
+		return MethodHelper.createMethod(javaClass, visibility, "void", methodName);
 	}
 
 	/**
@@ -105,19 +99,19 @@ public class MethodHelper {
 	 * 
 	 * @param javaClass
 	 *            the class where is the created method.
-	 * @param methodName
-	 *            the name of the created method.
-	 * @param returnType
-	 *            the return type the created method.
 	 * @param visibility
 	 *            the visibility the created method.
+	 * @param returnTypeName
+	 *            the return type name of the created method.
+	 * @param methodName
+	 *            the name of the created method.
 	 * @return the created method accordingly to the specified parameters.
 	 */
-	public static MethodDeclaration createMethod(ClassDeclaration javaClass, String methodName,
-			PrimitiveTypeName returnType, VisibilityKind visibility) {
+	public static MethodDeclaration createMethod(ClassDeclaration javaClass, VisibilityKind visibility,
+			String returnTypeName, String methodName) {
 		Modifier modifier = ModifierBuilder.builder().setVisibility(visibility)
 				.setCompilationUnit(javaClass.getOriginalCompilationUnit()).build();
-		PrimitiveType primitiveType = PrimitiveTypeBuilder.builder().setName(returnType).build();
+		PrimitiveType primitiveType = PrimitiveTypeBuilder.builder().setName(returnTypeName).build();
 		TypeAccess typeAccess = TypeAccessBuilder.builder().setType(primitiveType).build();
 		return MethodDeclarationBuilder.builder().setModifier(modifier).setReturnType(typeAccess).setName(methodName)
 				.setAbstractTypeDeclaration(javaClass).setCompilationUnit(javaClass.getOriginalCompilationUnit())

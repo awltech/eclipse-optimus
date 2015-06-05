@@ -62,16 +62,16 @@ public class PrimitiveTypeBuilder {
 	public PrimitiveType build() {
 		return this.buildPrimitiveType;
 	}
-	
+
 	/**
-	 * Set the name of the class declaration under construction
+	 * Set the name of the primitive type under construction
 	 * 
-	 * @param name
-	 *            the name of the class declaration under construction.
+	 * @param primitiveTypeName
+	 *            the type name of the primitive type under construction.
 	 * @return the builder.
 	 */
-	public PrimitiveTypeBuilder setName(PrimitiveTypeName primitiveTypeName) {
-		this.buildPrimitiveType.setName(primitiveTypeName.getAssociatedTypeName());
+	public PrimitiveTypeBuilder setName(String primitiveTypeName) {
+		this.buildPrimitiveType.setName(primitiveTypeName);
 		return this;
 	}
 
