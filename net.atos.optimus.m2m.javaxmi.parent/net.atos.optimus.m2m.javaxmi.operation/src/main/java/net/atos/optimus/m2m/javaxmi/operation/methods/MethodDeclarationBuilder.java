@@ -21,6 +21,7 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.methods;
 
+import org.eclipse.gmt.modisco.java.Block;
 import org.eclipse.gmt.modisco.java.CompilationUnit;
 import org.eclipse.gmt.modisco.java.MethodDeclaration;
 import org.eclipse.gmt.modisco.java.Modifier;
@@ -126,6 +127,18 @@ public class MethodDeclarationBuilder {
 	 */
 	public MethodDeclarationBuilder setReturnType(TypeAccess typeAccess) {
 		this.buildMethodDeclaration.setReturnType(typeAccess);
+		return this;
+	}
+
+	/**
+	 * Set the body of the method declaration under construction
+	 * 
+	 * @param body
+	 *            the body of the method declaration under construction.
+	 * @return the builder.
+	 */
+	public MethodDeclarationBuilder setBody(Block body) {
+		this.buildMethodDeclaration.setBody(body);
 		return this;
 	}
 

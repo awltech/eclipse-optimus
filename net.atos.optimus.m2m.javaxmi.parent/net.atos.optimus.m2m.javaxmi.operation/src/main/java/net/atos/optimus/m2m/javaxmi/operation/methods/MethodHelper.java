@@ -21,15 +21,21 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.methods;
 
+import java.util.List;
+
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.statements.BlockBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.types.PrimitiveTypeBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.types.PrimitiveTypeName;
 import net.atos.optimus.m2m.javaxmi.operation.types.TypeAccessBuilder;
 
+import org.eclipse.gmt.modisco.java.Block;
 import org.eclipse.gmt.modisco.java.ClassDeclaration;
 import org.eclipse.gmt.modisco.java.MethodDeclaration;
 import org.eclipse.gmt.modisco.java.Modifier;
 import org.eclipse.gmt.modisco.java.PrimitiveType;
+import org.eclipse.gmt.modisco.java.ReturnStatement;
+import org.eclipse.gmt.modisco.java.Statement;
 import org.eclipse.gmt.modisco.java.TypeAccess;
 import org.eclipse.gmt.modisco.java.VisibilityKind;
 
@@ -42,7 +48,7 @@ import org.eclipse.gmt.modisco.java.VisibilityKind;
  */
 
 public class MethodHelper {
-	
+
 	/**
 	 * Create a public void method
 	 * 
@@ -54,7 +60,8 @@ public class MethodHelper {
 	 *            the return type the created method.
 	 * @param visibility
 	 *            the visibility the created method.
-	 * @return the created public void method accordingly to the specified parameters.
+	 * @return the created public void method accordingly to the specified
+	 *         parameters.
 	 */
 	public static MethodDeclaration createMethod(ClassDeclaration javaClass, String methodName) {
 		return MethodHelper.createMethod(javaClass, methodName, PrimitiveTypeName.VOID, VisibilityKind.PUBLIC);
@@ -69,7 +76,8 @@ public class MethodHelper {
 	 *            the name of the created method.
 	 * @param returnType
 	 *            the return type the created method.
-	 * @return the created public method accordingly to the specified parameters.
+	 * @return the created public method accordingly to the specified
+	 *         parameters.
 	 */
 	public static MethodDeclaration createMethod(ClassDeclaration javaClass, String methodName,
 			PrimitiveTypeName returnType) {
@@ -115,4 +123,35 @@ public class MethodHelper {
 				.setAbstractTypeDeclaration(javaClass).setCompilationUnit(javaClass.getOriginalCompilationUnit())
 				.build();
 	}
+
+	/**
+	 * Add a return statement to a method
+	 * 
+	 * @param methodDeclaration
+	 *            the method which we add the return statement.
+	 * @param returnStatement
+	 *            the return statement of the method.
+	 * @return the method with the specified body.
+	 */
+	public static MethodDeclaration addMethodBody(MethodDeclaration methodDeclaration, ReturnStatement returnStatement) {
+		Block block = BlockBuilder.builder().addStatement(returnStatement).build();
+		methodDeclaration.setBody(block);
+		return methodDeclaration;
+	}
+
+	/**
+	 * Add a body to a method
+	 * 
+	 * @param methodDeclaration
+	 *            the method which we add the body.
+	 * @param statements
+	 *            the statement list of the body.
+	 * @return the method with the specified body.
+	 */
+	public static MethodDeclaration addMethodBody(MethodDeclaration methodDeclaration, List<Statement> statements) {
+		Block block = BlockBuilder.builder().addStatements(statements).build();
+		methodDeclaration.setBody(block);
+		return methodDeclaration;
+	}
+
 }

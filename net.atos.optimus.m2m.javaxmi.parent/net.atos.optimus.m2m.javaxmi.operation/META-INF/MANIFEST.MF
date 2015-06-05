@@ -11,7 +11,9 @@ Require-Bundle: org.eclipse.ui,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: net.atos.optimus.m2m.javaxmi.operation.classes,
+ net.atos.optimus.m2m.javaxmi.operation.comments,
  net.atos.optimus.m2m.javaxmi.operation.methods,
  net.atos.optimus.m2m.javaxmi.operation.modifiers,
  net.atos.optimus.m2m.javaxmi.operation.packages,
+ net.atos.optimus.m2m.javaxmi.operation.statements,
  net.atos.optimus.m2m.javaxmi.operation.types
