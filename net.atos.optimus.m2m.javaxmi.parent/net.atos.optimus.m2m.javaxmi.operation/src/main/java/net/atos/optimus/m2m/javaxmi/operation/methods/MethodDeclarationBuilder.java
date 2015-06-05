@@ -21,10 +21,13 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.methods;
 
+import java.util.Collection;
+
 import org.eclipse.gmt.modisco.java.Block;
 import org.eclipse.gmt.modisco.java.CompilationUnit;
 import org.eclipse.gmt.modisco.java.MethodDeclaration;
 import org.eclipse.gmt.modisco.java.Modifier;
+import org.eclipse.gmt.modisco.java.SingleVariableDeclaration;
 import org.eclipse.gmt.modisco.java.TypeAccess;
 import org.eclipse.gmt.modisco.java.TypeDeclaration;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
@@ -125,8 +128,8 @@ public class MethodDeclarationBuilder {
 	 *            the return type of the method declaration under construction.
 	 * @return the builder.
 	 */
-	public MethodDeclarationBuilder setReturnType(TypeAccess typeAccess) {
-		this.buildMethodDeclaration.setReturnType(typeAccess);
+	public MethodDeclarationBuilder setReturnType(TypeAccess typeDeclaration) {
+		this.buildMethodDeclaration.setReturnType(typeDeclaration);
 		return this;
 	}
 
@@ -139,6 +142,34 @@ public class MethodDeclarationBuilder {
 	 */
 	public MethodDeclarationBuilder setBody(Block body) {
 		this.buildMethodDeclaration.setBody(body);
+		return this;
+	}
+
+	/**
+	 * Add a single variable declaration to the method declaration under
+	 * construction
+	 * 
+	 * @param singleVariableDeclaration
+	 *            the single variable declaration to add to the method
+	 *            declaration under construction.
+	 * @return the builder.
+	 */
+	public MethodDeclarationBuilder addPameter(SingleVariableDeclaration singleVariableDeclaration) {
+		this.buildMethodDeclaration.getParameters().add(singleVariableDeclaration);
+		return this;
+	}
+
+	/**
+	 * Add a collection of single variable declarations to the method
+	 * declaration under construction
+	 * 
+	 * @param singleVariableDeclarations
+	 *            the list of single variable declarations to add to the method
+	 *            declaration under construction.
+	 * @return the builder.
+	 */
+	public MethodDeclarationBuilder addPameters(Collection<SingleVariableDeclaration> singleVariableDeclarations) {
+		this.buildMethodDeclaration.getParameters().addAll(singleVariableDeclarations);
 		return this;
 	}
 

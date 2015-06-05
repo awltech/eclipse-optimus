@@ -21,6 +21,7 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.methods;
 
+import java.util.Collection;
 import java.util.List;
 
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
@@ -34,6 +35,7 @@ import org.eclipse.gmt.modisco.java.MethodDeclaration;
 import org.eclipse.gmt.modisco.java.Modifier;
 import org.eclipse.gmt.modisco.java.PrimitiveType;
 import org.eclipse.gmt.modisco.java.ReturnStatement;
+import org.eclipse.gmt.modisco.java.SingleVariableDeclaration;
 import org.eclipse.gmt.modisco.java.Statement;
 import org.eclipse.gmt.modisco.java.TypeAccess;
 import org.eclipse.gmt.modisco.java.VisibilityKind;
@@ -48,22 +50,60 @@ import org.eclipse.gmt.modisco.java.VisibilityKind;
 
 public class MethodHelper {
 
+	public static final String VOID_TYPE = "void";
+
 	/**
-	 * Create a public void method
+	 * Create a public void method with no parameter
 	 * 
 	 * @param javaClass
 	 *            the class where is the created method.
 	 * @param methodName
 	 *            the name of the created method.
-	 * @return the created public void method accordingly to the specified
-	 *         parameters.
+	 * @return the created public void method with no parameter accordingly to
+	 *         the specified parameters.
 	 */
 	public static MethodDeclaration createMethod(ClassDeclaration javaClass, String methodName) {
-		return MethodHelper.createMethod(javaClass, VisibilityKind.PUBLIC, "void", methodName);
+		return MethodHelper.createMethod(javaClass, VisibilityKind.PUBLIC, MethodHelper.VOID_TYPE, methodName);
 	}
 
 	/**
-	 * Create a public method
+	 * Create a public void method with one parameter
+	 * 
+	 * @param javaClass
+	 *            the class where is the created method.
+	 * @param methodName
+	 *            the name of the created method.
+	 * @param parameter
+	 *            the parameter of the created method.
+	 * @return the created public void method with one parameter accordingly to
+	 *         the specified parameters.
+	 */
+	public static MethodDeclaration createMethod(ClassDeclaration javaClass, String methodName,
+			SingleVariableDeclaration parameter) {
+		return MethodHelper.createMethod(javaClass, VisibilityKind.PUBLIC, MethodHelper.VOID_TYPE, methodName,
+				parameter);
+	}
+
+	/**
+	 * Create a public void method with parameters
+	 * 
+	 * @param javaClass
+	 *            the class where is the created method.
+	 * @param methodName
+	 *            the name of the created method.
+	 * @param parameters
+	 *            the collection of parameters of the created method.
+	 * @return the created public void method with parameters accordingly to the
+	 *         specified parameters.
+	 */
+	public static MethodDeclaration createMethod(ClassDeclaration javaClass, String methodName,
+			Collection<SingleVariableDeclaration> parameters) {
+		return MethodHelper.createMethod(javaClass, VisibilityKind.PUBLIC, MethodHelper.VOID_TYPE, methodName,
+				parameters);
+	}
+
+	/**
+	 * Create a public method with no parameter
 	 * 
 	 * @param javaClass
 	 *            the class where is the created method.
@@ -71,15 +111,53 @@ public class MethodHelper {
 	 *            the return type name of the created method.
 	 * @param methodName
 	 *            the name of the created method.
-	 * @return the created public method accordingly to the specified
-	 *         parameters.
+	 * @return the created public method with no parameter accordingly to the
+	 *         specified parameters.
 	 */
 	public static MethodDeclaration createMethod(ClassDeclaration javaClass, String returnTypeName, String methodName) {
 		return MethodHelper.createMethod(javaClass, VisibilityKind.PUBLIC, returnTypeName, methodName);
 	}
 
 	/**
-	 * Create a void method
+	 * Create a public method with one parameter
+	 * 
+	 * @param javaClass
+	 *            the class where is the created method.
+	 * @param returnTypeName
+	 *            the return type name of the created method.
+	 * @param methodName
+	 *            the name of the created method.
+	 * @param parameter
+	 *            the parameter of the created method.
+	 * @return the created public method with one parameter accordingly to the
+	 *         specified parameters.
+	 */
+	public static MethodDeclaration createMethod(ClassDeclaration javaClass, String returnTypeName, String methodName,
+			SingleVariableDeclaration parameter) {
+		return MethodHelper.createMethod(javaClass, VisibilityKind.PUBLIC, returnTypeName, methodName, parameter);
+	}
+
+	/**
+	 * Create a public method with parameters
+	 * 
+	 * @param javaClass
+	 *            the class where is the created method.
+	 * @param returnTypeName
+	 *            the return type name of the created method.
+	 * @param methodName
+	 *            the name of the created method.
+	 * @param parameters
+	 *            the collection of parameters of the created method.
+	 * @return the created public method with parameters accordingly to the
+	 *         specified parameters.
+	 */
+	public static MethodDeclaration createMethod(ClassDeclaration javaClass, String returnTypeName, String methodName,
+			Collection<SingleVariableDeclaration> parameters) {
+		return MethodHelper.createMethod(javaClass, VisibilityKind.PUBLIC, returnTypeName, methodName, parameters);
+	}
+
+	/**
+	 * Create a void method with no parameter
 	 * 
 	 * @param javaClass
 	 *            the class where is the created method.
@@ -87,15 +165,54 @@ public class MethodHelper {
 	 *            the visibility the created method.
 	 * @param methodName
 	 *            the name of the created method.
-	 * @return the created void method accordingly to the specified parameters.
+	 * @return the created void method with no parameter accordingly to the
+	 *         specified parameters.
 	 */
 	public static MethodDeclaration createMethod(ClassDeclaration javaClass, VisibilityKind visibility,
 			String methodName) {
-		return MethodHelper.createMethod(javaClass, visibility, "void", methodName);
+		return MethodHelper.createMethod(javaClass, visibility, MethodHelper.VOID_TYPE, methodName);
 	}
 
 	/**
-	 * Create a method
+	 * Create a void method with one parameter
+	 * 
+	 * @param javaClass
+	 *            the class where is the created method.
+	 * @param visibility
+	 *            the visibility the created method.
+	 * @param methodName
+	 *            the name of the created method.
+	 * @param parameter
+	 *            the parameter of the created method.
+	 * @return the created void method with one parameter accordingly to the
+	 *         specified parameters.
+	 */
+	public static MethodDeclaration createMethod(ClassDeclaration javaClass, VisibilityKind visibility,
+			String methodName, SingleVariableDeclaration parameter) {
+		return MethodHelper.createMethod(javaClass, visibility, MethodHelper.VOID_TYPE, methodName, parameter);
+	}
+
+	/**
+	 * Create a void method with parameters
+	 * 
+	 * @param javaClass
+	 *            the class where is the created method.
+	 * @param visibility
+	 *            the visibility the created method.
+	 * @param methodName
+	 *            the name of the created method.
+	 * @param parameters
+	 *            the collection of parameters of the created method.
+	 * @return the created void method with parameters accordingly to the
+	 *         specified parameters.
+	 */
+	public static MethodDeclaration createMethod(ClassDeclaration javaClass, VisibilityKind visibility,
+			String methodName, Collection<SingleVariableDeclaration> parameters) {
+		return MethodHelper.createMethod(javaClass, visibility, MethodHelper.VOID_TYPE, methodName, parameters);
+	}
+
+	/**
+	 * Create a method with no parameter
 	 * 
 	 * @param javaClass
 	 *            the class where is the created method.
@@ -105,7 +222,8 @@ public class MethodHelper {
 	 *            the return type name of the created method.
 	 * @param methodName
 	 *            the name of the created method.
-	 * @return the created method accordingly to the specified parameters.
+	 * @return the created method with no parameter accordingly to the specified
+	 *         parameters.
 	 */
 	public static MethodDeclaration createMethod(ClassDeclaration javaClass, VisibilityKind visibility,
 			String returnTypeName, String methodName) {
@@ -116,6 +234,54 @@ public class MethodHelper {
 		return MethodDeclarationBuilder.builder().setModifier(modifier).setReturnType(typeAccess).setName(methodName)
 				.setAbstractTypeDeclaration(javaClass).setCompilationUnit(javaClass.getOriginalCompilationUnit())
 				.build();
+	}
+
+	/**
+	 * Create a method with one parameter
+	 * 
+	 * @param javaClass
+	 *            the class where is the created method.
+	 * @param visibility
+	 *            the visibility the created method.
+	 * @param returnTypeName
+	 *            the return type name of the created method.
+	 * @param methodName
+	 *            the name of the created method.
+	 * @param parameter
+	 *            the parameter of the created method.
+	 * @return the created method with one parameter accordingly to the
+	 *         specified parameters.
+	 */
+	public static MethodDeclaration createMethod(ClassDeclaration javaClass, VisibilityKind visibility,
+			String returnTypeName, String methodName, SingleVariableDeclaration parameter) {
+		MethodDeclaration methodDeclaration = MethodHelper.createMethod(javaClass, visibility, returnTypeName,
+				methodName);
+		methodDeclaration.getParameters().add(parameter);
+		return methodDeclaration;
+	}
+
+	/**
+	 * Create a method with parameters
+	 * 
+	 * @param javaClass
+	 *            the class where is the created method.
+	 * @param visibility
+	 *            the visibility the created method.
+	 * @param returnTypeName
+	 *            the return type name of the created method.
+	 * @param methodName
+	 *            the name of the created method.
+	 * @param parameters
+	 *            the collection of parameters of the created method.
+	 * @return the created method with parameters accordingly to the specified
+	 *         parameters.
+	 */
+	public static MethodDeclaration createMethod(ClassDeclaration javaClass, VisibilityKind visibility,
+			String returnTypeName, String methodName, Collection<SingleVariableDeclaration> parameters) {
+		MethodDeclaration methodDeclaration = MethodHelper.createMethod(javaClass, visibility, returnTypeName,
+				methodName);
+		methodDeclaration.getParameters().addAll(parameters);
+		return methodDeclaration;
 	}
 
 	/**
