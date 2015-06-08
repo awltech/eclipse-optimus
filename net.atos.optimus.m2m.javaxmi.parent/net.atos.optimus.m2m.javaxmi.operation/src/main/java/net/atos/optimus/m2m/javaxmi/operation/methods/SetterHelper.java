@@ -22,11 +22,9 @@
 package net.atos.optimus.m2m.javaxmi.operation.methods;
 
 import net.atos.optimus.m2m.javaxmi.operation.statements.StatementHelper;
-import net.atos.optimus.m2m.javaxmi.operation.variables.VariableHelper;
 
 import org.eclipse.gmt.modisco.java.ClassDeclaration;
 import org.eclipse.gmt.modisco.java.MethodDeclaration;
-import org.eclipse.gmt.modisco.java.SingleVariableDeclaration;
 import org.eclipse.gmt.modisco.java.VisibilityKind;
 
 /**
@@ -152,10 +150,9 @@ public class SetterHelper {
 	 */
 	public static MethodDeclaration createSetter(ClassDeclaration javaClass, VisibilityKind visibility,
 			String setterName, String parameterName, String fieldTypeName, String fieldName) {
-		SingleVariableDeclaration variable = VariableHelper.createVariableDeclaration(fieldTypeName, parameterName);
-		MethodDeclaration setterMethod = MethodHelper.createMethod(javaClass, visibility, setterName, variable);
-		MethodHelper.addMethodBody(setterMethod, StatementHelper.createSetFieldStatement(fieldName, parameterName));
-		return setterMethod;
+		return MethodBuilderHelper.builder(javaClass, setterName).setVisibility(visibility)
+				.addParameter(fieldTypeName, parameterName)
+				.addStatement(StatementHelper.createSetFieldStatement(fieldName, parameterName)).build();
 	}
 
 	/**

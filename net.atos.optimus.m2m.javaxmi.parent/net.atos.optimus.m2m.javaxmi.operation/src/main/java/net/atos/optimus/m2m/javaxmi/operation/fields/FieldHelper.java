@@ -22,15 +22,12 @@
 package net.atos.optimus.m2m.javaxmi.operation.fields;
 
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.types.PrimitiveTypeBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.types.TypeAccessBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.types.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.variables.VariableDeclarationFragmentBuilder;
 
 import org.eclipse.gmt.modisco.java.ClassDeclaration;
 import org.eclipse.gmt.modisco.java.FieldDeclaration;
 import org.eclipse.gmt.modisco.java.Modifier;
-import org.eclipse.gmt.modisco.java.PrimitiveType;
-import org.eclipse.gmt.modisco.java.TypeAccess;
 import org.eclipse.gmt.modisco.java.VariableDeclarationFragment;
 import org.eclipse.gmt.modisco.java.VisibilityKind;
 
@@ -72,17 +69,16 @@ public class FieldHelper {
 	 *            the name of the created field.
 	 * @return the created field accordingly to the specified parameters.
 	 */
-	public static FieldDeclaration createField(ClassDeclaration javaClass, VisibilityKind visibility,
-			String typeName, String fieldName) {
+	public static FieldDeclaration createField(ClassDeclaration javaClass, VisibilityKind visibility, String typeName,
+			String fieldName) {
 		Modifier modifier = ModifierBuilder.builder().setVisibility(visibility)
 				.setCompilationUnit(javaClass.getOriginalCompilationUnit()).build();
 		VariableDeclarationFragment variableDeclarationFragment = VariableDeclarationFragmentBuilder.builder()
 				.setName(fieldName).build();
-		PrimitiveType primitiveType = PrimitiveTypeBuilder.builder().setName(typeName).build();
-		TypeAccess typeAccess = TypeAccessBuilder.builder().setType(primitiveType).build();
-		return FieldDeclarationBuilder.builder().setModifier(modifier).setType(typeAccess)
-				.addFragment(variableDeclarationFragment).setAbstractTypeDeclaration(javaClass)
-				.setCompilationUnit(javaClass.getOriginalCompilationUnit()).build();
+		return FieldDeclarationBuilder.builder().setModifier(modifier)
+				.setType(TypeAccessHelper.createTypeAccess(typeName)).addFragment(variableDeclarationFragment)
+				.setAbstractTypeDeclaration(javaClass).setCompilationUnit(javaClass.getOriginalCompilationUnit())
+				.build();
 	}
 
 }

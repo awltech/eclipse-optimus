@@ -24,7 +24,7 @@ package net.atos.optimus.m2m.javaxmi.operation.statements;
 import net.atos.optimus.m2m.javaxmi.operation.comments.LineCommentBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.fields.FieldAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.variables.AssignmentBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.variables.VariableHelper;
+import net.atos.optimus.m2m.javaxmi.operation.variables.VariableAccessHelper;
 
 import org.eclipse.gmt.modisco.java.AssignmentKind;
 import org.eclipse.gmt.modisco.java.Expression;
@@ -57,7 +57,7 @@ public class StatementHelper {
 	 */
 	public static ExpressionStatement createSetFieldStatement(String fieldName, String variableName) {
 		FieldAccess field = FieldAccessHelper.createFieldAccess(fieldName);
-		SingleVariableAccess variable = VariableHelper.createVariableAccess(variableName);
+		SingleVariableAccess variable = VariableAccessHelper.createVariableAccess(variableName);
 		Expression setExpression = AssignmentBuilder.builder().setOperator(AssignmentKind.ASSIGN)
 				.setLeftHandSide(field).setRightHandSide(variable).build();
 		return ExpressionStatementBuilder.builder().setExpression(setExpression).build();

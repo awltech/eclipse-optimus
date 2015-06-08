@@ -19,35 +19,32 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.javaxmi.operation.variables;
+package net.atos.optimus.m2m.javaxmi.operation.types;
 
-import net.atos.optimus.m2m.javaxmi.operation.types.TypeAccessHelper;
-
-import org.eclipse.gmt.modisco.java.SingleVariableDeclaration;
+import org.eclipse.gmt.modisco.java.PrimitiveType;
+import org.eclipse.gmt.modisco.java.TypeAccess;
 
 /**
- * The purpose of such class is to help with the creation of variable
+ * The purpose of such class is to help with the creation of type access
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
  *
  */
 
-public class VariableHelper {
+public class TypeAccessHelper {
 
 	/**
-	 * Create a single variable declaration
+	 * Create a type access associated to a variable name
 	 * 
-	 * @param typeName
-	 *            the type name of the created single variable declaration.
-	 * @param variableName
-	 *            the name of the created single variable declaration.
-	 * @return the created single variable declaration accordingly to the
-	 *         specified parameters.
+	 * @param variableTypeName
+	 *            the variable name which we want a type access.
+	 * @return the created type access associated to the specified variable
+	 *         name.
 	 */
-	public static SingleVariableDeclaration createVariableDeclaration(String typeName, String variableName) {
-		return SingleVariableDeclarationBuilder.builder().setType(TypeAccessHelper.createTypeAccess(typeName))
-				.setName(variableName).build();
+	public static TypeAccess createTypeAccess(String variableTypeName) {
+		PrimitiveType primitiveType = PrimitiveTypeBuilder.builder().setName(variableTypeName).build();
+		return TypeAccessBuilder.builder().setType(primitiveType).build();
 	}
 
 }

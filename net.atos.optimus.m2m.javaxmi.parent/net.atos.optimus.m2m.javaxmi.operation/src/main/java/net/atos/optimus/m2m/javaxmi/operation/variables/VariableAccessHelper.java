@@ -21,33 +21,32 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.variables;
 
-import net.atos.optimus.m2m.javaxmi.operation.types.TypeAccessHelper;
+import net.atos.optimus.m2m.javaxmi.operation.accesses.SingleVariableAccessBuilder;
 
-import org.eclipse.gmt.modisco.java.SingleVariableDeclaration;
+import org.eclipse.gmt.modisco.java.SingleVariableAccess;
+import org.eclipse.gmt.modisco.java.VariableDeclaration;
 
 /**
- * The purpose of such class is to help with the creation of variable
+ * The purpose of such class is to help with the manipulation of variable
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
  *
  */
 
-public class VariableHelper {
+public class VariableAccessHelper {
 
 	/**
-	 * Create a single variable declaration
+	 * Create an access to a variable
 	 * 
-	 * @param typeName
-	 *            the type name of the created single variable declaration.
 	 * @param variableName
-	 *            the name of the created single variable declaration.
-	 * @return the created single variable declaration accordingly to the
-	 *         specified parameters.
+	 *            the name of the variable which we want an access.
+	 * @return an access to the variable with the specified name.
 	 */
-	public static SingleVariableDeclaration createVariableDeclaration(String typeName, String variableName) {
-		return SingleVariableDeclarationBuilder.builder().setType(TypeAccessHelper.createTypeAccess(typeName))
-				.setName(variableName).build();
+	public static SingleVariableAccess createVariableAccess(String variableName) {
+		VariableDeclaration variableDeclaration = SingleVariableDeclarationBuilder.builder().setName(variableName)
+				.build();
+		return SingleVariableAccessBuilder.builder().setVariable(variableDeclaration).build();
 	}
 
 }
