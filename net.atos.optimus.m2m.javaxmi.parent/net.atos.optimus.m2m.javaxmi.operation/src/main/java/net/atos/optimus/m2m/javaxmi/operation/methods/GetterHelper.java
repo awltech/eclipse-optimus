@@ -113,7 +113,6 @@ public class GetterHelper {
 	 *            method.
 	 * @param getterName
 	 *            the name of the created getter method.
-	 * 
 	 * @param fieldName
 	 *            the name of the field associated with the created getter
 	 *            method.

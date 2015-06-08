@@ -21,8 +21,11 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.types;
 
+import net.atos.optimus.m2m.javaxmi.operation.classes.UnresolvedClassDeclarationBuilder;
+
 import org.eclipse.gmt.modisco.java.PrimitiveType;
 import org.eclipse.gmt.modisco.java.TypeAccess;
+import org.eclipse.gmt.modisco.java.UnresolvedClassDeclaration;
 
 /**
  * The purpose of such class is to help with the creation of type access
@@ -42,9 +45,21 @@ public class TypeAccessHelper {
 	 * @return the created type access associated to the specified variable
 	 *         name.
 	 */
-	public static TypeAccess createTypeAccess(String variableTypeName) {
+	public static TypeAccess createVariableTypeAccess(String variableTypeName) {
 		PrimitiveType primitiveType = PrimitiveTypeBuilder.builder().setName(variableTypeName).build();
 		return TypeAccessBuilder.builder().setType(primitiveType).build();
+	}
+
+	/**
+	 * Create a type access associated to a class name
+	 * 
+	 * @param className
+	 *            the class name which we want a type access.
+	 * @return the created type access associated to the specified class name.
+	 */
+	public static TypeAccess createClassTypeAccess(String className) {
+		UnresolvedClassDeclaration classType = UnresolvedClassDeclarationBuilder.builder().setName(className).build();
+		return TypeAccessBuilder.builder().setType(classType).build();
 	}
 
 }

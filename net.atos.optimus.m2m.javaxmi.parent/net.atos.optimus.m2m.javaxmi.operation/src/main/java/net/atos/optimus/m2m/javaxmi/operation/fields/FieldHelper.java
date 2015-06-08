@@ -76,7 +76,7 @@ public class FieldHelper {
 		VariableDeclarationFragment variableDeclarationFragment = VariableDeclarationFragmentBuilder.builder()
 				.setName(fieldName).build();
 		return FieldDeclarationBuilder.builder().setModifier(modifier)
-				.setType(TypeAccessHelper.createTypeAccess(typeName)).addFragment(variableDeclarationFragment)
+				.setType(TypeAccessHelper.createVariableTypeAccess(typeName)).addFragment(variableDeclarationFragment)
 				.setAbstractTypeDeclaration(javaClass).setCompilationUnit(javaClass.getOriginalCompilationUnit())
 				.build();
 	}

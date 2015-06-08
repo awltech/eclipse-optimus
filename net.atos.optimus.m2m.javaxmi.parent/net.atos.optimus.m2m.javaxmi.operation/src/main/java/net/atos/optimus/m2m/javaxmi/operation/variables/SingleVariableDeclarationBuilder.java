@@ -21,6 +21,8 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.variables;
 
+import org.eclipse.gmt.modisco.java.AbstractMethodDeclaration;
+import org.eclipse.gmt.modisco.java.CompilationUnit;
 import org.eclipse.gmt.modisco.java.SingleVariableDeclaration;
 import org.eclipse.gmt.modisco.java.TypeAccess;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
@@ -87,6 +89,48 @@ public class SingleVariableDeclarationBuilder {
 	 */
 	public SingleVariableDeclarationBuilder setType(TypeAccess typeVariable) {
 		this.buildSingleVariableDeclaration.setType(typeVariable);
+		return this;
+	}
+
+	/**
+	 * Set the method declaration associated to the single variable declaration
+	 * under construction
+	 * 
+	 * @param methodDeclaration
+	 *            the method declaration associated to the single variable
+	 *            declaration under construction.
+	 * @return the builder.
+	 */
+	public SingleVariableDeclarationBuilder setMethodDeclaration(AbstractMethodDeclaration methodDeclaration) {
+		this.buildSingleVariableDeclaration.setMethodDeclaration(methodDeclaration);
+		return this;
+	}
+
+	/**
+	 * Set the compilation unit of the single variable declaration under
+	 * construction
+	 * 
+	 * @param typeVariable
+	 *            the compilation unit of the single variable declaration under
+	 *            construction.
+	 * @return the builder.
+	 */
+	public SingleVariableDeclarationBuilder setCompilationUnit(CompilationUnit compilationUnit) {
+		this.buildSingleVariableDeclaration.setOriginalCompilationUnit(compilationUnit);
+		return this;
+	}
+
+	/**
+	 * Set the varargs state of the single variable declaration under
+	 * construction
+	 * 
+	 * @param varargsState
+	 *            the varargs state of the single variable declaration under
+	 *            construction.
+	 * @return the builder.
+	 */
+	public SingleVariableDeclarationBuilder setVarargs(boolean varargsState) {
+		this.buildSingleVariableDeclaration.setVarargs(varargsState);
 		return this;
 	}
 

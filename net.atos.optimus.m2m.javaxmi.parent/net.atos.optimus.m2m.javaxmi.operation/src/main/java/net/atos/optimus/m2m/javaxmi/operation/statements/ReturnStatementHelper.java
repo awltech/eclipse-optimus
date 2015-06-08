@@ -21,9 +21,12 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.statements;
 
+import net.atos.optimus.m2m.javaxmi.operation.classes.ClassInstanceCreationBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.fields.FieldAccessHelper;
+import net.atos.optimus.m2m.javaxmi.operation.types.TypeAccessHelper;
 
 import org.eclipse.gmt.modisco.java.BooleanLiteral;
+import org.eclipse.gmt.modisco.java.ClassInstanceCreation;
 import org.eclipse.gmt.modisco.java.NullLiteral;
 import org.eclipse.gmt.modisco.java.ReturnStatement;
 import org.eclipse.gmt.modisco.java.StringLiteral;
@@ -85,6 +88,20 @@ public class ReturnStatementHelper {
 	 */
 	public static ReturnStatement createFieldReturnStatement(String fieldName) {
 		return ReturnStatementBuilder.builder().setExpression(FieldAccessHelper.createFieldAccess(fieldName)).build();
+	}
+
+	/**
+	 * Create a class instantiation return statement
+	 * 
+	 * @param className
+	 *            the name of the class to instantiate.
+	 * @return the created class instantiation return statement returning the
+	 *         instantiation of the class with the specified name.
+	 */
+	public static ReturnStatement createClassInstantiationReturnStatement(String className) {
+		ClassInstanceCreation classInstanceCreation = ClassInstanceCreationBuilder.builder()
+				.setType(TypeAccessHelper.createClassTypeAccess(className)).build();
+		return ReturnStatementBuilder.builder().setExpression(classInstanceCreation).build();
 	}
 
 }

@@ -23,6 +23,7 @@ package net.atos.optimus.m2m.javaxmi.operation.variables;
 
 import net.atos.optimus.m2m.javaxmi.operation.types.TypeAccessHelper;
 
+import org.eclipse.gmt.modisco.java.AbstractMethodDeclaration;
 import org.eclipse.gmt.modisco.java.SingleVariableDeclaration;
 
 /**
@@ -46,8 +47,51 @@ public class VariableHelper {
 	 *         specified parameters.
 	 */
 	public static SingleVariableDeclaration createVariableDeclaration(String typeName, String variableName) {
-		return SingleVariableDeclarationBuilder.builder().setType(TypeAccessHelper.createTypeAccess(typeName))
+		return SingleVariableDeclarationBuilder.builder().setType(TypeAccessHelper.createVariableTypeAccess(typeName))
 				.setName(variableName).build();
+	}
+
+	/**
+	 * Create a single variable declaration with varargs state set to false
+	 * 
+	 * @param method
+	 *            the method associated to the created single variable
+	 *            declaration.
+	 * @param typeName
+	 *            the type name of the created single variable declaration.
+	 * @param variableName
+	 *            the name of the created single variable declaration.
+	 * @return the created single variable declaration accordingly to the
+	 *         specified parameters.
+	 */
+	public static SingleVariableDeclaration createVariableDeclaration(AbstractMethodDeclaration method,
+			String typeName, String variableName) {
+		return SingleVariableDeclarationBuilder.builder().setMethodDeclaration(method)
+				.setCompilationUnit(method.getOriginalCompilationUnit())
+				.setType(TypeAccessHelper.createVariableTypeAccess(typeName)).setName(variableName).setVarargs(false).build();
+	}
+
+	/**
+	 * Create a single variable declaration
+	 * 
+	 * @param method
+	 *            the method associated to the created single variable
+	 *            declaration.
+	 * @param typeName
+	 *            the type name of the created single variable declaration.
+	 * @param variableName
+	 *            the name of the created single variable declaration.
+	 * @param varargsState
+	 *            the varargs state of the created single variable declaration.
+	 * @return the created single variable declaration accordingly to the
+	 *         specified parameters.
+	 */
+	public static SingleVariableDeclaration createVariableDeclaration(AbstractMethodDeclaration method,
+			String typeName, String variableName, boolean varargsState) {
+		return SingleVariableDeclarationBuilder.builder().setMethodDeclaration(method)
+				.setCompilationUnit(method.getOriginalCompilationUnit())
+				.setType(TypeAccessHelper.createVariableTypeAccess(typeName)).setName(variableName).setVarargs(varargsState)
+				.build();
 	}
 
 }

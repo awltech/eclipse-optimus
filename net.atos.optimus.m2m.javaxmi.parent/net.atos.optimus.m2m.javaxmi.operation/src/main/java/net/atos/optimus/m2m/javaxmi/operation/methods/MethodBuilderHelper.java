@@ -112,7 +112,7 @@ public class MethodBuilderHelper {
 	 * @return the builder.
 	 */
 	public MethodBuilderHelper setReturnType(String returnTypeName) {
-		this.buildMethodDeclaration.setReturnType(TypeAccessHelper.createTypeAccess(returnTypeName));
+		this.buildMethodDeclaration.setReturnType(TypeAccessHelper.createVariableTypeAccess(returnTypeName));
 		return this;
 	}
 
@@ -129,7 +129,7 @@ public class MethodBuilderHelper {
 	 */
 	public MethodBuilderHelper addParameter(String parameterTypeName, String parameterName) {
 		SingleVariableDeclaration singleVariableDeclaration = VariableHelper.createVariableDeclaration(
-				parameterTypeName, parameterName);
+				this.buildMethodDeclaration, parameterTypeName, parameterName);
 		this.buildMethodDeclaration.getParameters().add(singleVariableDeclaration);
 		return this;
 	}
@@ -145,7 +145,7 @@ public class MethodBuilderHelper {
 	public MethodBuilderHelper addParameter(String parameterTypeName) {
 		String parameterName = MethodBuilderHelper.createParameterName(parameterTypeName);
 		SingleVariableDeclaration singleVariableDeclaration = VariableHelper.createVariableDeclaration(
-				parameterTypeName, parameterName);
+				this.buildMethodDeclaration, parameterTypeName, parameterName);
 		this.buildMethodDeclaration.getParameters().add(singleVariableDeclaration);
 		return this;
 	}
@@ -211,7 +211,7 @@ public class MethodBuilderHelper {
 		Modifier modifier = ModifierBuilder.builder().setVisibility(visibility)
 				.setCompilationUnit(javaClass.getOriginalCompilationUnit()).build();
 		return MethodDeclarationBuilder.builder().setModifier(modifier)
-				.setReturnType(TypeAccessHelper.createTypeAccess(returnTypeName)).setName(methodName)
+				.setReturnType(TypeAccessHelper.createVariableTypeAccess(returnTypeName)).setName(methodName)
 				.setAbstractTypeDeclaration(javaClass).setCompilationUnit(javaClass.getOriginalCompilationUnit())
 				.build();
 	}
