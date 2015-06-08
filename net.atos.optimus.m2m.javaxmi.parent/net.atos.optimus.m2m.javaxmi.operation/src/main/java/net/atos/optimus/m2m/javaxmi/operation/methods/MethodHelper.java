@@ -31,6 +31,7 @@ import net.atos.optimus.m2m.javaxmi.operation.types.TypeAccessBuilder;
 
 import org.eclipse.gmt.modisco.java.Block;
 import org.eclipse.gmt.modisco.java.ClassDeclaration;
+import org.eclipse.gmt.modisco.java.ExpressionStatement;
 import org.eclipse.gmt.modisco.java.MethodDeclaration;
 import org.eclipse.gmt.modisco.java.Modifier;
 import org.eclipse.gmt.modisco.java.PrimitiveType;
@@ -295,6 +296,41 @@ public class MethodHelper {
 	 */
 	public static MethodDeclaration addMethodBody(MethodDeclaration methodDeclaration, ReturnStatement returnStatement) {
 		Block block = BlockBuilder.builder().addStatement(returnStatement).build();
+		methodDeclaration.setBody(block);
+		return methodDeclaration;
+	}
+
+	/**
+	 * Add an expression statement to a method
+	 * 
+	 * @param methodDeclaration
+	 *            the method which we add the expression statement.
+	 * @param expressionStatement
+	 *            the expression statement of the method.
+	 * @return the method with the specified body.
+	 */
+	public static MethodDeclaration addMethodBody(MethodDeclaration methodDeclaration,
+			ExpressionStatement expressionStatement) {
+		Block block = BlockBuilder.builder().addStatement(expressionStatement).build();
+		methodDeclaration.setBody(block);
+		return methodDeclaration;
+	}
+
+	/**
+	 * Add an expression statement and then a return statement to a method
+	 * 
+	 * @param methodDeclaration
+	 *            the method which we add the expression and then the return
+	 *            statement.
+	 * @param expressionStatement
+	 *            the expression statement of the method.
+	 * @param returnStatement
+	 *            the return statement of the method.
+	 * @return the method with the specified body.
+	 */
+	public static MethodDeclaration addMethodBody(MethodDeclaration methodDeclaration,
+			ExpressionStatement expressionStatement, ReturnStatement returnStatement) {
+		Block block = BlockBuilder.builder().addStatement(expressionStatement).addStatement(returnStatement).build();
 		methodDeclaration.setBody(block);
 		return methodDeclaration;
 	}

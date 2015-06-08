@@ -42,7 +42,7 @@ public class ReturnStatementHelper {
 	/**
 	 * Create a null return statement
 	 * 
-	 * @return a null return statement.
+	 * @return the created null return statement.
 	 */
 	public static ReturnStatement createReturnStatement() {
 		NullLiteral literal = JavaFactory.eINSTANCE.createNullLiteral();

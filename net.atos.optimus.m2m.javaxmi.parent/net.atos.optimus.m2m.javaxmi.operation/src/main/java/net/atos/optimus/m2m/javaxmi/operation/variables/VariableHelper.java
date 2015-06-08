@@ -21,23 +21,26 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.variables;
 
+import net.atos.optimus.m2m.javaxmi.operation.accesses.SingleVariableAccessBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.types.PrimitiveTypeBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.types.TypeAccessBuilder;
 
 import org.eclipse.gmt.modisco.java.PrimitiveType;
+import org.eclipse.gmt.modisco.java.SingleVariableAccess;
 import org.eclipse.gmt.modisco.java.SingleVariableDeclaration;
 import org.eclipse.gmt.modisco.java.TypeAccess;
+import org.eclipse.gmt.modisco.java.VariableDeclaration;
 
 /**
- * The purpose of such class is to help with the creation of single variable
- * declarations
+ * The purpose of such class is to help with the creation and manipulation of
+ * variable
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
  *
  */
 
-public class SingleVariableDeclarationHelper {
+public class VariableHelper {
 
 	/**
 	 * Create a single variable declaration
@@ -49,10 +52,16 @@ public class SingleVariableDeclarationHelper {
 	 * @return the created single variable declaration accordingly to the
 	 *         specified parameters.
 	 */
-	public static SingleVariableDeclaration createSingleVariableDeclaration(String typeName, String variableName) {
+	public static SingleVariableDeclaration createVariableDeclaration(String typeName, String variableName) {
 		PrimitiveType primitiveType = PrimitiveTypeBuilder.builder().setName(typeName).build();
 		TypeAccess typeAccess = TypeAccessBuilder.builder().setType(primitiveType).build();
 		return SingleVariableDeclarationBuilder.builder().setType(typeAccess).setName(variableName).build();
+	}
+
+	public static SingleVariableAccess createVariableAccess(String variableName) {
+		VariableDeclaration variableDeclaration = SingleVariableDeclarationBuilder.builder().setName(variableName)
+				.build();
+		return SingleVariableAccessBuilder.builder().setVariable(variableDeclaration).build();
 	}
 
 }

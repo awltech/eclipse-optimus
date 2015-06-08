@@ -22,7 +22,7 @@
 package net.atos.optimus.m2m.javaxmi.operation.accesses;
 
 import org.eclipse.gmt.modisco.java.SingleVariableAccess;
-import org.eclipse.gmt.modisco.java.VariableDeclarationFragment;
+import org.eclipse.gmt.modisco.java.VariableDeclaration;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
 
 /**
@@ -68,13 +68,13 @@ public class SingleVariableAccessBuilder {
 	 * Set the variable declaration fragment of the single variable access under
 	 * construction
 	 * 
-	 * @param variableDeclarationFragment
-	 *            the variable declaration fragment of the single variable
+	 * @param variableDeclaration
+	 *            the variable declaration of the single variable
 	 *            access under construction.
 	 * @return the builder.
 	 */
-	public SingleVariableAccessBuilder setVariable(VariableDeclarationFragment variableDeclarationFragment) {
-		this.buildSingleVariableAccess.setVariable(variableDeclarationFragment);
+	public SingleVariableAccessBuilder setVariable(VariableDeclaration variableDeclaration) {
+		this.buildSingleVariableAccess.setVariable(variableDeclaration);
 		return this;
 	}
 

@@ -44,15 +44,18 @@ public class GetterHelper {
 	 * 
 	 * @param javaClass
 	 *            the class where is the created getter method.
+	 * @param fieldTypeName
+	 *            the name of the field type associated with the created getter
+	 *            method.
 	 * @param fieldName
 	 *            the name of the field associated with the created getter
 	 *            method.
 	 * @return the created public getter method with a generated name
 	 *         accordingly to the specified parameters.
 	 */
-	public static MethodDeclaration createGetter(ClassDeclaration javaClass, String fieldName) {
-		return GetterHelper.createGetter(javaClass, VisibilityKind.PUBLIC, GetterHelper.createGetterName(fieldName),
-				fieldName);
+	public static MethodDeclaration createGetter(ClassDeclaration javaClass, String fieldTypeName, String fieldName) {
+		return GetterHelper.createGetter(javaClass, VisibilityKind.PUBLIC, fieldTypeName,
+				GetterHelper.createGetterName(fieldName), fieldName);
 	}
 
 	/**
@@ -60,6 +63,9 @@ public class GetterHelper {
 	 * 
 	 * @param javaClass
 	 *            the class where is the created getter method.
+	 * @param fieldTypeName
+	 *            the name of the field type associated with the created getter
+	 *            method.
 	 * @param getterName
 	 *            the name of the created getter method.
 	 * @param fieldName
@@ -68,8 +74,9 @@ public class GetterHelper {
 	 * @return the created public getter method accordingly to the specified
 	 *         parameters.
 	 */
-	public static MethodDeclaration createGetter(ClassDeclaration javaClass, String getterName, String fieldName) {
-		return GetterHelper.createGetter(javaClass, VisibilityKind.PUBLIC, getterName, fieldName);
+	public static MethodDeclaration createGetter(ClassDeclaration javaClass, String fieldTypeName, String getterName,
+			String fieldName) {
+		return GetterHelper.createGetter(javaClass, VisibilityKind.PUBLIC, fieldTypeName, getterName, fieldName);
 	}
 
 	/**
@@ -79,14 +86,19 @@ public class GetterHelper {
 	 *            the class where is the created getter method.
 	 * @param visibility
 	 *            the visibility of the created getter method.
+	 * @param fieldTypeName
+	 *            the name of the field type associated with the created getter
+	 *            method.
 	 * @param fieldName
 	 *            the name of the field associated with the created getter
 	 *            method.
 	 * @return the created getter method with a generated name accordingly to
 	 *         the specified parameters.
 	 */
-	public static MethodDeclaration createGetter(ClassDeclaration javaClass, VisibilityKind visibility, String fieldName) {
-		return GetterHelper.createGetter(javaClass, visibility, GetterHelper.createGetterName(fieldName), fieldName);
+	public static MethodDeclaration createGetter(ClassDeclaration javaClass, VisibilityKind visibility,
+			String fieldTypeName, String fieldName) {
+		return GetterHelper.createGetter(javaClass, visibility, fieldTypeName,
+				GetterHelper.createGetterName(fieldName), fieldName);
 	}
 
 	/**
@@ -96,8 +108,12 @@ public class GetterHelper {
 	 *            the class where is the created getter method.
 	 * @param visibility
 	 *            the visibility of the created getter method.
+	 * @param fieldTypeName
+	 *            the name of the field type associated with the created getter
+	 *            method.
 	 * @param getterName
 	 *            the name of the created getter method.
+	 * 
 	 * @param fieldName
 	 *            the name of the field associated with the created getter
 	 *            method.
@@ -105,8 +121,8 @@ public class GetterHelper {
 	 *         parameters.
 	 */
 	public static MethodDeclaration createGetter(ClassDeclaration javaClass, VisibilityKind visibility,
-			String getterName, String fieldName) {
-		MethodDeclaration getterMethod = MethodHelper.createMethod(javaClass, visibility, getterName);
+			String fieldTypeName, String getterName, String fieldName) {
+		MethodDeclaration getterMethod = MethodHelper.createMethod(javaClass, visibility, fieldTypeName, getterName);
 		MethodHelper.addMethodBody(getterMethod, ReturnStatementHelper.createFieldReturnStatement(fieldName));
 		return getterMethod;
 	}

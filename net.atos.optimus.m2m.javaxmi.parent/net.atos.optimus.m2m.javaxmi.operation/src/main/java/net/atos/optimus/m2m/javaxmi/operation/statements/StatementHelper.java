@@ -22,8 +22,16 @@
 package net.atos.optimus.m2m.javaxmi.operation.statements;
 
 import net.atos.optimus.m2m.javaxmi.operation.comments.LineCommentBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.fields.FieldAccessHelper;
+import net.atos.optimus.m2m.javaxmi.operation.variables.AssignmentBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.variables.VariableHelper;
 
+import org.eclipse.gmt.modisco.java.AssignmentKind;
+import org.eclipse.gmt.modisco.java.Expression;
+import org.eclipse.gmt.modisco.java.ExpressionStatement;
+import org.eclipse.gmt.modisco.java.FieldAccess;
 import org.eclipse.gmt.modisco.java.LineComment;
+import org.eclipse.gmt.modisco.java.SingleVariableAccess;
 import org.eclipse.gmt.modisco.java.Statement;
 
 /**
@@ -35,6 +43,25 @@ import org.eclipse.gmt.modisco.java.Statement;
  */
 
 public class StatementHelper {
+
+	/**
+	 * Create a statement to set a field
+	 * 
+	 * @param fieldName
+	 *            the name of the field to set.
+	 * @param variableName
+	 *            the name of the variable containing the new value of the
+	 *            field.
+	 * @return the created statement setting the specified field with the
+	 *         specified variable.
+	 */
+	public static ExpressionStatement createSetFieldStatement(String fieldName, String variableName) {
+		FieldAccess field = FieldAccessHelper.createFieldAccess(fieldName);
+		SingleVariableAccess variable = VariableHelper.createVariableAccess(variableName);
+		Expression setExpression = AssignmentBuilder.builder().setOperator(AssignmentKind.ASSIGN)
+				.setLeftHandSide(field).setRightHandSide(variable).build();
+		return ExpressionStatementBuilder.builder().setExpression(setExpression).build();
+	}
 
 	/**
 	 * Add a comment to a statement
