@@ -171,7 +171,7 @@ public class MethodBuilderHelper {
 	}
 
 	/**
-	 * Create a method with no parameter
+	 * Create a method with no parameter and no body
 	 * 
 	 * @param javaClass
 	 *            the class where is the created method.
@@ -181,7 +181,7 @@ public class MethodBuilderHelper {
 	 *            the return type name of the created method.
 	 * @param methodName
 	 *            the name of the created method.
-	 * @return the created method with no parameter accordingly to the specified
+	 * @return the created method with no parameter and no body accordingly to the specified
 	 *         parameters.
 	 */
 	protected static MethodDeclaration createMethodBasicSignature(ClassDeclaration javaClass,

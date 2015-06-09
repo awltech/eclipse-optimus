@@ -25,6 +25,7 @@ import org.eclipse.gmt.modisco.java.ClassDeclaration;
 import org.eclipse.gmt.modisco.java.CompilationUnit;
 import org.eclipse.gmt.modisco.java.Modifier;
 import org.eclipse.gmt.modisco.java.Package;
+import org.eclipse.gmt.modisco.java.TypeDeclaration;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
 
 /**
@@ -65,7 +66,7 @@ public class ClassDeclarationBuilder {
 	public ClassDeclaration build() {
 		return this.buildClassDeclaration;
 	}
-	
+
 	/**
 	 * Set the name of the class declaration under construction
 	 * 
@@ -114,14 +115,29 @@ public class ClassDeclarationBuilder {
 		this.buildClassDeclaration.setModifier(modifier);
 		return this;
 	}
-	
-	/** Set the compilation unit of the class declaration under construction
+
+	/**
+	 * Set the compilation unit of the class declaration under construction
 	 * 
-	 * @param compilationUnit the compilation unit of the class declaration under construction.
+	 * @param compilationUnit
+	 *            the compilation unit of the class declaration under
+	 *            construction.
 	 * @return the builder.
 	 */
-	public ClassDeclarationBuilder setCompilationUnit(CompilationUnit compilationUnit){
+	public ClassDeclarationBuilder setCompilationUnit(CompilationUnit compilationUnit) {
 		this.buildClassDeclaration.setOriginalCompilationUnit(compilationUnit);
+		return this;
+	}
+
+	/**
+	 * Set the abstract type of the class declaration under construction
+	 * 
+	 * @param typeDeclaration
+	 *            the abstract type of the class declaration under construction.
+	 * @return the builder.
+	 */
+	public ClassDeclarationBuilder setAbstractTypeDeclaration(TypeDeclaration typeDeclaration) {
+		this.buildClassDeclaration.setAbstractTypeDeclaration(typeDeclaration);
 		return this;
 	}
 

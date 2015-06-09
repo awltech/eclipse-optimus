@@ -93,4 +93,64 @@ public class ClassHelper {
 		javaPackage.getModel().getCompilationUnits().add(compilationUnit);
 		return classDeclaration;
 	}
+
+	/**
+	 * Create an internal class with proxy state set to false
+	 * 
+	 * @param javaClass
+	 *            the class of the created internal class.
+	 * @param className
+	 *            the name of the created class without .java extension.
+	 * @return the created internal class accordingly to the specified
+	 *         parameters.
+	 */
+	public static ClassDeclaration createInternalClass(ClassDeclaration javaClass, String className) {
+		Modifier modifier = ModifierBuilder.builder().setVisibility(VisibilityKind.PUBLIC).build();
+		return ClassDeclarationBuilder.builder().setName(className).setPackage(javaClass.getPackage()).setProxy(false)
+				.setModifier(modifier).setCompilationUnit(javaClass.getOriginalCompilationUnit())
+				.setAbstractTypeDeclaration(javaClass).build();
+	}
+
+	/**
+	 * Create an internal class with proxy state set to false
+	 * 
+	 * @param javaClass
+	 *            the class of the created internal class.
+	 * @param className
+	 *            the name of the created class without .java extension.
+	 * @param visibility
+	 *            the visibility of the created class.
+	 * @return the created internal class accordingly to the specified
+	 *         parameters.
+	 */
+	public static ClassDeclaration createInternalClass(ClassDeclaration javaClass, String className,
+			VisibilityKind visibility) {
+		Modifier modifier = ModifierBuilder.builder().setVisibility(visibility).build();
+		return ClassDeclarationBuilder.builder().setName(className).setPackage(javaClass.getPackage()).setProxy(false)
+				.setModifier(modifier).setCompilationUnit(javaClass.getOriginalCompilationUnit())
+				.setAbstractTypeDeclaration(javaClass).build();
+	}
+
+	/**
+	 * Create an internal class
+	 * 
+	 * @param javaClass
+	 *            the class of the created internal class.
+	 * @param className
+	 *            the name of the created class without .java extension.
+	 * @param visibility
+	 *            the visibility of the created class.
+	 * @param proxyState
+	 *            the proxy state of of the created class.
+	 * @return the created internal class accordingly to the specified
+	 *         parameters.
+	 */
+	public static ClassDeclaration createInternalClass(ClassDeclaration javaClass, String className,
+			VisibilityKind visibility, boolean proxyState) {
+		Modifier modifier = ModifierBuilder.builder().setVisibility(visibility).build();
+		return ClassDeclarationBuilder.builder().setName(className).setPackage(javaClass.getPackage())
+				.setProxy(proxyState).setModifier(modifier).setCompilationUnit(javaClass.getOriginalCompilationUnit())
+				.setAbstractTypeDeclaration(javaClass).build();
+	}
+
 }

@@ -47,11 +47,20 @@ public class ReturnStatementHelper {
 	}
 
 	/**
+	 * Create an empty return statement
+	 * 
+	 * @return the empty return statement.
+	 */
+	public static ReturnStatement createReturnStatement() {
+		return ReturnStatementBuilder.builder().build();
+	}
+
+	/**
 	 * Create a null return statement
 	 * 
 	 * @return the created null return statement.
 	 */
-	public static ReturnStatement createReturnStatement() {
+	public static ReturnStatement createNullReturnStatement() {
 		return ReturnStatementHelper.createReturnStatement(BasicStatementHelper.createStatement());
 	}
 
