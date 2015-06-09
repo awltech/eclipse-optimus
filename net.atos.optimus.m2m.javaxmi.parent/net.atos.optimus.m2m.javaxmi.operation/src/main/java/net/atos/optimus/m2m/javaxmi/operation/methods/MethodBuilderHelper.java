@@ -174,8 +174,13 @@ public class MethodBuilderHelper {
 	 * @return the builder.
 	 */
 	public MethodBuilderHelper addStatement(Statement statement) {
-		Block block = BlockBuilder.builder().addStatement(statement).build();
-		this.buildMethodDeclaration.setBody(block);
+		Block block = this.buildMethodDeclaration.getBody();
+		if (block == null) {
+			block = BlockBuilder.builder().addStatement(statement).build();
+			this.buildMethodDeclaration.setBody(block);
+		} else {
+			block.getStatements().add(statement);
+		}
 		return this;
 	}
 
@@ -187,8 +192,13 @@ public class MethodBuilderHelper {
 	 * @return the builder.
 	 */
 	public MethodBuilderHelper addStatements(List<Statement> statements) {
-		Block block = BlockBuilder.builder().addStatements(statements).build();
-		this.buildMethodDeclaration.setBody(block);
+		Block block = this.buildMethodDeclaration.getBody();
+		if (block == null) {
+			block = BlockBuilder.builder().addStatements(statements).build();
+			this.buildMethodDeclaration.setBody(block);
+		} else {
+			block.getStatements().addAll(statements);
+		}
 		return this;
 	}
 
@@ -217,32 +227,42 @@ public class MethodBuilderHelper {
 	}
 
 	/**
-	 * Add an expression statement to a method
+	 * Add a statement to a method
 	 * 
 	 * @param methodDeclaration
 	 *            the method which we add the expression statement.
 	 * @param statement
-	 *            the statement of the method.
+	 *            the added statement of the method.
 	 * @return the method with the specified body.
 	 */
-	public static MethodDeclaration addMethodBody(MethodDeclaration methodDeclaration, Statement statement) {
-		Block block = BlockBuilder.builder().addStatement(statement).build();
-		methodDeclaration.setBody(block);
+	public static MethodDeclaration addStatementToMethod(MethodDeclaration methodDeclaration, Statement statement) {
+		Block block = methodDeclaration.getBody();
+		if (block == null) {
+			block = BlockBuilder.builder().addStatement(statement).build();
+			methodDeclaration.setBody(block);
+		} else {
+			block.getStatements().add(statement);
+		}
 		return methodDeclaration;
 	}
 
 	/**
-	 * Add a body to a method
+	 * Add a list of statements to a method
 	 * 
 	 * @param methodDeclaration
-	 *            the method which we add the body.
+	 *            the method which we add the statements list.
 	 * @param statements
-	 *            the statement list of the body.
+	 *            the added statements list of the method.
 	 * @return the method with the specified body.
 	 */
 	public static MethodDeclaration addMethodBody(MethodDeclaration methodDeclaration, List<Statement> statements) {
-		Block block = BlockBuilder.builder().addStatements(statements).build();
-		methodDeclaration.setBody(block);
+		Block block = methodDeclaration.getBody();
+		if (block == null) {
+			block = BlockBuilder.builder().addStatements(statements).build();
+			methodDeclaration.setBody(block);
+		} else {
+			block.getStatements().addAll(statements);
+		}
 		return methodDeclaration;
 	}
 

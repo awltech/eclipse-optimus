@@ -25,9 +25,8 @@ import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 
 import org.eclipse.gmt.modisco.java.ClassDeclaration;
 import org.eclipse.gmt.modisco.java.CompilationUnit;
-import org.eclipse.gmt.modisco.java.Package;
-import org.eclipse.gmt.modisco.java.Model;
 import org.eclipse.gmt.modisco.java.Modifier;
+import org.eclipse.gmt.modisco.java.Package;
 import org.eclipse.gmt.modisco.java.VisibilityKind;
 
 /**
@@ -44,23 +43,34 @@ public class ClassHelper {
 	 * Create a class in a stand alone compilation unit,set proxy to false and
 	 * visibility to public
 	 * 
-	 * @param javaModel
-	 *            the java model of the created class.
 	 * @param javaPackage
 	 *            the package of the created class.
 	 * @param className
 	 *            the name of the created class without .java extension.
 	 * @return the created class accordingly to the specified parameters.
 	 */
-	public static ClassDeclaration createClass(Model javaModel, Package javaPackage, String className) {
-		return ClassHelper.createClass(javaModel, javaPackage, className, VisibilityKind.PUBLIC, false);
+	public static ClassDeclaration createClass(Package javaPackage, String className) {
+		return ClassHelper.createClass(javaPackage, className, VisibilityKind.PUBLIC, false);
+	}
+
+	/**
+	 * Create a class in a stand alone compilation unit and set proxy to false
+	 * 
+	 * @param javaPackage
+	 *            the package of the created class.
+	 * @param className
+	 *            the name of the created class without .java extension.
+	 * @param visibility
+	 *            the visibility of the created class.
+	 * @return the created class accordingly to the specified parameters.
+	 */
+	public static ClassDeclaration createClass(Package javaPackage, String className, VisibilityKind visibility) {
+		return ClassHelper.createClass(javaPackage, className, visibility, false);
 	}
 
 	/**
 	 * Create a class in a stand alone compilation unit
 	 * 
-	 * @param javaModel
-	 *            the java model of the created class.
 	 * @param javaPackage
 	 *            the package of the created class.
 	 * @param className
@@ -71,8 +81,8 @@ public class ClassHelper {
 	 *            the proxy state of of the created class.
 	 * @return the created class accordingly to the specified parameters.
 	 */
-	public static ClassDeclaration createClass(Model javaModel, Package javaPackage, String className,
-			VisibilityKind visibility, boolean proxyState) {
+	public static ClassDeclaration createClass(Package javaPackage, String className, VisibilityKind visibility,
+			boolean proxyState) {
 		Modifier modifier = ModifierBuilder.builder().setVisibility(visibility).build();
 		CompilationUnit compilationUnit = CompilationUnitBuilder.builder().setName(className + ".java")
 				.setPackage(javaPackage).build();
@@ -80,7 +90,7 @@ public class ClassHelper {
 				.setPackage(javaPackage).setProxy(proxyState).setModifier(modifier).setCompilationUnit(compilationUnit)
 				.build();
 		compilationUnit.getTypes().add(classDeclaration);
-		javaModel.getCompilationUnits().add(compilationUnit);
+		javaPackage.getModel().getCompilationUnits().add(compilationUnit);
 		return classDeclaration;
 	}
 }

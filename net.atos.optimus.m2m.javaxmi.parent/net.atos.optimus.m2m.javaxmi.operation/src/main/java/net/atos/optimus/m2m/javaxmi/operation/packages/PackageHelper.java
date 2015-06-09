@@ -60,8 +60,4 @@ public class PackageHelper {
 		return createdPackage;
 	}
 
-	// Add generated package from a class name or a class ?
-
-	// Problem with package re-creation ?
-
 }
