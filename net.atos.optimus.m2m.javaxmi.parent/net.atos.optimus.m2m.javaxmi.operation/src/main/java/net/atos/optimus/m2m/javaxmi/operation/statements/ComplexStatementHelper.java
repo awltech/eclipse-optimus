@@ -37,7 +37,7 @@ import org.eclipse.gmt.modisco.java.Statement;
  */
 
 public class ComplexStatementHelper {
-
+	
 	/**
 	 * Create a statement to set a field
 	 * 

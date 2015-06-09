@@ -23,6 +23,7 @@ package net.atos.optimus.m2m.javaxmi.operation.constructors;
 
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.statements.BlockBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.statements.ComplexStatementHelper;
 import net.atos.optimus.m2m.javaxmi.operation.variables.VariableHelper;
 
 import org.eclipse.gmt.modisco.java.Block;
@@ -167,6 +168,43 @@ public class ConstructorBuilderHelper {
 				block.getStatements().add(statement);
 			}
 		}
+		return this;
+	}
+
+	/**
+	 * Add a generated parameter in the constructor and set the associated field
+	 * in the constructor body
+	 * 
+	 * @param fieldTypeName
+	 *            the type name of the field associated to the parameter.
+	 * @param fieldName
+	 *            the name of the field associated to the parameter.
+	 * @return the builder.
+	 */
+	public ConstructorBuilderHelper addParameterAndSetAssociatedField(String fieldTypeName, String fieldName) {
+		String parameterName = ConstructorBuilderHelper.createParameterName(fieldTypeName);
+		this.addParameter(fieldTypeName, parameterName);
+		this.addStatements(ComplexStatementHelper.createSetFieldStatement(fieldName, parameterName));
+		return this;
+	}
+
+	/**
+	 * Add a parameter in the constructor and set the associated field in the
+	 * constructor body
+	 * 
+	 * @param parameterName
+	 *            the name of the parameter to add to the constructor under
+	 *            construction.
+	 * @param fieldTypeName
+	 *            the type name of the field associated to the parameter.
+	 * @param fieldName
+	 *            the name of the field associated to the parameter.
+	 * @return the builder.
+	 */
+	public ConstructorBuilderHelper addParameterAndSetAssociatedField(String parameterName, String fieldTypeName,
+			String fieldName) {
+		this.addParameter(fieldTypeName, parameterName);
+		this.addStatements(ComplexStatementHelper.createSetFieldStatement(fieldName, parameterName));
 		return this;
 	}
 
