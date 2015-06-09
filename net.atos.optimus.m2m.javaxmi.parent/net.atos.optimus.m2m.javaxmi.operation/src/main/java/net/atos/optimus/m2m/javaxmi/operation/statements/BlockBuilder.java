@@ -21,8 +21,7 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.statements;
 
-import java.util.List;
-
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmt.modisco.java.Block;
 import org.eclipse.gmt.modisco.java.Statement;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
@@ -67,26 +66,17 @@ public class BlockBuilder {
 	}
 
 	/**
-	 * Add a statement to the block under construction
-	 * 
-	 * @param statement
-	 *            the statement to add to the block under construction.
-	 * @return the builder.
-	 */
-	public BlockBuilder addStatement(Statement statement) {
-		this.buildBlock.getStatements().add(statement);
-		return this;
-	}
-	
-	/**
 	 * Add a list of statements to the block under construction
 	 * 
 	 * @param statements
 	 *            the list of statements to add to the block under construction.
 	 * @return the builder.
 	 */
-	public BlockBuilder addStatements(List<Statement> statements){
-		this.buildBlock.getStatements().addAll(statements);
+	public BlockBuilder addStatements(Statement... statements) {
+		EList<Statement> statementsList = this.buildBlock.getStatements();
+		for (Statement statement : statements) {
+			statementsList.add(statement);
+		}
 		return this;
 	}
 

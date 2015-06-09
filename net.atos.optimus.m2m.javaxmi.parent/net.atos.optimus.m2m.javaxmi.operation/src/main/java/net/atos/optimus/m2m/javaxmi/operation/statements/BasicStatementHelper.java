@@ -21,14 +21,11 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.statements;
 
-import net.atos.optimus.m2m.javaxmi.operation.classes.ClassInstanceCreationBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.fields.FieldAccessHelper;
-import net.atos.optimus.m2m.javaxmi.operation.types.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.variables.VariableAccessHelper;
 
 import org.eclipse.gmt.modisco.java.BooleanLiteral;
 import org.eclipse.gmt.modisco.java.CharacterLiteral;
-import org.eclipse.gmt.modisco.java.ClassInstanceCreation;
 import org.eclipse.gmt.modisco.java.ExpressionStatement;
 import org.eclipse.gmt.modisco.java.NullLiteral;
 import org.eclipse.gmt.modisco.java.NumberLiteral;
@@ -129,19 +126,6 @@ public class BasicStatementHelper {
 	public static ExpressionStatement createVariableStatement(String variableName) {
 		return ExpressionStatementBuilder.builder()
 				.setExpression(VariableAccessHelper.createVariableAccess(variableName)).build();
-	}
-
-	/**
-	 * Create a class instantiation statement
-	 * 
-	 * @param className
-	 *            the name of the class to instantiate.
-	 * @return the created class instantiation statement.
-	 */
-	public static ExpressionStatement createClassInstantiationStatement(String className) {
-		ClassInstanceCreation classInstanceCreation = ClassInstanceCreationBuilder.builder()
-				.setType(TypeAccessHelper.createClassTypeAccess(className)).build();
-		return ExpressionStatementBuilder.builder().setExpression(classInstanceCreation).build();
 	}
 
 }

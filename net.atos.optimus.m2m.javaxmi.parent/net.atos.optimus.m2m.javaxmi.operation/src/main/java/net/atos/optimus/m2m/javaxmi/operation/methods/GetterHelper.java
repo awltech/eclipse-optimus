@@ -122,8 +122,8 @@ public class GetterHelper {
 	public static MethodDeclaration createGetter(ClassDeclaration javaClass, VisibilityKind visibility,
 			String fieldTypeName, String getterName, String fieldName) {
 		return MethodBuilderHelper.builder(javaClass, getterName).setVisibility(visibility)
-				.setReturnType(fieldTypeName).addStatement(ReturnStatementHelper.createFieldReturnStatement(fieldName))
-				.build();
+				.setReturnType(fieldTypeName)
+				.addStatements(ReturnStatementHelper.createFieldReturnStatement(fieldName)).build();
 	}
 
 	/**

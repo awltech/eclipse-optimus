@@ -21,13 +21,11 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.fields;
 
-import net.atos.optimus.m2m.javaxmi.operation.accesses.SingleVariableAccessBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.accesses.ThisExpressionBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.variables.VariableDeclarationFragmentBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.variables.VariableAccessHelper;
 
 import org.eclipse.gmt.modisco.java.FieldAccess;
 import org.eclipse.gmt.modisco.java.SingleVariableAccess;
-import org.eclipse.gmt.modisco.java.VariableDeclarationFragment;
 
 /**
  * The purpose of such class is to help with the creation of field accesses
@@ -61,10 +59,7 @@ public class FieldAccessHelper {
 	 *         proxy state.
 	 */
 	public static FieldAccess createFieldAccess(String fieldName, boolean isProxy) {
-		VariableDeclarationFragment variableDeclarationFragment = VariableDeclarationFragmentBuilder.builder()
-				.setName(fieldName).setProxy(isProxy).build();
-		SingleVariableAccess singleVariableAccess = SingleVariableAccessBuilder.builder()
-				.setVariable(variableDeclarationFragment).build();
+		SingleVariableAccess singleVariableAccess = VariableAccessHelper.createVariableAccess(fieldName, isProxy);
 		return FieldAccessBuilder.builder().setField(singleVariableAccess)
 				.setExpression(ThisExpressionBuilder.builder().build()).build();
 	}

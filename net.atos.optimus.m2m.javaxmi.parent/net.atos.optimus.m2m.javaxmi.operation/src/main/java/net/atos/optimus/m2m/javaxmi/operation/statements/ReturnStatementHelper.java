@@ -123,7 +123,7 @@ public class ReturnStatementHelper {
 	}
 
 	/**
-	 * Create a class instantiation return statement
+	 * Create a class instantiation return statement with no argument
 	 * 
 	 * @param className
 	 *            the name of the class to instantiate.
@@ -131,8 +131,24 @@ public class ReturnStatementHelper {
 	 *         instantiation of the class with the specified name.
 	 */
 	public static ReturnStatement createClassInstantiationReturnStatement(String className) {
-		return ReturnStatementHelper.createReturnStatement(BasicStatementHelper
+		return ReturnStatementHelper.createReturnStatement(InvocationStatementHelper
 				.createClassInstantiationStatement(className));
+	}
+
+	/**
+	 * Create a class instantiation return statement with arguments
+	 * 
+	 * @param className
+	 *            the name of the class to instantiate.
+	 * @param arguments
+	 *            the arguments list of the class instantiation return
+	 *            statement.
+	 * @return the created class instantiation return statement returning the
+	 *         instantiation of the class with the specified name and arguments.
+	 */
+	public static ReturnStatement createClassInstantiationReturnStatement(String className, String... arguments) {
+		return ReturnStatementHelper.createReturnStatement(InvocationStatementHelper.createClassInstantiationStatement(
+				className, arguments));
 	}
 
 }

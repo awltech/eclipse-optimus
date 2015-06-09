@@ -152,7 +152,7 @@ public class SetterHelper {
 			String setterName, String parameterName, String fieldTypeName, String fieldName) {
 		return MethodBuilderHelper.builder(javaClass, setterName).setVisibility(visibility)
 				.addParameter(fieldTypeName, parameterName)
-				.addStatement(ComplexStatementHelper.createSetFieldStatement(fieldName, parameterName)).build();
+				.addStatements(ComplexStatementHelper.createSetFieldStatement(fieldName, parameterName)).build();
 	}
 
 	/**

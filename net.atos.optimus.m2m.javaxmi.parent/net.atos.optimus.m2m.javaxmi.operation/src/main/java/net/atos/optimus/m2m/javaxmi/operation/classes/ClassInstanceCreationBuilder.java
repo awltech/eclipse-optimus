@@ -21,7 +21,9 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.classes;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmt.modisco.java.ClassInstanceCreation;
+import org.eclipse.gmt.modisco.java.Expression;
 import org.eclipse.gmt.modisco.java.TypeAccess;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
 
@@ -73,6 +75,22 @@ public class ClassInstanceCreationBuilder {
 	 */
 	public ClassInstanceCreationBuilder setType(TypeAccess classType) {
 		this.buildClassInstanceCreation.setType(classType);
+		return this;
+	}
+
+	/**
+	 * Add an arguments list to the class instance creation under construction
+	 * 
+	 * @param arguments
+	 *            the arguments list to add to the class instance creation under
+	 *            construction.
+	 * @return the builder.
+	 */
+	public ClassInstanceCreationBuilder addArguments(Expression... arguments) {
+		EList<Expression> argumentList = this.buildClassInstanceCreation.getArguments();
+		for (Expression argument : arguments) {
+			argumentList.add(argument);
+		}
 		return this;
 	}
 

@@ -37,15 +37,28 @@ import org.eclipse.gmt.modisco.java.VariableDeclaration;
 public class VariableAccessHelper {
 
 	/**
-	 * Create an access to a variable
+	 * Create an access to a variable with proxy set to false
 	 * 
 	 * @param variableName
 	 *            the name of the variable which we want an access.
 	 * @return an access to the variable with the specified name.
 	 */
 	public static SingleVariableAccess createVariableAccess(String variableName) {
-		VariableDeclaration variableDeclaration = SingleVariableDeclarationBuilder.builder().setName(variableName)
-				.build();
+		return VariableAccessHelper.createVariableAccess(variableName, false);
+	}
+
+	/**
+	 * Create an access to a variable
+	 * 
+	 * @param variableName
+	 *            the name of the variable which we want an access.
+	 * @param isProxy
+	 *            the proxy state of the created access to the variable.
+	 * @return an access to the variable with the specified name.
+	 */
+	public static SingleVariableAccess createVariableAccess(String variableName, boolean isProxy) {
+		VariableDeclaration variableDeclaration = VariableDeclarationFragmentBuilder.builder().setName(variableName)
+				.setProxy(isProxy).build();
 		return SingleVariableAccessBuilder.builder().setVariable(variableDeclaration).build();
 	}
 

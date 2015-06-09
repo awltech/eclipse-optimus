@@ -21,9 +21,6 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.methods;
 
-import java.util.Collection;
-import java.util.List;
-
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.statements.BlockBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.types.TypeAccessHelper;
@@ -77,14 +74,14 @@ public class MethodBuilderHelper {
 	 *            the name of the created method under construction.
 	 */
 	private MethodBuilderHelper(ClassDeclaration javaClass, String methodName) {
-		this.buildMethodDeclaration = MethodBuilderHelper.createMethodSignature(javaClass, VisibilityKind.PUBLIC,
+		this.buildMethodDeclaration = MethodBuilderHelper.createMethodBasicSignature(javaClass, VisibilityKind.PUBLIC,
 				MethodBuilderHelper.VOID_TYPE, methodName);
 	}
 
 	/**
 	 * Build a method
 	 * 
-	 * @return a new method.
+	 * @return the build method.
 	 */
 	public MethodDeclaration build() {
 		return this.buildMethodDeclaration;
@@ -135,22 +132,6 @@ public class MethodBuilderHelper {
 	}
 
 	/**
-	 * Add a parameter to the method under construction with a generated name
-	 * 
-	 * @param parameterTypeName
-	 *            the type name of the parameter to add to the method under
-	 *            construction.
-	 * @return the builder.
-	 */
-	public MethodBuilderHelper addParameter(String parameterTypeName) {
-		String parameterName = MethodBuilderHelper.createParameterName(parameterTypeName);
-		SingleVariableDeclaration singleVariableDeclaration = VariableHelper.createVariableDeclaration(
-				this.buildMethodDeclaration, parameterTypeName, parameterName);
-		this.buildMethodDeclaration.getParameters().add(singleVariableDeclaration);
-		return this;
-	}
-
-	/**
 	 * Add a parameters list to the method under construction with generated
 	 * names
 	 * 
@@ -159,27 +140,12 @@ public class MethodBuilderHelper {
 	 *            under construction.
 	 * @return the builder.
 	 */
-	public MethodBuilderHelper addParameters(Collection<String> parameterTypeNames) {
+	public MethodBuilderHelper addParameters(String... parameterTypeNames) {
 		for (String parameterTypeName : parameterTypeNames) {
-			this.addParameter(parameterTypeName);
-		}
-		return this;
-	}
-
-	/**
-	 * Add a statement to the method under construction
-	 * 
-	 * @param statement
-	 *            the statement to add to the method under construction.
-	 * @return the builder.
-	 */
-	public MethodBuilderHelper addStatement(Statement statement) {
-		Block block = this.buildMethodDeclaration.getBody();
-		if (block == null) {
-			block = BlockBuilder.builder().addStatement(statement).build();
-			this.buildMethodDeclaration.setBody(block);
-		} else {
-			block.getStatements().add(statement);
+			String parameterName = MethodBuilderHelper.createParameterName(parameterTypeName);
+			SingleVariableDeclaration singleVariableDeclaration = VariableHelper.createVariableDeclaration(
+					this.buildMethodDeclaration, parameterTypeName, parameterName);
+			this.buildMethodDeclaration.getParameters().add(singleVariableDeclaration);
 		}
 		return this;
 	}
@@ -191,13 +157,15 @@ public class MethodBuilderHelper {
 	 *            the statements list to add to the method under construction.
 	 * @return the builder.
 	 */
-	public MethodBuilderHelper addStatements(List<Statement> statements) {
+	public MethodBuilderHelper addStatements(Statement... statements) {
 		Block block = this.buildMethodDeclaration.getBody();
 		if (block == null) {
 			block = BlockBuilder.builder().addStatements(statements).build();
 			this.buildMethodDeclaration.setBody(block);
 		} else {
-			block.getStatements().addAll(statements);
+			for (Statement statement : statements) {
+				block.getStatements().add(statement);
+			}
 		}
 		return this;
 	}
@@ -216,34 +184,14 @@ public class MethodBuilderHelper {
 	 * @return the created method with no parameter accordingly to the specified
 	 *         parameters.
 	 */
-	protected static MethodDeclaration createMethodSignature(ClassDeclaration javaClass, VisibilityKind visibility,
-			String returnTypeName, String methodName) {
+	protected static MethodDeclaration createMethodBasicSignature(ClassDeclaration javaClass,
+			VisibilityKind visibility, String returnTypeName, String methodName) {
 		Modifier modifier = ModifierBuilder.builder().setVisibility(visibility)
 				.setCompilationUnit(javaClass.getOriginalCompilationUnit()).build();
 		return MethodDeclarationBuilder.builder().setModifier(modifier)
 				.setReturnType(TypeAccessHelper.createVariableTypeAccess(returnTypeName)).setName(methodName)
 				.setAbstractTypeDeclaration(javaClass).setCompilationUnit(javaClass.getOriginalCompilationUnit())
 				.build();
-	}
-
-	/**
-	 * Add a statement to a method
-	 * 
-	 * @param methodDeclaration
-	 *            the method which we add the expression statement.
-	 * @param statement
-	 *            the added statement of the method.
-	 * @return the method with the specified body.
-	 */
-	public static MethodDeclaration addStatementToMethod(MethodDeclaration methodDeclaration, Statement statement) {
-		Block block = methodDeclaration.getBody();
-		if (block == null) {
-			block = BlockBuilder.builder().addStatement(statement).build();
-			methodDeclaration.setBody(block);
-		} else {
-			block.getStatements().add(statement);
-		}
-		return methodDeclaration;
 	}
 
 	/**
@@ -255,13 +203,15 @@ public class MethodBuilderHelper {
 	 *            the added statements list of the method.
 	 * @return the method with the specified body.
 	 */
-	public static MethodDeclaration addMethodBody(MethodDeclaration methodDeclaration, List<Statement> statements) {
+	public static MethodDeclaration addMethodBody(MethodDeclaration methodDeclaration, Statement... statements) {
 		Block block = methodDeclaration.getBody();
 		if (block == null) {
 			block = BlockBuilder.builder().addStatements(statements).build();
 			methodDeclaration.setBody(block);
 		} else {
-			block.getStatements().addAll(statements);
+			for (Statement statement : statements) {
+				block.getStatements().add(statement);
+			}
 		}
 		return methodDeclaration;
 	}

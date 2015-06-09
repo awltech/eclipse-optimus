@@ -21,8 +21,7 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.methods;
 
-import java.util.Collection;
-
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmt.modisco.java.Block;
 import org.eclipse.gmt.modisco.java.CompilationUnit;
 import org.eclipse.gmt.modisco.java.MethodDeclaration;
@@ -146,30 +145,19 @@ public class MethodDeclarationBuilder {
 	}
 
 	/**
-	 * Add a single variable declaration to the method declaration under
-	 * construction
-	 * 
-	 * @param singleVariableDeclaration
-	 *            the single variable declaration to add to the method
-	 *            declaration under construction.
-	 * @return the builder.
-	 */
-	public MethodDeclarationBuilder addPameter(SingleVariableDeclaration singleVariableDeclaration) {
-		this.buildMethodDeclaration.getParameters().add(singleVariableDeclaration);
-		return this;
-	}
-
-	/**
-	 * Add a collection of single variable declarations to the method
-	 * declaration under construction
+	 * Add a list of single variable declarations to the method declaration
+	 * under construction
 	 * 
 	 * @param singleVariableDeclarations
 	 *            the list of single variable declarations to add to the method
 	 *            declaration under construction.
 	 * @return the builder.
 	 */
-	public MethodDeclarationBuilder addPameters(Collection<SingleVariableDeclaration> singleVariableDeclarations) {
-		this.buildMethodDeclaration.getParameters().addAll(singleVariableDeclarations);
+	public MethodDeclarationBuilder addPameters(SingleVariableDeclaration... singleVariableDeclarations) {
+		EList<SingleVariableDeclaration> parameters = this.buildMethodDeclaration.getParameters();
+		for (SingleVariableDeclaration singleVariableDeclaration : singleVariableDeclarations) {
+			parameters.add(singleVariableDeclaration);
+		}
 		return this;
 	}
 
