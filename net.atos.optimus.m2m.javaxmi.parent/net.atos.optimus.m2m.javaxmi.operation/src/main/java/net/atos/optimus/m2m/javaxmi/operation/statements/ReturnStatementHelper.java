@@ -21,16 +21,8 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.statements;
 
-import net.atos.optimus.m2m.javaxmi.operation.classes.ClassInstanceCreationBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.fields.FieldAccessHelper;
-import net.atos.optimus.m2m.javaxmi.operation.types.TypeAccessHelper;
-
-import org.eclipse.gmt.modisco.java.BooleanLiteral;
-import org.eclipse.gmt.modisco.java.ClassInstanceCreation;
-import org.eclipse.gmt.modisco.java.NullLiteral;
+import org.eclipse.gmt.modisco.java.ExpressionStatement;
 import org.eclipse.gmt.modisco.java.ReturnStatement;
-import org.eclipse.gmt.modisco.java.StringLiteral;
-import org.eclipse.gmt.modisco.java.emf.JavaFactory;
 
 /**
  * The purpose of such class is to help with the creation of return statement
@@ -43,13 +35,24 @@ import org.eclipse.gmt.modisco.java.emf.JavaFactory;
 public class ReturnStatementHelper {
 
 	/**
+	 * Create a return statement based on an expression statement
+	 * 
+	 * @param statement
+	 *            the expression statement convert to a return statement.
+	 * @return the created return statement based on the specified expression
+	 *         statement.
+	 */
+	public static ReturnStatement createReturnStatement(ExpressionStatement statement) {
+		return ReturnStatementBuilder.builder().setExpression(statement.getExpression()).build();
+	}
+
+	/**
 	 * Create a null return statement
 	 * 
 	 * @return the created null return statement.
 	 */
 	public static ReturnStatement createReturnStatement() {
-		NullLiteral literal = JavaFactory.eINSTANCE.createNullLiteral();
-		return ReturnStatementBuilder.builder().setExpression(literal).build();
+		return ReturnStatementHelper.createReturnStatement(BasicStatementHelper.createStatement());
 	}
 
 	/**
@@ -60,9 +63,29 @@ public class ReturnStatementHelper {
 	 * @return the created boolean return statement with the specified value.
 	 */
 	public static ReturnStatement createReturnStatement(boolean value) {
-		BooleanLiteral literal = JavaFactory.eINSTANCE.createBooleanLiteral();
-		literal.setValue(value);
-		return ReturnStatementBuilder.builder().setExpression(literal).build();
+		return ReturnStatementHelper.createReturnStatement(BasicStatementHelper.createStatement(value));
+	}
+
+	/**
+	 * Create an integer return statement
+	 * 
+	 * @param value
+	 *            the integer value.
+	 * @return the created integer return statement with the specified value.
+	 */
+	public static ReturnStatement createReturnStatement(int value) {
+		return ReturnStatementHelper.createReturnStatement(BasicStatementHelper.createStatement(value));
+	}
+
+	/**
+	 * Create a char return statement
+	 * 
+	 * @param value
+	 *            the char value.
+	 * @return the created char return statement with the specified value.
+	 */
+	public static ReturnStatement createReturnStatement(char value) {
+		return ReturnStatementHelper.createReturnStatement(BasicStatementHelper.createStatement(value));
 	}
 
 	/**
@@ -73,9 +96,7 @@ public class ReturnStatementHelper {
 	 * @return the created string return statement with the specified value.
 	 */
 	public static ReturnStatement createReturnStatement(String value) {
-		StringLiteral literal = JavaFactory.eINSTANCE.createStringLiteral();
-		literal.setEscapedValue(value);
-		return ReturnStatementBuilder.builder().setExpression(literal).build();
+		return ReturnStatementHelper.createReturnStatement(BasicStatementHelper.createStatement(value));
 	}
 
 	/**
@@ -87,7 +108,18 @@ public class ReturnStatementHelper {
 	 *         specified name.
 	 */
 	public static ReturnStatement createFieldReturnStatement(String fieldName) {
-		return ReturnStatementBuilder.builder().setExpression(FieldAccessHelper.createFieldAccess(fieldName)).build();
+		return ReturnStatementHelper.createReturnStatement(BasicStatementHelper.createFieldStatement(fieldName));
+	}
+
+	/**
+	 * Create a variable return statement
+	 * 
+	 * @param variableName
+	 *            the name of the variable.
+	 * @return the created variable return statement.
+	 */
+	public static ReturnStatement createVariableReturnStatement(String variableName) {
+		return ReturnStatementHelper.createReturnStatement(BasicStatementHelper.createVariableStatement(variableName));
 	}
 
 	/**
@@ -99,9 +131,8 @@ public class ReturnStatementHelper {
 	 *         instantiation of the class with the specified name.
 	 */
 	public static ReturnStatement createClassInstantiationReturnStatement(String className) {
-		ClassInstanceCreation classInstanceCreation = ClassInstanceCreationBuilder.builder()
-				.setType(TypeAccessHelper.createClassTypeAccess(className)).build();
-		return ReturnStatementBuilder.builder().setExpression(classInstanceCreation).build();
+		return ReturnStatementHelper.createReturnStatement(BasicStatementHelper
+				.createClassInstantiationStatement(className));
 	}
 
 }

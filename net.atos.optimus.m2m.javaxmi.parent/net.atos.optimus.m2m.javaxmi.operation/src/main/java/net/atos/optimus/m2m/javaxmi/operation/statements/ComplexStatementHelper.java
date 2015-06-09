@@ -22,16 +22,10 @@
 package net.atos.optimus.m2m.javaxmi.operation.statements;
 
 import net.atos.optimus.m2m.javaxmi.operation.comments.LineCommentBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.fields.FieldAccessHelper;
-import net.atos.optimus.m2m.javaxmi.operation.variables.AssignmentBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.variables.VariableAccessHelper;
 
 import org.eclipse.gmt.modisco.java.AssignmentKind;
-import org.eclipse.gmt.modisco.java.Expression;
 import org.eclipse.gmt.modisco.java.ExpressionStatement;
-import org.eclipse.gmt.modisco.java.FieldAccess;
 import org.eclipse.gmt.modisco.java.LineComment;
-import org.eclipse.gmt.modisco.java.SingleVariableAccess;
 import org.eclipse.gmt.modisco.java.Statement;
 
 /**
@@ -42,7 +36,7 @@ import org.eclipse.gmt.modisco.java.Statement;
  *
  */
 
-public class StatementHelper {
+public class ComplexStatementHelper {
 
 	/**
 	 * Create a statement to set a field
@@ -56,11 +50,9 @@ public class StatementHelper {
 	 *         specified variable.
 	 */
 	public static ExpressionStatement createSetFieldStatement(String fieldName, String variableName) {
-		FieldAccess field = FieldAccessHelper.createFieldAccess(fieldName);
-		SingleVariableAccess variable = VariableAccessHelper.createVariableAccess(variableName);
-		Expression setExpression = AssignmentBuilder.builder().setOperator(AssignmentKind.ASSIGN)
-				.setLeftHandSide(field).setRightHandSide(variable).build();
-		return ExpressionStatementBuilder.builder().setExpression(setExpression).build();
+		ExpressionStatement field = BasicStatementHelper.createFieldStatement(fieldName);
+		ExpressionStatement variable = BasicStatementHelper.createVariableStatement(variableName);
+		return TwoOperandsStatementHelper.createAssignmentStatement(field, AssignmentKind.ASSIGN, variable);
 	}
 
 	/**
@@ -73,7 +65,7 @@ public class StatementHelper {
 	 * @return the commented statement.
 	 */
 	public static Statement addComment(Statement statement, String commentText) {
-		return StatementHelper.addComment(statement, commentText, true);
+		return ComplexStatementHelper.addComment(statement, commentText, true);
 	}
 
 	/**
