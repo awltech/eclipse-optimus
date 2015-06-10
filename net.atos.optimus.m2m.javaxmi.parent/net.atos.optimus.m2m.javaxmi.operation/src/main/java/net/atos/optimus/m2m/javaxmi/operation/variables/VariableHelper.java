@@ -27,7 +27,7 @@ import org.eclipse.gmt.modisco.java.AbstractMethodDeclaration;
 import org.eclipse.gmt.modisco.java.SingleVariableDeclaration;
 
 /**
- * The purpose of such class is to help with the creation of variable
+ * The purpose of such class is to help with the creation of variables
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 

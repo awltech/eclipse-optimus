@@ -21,42 +21,31 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.packages;
 
-import org.eclipse.gmt.modisco.java.Model;
-
 /**
- * The purpose of such class is to help with the creation of package
+ * Models a package : wrapper of package in modisco model
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
  *
  */
 
-public class PackageHelper {
+public class Package {
+
+	/** The package */
+	protected org.eclipse.gmt.modisco.java.Package javaPackage;
 
 	/**
-	 * Create a package and its complete hierarchy in a java model
+	 * Constructor of package of the modicso model
 	 * 
-	 * @param javaModel
-	 *            the java model of the created package.
-	 * @param packageName
-	 *            the full package name.
-	 * @return the created package with the specified name in the specified java
-	 *         model, null if the package name is invalid.
+	 * @param javaPackage
+	 *            the package of the modicso model.
 	 */
-	public static Package createPackage(Model javaModel, String packageName) {
-		String[] packageNames = packageName.split("\\.");
-		int packageNumber = packageNames.length;
-		org.eclipse.gmt.modisco.java.Package createdPackage = null;
+	public Package(org.eclipse.gmt.modisco.java.Package javaPackage) {
+		this.javaPackage = javaPackage;
+	}
 
-		if (packageNumber != 0) {
-			createdPackage = PackageBuilder.builder().setModel(javaModel).setName(packageName).build();
-		}
-		for (int indexPackage = 1; indexPackage < packageNumber; indexPackage++) {
-			createdPackage = PackageBuilder.builder().setPackage(createdPackage).setName(packageNames[indexPackage])
-					.build();
-		}
-
-		return new Package(createdPackage);
+	public org.eclipse.gmt.modisco.java.Package getPackage() {
+		return javaPackage;
 	}
 
 }

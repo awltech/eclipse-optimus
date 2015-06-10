@@ -35,68 +35,49 @@ import org.eclipse.gmt.modisco.java.Statement;
 import org.eclipse.gmt.modisco.java.VisibilityKind;
 
 /**
- * The purpose of such class is to help with the building of constructors
+ * The purpose of such class is to help with the creation of constructors
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
  *
  */
 
-public class ConstructorBuilderHelper {
+public class ConstructorHelper {
 
-	/** The build constructor declaration */
-	private ConstructorDeclaration buildConstructorDeclaration;
+	/** The build constructor */
+	private ConstructorDeclaration buildConstructor;
 
 	/**
-	 * Give a new constructor builder : by default the constructor is public
-	 * with no body and no parameter
+	 * Launch the build of a new constructor (public, with no body and no
+	 * parameter by default)
 	 * 
 	 * @param javaClass
-	 *            the class where is the constructor under construction.
+	 *            the class associated to the constructor under construction.
 	 * 
 	 * @return a new constructor builder.
 	 */
-	public static ConstructorBuilderHelper builder(ClassDeclaration javaClass) {
-		return new ConstructorBuilderHelper(javaClass);
+	public static ConstructorHelper builder(ClassDeclaration javaClass) {
+		return new ConstructorHelper(javaClass);
 	}
 
 	/**
-	 * Private constructor : by default the constructor is public with no body
-	 * and no parameter
+	 * Private constructor : a new constructor (public, with no body and no
+	 * parameter by default)
 	 * 
 	 * @param javaClass
-	 *            the class where is the constructor under construction.
+	 *            the class associated to the constructor under construction.
 	 */
-	private ConstructorBuilderHelper(ClassDeclaration javaClass) {
-		this.buildConstructorDeclaration = ConstructorBuilderHelper.createBasicConstructor(javaClass,
-				VisibilityKind.PUBLIC);
+	private ConstructorHelper(ClassDeclaration javaClass) {
+		this.buildConstructor = ConstructorHelper.createBasicConstructor(javaClass, VisibilityKind.PUBLIC);
 	}
 
 	/**
-	 * Build a constructor
+	 * Give the build constructor
 	 * 
 	 * @return the build constructor.
 	 */
 	public ConstructorDeclaration build() {
-		return this.buildConstructorDeclaration;
-	}
-
-	/**
-	 * Create a constructor with no parameter and no body
-	 * 
-	 * @param javaClass
-	 *            the class where is the created constructor.
-	 * @param visibility
-	 *            the visibility the created constructor.
-	 * @return the created constructor with no parameter and no body accordingly
-	 *         to the specified parameters.
-	 */
-	protected static ConstructorDeclaration createBasicConstructor(ClassDeclaration javaClass, VisibilityKind visibility) {
-		Modifier modifier = ModifierBuilder.builder().setVisibility(visibility)
-				.setCompilationUnit(javaClass.getOriginalCompilationUnit()).build();
-		return ConstructorDeclarationBuilder.builder().setModifier(modifier).setName(javaClass.getName())
-				.setAbstractTypeDeclaration(javaClass).setCompilationUnit(javaClass.getOriginalCompilationUnit())
-				.build();
+		return this.buildConstructor;
 	}
 
 	/**
@@ -106,10 +87,10 @@ public class ConstructorBuilderHelper {
 	 *            the visibility of the constructor under construction.
 	 * @return the builder.
 	 */
-	public ConstructorBuilderHelper setVisibility(VisibilityKind visibility) {
+	public ConstructorHelper setVisibility(VisibilityKind visibility) {
 		Modifier modifier = ModifierBuilder.builder().setVisibility(visibility)
-				.setCompilationUnit(this.buildConstructorDeclaration.getOriginalCompilationUnit()).build();
-		this.buildConstructorDeclaration.setModifier(modifier);
+				.setCompilationUnit(this.buildConstructor.getOriginalCompilationUnit()).build();
+		this.buildConstructor.setModifier(modifier);
 		return this;
 	}
 
@@ -124,10 +105,10 @@ public class ConstructorBuilderHelper {
 	 *            construction.
 	 * @return the builder.
 	 */
-	public ConstructorBuilderHelper addParameter(String parameterTypeName, String parameterName) {
+	public ConstructorHelper addParameter(String parameterTypeName, String parameterName) {
 		SingleVariableDeclaration singleVariableDeclaration = VariableHelper.createVariableDeclaration(
-				this.buildConstructorDeclaration, parameterTypeName, parameterName);
-		this.buildConstructorDeclaration.getParameters().add(singleVariableDeclaration);
+				this.buildConstructor, parameterTypeName, parameterName);
+		this.buildConstructor.getParameters().add(singleVariableDeclaration);
 		return this;
 	}
 
@@ -140,12 +121,12 @@ public class ConstructorBuilderHelper {
 	 *            under construction.
 	 * @return the builder.
 	 */
-	public ConstructorBuilderHelper addParameters(String... parameterTypeNames) {
+	public ConstructorHelper addParameters(String... parameterTypeNames) {
 		for (String parameterTypeName : parameterTypeNames) {
-			String parameterName = ConstructorBuilderHelper.createParameterName(parameterTypeName);
+			String parameterName = ConstructorHelper.createParameterName(parameterTypeName);
 			SingleVariableDeclaration singleVariableDeclaration = VariableHelper.createVariableDeclaration(
-					this.buildConstructorDeclaration, parameterTypeName, parameterName);
-			this.buildConstructorDeclaration.getParameters().add(singleVariableDeclaration);
+					this.buildConstructor, parameterTypeName, parameterName);
+			this.buildConstructor.getParameters().add(singleVariableDeclaration);
 		}
 		return this;
 	}
@@ -158,11 +139,11 @@ public class ConstructorBuilderHelper {
 	 *            construction.
 	 * @return the builder.
 	 */
-	public ConstructorBuilderHelper addStatements(Statement... statements) {
-		Block block = this.buildConstructorDeclaration.getBody();
+	public ConstructorHelper addStatements(Statement... statements) {
+		Block block = this.buildConstructor.getBody();
 		if (block == null) {
 			block = BlockBuilder.builder().addStatements(statements).build();
-			this.buildConstructorDeclaration.setBody(block);
+			this.buildConstructor.setBody(block);
 		} else {
 			for (Statement statement : statements) {
 				block.getStatements().add(statement);
@@ -181,8 +162,8 @@ public class ConstructorBuilderHelper {
 	 *            the name of the field associated to the parameter.
 	 * @return the builder.
 	 */
-	public ConstructorBuilderHelper addParameterAndSetAssociatedField(String fieldTypeName, String fieldName) {
-		String parameterName = ConstructorBuilderHelper.createParameterName(fieldTypeName);
+	public ConstructorHelper addParameterAndSetAssociatedField(String fieldTypeName, String fieldName) {
+		String parameterName = ConstructorHelper.createParameterName(fieldTypeName);
 		this.addParameter(fieldTypeName, parameterName);
 		this.addStatements(ComplexStatementHelper.createSetFieldStatement(fieldName, parameterName));
 		return this;
@@ -201,11 +182,30 @@ public class ConstructorBuilderHelper {
 	 *            the name of the field associated to the parameter.
 	 * @return the builder.
 	 */
-	public ConstructorBuilderHelper addParameterAndSetAssociatedField(String parameterName, String fieldTypeName,
+	public ConstructorHelper addParameterAndSetAssociatedField(String parameterName, String fieldTypeName,
 			String fieldName) {
 		this.addParameter(fieldTypeName, parameterName);
 		this.addStatements(ComplexStatementHelper.createSetFieldStatement(fieldName, parameterName));
 		return this;
+	}
+	
+
+	/**
+	 * Create a constructor with no parameter and no body
+	 * 
+	 * @param javaClass
+	 *            the class where is the created constructor.
+	 * @param visibility
+	 *            the visibility the created constructor.
+	 * @return the created constructor with no parameter and no body accordingly
+	 *         to the specified parameters.
+	 */
+	protected static ConstructorDeclaration createBasicConstructor(ClassDeclaration javaClass, VisibilityKind visibility) {
+		Modifier modifier = ModifierBuilder.builder().setVisibility(visibility)
+				.setCompilationUnit(javaClass.getOriginalCompilationUnit()).build();
+		return ConstructorDeclarationBuilder.builder().setModifier(modifier).setName(javaClass.getName())
+				.setAbstractTypeDeclaration(javaClass).setCompilationUnit(javaClass.getOriginalCompilationUnit())
+				.build();
 	}
 
 	/**

@@ -22,11 +22,11 @@
 package net.atos.optimus.m2m.javaxmi.operation.classes;
 
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.packages.Package;
 
 import org.eclipse.gmt.modisco.java.ClassDeclaration;
 import org.eclipse.gmt.modisco.java.CompilationUnit;
 import org.eclipse.gmt.modisco.java.Modifier;
-import org.eclipse.gmt.modisco.java.Package;
 import org.eclipse.gmt.modisco.java.VisibilityKind;
 
 /**
@@ -39,33 +39,110 @@ import org.eclipse.gmt.modisco.java.VisibilityKind;
 
 public class ClassHelper {
 
+	/** The buid class */
+	private ClassDeclaration buildClass;
+
 	/**
-	 * Create a class in a stand alone compilation unit,set proxy to false and
-	 * visibility to public
+	 * Launch the build of a new class (public and proxy state set to false by
+	 * default)
 	 * 
 	 * @param javaPackage
-	 *            the package of the created class.
+	 *            the package a the class under construction.
 	 * @param className
-	 *            the name of the created class without .java extension.
-	 * @return the created class accordingly to the specified parameters.
+	 *            the name of the class under construction.
+	 * @return a new helper.
 	 */
-	public static ClassDeclaration createClass(Package javaPackage, String className) {
-		return ClassHelper.createClass(javaPackage, className, VisibilityKind.PUBLIC, false);
+	public static ClassHelper classBuilder(Package javaPackage, String className) {
+		return new ClassHelper(javaPackage, className);
 	}
 
 	/**
-	 * Create a class in a stand alone compilation unit and set proxy to false
+	 * Launch the build of a new internal class (public and proxy state set to
+	 * false by default)
+	 * 
+	 * @param javaClass
+	 *            the class containing the class under construction.
+	 * @param className
+	 *            the name of the class under construction.
+	 * @return a new helper.
+	 */
+	public static ClassHelper internalClassBuilder(Class javaClass, String className) {
+		return new ClassHelper(javaClass, className);
+	}
+
+	/**
+	 * Private constructor : a new class (public and proxy state set to false by
+	 * default)
 	 * 
 	 * @param javaPackage
-	 *            the package of the created class.
+	 *            the package a the class under construction.
 	 * @param className
-	 *            the name of the created class without .java extension.
-	 * @param visibility
-	 *            the visibility of the created class.
-	 * @return the created class accordingly to the specified parameters.
+	 *            the name of the class under construction.
 	 */
-	public static ClassDeclaration createClass(Package javaPackage, String className, VisibilityKind visibility) {
-		return ClassHelper.createClass(javaPackage, className, visibility, false);
+	private ClassHelper(Package javaPackage, String className) {
+		org.eclipse.gmt.modisco.java.Package internalPackage = javaPackage.getPackage();
+		CompilationUnit compilationUnit = CompilationUnitBuilder.builder().setName(className + ".java")
+				.setPackage(internalPackage).build();
+		Modifier modifier = ModifierBuilder.builder().setVisibility(VisibilityKind.PUBLIC)
+				.setCompilationUnit(compilationUnit).build();
+		this.buildClass = ClassDeclarationBuilder.builder().setName(className).setPackage(internalPackage)
+				.setProxy(false).setModifier(modifier).setCompilationUnit(compilationUnit).build();
+		compilationUnit.getTypes().add(this.buildClass);
+		internalPackage.getModel().getCompilationUnits().add(compilationUnit);
+	}
+
+	/**
+	 * Private constructor : a new internal class (public and proxy state set to
+	 * false by default)
+	 * 
+	 * @param javaClass
+	 *            the class containing the class under construction.
+	 * @param className
+	 *            the name of the class under construction.
+	 */
+	private ClassHelper(Class javaClass, String className) {
+		ClassDeclaration classDeclaration = javaClass.getClassDeclaration();
+		Modifier modifier = ModifierBuilder.builder().setVisibility(VisibilityKind.PUBLIC)
+				.setCompilationUnit(classDeclaration.getOriginalCompilationUnit()).build();
+		this.buildClass = ClassDeclarationBuilder.builder().setName(className)
+				.setPackage(classDeclaration.getPackage()).setProxy(false).setModifier(modifier)
+				.setCompilationUnit(classDeclaration.getOriginalCompilationUnit())
+				.setAbstractTypeDeclaration(classDeclaration).build();
+	}
+
+	/**
+	 * Give the build class
+	 * 
+	 * @return the build class.
+	 */
+	public Class build() {
+		return new Class(this.buildClass);
+	}
+
+	/**
+	 * Set the visibility of the class under construction
+	 * 
+	 * @param visibility
+	 *            the visibility of the class under construction.
+	 * @return the helper.
+	 */
+	public ClassHelper setModifier(VisibilityKind visibility) {
+		Modifier modifier = ModifierBuilder.builder().setVisibility(visibility)
+				.setCompilationUnit(this.buildClass.getOriginalCompilationUnit()).build();
+		this.buildClass.setModifier(modifier);
+		return this;
+	}
+
+	/**
+	 * Set the proxy state of the class under construction
+	 * 
+	 * @param proxyState
+	 *            the proxy state of the class under construction.
+	 * @return the helper.
+	 */
+	public ClassHelper setProxy(boolean proxyState) {
+		this.buildClass.setProxy(proxyState);
+		return this;
 	}
 
 	/**
@@ -81,54 +158,8 @@ public class ClassHelper {
 	 *            the proxy state of of the created class.
 	 * @return the created class accordingly to the specified parameters.
 	 */
-	public static ClassDeclaration createClass(Package javaPackage, String className, VisibilityKind visibility,
-			boolean proxyState) {
-		Modifier modifier = ModifierBuilder.builder().setVisibility(visibility).build();
-		CompilationUnit compilationUnit = CompilationUnitBuilder.builder().setName(className + ".java")
-				.setPackage(javaPackage).build();
-		ClassDeclaration classDeclaration = ClassDeclarationBuilder.builder().setName(className)
-				.setPackage(javaPackage).setProxy(proxyState).setModifier(modifier).setCompilationUnit(compilationUnit)
-				.build();
-		compilationUnit.getTypes().add(classDeclaration);
-		javaPackage.getModel().getCompilationUnits().add(compilationUnit);
-		return classDeclaration;
-	}
-
-	/**
-	 * Create an internal class with proxy state set to false
-	 * 
-	 * @param javaClass
-	 *            the class of the created internal class.
-	 * @param className
-	 *            the name of the created class without .java extension.
-	 * @return the created internal class accordingly to the specified
-	 *         parameters.
-	 */
-	public static ClassDeclaration createInternalClass(ClassDeclaration javaClass, String className) {
-		Modifier modifier = ModifierBuilder.builder().setVisibility(VisibilityKind.PUBLIC).build();
-		return ClassDeclarationBuilder.builder().setName(className).setPackage(javaClass.getPackage()).setProxy(false)
-				.setModifier(modifier).setCompilationUnit(javaClass.getOriginalCompilationUnit())
-				.setAbstractTypeDeclaration(javaClass).build();
-	}
-
-	/**
-	 * Create an internal class with proxy state set to false
-	 * 
-	 * @param javaClass
-	 *            the class of the created internal class.
-	 * @param className
-	 *            the name of the created class without .java extension.
-	 * @param visibility
-	 *            the visibility of the created class.
-	 * @return the created internal class accordingly to the specified
-	 *         parameters.
-	 */
-	public static ClassDeclaration createInternalClass(ClassDeclaration javaClass, String className,
-			VisibilityKind visibility) {
-		Modifier modifier = ModifierBuilder.builder().setVisibility(visibility).build();
-		return ClassDeclarationBuilder.builder().setName(className).setPackage(javaClass.getPackage()).setProxy(false)
-				.setModifier(modifier).setCompilationUnit(javaClass.getOriginalCompilationUnit())
-				.setAbstractTypeDeclaration(javaClass).build();
+	public static Class createClass(Package javaPackage, String className, VisibilityKind visibility, boolean proxyState) {
+		return ClassHelper.classBuilder(javaPackage, className).setModifier(visibility).setProxy(proxyState).build();
 	}
 
 	/**
@@ -145,12 +176,10 @@ public class ClassHelper {
 	 * @return the created internal class accordingly to the specified
 	 *         parameters.
 	 */
-	public static ClassDeclaration createInternalClass(ClassDeclaration javaClass, String className,
-			VisibilityKind visibility, boolean proxyState) {
-		Modifier modifier = ModifierBuilder.builder().setVisibility(visibility).build();
-		return ClassDeclarationBuilder.builder().setName(className).setPackage(javaClass.getPackage())
-				.setProxy(proxyState).setModifier(modifier).setCompilationUnit(javaClass.getOriginalCompilationUnit())
-				.setAbstractTypeDeclaration(javaClass).build();
+	public static Class createInternalClass(Class javaClass, String className, VisibilityKind visibility,
+			boolean proxyState) {
+		return ClassHelper.internalClassBuilder(javaClass, className).setModifier(visibility).setProxy(proxyState)
+				.build();
 	}
 
 }

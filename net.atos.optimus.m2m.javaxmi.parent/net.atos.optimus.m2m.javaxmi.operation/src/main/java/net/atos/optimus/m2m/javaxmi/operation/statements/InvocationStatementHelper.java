@@ -21,7 +21,7 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.statements;
 
-import net.atos.optimus.m2m.javaxmi.operation.classes.ClassInstanceCreationBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.constructors.ClassInstanceCreationBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.types.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.variables.VariableAccessHelper;
 

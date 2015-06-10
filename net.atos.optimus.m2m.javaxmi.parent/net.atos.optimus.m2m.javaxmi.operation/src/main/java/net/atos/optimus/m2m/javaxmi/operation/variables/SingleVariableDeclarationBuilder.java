@@ -21,7 +21,9 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.variables;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmt.modisco.java.AbstractMethodDeclaration;
+import org.eclipse.gmt.modisco.java.Annotation;
 import org.eclipse.gmt.modisco.java.CompilationUnit;
 import org.eclipse.gmt.modisco.java.SingleVariableDeclaration;
 import org.eclipse.gmt.modisco.java.TypeAccess;
@@ -131,6 +133,22 @@ public class SingleVariableDeclarationBuilder {
 	 */
 	public SingleVariableDeclarationBuilder setVarargs(boolean varargsState) {
 		this.buildSingleVariableDeclaration.setVarargs(varargsState);
+		return this;
+	}
+
+	/**
+	 * Add an annotation to the single variable declaration under construction
+	 * 
+	 * @param annotations
+	 *            the annotations list to add to the single variable declaration
+	 *            under construction.
+	 * @return the builder.
+	 */
+	public SingleVariableDeclarationBuilder addAnnotation(Annotation... annotations) {
+		EList<Annotation> annotationList = this.buildSingleVariableDeclaration.getAnnotations();
+		for (Annotation annotation : annotations) {
+			annotationList.add(annotation);
+		}
 		return this;
 	}
 
