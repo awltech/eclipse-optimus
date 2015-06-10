@@ -106,7 +106,7 @@ public class VariableHelper {
 	public static String generateVariableName(String variableTypeName) {
 		StringBuilder s = new StringBuilder();
 		if (s != null && !"".equals(variableTypeName.trim())) {
-			s.append(variableTypeName.trim().substring(0, 1).toUpperCase());
+			s.append(variableTypeName.trim().substring(0, 1).toLowerCase());
 			if (variableTypeName.length() > 1) {
 				s.append(variableTypeName.substring(1));
 			}

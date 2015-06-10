@@ -21,7 +21,7 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.statements;
 
-import net.atos.optimus.m2m.javaxmi.operation.fields.FieldAccessHelper;
+import net.atos.optimus.m2m.javaxmi.operation.accesses.FieldAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.variables.VariableAccessHelper;
 
 import org.eclipse.gmt.modisco.java.BooleanLiteral;

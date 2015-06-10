@@ -127,13 +127,13 @@ public class ParameterHelper {
 	 * Generate the parameter name with the parameter type name
 	 * 
 	 * @param parameterTypeName
-	 *            the parameter type name
+	 *            the parameter type name.
 	 * @return the parameter name associated to the parameter type name.
 	 */
 	public static String generateParameterName(String parameterTypeName) {
 		StringBuilder s = new StringBuilder();
 		if (s != null && !"".equals(parameterTypeName.trim())) {
-			s.append(parameterTypeName.trim().substring(0, 1).toUpperCase());
+			s.append(parameterTypeName.trim().substring(0, 1).toLowerCase());
 			if (parameterTypeName.length() > 1) {
 				s.append(parameterTypeName.substring(1));
 			}

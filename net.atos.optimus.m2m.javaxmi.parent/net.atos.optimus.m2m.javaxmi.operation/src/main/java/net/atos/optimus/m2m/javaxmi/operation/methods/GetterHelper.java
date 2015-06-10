@@ -22,6 +22,7 @@
 package net.atos.optimus.m2m.javaxmi.operation.methods;
 
 import net.atos.optimus.m2m.javaxmi.operation.classes.Class;
+import net.atos.optimus.m2m.javaxmi.operation.fields.Field;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.statements.ReturnStatementHelper;
 
@@ -48,16 +49,12 @@ public class GetterHelper {
 	 * 
 	 * @param javaClass
 	 *            the class where is the getter method under construction.
-	 * @param fieldTypeName
-	 *            the name of the field type associated to the getter method
-	 *            under construction.
-	 * @param fieldName
-	 *            the name of the field associated to the getter method under
-	 *            construction.
+	 * @param field
+	 *            the field associated to the getter method under construction.
 	 * @return a new getter method helper.
 	 */
-	public static GetterHelper builder(Class javaClass, String fieldTypeName, String fieldName) {
-		return new GetterHelper(javaClass, fieldTypeName, fieldName);
+	public static GetterHelper builder(Class javaClass, Field field) {
+		return new GetterHelper(javaClass, field);
 	}
 
 	/**
@@ -65,17 +62,13 @@ public class GetterHelper {
 	 * 
 	 * @param javaClass
 	 *            the class where is the getter method under construction.
-	 * @param fieldTypeName
-	 *            the name of the field type associated to the getter method
-	 *            under construction.
-	 * @param fieldName
-	 *            the name of the field associated to the getter method under
-	 *            construction.
+	 * @param field
+	 *            the field associated to the getter method under construction.
 	 */
-	private GetterHelper(Class javaClass, String fieldTypeName, String fieldName) {
-		this.buildGetterMethod = MethodHelper.builder(javaClass, GetterHelper.generateGetterName(fieldName))
-				.setVisibility(VisibilityKind.PUBLIC).setReturnType(fieldTypeName)
-				.addStatements(ReturnStatementHelper.createFieldReturnStatement(fieldName)).build();
+	private GetterHelper(Class javaClass, Field field) {
+		this.buildGetterMethod = MethodHelper.builder(javaClass, GetterHelper.generateGetterName(field.getName()))
+				.setVisibility(VisibilityKind.PUBLIC).setReturnType(field.getTypeName())
+				.addStatements(ReturnStatementHelper.createFieldReturnStatement(field.getName())).build();
 	}
 
 	/**
@@ -120,21 +113,15 @@ public class GetterHelper {
 	 *            the class where is the created getter method.
 	 * @param visibility
 	 *            the visibility of the created getter method.
-	 * @param fieldTypeName
-	 *            the name of the field type associated with the created getter
-	 *            method.
+	 * @param field
+	 *            the field associated with the created getter method.
 	 * @param getterName
 	 *            the name of the created getter method.
-	 * @param fieldName
-	 *            the name of the field associated with the created getter
-	 *            method.
 	 * @return the created getter method accordingly to the specified
 	 *         parameters.
 	 */
-	public static Method createGetter(Class javaClass, VisibilityKind visibility, String fieldTypeName,
-			String getterName, String fieldName) {
-		return GetterHelper.builder(javaClass, fieldTypeName, fieldName).setVisibility(visibility).setName(getterName)
-				.build();
+	public static Method createGetter(Class javaClass, VisibilityKind visibility, Field field, String getterName) {
+		return GetterHelper.builder(javaClass, field).setVisibility(visibility).setName(getterName).build();
 	}
 
 	/**

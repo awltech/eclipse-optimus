@@ -21,6 +21,7 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.fields;
 
+import net.atos.optimus.m2m.javaxmi.operation.classes.Class;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.types.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.variables.VariableDeclarationFragmentBuilder;
@@ -41,19 +42,77 @@ import org.eclipse.gmt.modisco.java.VisibilityKind;
 
 public class FieldHelper {
 
+	/** The build field */
+	private FieldDeclaration buildField;
+
 	/**
-	 * Create a private field
+	 * Launch the build of a new field (private, with generated name)
 	 * 
 	 * @param javaClass
-	 *            the class where is the created field.
-	 * @param typeName
-	 *            the type name of the created field.
-	 * @param fieldName
-	 *            the name of the created field.
-	 * @return the created field accordingly to the specified parameters.
+	 *            the class where is the field under construction.
+	 * @param fieldTypeName
+	 *            the type name of the field under construction.
+	 * @return a new helper.
 	 */
-	public static FieldDeclaration createField(ClassDeclaration javaClass, String typeName, String fieldName) {
-		return FieldHelper.createField(javaClass, VisibilityKind.PRIVATE, typeName, fieldName);
+	public static FieldHelper builder(Class javaClass, String fieldTypeName) {
+		return new FieldHelper(javaClass, fieldTypeName);
+	}
+
+	/**
+	 * Private constructor : a new field (private, with generated name)
+	 * 
+	 * @param javaClass
+	 *            the class where is the field under construction.
+	 * @param fieldTypeName
+	 *            the type name of the field under construction.
+	 * @return a new helper.
+	 */
+	private FieldHelper(Class javaClass, String fieldTypeName) {
+		ClassDeclaration internalClass = javaClass.getClassDeclaration();
+		String fieldName = FieldHelper.generateFieldName(fieldTypeName);
+		Modifier modifier = ModifierBuilder.builder().setVisibility(VisibilityKind.PRIVATE)
+				.setCompilationUnit(internalClass.getOriginalCompilationUnit()).build();
+		VariableDeclarationFragment variableDeclarationFragment = VariableDeclarationFragmentBuilder.builder()
+				.setName(fieldName).build();
+		this.buildField = FieldDeclarationBuilder.builder().setModifier(modifier)
+				.setType(TypeAccessHelper.createVariableTypeAccess(fieldTypeName))
+				.addFragment(variableDeclarationFragment).setAbstractTypeDeclaration(internalClass)
+				.setCompilationUnit(internalClass.getOriginalCompilationUnit()).build();
+	}
+
+	/**
+	 * Give the build field
+	 * 
+	 * @return the build field.
+	 */
+	public Field build() {
+		return new Field(this.buildField);
+	}
+
+	/**
+	 * Set the name of the field under construction
+	 * 
+	 * @param fieldName
+	 *            the name of the field under construction.
+	 * @return the helper.
+	 */
+	public FieldHelper setName(String fieldName) {
+		this.buildField.setName(fieldName);
+		return this;
+	}
+
+	/**
+	 * Set the visibility of the field under construction
+	 * 
+	 * @param visibility
+	 *            the visibility of the field under construction.
+	 * @return the helper.
+	 */
+	public FieldHelper setVisibility(VisibilityKind visibility) {
+		Modifier modifier = ModifierBuilder.builder().setVisibility(visibility)
+				.setCompilationUnit(this.buildField.getOriginalCompilationUnit()).build();
+		this.buildField.setModifier(modifier);
+		return this;
 	}
 
 	/**
@@ -62,23 +121,33 @@ public class FieldHelper {
 	 * @param javaClass
 	 *            the class where is the created field.
 	 * @param visibility
-	 *            the visibility the created field.
-	 * @param typeName
+	 *            the visibility of the created field.
+	 * @param fieldTypeName
 	 *            the type name of the created field.
 	 * @param fieldName
 	 *            the name of the created field.
 	 * @return the created field accordingly to the specified parameters.
 	 */
-	public static FieldDeclaration createField(ClassDeclaration javaClass, VisibilityKind visibility, String typeName,
-			String fieldName) {
-		Modifier modifier = ModifierBuilder.builder().setVisibility(visibility)
-				.setCompilationUnit(javaClass.getOriginalCompilationUnit()).build();
-		VariableDeclarationFragment variableDeclarationFragment = VariableDeclarationFragmentBuilder.builder()
-				.setName(fieldName).build();
-		return FieldDeclarationBuilder.builder().setModifier(modifier)
-				.setType(TypeAccessHelper.createVariableTypeAccess(typeName)).addFragment(variableDeclarationFragment)
-				.setAbstractTypeDeclaration(javaClass).setCompilationUnit(javaClass.getOriginalCompilationUnit())
-				.build();
+	public static Field createField(Class javaClass, VisibilityKind visibility, String fieldTypeName, String fieldName) {
+		return FieldHelper.builder(javaClass, fieldTypeName).setVisibility(visibility).setName(fieldName).build();
+	}
+
+	/**
+	 * Generate the field name with the field type name
+	 * 
+	 * @param fieldTypeName
+	 *            the field type name.
+	 * @return the field name associated to the field type name.
+	 */
+	public static String generateFieldName(String fieldTypeName) {
+		StringBuilder s = new StringBuilder();
+		if (s != null && !"".equals(fieldTypeName.trim())) {
+			s.append(fieldTypeName.trim().substring(0, 1).toLowerCase());
+			if (fieldTypeName.length() > 1) {
+				s.append(fieldTypeName.substring(1));
+			}
+		}
+		return s.toString();
 	}
 
 }

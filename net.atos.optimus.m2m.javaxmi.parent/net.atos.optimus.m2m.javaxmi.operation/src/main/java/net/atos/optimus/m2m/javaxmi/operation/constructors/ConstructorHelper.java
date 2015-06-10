@@ -22,7 +22,7 @@
 package net.atos.optimus.m2m.javaxmi.operation.constructors;
 
 import net.atos.optimus.m2m.javaxmi.operation.classes.Class;
-
+import net.atos.optimus.m2m.javaxmi.operation.fields.Field;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.parameters.ParameterHelper;
 import net.atos.optimus.m2m.javaxmi.operation.statements.BlockBuilder;
@@ -134,38 +134,33 @@ public class ConstructorHelper {
 
 	/**
 	 * Add a parameter with a generated name in the constructor and set the
-	 * associated field in the constructor body
+	 * specified field in the constructor body
 	 * 
-	 * @param fieldTypeName
-	 *            the type name of the field associated to the parameter.
-	 * @param fieldName
-	 *            the name of the field associated to the parameter.
+	 * @param field
+	 *            the field to set.
 	 * @return the helper.
 	 */
-	public ConstructorHelper addParameterAndSetAssociatedField(String fieldTypeName, String fieldName) {
-		String parameterName = ParameterHelper.generateParameterName(fieldTypeName);
-		this.addParameter(fieldTypeName, parameterName);
-		this.addStatements(ComplexStatementHelper.createSetFieldStatement(fieldName, parameterName));
+	public ConstructorHelper addParameterAndSetAssociatedField(Field field) {
+		String parameterName = ParameterHelper.generateParameterName(field.getTypeName());
+		this.addParameter(field.getTypeName(), parameterName);
+		this.addStatements(ComplexStatementHelper.createSetFieldStatement(field.getName(), parameterName));
 		return this;
 	}
 
 	/**
-	 * Add a parameter in the constructor and set the associated field in the
+	 * Add a parameter in the constructor and set the specified field in the
 	 * constructor body
 	 * 
 	 * @param parameterName
 	 *            the name of the parameter to add to the constructor under
 	 *            construction.
-	 * @param fieldTypeName
-	 *            the type name of the field associated to the parameter.
-	 * @param fieldName
-	 *            the name of the field associated to the parameter.
+	 * @param field
+	 *            the field to set.
 	 * @return the helper.
 	 */
-	public ConstructorHelper addParameterAndSetAssociatedField(String parameterName, String fieldTypeName,
-			String fieldName) {
-		this.addParameter(fieldTypeName, parameterName);
-		this.addStatements(ComplexStatementHelper.createSetFieldStatement(fieldName, parameterName));
+	public ConstructorHelper addParameterAndSetAssociatedField(String parameterName, Field field) {
+		this.addParameter(field.getTypeName(), parameterName);
+		this.addStatements(ComplexStatementHelper.createSetFieldStatement(field.getName(), parameterName));
 		return this;
 	}
 
@@ -191,21 +186,24 @@ public class ConstructorHelper {
 	}
 
 	/**
-	 * Create a constructor with statements and no parameter
+	 * Create a constructor with automatic set fields
 	 * 
 	 * @param javaClass
 	 *            the class where is the created constructor.
 	 * @param visibility
 	 *            the visibility the created constructor.
-	 * @param statements
-	 *            the statements list to add to the constructor under
+	 * @param fields
+	 *            the fields list to set with the constructor under
 	 *            construction.
-	 * @return the created constructor with statements and no parameter accordingly to
+	 * @return the created constructor with automatic set fields accordingly to
 	 *         the specified parameters.
 	 */
-	public static Constructor createConstructor(Class javaClass, VisibilityKind visibility,
-			Statement... statements) {
-		return ConstructorHelper.builder(javaClass).setVisibility(visibility).addStatements(statements).build();
+	public static Constructor createConstructor(Class javaClass, VisibilityKind visibility, Field... fields) {
+		ConstructorHelper helper =  ConstructorHelper.builder(javaClass).setVisibility(visibility);
+		for(Field field : fields){
+			helper.addParameterAndSetAssociatedField(field);
+		}
+		return helper.build();
 	}
 
 	/**
