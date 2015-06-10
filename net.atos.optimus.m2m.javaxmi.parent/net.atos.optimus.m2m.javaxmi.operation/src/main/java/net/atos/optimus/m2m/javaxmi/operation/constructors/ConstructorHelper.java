@@ -22,15 +22,14 @@
 package net.atos.optimus.m2m.javaxmi.operation.constructors;
 
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.parameters.ParameterHelper;
 import net.atos.optimus.m2m.javaxmi.operation.statements.BlockBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.statements.ComplexStatementHelper;
-import net.atos.optimus.m2m.javaxmi.operation.variables.VariableHelper;
 
 import org.eclipse.gmt.modisco.java.Block;
 import org.eclipse.gmt.modisco.java.ClassDeclaration;
 import org.eclipse.gmt.modisco.java.ConstructorDeclaration;
 import org.eclipse.gmt.modisco.java.Modifier;
-import org.eclipse.gmt.modisco.java.SingleVariableDeclaration;
 import org.eclipse.gmt.modisco.java.Statement;
 import org.eclipse.gmt.modisco.java.VisibilityKind;
 
@@ -106,9 +105,7 @@ public class ConstructorHelper {
 	 * @return the builder.
 	 */
 	public ConstructorHelper addParameter(String parameterTypeName, String parameterName) {
-		SingleVariableDeclaration singleVariableDeclaration = VariableHelper.createVariableDeclaration(
-				this.buildConstructor, parameterTypeName, parameterName);
-		this.buildConstructor.getParameters().add(singleVariableDeclaration);
+		ParameterHelper.builder(this.buildConstructor, parameterTypeName).setName(parameterName).build();
 		return this;
 	}
 
@@ -123,10 +120,7 @@ public class ConstructorHelper {
 	 */
 	public ConstructorHelper addParameters(String... parameterTypeNames) {
 		for (String parameterTypeName : parameterTypeNames) {
-			String parameterName = ConstructorHelper.createParameterName(parameterTypeName);
-			SingleVariableDeclaration singleVariableDeclaration = VariableHelper.createVariableDeclaration(
-					this.buildConstructor, parameterTypeName, parameterName);
-			this.buildConstructor.getParameters().add(singleVariableDeclaration);
+			ParameterHelper.builder(this.buildConstructor, parameterTypeName).build();
 		}
 		return this;
 	}
@@ -188,7 +182,6 @@ public class ConstructorHelper {
 		this.addStatements(ComplexStatementHelper.createSetFieldStatement(fieldName, parameterName));
 		return this;
 	}
-	
 
 	/**
 	 * Create a constructor with no parameter and no body

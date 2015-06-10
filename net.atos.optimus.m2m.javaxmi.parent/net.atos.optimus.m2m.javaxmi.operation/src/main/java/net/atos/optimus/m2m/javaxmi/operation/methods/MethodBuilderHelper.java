@@ -22,15 +22,14 @@
 package net.atos.optimus.m2m.javaxmi.operation.methods;
 
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.parameters.ParameterHelper;
 import net.atos.optimus.m2m.javaxmi.operation.statements.BlockBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.types.TypeAccessHelper;
-import net.atos.optimus.m2m.javaxmi.operation.variables.VariableHelper;
 
 import org.eclipse.gmt.modisco.java.Block;
 import org.eclipse.gmt.modisco.java.ClassDeclaration;
 import org.eclipse.gmt.modisco.java.MethodDeclaration;
 import org.eclipse.gmt.modisco.java.Modifier;
-import org.eclipse.gmt.modisco.java.SingleVariableDeclaration;
 import org.eclipse.gmt.modisco.java.Statement;
 import org.eclipse.gmt.modisco.java.VisibilityKind;
 
@@ -125,9 +124,7 @@ public class MethodBuilderHelper {
 	 * @return the builder.
 	 */
 	public MethodBuilderHelper addParameter(String parameterTypeName, String parameterName) {
-		SingleVariableDeclaration singleVariableDeclaration = VariableHelper.createVariableDeclaration(
-				this.buildMethodDeclaration, parameterTypeName, parameterName);
-		this.buildMethodDeclaration.getParameters().add(singleVariableDeclaration);
+		ParameterHelper.builder(this.buildMethodDeclaration, parameterTypeName).setName(parameterName).build();
 		return this;
 	}
 
@@ -142,10 +139,7 @@ public class MethodBuilderHelper {
 	 */
 	public MethodBuilderHelper addParameters(String... parameterTypeNames) {
 		for (String parameterTypeName : parameterTypeNames) {
-			String parameterName = MethodBuilderHelper.createParameterName(parameterTypeName);
-			SingleVariableDeclaration singleVariableDeclaration = VariableHelper.createVariableDeclaration(
-					this.buildMethodDeclaration, parameterTypeName, parameterName);
-			this.buildMethodDeclaration.getParameters().add(singleVariableDeclaration);
+			ParameterHelper.builder(this.buildMethodDeclaration, parameterTypeName).build();
 		}
 		return this;
 	}
@@ -181,8 +175,8 @@ public class MethodBuilderHelper {
 	 *            the return type name of the created method.
 	 * @param methodName
 	 *            the name of the created method.
-	 * @return the created method with no parameter and no body accordingly to the specified
-	 *         parameters.
+	 * @return the created method with no parameter and no body accordingly to
+	 *         the specified parameters.
 	 */
 	protected static MethodDeclaration createMethodBasicSignature(ClassDeclaration javaClass,
 			VisibilityKind visibility, String returnTypeName, String methodName) {

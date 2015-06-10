@@ -23,7 +23,6 @@ package net.atos.optimus.m2m.javaxmi.operation.variables;
 
 import net.atos.optimus.m2m.javaxmi.operation.types.TypeAccessHelper;
 
-import org.eclipse.gmt.modisco.java.AbstractMethodDeclaration;
 import org.eclipse.gmt.modisco.java.SingleVariableDeclaration;
 
 /**
@@ -36,62 +35,83 @@ import org.eclipse.gmt.modisco.java.SingleVariableDeclaration;
 
 public class VariableHelper {
 
+	/** The build variable */
+	private SingleVariableDeclaration buildVariable;
+
 	/**
-	 * Create a single variable declaration
+	 * Launch the build of a new variable (with generated name)
 	 * 
-	 * @param typeName
-	 *            the type name of the created single variable declaration.
-	 * @param variableName
-	 *            the name of the created single variable declaration.
-	 * @return the created single variable declaration accordingly to the
-	 *         specified parameters.
+	 * @param variableTypeName
+	 *            the type name of the variable under construction.
+	 * @return a new helper.
 	 */
-	public static SingleVariableDeclaration createVariableDeclaration(String typeName, String variableName) {
-		return SingleVariableDeclarationBuilder.builder().setType(TypeAccessHelper.createVariableTypeAccess(typeName))
-				.setName(variableName).build();
+	public static VariableHelper builder(String variableTypeName) {
+		return new VariableHelper(variableTypeName);
 	}
 
 	/**
-	 * Create a single variable declaration with varargs state set to false
+	 * Private constructor : a new variable (with generated name)
 	 * 
-	 * @param method
-	 *            the method associated to the created single variable
-	 *            declaration.
-	 * @param typeName
-	 *            the type name of the created single variable declaration.
-	 * @param variableName
-	 *            the name of the created single variable declaration.
-	 * @return the created single variable declaration accordingly to the
-	 *         specified parameters.
+	 * @param variableTypeName
+	 *            the type name of the variable under construction.
 	 */
-	public static SingleVariableDeclaration createVariableDeclaration(AbstractMethodDeclaration method,
-			String typeName, String variableName) {
-		return SingleVariableDeclarationBuilder.builder().setMethodDeclaration(method)
-				.setCompilationUnit(method.getOriginalCompilationUnit())
-				.setType(TypeAccessHelper.createVariableTypeAccess(typeName)).setName(variableName).setVarargs(false).build();
+	private VariableHelper(String variableTypeName) {
+		this.buildVariable = SingleVariableDeclarationBuilder.builder()
+				.setType(TypeAccessHelper.createVariableTypeAccess(variableTypeName))
+				.setName(VariableHelper.generateVariableName(variableTypeName)).build();
+	}
+
+	/**
+	 * Give the build variable
+	 * 
+	 * @return the build variable.
+	 */
+	public Variable build() {
+		return new Variable(this.buildVariable);
+	}
+
+	/**
+	 * Set the name of the variable under construction
+	 * 
+	 * @param variableName
+	 *            the name of the variable under construction.
+	 * @return the helper.
+	 */
+	public VariableHelper setName(String variableName) {
+		this.buildVariable.setName(variableName);
+		return this;
 	}
 
 	/**
 	 * Create a single variable declaration
 	 * 
-	 * @param method
-	 *            the method associated to the created single variable
-	 *            declaration.
-	 * @param typeName
-	 *            the type name of the created single variable declaration.
+	 * @param variableTypeName
+	 *            the type name of the created variable.
 	 * @param variableName
-	 *            the name of the created single variable declaration.
-	 * @param varargsState
-	 *            the varargs state of the created single variable declaration.
-	 * @return the created single variable declaration accordingly to the
+	 *            the name of the created variable.
+	 * @return the created variable accordingly to the
 	 *         specified parameters.
 	 */
-	public static SingleVariableDeclaration createVariableDeclaration(AbstractMethodDeclaration method,
-			String typeName, String variableName, boolean varargsState) {
-		return SingleVariableDeclarationBuilder.builder().setMethodDeclaration(method)
-				.setCompilationUnit(method.getOriginalCompilationUnit())
-				.setType(TypeAccessHelper.createVariableTypeAccess(typeName)).setName(variableName).setVarargs(varargsState)
-				.build();
+	public static Variable createVariable(String variableTypeName, String variableName) {
+		return VariableHelper.builder(variableTypeName).setName(variableName).build();
+	}
+
+	/**
+	 * Generate the variable name with the variable type name
+	 * 
+	 * @param variableTypeName
+	 *            the variable type name
+	 * @return the variable name associated to the variable type name.
+	 */
+	public static String generateVariableName(String variableTypeName) {
+		StringBuilder s = new StringBuilder();
+		if (s != null && !"".equals(variableTypeName.trim())) {
+			s.append(variableTypeName.trim().substring(0, 1).toUpperCase());
+			if (variableTypeName.length() > 1) {
+				s.append(variableTypeName.substring(1));
+			}
+		}
+		return s.toString();
 	}
 
 }
