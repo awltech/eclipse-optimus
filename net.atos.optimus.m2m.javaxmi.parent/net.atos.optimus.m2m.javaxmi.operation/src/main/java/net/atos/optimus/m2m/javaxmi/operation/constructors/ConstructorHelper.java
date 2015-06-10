@@ -21,6 +21,8 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.constructors;
 
+import net.atos.optimus.m2m.javaxmi.operation.classes.Class;
+
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.parameters.ParameterHelper;
 import net.atos.optimus.m2m.javaxmi.operation.statements.BlockBuilder;
@@ -53,9 +55,9 @@ public class ConstructorHelper {
 	 * @param javaClass
 	 *            the class associated to the constructor under construction.
 	 * 
-	 * @return a new constructor builder.
+	 * @return a new constructor helper.
 	 */
-	public static ConstructorHelper builder(ClassDeclaration javaClass) {
+	public static ConstructorHelper builder(Class javaClass) {
 		return new ConstructorHelper(javaClass);
 	}
 
@@ -66,8 +68,13 @@ public class ConstructorHelper {
 	 * @param javaClass
 	 *            the class associated to the constructor under construction.
 	 */
-	private ConstructorHelper(ClassDeclaration javaClass) {
-		this.buildConstructor = ConstructorHelper.createBasicConstructor(javaClass, VisibilityKind.PUBLIC);
+	private ConstructorHelper(Class javaClass) {
+		ClassDeclaration internalClass = javaClass.getClassDeclaration();
+		Modifier modifier = ModifierBuilder.builder().setVisibility(VisibilityKind.PUBLIC)
+				.setCompilationUnit(internalClass.getOriginalCompilationUnit()).build();
+		this.buildConstructor = ConstructorDeclarationBuilder.builder().setModifier(modifier)
+				.setName(internalClass.getName()).setAbstractTypeDeclaration(internalClass)
+				.setCompilationUnit(internalClass.getOriginalCompilationUnit()).build();
 	}
 
 	/**
@@ -75,8 +82,8 @@ public class ConstructorHelper {
 	 * 
 	 * @return the build constructor.
 	 */
-	public ConstructorDeclaration build() {
-		return this.buildConstructor;
+	public Constructor build() {
+		return new Constructor(this.buildConstructor);
 	}
 
 	/**
@@ -84,7 +91,7 @@ public class ConstructorHelper {
 	 * 
 	 * @param visibility
 	 *            the visibility of the constructor under construction.
-	 * @return the builder.
+	 * @return the helper.
 	 */
 	public ConstructorHelper setVisibility(VisibilityKind visibility) {
 		Modifier modifier = ModifierBuilder.builder().setVisibility(visibility)
@@ -102,7 +109,7 @@ public class ConstructorHelper {
 	 * @param parameterName
 	 *            the name of the parameter to add to the constructor under
 	 *            construction.
-	 * @return the builder.
+	 * @return the helper.
 	 */
 	public ConstructorHelper addParameter(String parameterTypeName, String parameterName) {
 		ParameterHelper.builder(this.buildConstructor, parameterTypeName).setName(parameterName).build();
@@ -110,13 +117,13 @@ public class ConstructorHelper {
 	}
 
 	/**
-	 * Add a parameters list to the constructor under construction with
-	 * generated names
+	 * Add a parameters list (parameters names are generated) to the constructor
+	 * under construction
 	 * 
 	 * @param parameterTypeNames
-	 *            the type names list of the parameter to add to the constructor
+	 *            the type names list of parameters to add to the constructor
 	 *            under construction.
-	 * @return the builder.
+	 * @return the helper.
 	 */
 	public ConstructorHelper addParameters(String... parameterTypeNames) {
 		for (String parameterTypeName : parameterTypeNames) {
@@ -126,38 +133,17 @@ public class ConstructorHelper {
 	}
 
 	/**
-	 * Add a statements list to the constructor under construction
-	 * 
-	 * @param statements
-	 *            the statements list to add to the constructor under
-	 *            construction.
-	 * @return the builder.
-	 */
-	public ConstructorHelper addStatements(Statement... statements) {
-		Block block = this.buildConstructor.getBody();
-		if (block == null) {
-			block = BlockBuilder.builder().addStatements(statements).build();
-			this.buildConstructor.setBody(block);
-		} else {
-			for (Statement statement : statements) {
-				block.getStatements().add(statement);
-			}
-		}
-		return this;
-	}
-
-	/**
-	 * Add a generated parameter in the constructor and set the associated field
-	 * in the constructor body
+	 * Add a parameter with a generated name in the constructor and set the
+	 * associated field in the constructor body
 	 * 
 	 * @param fieldTypeName
 	 *            the type name of the field associated to the parameter.
 	 * @param fieldName
 	 *            the name of the field associated to the parameter.
-	 * @return the builder.
+	 * @return the helper.
 	 */
 	public ConstructorHelper addParameterAndSetAssociatedField(String fieldTypeName, String fieldName) {
-		String parameterName = ConstructorHelper.createParameterName(fieldTypeName);
+		String parameterName = ParameterHelper.generateParameterName(fieldTypeName);
 		this.addParameter(fieldTypeName, parameterName);
 		this.addStatements(ComplexStatementHelper.createSetFieldStatement(fieldName, parameterName));
 		return this;
@@ -174,7 +160,7 @@ public class ConstructorHelper {
 	 *            the type name of the field associated to the parameter.
 	 * @param fieldName
 	 *            the name of the field associated to the parameter.
-	 * @return the builder.
+	 * @return the helper.
 	 */
 	public ConstructorHelper addParameterAndSetAssociatedField(String parameterName, String fieldTypeName,
 			String fieldName) {
@@ -184,62 +170,64 @@ public class ConstructorHelper {
 	}
 
 	/**
-	 * Create a constructor with no parameter and no body
+	 * Add a statements list to the constructor under construction
 	 * 
-	 * @param javaClass
-	 *            the class where is the created constructor.
-	 * @param visibility
-	 *            the visibility the created constructor.
-	 * @return the created constructor with no parameter and no body accordingly
-	 *         to the specified parameters.
-	 */
-	protected static ConstructorDeclaration createBasicConstructor(ClassDeclaration javaClass, VisibilityKind visibility) {
-		Modifier modifier = ModifierBuilder.builder().setVisibility(visibility)
-				.setCompilationUnit(javaClass.getOriginalCompilationUnit()).build();
-		return ConstructorDeclarationBuilder.builder().setModifier(modifier).setName(javaClass.getName())
-				.setAbstractTypeDeclaration(javaClass).setCompilationUnit(javaClass.getOriginalCompilationUnit())
-				.build();
-	}
-
-	/**
-	 * Add a list of statements to a constructor
-	 * 
-	 * @param constructorDeclaration
-	 *            the constructor which we add the statements list.
 	 * @param statements
-	 *            the added statements list of the constructor.
-	 * @return the constructor with the specified body.
+	 *            the statements list to add to the constructor under
+	 *            construction.
+	 * @return the helper.
 	 */
-	public static ConstructorDeclaration addConstructorBody(ConstructorDeclaration constructorDeclaration,
-			Statement... statements) {
-		Block block = constructorDeclaration.getBody();
+	public ConstructorHelper addStatements(Statement... statements) {
+		Block block = this.buildConstructor.getBody();
 		if (block == null) {
 			block = BlockBuilder.builder().addStatements(statements).build();
-			constructorDeclaration.setBody(block);
+			this.buildConstructor.setBody(block);
 		} else {
 			for (Statement statement : statements) {
 				block.getStatements().add(statement);
 			}
 		}
-		return constructorDeclaration;
+		return this;
 	}
 
 	/**
-	 * Create the parameter name with the parameter type name
+	 * Create a constructor with statements and no parameter
 	 * 
-	 * @param parameterTypeName
-	 *            the parameter type name
-	 * @return the parameter name associated to the parameter type name.
+	 * @param javaClass
+	 *            the class where is the created constructor.
+	 * @param visibility
+	 *            the visibility the created constructor.
+	 * @param statements
+	 *            the statements list to add to the constructor under
+	 *            construction.
+	 * @return the created constructor with statements and no parameter accordingly to
+	 *         the specified parameters.
 	 */
-	protected static String createParameterName(String parameterTypeName) {
-		StringBuilder s = new StringBuilder();
-		if (s != null && !"".equals(parameterTypeName.trim())) {
-			s.append(parameterTypeName.trim().substring(0, 1).toUpperCase());
-			if (parameterTypeName.length() > 1) {
-				s.append(parameterTypeName.substring(1));
+	public static Constructor createConstructor(Class javaClass, VisibilityKind visibility,
+			Statement... statements) {
+		return ConstructorHelper.builder(javaClass).setVisibility(visibility).addStatements(statements).build();
+	}
+
+	/**
+	 * Add a list of statements to a constructor
+	 * 
+	 * @param constructor
+	 *            the constructor which we add the statements list.
+	 * @param statements
+	 *            the added statements list of the constructor.
+	 * @return the constructor with the specified body.
+	 */
+	public static Constructor addConstructorBody(Constructor constructor, Statement... statements) {
+		Block block = constructor.getConstructorDeclaration().getBody();
+		if (block == null) {
+			block = BlockBuilder.builder().addStatements(statements).build();
+			constructor.getConstructorDeclaration().setBody(block);
+		} else {
+			for (Statement statement : statements) {
+				block.getStatements().add(statement);
 			}
 		}
-		return s.toString();
+		return constructor;
 	}
 
 }

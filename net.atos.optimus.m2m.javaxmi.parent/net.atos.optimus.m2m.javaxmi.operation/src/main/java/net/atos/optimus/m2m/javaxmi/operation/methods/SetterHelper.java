@@ -21,10 +21,12 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.methods;
 
+import net.atos.optimus.m2m.javaxmi.operation.classes.Class;
+import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.parameters.ParameterHelper;
 import net.atos.optimus.m2m.javaxmi.operation.statements.ComplexStatementHelper;
 
-import org.eclipse.gmt.modisco.java.ClassDeclaration;
-import org.eclipse.gmt.modisco.java.MethodDeclaration;
+import org.eclipse.gmt.modisco.java.Modifier;
 import org.eclipse.gmt.modisco.java.VisibilityKind;
 
 /**
@@ -39,93 +41,98 @@ public class SetterHelper {
 
 	public static final String SET_PREFIX = "set";
 
+	/** The build setter method */
+	private Method buildSetterMethod;
+
+	/** The field name associated to the setter */
+	private String fieldName;
+
 	/**
-	 * Create a public setter method with a generated name and parameter
+	 * Launch the build of a new setter method (public, with generated name and
+	 * generated parameter name)
 	 * 
 	 * @param javaClass
-	 *            the class where is the created setter method.
+	 *            the class where is the setter method under construction.
 	 * @param fieldTypeName
-	 *            the name of the field type associated with the created setter
-	 *            method.
+	 *            the name of the field type associated to the setter method
+	 *            under construction.
 	 * @param fieldName
-	 *            the name of the field associated with the created setter
-	 *            method.
-	 * @return the created public setter method with a generated name and
-	 *         parameter accordingly to the specified parameters.
+	 *            the name of the field associated to the setter method under
+	 *            construction.
+	 * @return a new setter method helper.
 	 */
-	public static MethodDeclaration createSetter(ClassDeclaration javaClass, String fieldTypeName, String fieldName) {
-		return SetterHelper.createSetter(javaClass, VisibilityKind.PUBLIC, SetterHelper.createSetterName(fieldName),
-				fieldName, fieldTypeName, fieldName);
+	public static SetterHelper builder(Class javaClass, String fieldTypeName, String fieldName) {
+		return new SetterHelper(javaClass, fieldTypeName, fieldName);
 	}
 
 	/**
-	 * Create a public setter method with a generated name
+	 * Private constructor : a new setter method (public, with generated name
+	 * and generated parameter name)
 	 * 
 	 * @param javaClass
-	 *            the class where is the created setter method.
-	 * @param parameterName
-	 *            the variableName of the created setter method.
+	 *            the class where is the setter method under construction.
 	 * @param fieldTypeName
-	 *            the name of the field type associated with the created setter
-	 *            method.
+	 *            the name of the field type associated to the setter method
+	 *            under construction.
 	 * @param fieldName
-	 *            the name of the field associated with the created setter
-	 *            method.
-	 * @return the created public setter method with a generated name
-	 *         accordingly to the specified parameters.
+	 *            the name of the field associated to the setter method under
+	 *            construction.
 	 */
-	public static MethodDeclaration createSetter(ClassDeclaration javaClass, String parameterName,
-			String fieldTypeName, String fieldName) {
-		return SetterHelper.createSetter(javaClass, VisibilityKind.PUBLIC, SetterHelper.createSetterName(fieldName),
-				parameterName, fieldTypeName, fieldName);
+	private SetterHelper(Class javaClass, String fieldTypeName, String fieldName) {
+		String parameterName = ParameterHelper.generateParameterName(fieldTypeName);
+		this.buildSetterMethod = MethodHelper.builder(javaClass, SetterHelper.generateSetterName(fieldName))
+				.setVisibility(VisibilityKind.PUBLIC).addParameter(fieldTypeName, parameterName)
+				.addStatements(ComplexStatementHelper.createSetFieldStatement(fieldName, parameterName)).build();
+		this.fieldName = fieldName;
 	}
 
 	/**
-	 * Create a public setter method
+	 * Build a setter method
 	 * 
-	 * @param javaClass
-	 *            the class where is the created setter method.
-	 * @param parameterName
-	 *            the variableName of the created setter method.
+	 * @return the build setter method.
+	 */
+	public Method build() {
+		return this.buildSetterMethod;
+	}
+
+	/**
+	 * Set the name of the setter method under construction
+	 * 
 	 * @param setterName
-	 *            the name of the created setter method.
-	 * @param fieldTypeName
-	 *            the name of the field type associated with the created setter
-	 *            method.
-	 * @param fieldName
-	 *            the name of the field associated with the created setter
-	 *            method.
-	 * @return the created public setter method accordingly to the specified
-	 *         parameters.
+	 *            the name of the setter method under construction.
+	 * @return the helper.
 	 */
-	public static MethodDeclaration createSetter(ClassDeclaration javaClass, String setterName, String parameterName,
-			String fieldTypeName, String fieldName) {
-		return SetterHelper.createSetter(javaClass, VisibilityKind.PUBLIC, setterName, parameterName, fieldTypeName,
-				fieldName);
+	public SetterHelper setName(String setterName) {
+		this.buildSetterMethod.getMethodDeclaration().setName(setterName);
+		return this;
 	}
 
 	/**
-	 * Create a setter method with a generated name
+	 * Set the visibility of the setter method under construction
 	 * 
-	 * @param javaClass
-	 *            the class where is the created setter method.
 	 * @param visibility
-	 *            the visibility of the created setter method.
-	 * @param parameterName
-	 *            the variableName of the created setter method.
-	 * @param fieldTypeName
-	 *            the name of the field type associated with the created setter
-	 *            method.
-	 * @param fieldName
-	 *            the name of the field associated with the created setter
-	 *            method.
-	 * @return the created setter method with a generated name accordingly to
-	 *         the specified parameters.
+	 *            the visibility of the setter method under construction.
+	 * @return the helper.
 	 */
-	public static MethodDeclaration createSetter(ClassDeclaration javaClass, VisibilityKind visibility,
-			String parameterName, String fieldTypeName, String fieldName) {
-		return SetterHelper.createSetter(javaClass, visibility, SetterHelper.createSetterName(fieldName),
-				parameterName, fieldTypeName, fieldName);
+	public SetterHelper setVisibility(VisibilityKind visibility) {
+		Modifier modifier = ModifierBuilder.builder().setVisibility(visibility)
+				.setCompilationUnit(this.buildSetterMethod.getMethodDeclaration().getOriginalCompilationUnit()).build();
+		this.buildSetterMethod.getMethodDeclaration().setModifier(modifier);
+		return this;
+	}
+
+	/**
+	 * Set the parameter name of the setter method under construction
+	 * 
+	 * @param parameterName
+	 *            the parameter name of the setter method under construction.
+	 * @return the helper.
+	 */
+	public SetterHelper setParameterName(String parameterName) {
+		this.buildSetterMethod.getMethodDeclaration().setBody(null);
+		MethodHelper.addMethodBody(this.buildSetterMethod,
+				ComplexStatementHelper.createSetFieldStatement(this.fieldName, parameterName));
+		return this;
 	}
 
 	/**
@@ -135,10 +142,10 @@ public class SetterHelper {
 	 *            the class where is the created setter method.
 	 * @param visibility
 	 *            the visibility of the created setter method.
-	 * @param parameterName
-	 *            the variableName of the created setter method.
 	 * @param setterName
 	 *            the name of the created setter method.
+	 * @param parameterName
+	 *            the variableName of the created setter method.
 	 * @param fieldTypeName
 	 *            the name of the field type associated with the created setter
 	 *            method.
@@ -148,21 +155,20 @@ public class SetterHelper {
 	 * @return the created setter method accordingly to the specified
 	 *         parameters.
 	 */
-	public static MethodDeclaration createSetter(ClassDeclaration javaClass, VisibilityKind visibility,
-			String setterName, String parameterName, String fieldTypeName, String fieldName) {
-		return MethodBuilderHelper.builder(javaClass, setterName).setVisibility(visibility)
-				.addParameter(fieldTypeName, parameterName)
-				.addStatements(ComplexStatementHelper.createSetFieldStatement(fieldName, parameterName)).build();
+	public static Method createSetter(Class javaClass, VisibilityKind visibility, String setterName,
+			String parameterName, String fieldTypeName, String fieldName) {
+		return SetterHelper.builder(javaClass, fieldTypeName, fieldName).setVisibility(visibility).setName(setterName)
+				.setParameterName(parameterName).build();
 	}
 
 	/**
-	 * Create the setter name associated to a field name
+	 * Generate the setter name associated to a field name
 	 * 
 	 * @param fieldName
-	 *            the field name associated to the setter name.
+	 *            the field name associated to the setter.
 	 * @return the setter name associated to the field name.
 	 */
-	protected static String createSetterName(String fieldName) {
+	public static String generateSetterName(String fieldName) {
 		StringBuilder s = new StringBuilder();
 		s.append(SetterHelper.SET_PREFIX);
 		if (!"".equals(fieldName.trim())) {

@@ -21,10 +21,11 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.methods;
 
+import net.atos.optimus.m2m.javaxmi.operation.classes.Class;
+import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.statements.ReturnStatementHelper;
 
-import org.eclipse.gmt.modisco.java.ClassDeclaration;
-import org.eclipse.gmt.modisco.java.MethodDeclaration;
+import org.eclipse.gmt.modisco.java.Modifier;
 import org.eclipse.gmt.modisco.java.VisibilityKind;
 
 /**
@@ -39,66 +40,77 @@ public class GetterHelper {
 
 	public static final String GET_PREFIX = "get";
 
+	/** The build getter method */
+	private Method buildGetterMethod;
+
 	/**
-	 * Create a public getter method with a generated name
+	 * Launch the build of a new getter method (public, with generated name)
 	 * 
 	 * @param javaClass
-	 *            the class where is the created getter method.
+	 *            the class where is the getter method under construction.
 	 * @param fieldTypeName
-	 *            the name of the field type associated with the created getter
-	 *            method.
+	 *            the name of the field type associated to the getter method
+	 *            under construction.
 	 * @param fieldName
-	 *            the name of the field associated with the created getter
-	 *            method.
-	 * @return the created public getter method with a generated name
-	 *         accordingly to the specified parameters.
+	 *            the name of the field associated to the getter method under
+	 *            construction.
+	 * @return a new getter method helper.
 	 */
-	public static MethodDeclaration createGetter(ClassDeclaration javaClass, String fieldTypeName, String fieldName) {
-		return GetterHelper.createGetter(javaClass, VisibilityKind.PUBLIC, fieldTypeName,
-				GetterHelper.createGetterName(fieldName), fieldName);
+	public static GetterHelper builder(Class javaClass, String fieldTypeName, String fieldName) {
+		return new GetterHelper(javaClass, fieldTypeName, fieldName);
 	}
 
 	/**
-	 * Create a public getter method
+	 * Private constructor : a new getter method (public, with generated name)
 	 * 
 	 * @param javaClass
-	 *            the class where is the created getter method.
+	 *            the class where is the getter method under construction.
 	 * @param fieldTypeName
-	 *            the name of the field type associated with the created getter
-	 *            method.
+	 *            the name of the field type associated to the getter method
+	 *            under construction.
+	 * @param fieldName
+	 *            the name of the field associated to the getter method under
+	 *            construction.
+	 */
+	private GetterHelper(Class javaClass, String fieldTypeName, String fieldName) {
+		this.buildGetterMethod = MethodHelper.builder(javaClass, GetterHelper.generateGetterName(fieldName))
+				.setVisibility(VisibilityKind.PUBLIC).setReturnType(fieldTypeName)
+				.addStatements(ReturnStatementHelper.createFieldReturnStatement(fieldName)).build();
+	}
+
+	/**
+	 * Build a getter method
+	 * 
+	 * @return the build getter method.
+	 */
+	public Method build() {
+		return this.buildGetterMethod;
+	}
+
+	/**
+	 * Set the name of the getter method under construction
+	 * 
 	 * @param getterName
-	 *            the name of the created getter method.
-	 * @param fieldName
-	 *            the name of the field associated with the created getter
-	 *            method.
-	 * @return the created public getter method accordingly to the specified
-	 *         parameters.
+	 *            the name of the getter method under construction.
+	 * @return the helper.
 	 */
-	public static MethodDeclaration createGetter(ClassDeclaration javaClass, String fieldTypeName, String getterName,
-			String fieldName) {
-		return GetterHelper.createGetter(javaClass, VisibilityKind.PUBLIC, fieldTypeName, getterName, fieldName);
+	public GetterHelper setName(String getterName) {
+		this.buildGetterMethod.getMethodDeclaration().setName(getterName);
+		return this;
 	}
 
 	/**
-	 * Create a getter method with a generated name
+	 * Set the visibility of the getter method under construction
 	 * 
-	 * @param javaClass
-	 *            the class where is the created getter method.
 	 * @param visibility
-	 *            the visibility of the created getter method.
-	 * @param fieldTypeName
-	 *            the name of the field type associated with the created getter
-	 *            method.
-	 * @param fieldName
-	 *            the name of the field associated with the created getter
-	 *            method.
-	 * @return the created getter method with a generated name accordingly to
-	 *         the specified parameters.
+	 *            the visibility of the getter method under construction.
+	 * @return the helper.
 	 */
-	public static MethodDeclaration createGetter(ClassDeclaration javaClass, VisibilityKind visibility,
-			String fieldTypeName, String fieldName) {
-		return GetterHelper.createGetter(javaClass, visibility, fieldTypeName,
-				GetterHelper.createGetterName(fieldName), fieldName);
+	public GetterHelper setVisibility(VisibilityKind visibility) {
+		Modifier modifier = ModifierBuilder.builder().setVisibility(visibility)
+				.setCompilationUnit(this.buildGetterMethod.getMethodDeclaration().getOriginalCompilationUnit()).build();
+		this.buildGetterMethod.getMethodDeclaration().setModifier(modifier);
+		return this;
 	}
 
 	/**
@@ -119,21 +131,20 @@ public class GetterHelper {
 	 * @return the created getter method accordingly to the specified
 	 *         parameters.
 	 */
-	public static MethodDeclaration createGetter(ClassDeclaration javaClass, VisibilityKind visibility,
-			String fieldTypeName, String getterName, String fieldName) {
-		return MethodBuilderHelper.builder(javaClass, getterName).setVisibility(visibility)
-				.setReturnType(fieldTypeName)
-				.addStatements(ReturnStatementHelper.createFieldReturnStatement(fieldName)).build();
+	public static Method createGetter(Class javaClass, VisibilityKind visibility, String fieldTypeName,
+			String getterName, String fieldName) {
+		return GetterHelper.builder(javaClass, fieldTypeName, fieldName).setVisibility(visibility).setName(getterName)
+				.build();
 	}
 
 	/**
-	 * Create the getter name associated to a field name
+	 * Generate the getter name associated to a field name
 	 * 
 	 * @param fieldName
-	 *            the field name associated to the getter name.
+	 *            the field name associated to the getter.
 	 * @return the getter name associated to the field name.
 	 */
-	protected static String createGetterName(String fieldName) {
+	public static String generateGetterName(String fieldName) {
 		StringBuilder s = new StringBuilder();
 		s.append(GetterHelper.GET_PREFIX);
 		if (!"".equals(fieldName.trim())) {

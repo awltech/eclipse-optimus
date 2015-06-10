@@ -21,6 +21,7 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.methods;
 
+import net.atos.optimus.m2m.javaxmi.operation.classes.Class;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.parameters.ParameterHelper;
 import net.atos.optimus.m2m.javaxmi.operation.statements.BlockBuilder;
@@ -34,47 +35,52 @@ import org.eclipse.gmt.modisco.java.Statement;
 import org.eclipse.gmt.modisco.java.VisibilityKind;
 
 /**
- * The purpose of such class is to help with the building of methods
+ * The purpose of such class is to help with the creation of methods
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
  *
  */
 
-public class MethodBuilderHelper {
+public class MethodHelper {
 
 	public static final String VOID_TYPE = "void";
 
-	/** The build method declaration */
-	private MethodDeclaration buildMethodDeclaration;
+	/** The build method */
+	private MethodDeclaration buildMethod;
 
 	/**
-	 * Give a new method builder : by default the method is void, public with no
-	 * body and no parameter
+	 * Launch the build of a new method (void, public, with no body and no
+	 * parameter by default)
 	 * 
 	 * @param javaClass
 	 *            the class where is the method under construction.
 	 * @param methodName
 	 *            the name of the created method under construction.
 	 * 
-	 * @return a new method builder.
+	 * @return a new method helper.
 	 */
-	public static MethodBuilderHelper builder(ClassDeclaration javaClass, String methodName) {
-		return new MethodBuilderHelper(javaClass, methodName);
+	public static MethodHelper builder(Class javaClass, String methodName) {
+		return new MethodHelper(javaClass, methodName);
 	}
 
 	/**
-	 * Private constructor : by default the method is void, public with no body
-	 * and no parameter
+	 * Private constructor : a new method (void, public, with no body and no
+	 * parameter by default)
 	 * 
 	 * @param javaClass
 	 *            the class where is the method under construction.
 	 * @param methodName
 	 *            the name of the created method under construction.
 	 */
-	private MethodBuilderHelper(ClassDeclaration javaClass, String methodName) {
-		this.buildMethodDeclaration = MethodBuilderHelper.createMethodBasicSignature(javaClass, VisibilityKind.PUBLIC,
-				MethodBuilderHelper.VOID_TYPE, methodName);
+	private MethodHelper(Class javaClass, String methodName) {
+		ClassDeclaration internalClass = javaClass.getClassDeclaration();
+		Modifier modifier = ModifierBuilder.builder().setVisibility(VisibilityKind.PUBLIC)
+				.setCompilationUnit(internalClass.getOriginalCompilationUnit()).build();
+		this.buildMethod = MethodDeclarationBuilder.builder().setModifier(modifier)
+				.setReturnType(TypeAccessHelper.createVariableTypeAccess(MethodHelper.VOID_TYPE)).setName(methodName)
+				.setAbstractTypeDeclaration(internalClass)
+				.setCompilationUnit(internalClass.getOriginalCompilationUnit()).build();
 	}
 
 	/**
@@ -82,8 +88,8 @@ public class MethodBuilderHelper {
 	 * 
 	 * @return the build method.
 	 */
-	public MethodDeclaration build() {
-		return this.buildMethodDeclaration;
+	public Method build() {
+		return new Method(this.buildMethod);
 	}
 
 	/**
@@ -91,12 +97,12 @@ public class MethodBuilderHelper {
 	 * 
 	 * @param visibility
 	 *            the visibility of the method under construction.
-	 * @return the builder.
+	 * @return the helper.
 	 */
-	public MethodBuilderHelper setVisibility(VisibilityKind visibility) {
+	public MethodHelper setVisibility(VisibilityKind visibility) {
 		Modifier modifier = ModifierBuilder.builder().setVisibility(visibility)
-				.setCompilationUnit(this.buildMethodDeclaration.getOriginalCompilationUnit()).build();
-		this.buildMethodDeclaration.setModifier(modifier);
+				.setCompilationUnit(this.buildMethod.getOriginalCompilationUnit()).build();
+		this.buildMethod.setModifier(modifier);
 		return this;
 	}
 
@@ -105,10 +111,10 @@ public class MethodBuilderHelper {
 	 * 
 	 * @param returnTypeName
 	 *            the return type name of the method under construction.
-	 * @return the builder.
+	 * @return the helper.
 	 */
-	public MethodBuilderHelper setReturnType(String returnTypeName) {
-		this.buildMethodDeclaration.setReturnType(TypeAccessHelper.createVariableTypeAccess(returnTypeName));
+	public MethodHelper setReturnType(String returnTypeName) {
+		this.buildMethod.setReturnType(TypeAccessHelper.createVariableTypeAccess(returnTypeName));
 		return this;
 	}
 
@@ -121,25 +127,25 @@ public class MethodBuilderHelper {
 	 * @param parameterName
 	 *            the name of the parameter to add to the method under
 	 *            construction.
-	 * @return the builder.
+	 * @return the helper.
 	 */
-	public MethodBuilderHelper addParameter(String parameterTypeName, String parameterName) {
-		ParameterHelper.builder(this.buildMethodDeclaration, parameterTypeName).setName(parameterName).build();
+	public MethodHelper addParameter(String parameterTypeName, String parameterName) {
+		ParameterHelper.builder(this.buildMethod, parameterTypeName).setName(parameterName).build();
 		return this;
 	}
 
 	/**
-	 * Add a parameters list to the method under construction with generated
-	 * names
+	 * Add a parameters list (parameters names are generated) to the method
+	 * under construction
 	 * 
 	 * @param parameterTypeNames
 	 *            the type names list of the parameter to add to the method
 	 *            under construction.
-	 * @return the builder.
+	 * @return the helper.
 	 */
-	public MethodBuilderHelper addParameters(String... parameterTypeNames) {
+	public MethodHelper addParameters(String... parameterTypeNames) {
 		for (String parameterTypeName : parameterTypeNames) {
-			ParameterHelper.builder(this.buildMethodDeclaration, parameterTypeName).build();
+			ParameterHelper.builder(this.buildMethod, parameterTypeName).build();
 		}
 		return this;
 	}
@@ -149,13 +155,13 @@ public class MethodBuilderHelper {
 	 * 
 	 * @param statements
 	 *            the statements list to add to the method under construction.
-	 * @return the builder.
+	 * @return the helper.
 	 */
-	public MethodBuilderHelper addStatements(Statement... statements) {
-		Block block = this.buildMethodDeclaration.getBody();
+	public MethodHelper addStatements(Statement... statements) {
+		Block block = this.buildMethod.getBody();
 		if (block == null) {
 			block = BlockBuilder.builder().addStatements(statements).build();
-			this.buildMethodDeclaration.setBody(block);
+			this.buildMethod.setBody(block);
 		} else {
 			for (Statement statement : statements) {
 				block.getStatements().add(statement);
@@ -165,7 +171,7 @@ public class MethodBuilderHelper {
 	}
 
 	/**
-	 * Create a method with no parameter and no body
+	 * Create a method with statements and no parameter
 	 * 
 	 * @param javaClass
 	 *            the class where is the created method.
@@ -175,57 +181,37 @@ public class MethodBuilderHelper {
 	 *            the return type name of the created method.
 	 * @param methodName
 	 *            the name of the created method.
-	 * @return the created method with no parameter and no body accordingly to
-	 *         the specified parameters.
+	 * @param statements
+	 *            the statements list to add to the method under construction.
+	 * @return the created method with statements and no parameter accordingly
+	 *         to the specified parameters.
 	 */
-	protected static MethodDeclaration createMethodBasicSignature(ClassDeclaration javaClass,
-			VisibilityKind visibility, String returnTypeName, String methodName) {
-		Modifier modifier = ModifierBuilder.builder().setVisibility(visibility)
-				.setCompilationUnit(javaClass.getOriginalCompilationUnit()).build();
-		return MethodDeclarationBuilder.builder().setModifier(modifier)
-				.setReturnType(TypeAccessHelper.createVariableTypeAccess(returnTypeName)).setName(methodName)
-				.setAbstractTypeDeclaration(javaClass).setCompilationUnit(javaClass.getOriginalCompilationUnit())
-				.build();
+	public static Method createMethod(Class javaClass, VisibilityKind visibility, String returnTypeName,
+			String methodName, Statement... statements) {
+		return MethodHelper.builder(javaClass, methodName).setVisibility(visibility).setReturnType(returnTypeName)
+				.addStatements(statements).build();
 	}
 
 	/**
 	 * Add a list of statements to a method
 	 * 
-	 * @param methodDeclaration
+	 * @param method
 	 *            the method which we add the statements list.
 	 * @param statements
 	 *            the added statements list of the method.
 	 * @return the method with the specified body.
 	 */
-	public static MethodDeclaration addMethodBody(MethodDeclaration methodDeclaration, Statement... statements) {
-		Block block = methodDeclaration.getBody();
+	public static Method addMethodBody(Method method, Statement... statements) {
+		Block block = method.getMethodDeclaration().getBody();
 		if (block == null) {
 			block = BlockBuilder.builder().addStatements(statements).build();
-			methodDeclaration.setBody(block);
+			method.getMethodDeclaration().setBody(block);
 		} else {
 			for (Statement statement : statements) {
 				block.getStatements().add(statement);
 			}
 		}
-		return methodDeclaration;
-	}
-
-	/**
-	 * Create the parameter name with the parameter type name
-	 * 
-	 * @param parameterTypeName
-	 *            the parameter type name
-	 * @return the parameter name associated to the parameter type name.
-	 */
-	protected static String createParameterName(String parameterTypeName) {
-		StringBuilder s = new StringBuilder();
-		if (s != null && !"".equals(parameterTypeName.trim())) {
-			s.append(parameterTypeName.trim().substring(0, 1).toUpperCase());
-			if (parameterTypeName.length() > 1) {
-				s.append(parameterTypeName.substring(1));
-			}
-		}
-		return s.toString();
+		return method;
 	}
 
 }
