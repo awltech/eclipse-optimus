@@ -19,9 +19,9 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.javaxmi.operation.variables;
+package net.atos.optimus.m2m.javaxmi.operation.accesses;
 
-import net.atos.optimus.m2m.javaxmi.operation.accesses.SingleVariableAccessBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.variables.VariableDeclarationFragmentBuilder;
 
 import org.eclipse.gmt.modisco.java.SingleVariableAccess;
 import org.eclipse.gmt.modisco.java.VariableDeclaration;

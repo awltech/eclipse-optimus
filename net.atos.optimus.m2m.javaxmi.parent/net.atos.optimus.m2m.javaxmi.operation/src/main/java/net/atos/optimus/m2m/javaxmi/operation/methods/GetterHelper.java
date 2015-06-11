@@ -23,8 +23,8 @@ package net.atos.optimus.m2m.javaxmi.operation.methods;
 
 import net.atos.optimus.m2m.javaxmi.operation.classes.Class;
 import net.atos.optimus.m2m.javaxmi.operation.fields.Field;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.InstructionHelper;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.statements.ReturnStatementHelper;
 
 import org.eclipse.gmt.modisco.java.Modifier;
 import org.eclipse.gmt.modisco.java.VisibilityKind;
@@ -68,7 +68,7 @@ public class GetterHelper {
 	private GetterHelper(Class javaClass, Field field) {
 		this.buildGetterMethod = MethodHelper.builder(javaClass, GetterHelper.generateGetterName(field.getName()))
 				.setVisibility(VisibilityKind.PUBLIC).setReturnType(field.getTypeName())
-				.addStatements(ReturnStatementHelper.createFieldReturnStatement(field.getName())).build();
+				.addInstructions(InstructionHelper.createFieldReturnInstruction(field.getName())).build();
 	}
 
 	/**

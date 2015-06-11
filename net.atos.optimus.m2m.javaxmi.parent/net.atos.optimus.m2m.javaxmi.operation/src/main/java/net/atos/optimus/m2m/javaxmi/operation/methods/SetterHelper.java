@@ -23,9 +23,9 @@ package net.atos.optimus.m2m.javaxmi.operation.methods;
 
 import net.atos.optimus.m2m.javaxmi.operation.classes.Class;
 import net.atos.optimus.m2m.javaxmi.operation.fields.Field;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.InstructionHelper;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.parameters.ParameterHelper;
-import net.atos.optimus.m2m.javaxmi.operation.statements.ComplexStatementHelper;
 
 import org.eclipse.gmt.modisco.java.Modifier;
 import org.eclipse.gmt.modisco.java.VisibilityKind;
@@ -75,7 +75,7 @@ public class SetterHelper {
 		String parameterName = ParameterHelper.generateParameterName(field.getTypeName());
 		this.buildSetterMethod = MethodHelper.builder(javaClass, SetterHelper.generateSetterName(field.getName()))
 				.setVisibility(VisibilityKind.PUBLIC).addParameter(field.getTypeName(), parameterName)
-				.addStatements(ComplexStatementHelper.createSetFieldStatement(field.getName(), parameterName)).build();
+				.addInstructions(InstructionHelper.createSetFieldInstruction(field.getName(), parameterName)).build();
 		this.field = field;
 	}
 
@@ -123,8 +123,8 @@ public class SetterHelper {
 	 */
 	public SetterHelper setParameterName(String parameterName) {
 		this.buildSetterMethod.getMethodDeclaration().setBody(null);
-		MethodHelper.addMethodBody(this.buildSetterMethod,
-				ComplexStatementHelper.createSetFieldStatement(this.field.getName(), parameterName));
+		MethodHelper.addInstructions(this.buildSetterMethod,
+				InstructionHelper.createSetFieldInstruction(this.field.getName(), parameterName));
 		return this;
 	}
 

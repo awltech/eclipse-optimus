@@ -21,17 +21,17 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.methods;
 
+import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.classes.Class;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.Instruction;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.block.BlockBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.parameters.ParameterHelper;
-import net.atos.optimus.m2m.javaxmi.operation.statements.BlockBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.types.TypeAccessHelper;
 
 import org.eclipse.gmt.modisco.java.Block;
 import org.eclipse.gmt.modisco.java.ClassDeclaration;
 import org.eclipse.gmt.modisco.java.MethodDeclaration;
 import org.eclipse.gmt.modisco.java.Modifier;
-import org.eclipse.gmt.modisco.java.Statement;
 import org.eclipse.gmt.modisco.java.VisibilityKind;
 
 /**
@@ -151,27 +151,26 @@ public class MethodHelper {
 	}
 
 	/**
-	 * Add a statements list to the method under construction
+	 * Add an instructions list to the method under construction
 	 * 
-	 * @param statements
-	 *            the statements list to add to the method under construction.
+	 * @param instructions
+	 *            the instructions list to add to the method under construction.
 	 * @return the helper.
 	 */
-	public MethodHelper addStatements(Statement... statements) {
+	public MethodHelper addInstructions(Instruction... instructions) {
 		Block block = this.buildMethod.getBody();
 		if (block == null) {
-			block = BlockBuilder.builder().addStatements(statements).build();
+			block = BlockBuilder.builder().build();
 			this.buildMethod.setBody(block);
-		} else {
-			for (Statement statement : statements) {
-				block.getStatements().add(statement);
-			}
+		}
+		for (Instruction instruction : instructions) {
+			block.getStatements().add(instruction.getStatement());
 		}
 		return this;
 	}
 
 	/**
-	 * Create a method with statements and no parameter
+	 * Create a method with instructions and no parameter
 	 * 
 	 * @param javaClass
 	 *            the class where is the created method.
@@ -181,35 +180,34 @@ public class MethodHelper {
 	 *            the return type name of the created method.
 	 * @param methodName
 	 *            the name of the created method.
-	 * @param statements
-	 *            the statements list to add to the method under construction.
-	 * @return the created method with statements and no parameter accordingly
+	 * @param instructions
+	 *            the instructions list to add to the method under construction.
+	 * @return the created method with instructions and no parameter accordingly
 	 *         to the specified parameters.
 	 */
 	public static Method createMethod(Class javaClass, VisibilityKind visibility, String returnTypeName,
-			String methodName, Statement... statements) {
+			String methodName, Instruction... instructions) {
 		return MethodHelper.builder(javaClass, methodName).setVisibility(visibility).setReturnType(returnTypeName)
-				.addStatements(statements).build();
+				.addInstructions(instructions).build();
 	}
 
 	/**
-	 * Add a list of statements to a method
+	 * Add a list of instructions to a method
 	 * 
 	 * @param method
-	 *            the method which we add the statements list.
-	 * @param statements
-	 *            the added statements list of the method.
-	 * @return the method with the specified body.
+	 *            the method which we add the instructions list.
+	 * @param instructions
+	 *            the added instructions list of the method.
+	 * @return the method with the instructions list added to its body.
 	 */
-	public static Method addMethodBody(Method method, Statement... statements) {
+	public static Method addInstructions(Method method, Instruction... instructions) {
 		Block block = method.getMethodDeclaration().getBody();
 		if (block == null) {
-			block = BlockBuilder.builder().addStatements(statements).build();
+			block = BlockBuilder.builder().build();
 			method.getMethodDeclaration().setBody(block);
-		} else {
-			for (Statement statement : statements) {
-				block.getStatements().add(statement);
-			}
+		}
+		for (Instruction instruction : instructions) {
+			block.getStatements().add(instruction.getStatement());
 		}
 		return method;
 	}

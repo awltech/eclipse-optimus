@@ -19,29 +19,35 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.javaxmi.operation.statements;
+package net.atos.optimus.m2m.javaxmi.operation.instruction.block;
 
-import net.atos.optimus.m2m.javaxmi.operation.variables.AssignmentBuilder;
-
-import org.eclipse.gmt.modisco.java.AssignmentKind;
-import org.eclipse.gmt.modisco.java.Expression;
-import org.eclipse.gmt.modisco.java.ExpressionStatement;
+import org.eclipse.gmt.modisco.java.Statement;
 
 /**
- * The purpose of such class is to help with the creation of two operands
- * statement
+ * Models an instruction block : wrapper of Statement in modisco model
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
  *
  */
 
-public class TwoOperandsStatementHelper {
+public class InstructionBlock {
 
-	public static ExpressionStatement createAssignmentStatement(ExpressionStatement leftHandSide,
-			AssignmentKind assignmentOperator, ExpressionStatement rightHandSide) {
-		Expression assignmentExpression = AssignmentBuilder.builder().setLeftHandSide(leftHandSide.getExpression())
-				.setOperator(assignmentOperator).setRightHandSide(rightHandSide.getExpression()).build();
-		return ExpressionStatementBuilder.builder().setExpression(assignmentExpression).build();
+	/** The statement seen as an instruction block */
+	private Statement statement;
+
+	/**
+	 * Constructor of instruction block
+	 * 
+	 * @param statement
+	 *            the statement seen as an instruction block.
+	 */
+	public InstructionBlock(Statement statement) {
+		this.statement = statement;
 	}
+
+	public Statement getStatement() {
+		return this.statement;
+	}
+
 }

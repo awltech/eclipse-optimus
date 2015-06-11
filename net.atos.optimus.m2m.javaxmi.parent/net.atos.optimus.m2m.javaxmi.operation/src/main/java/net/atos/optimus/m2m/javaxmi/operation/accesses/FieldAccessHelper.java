@@ -21,8 +21,6 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.accesses;
 
-import net.atos.optimus.m2m.javaxmi.operation.variables.VariableAccessHelper;
-
 import org.eclipse.gmt.modisco.java.FieldAccess;
 import org.eclipse.gmt.modisco.java.SingleVariableAccess;
 

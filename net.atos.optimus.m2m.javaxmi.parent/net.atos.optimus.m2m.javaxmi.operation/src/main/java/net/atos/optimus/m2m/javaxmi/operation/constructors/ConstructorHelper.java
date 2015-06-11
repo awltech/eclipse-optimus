@@ -23,16 +23,16 @@ package net.atos.optimus.m2m.javaxmi.operation.constructors;
 
 import net.atos.optimus.m2m.javaxmi.operation.classes.Class;
 import net.atos.optimus.m2m.javaxmi.operation.fields.Field;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.Instruction;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.InstructionHelper;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.block.BlockBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.parameters.ParameterHelper;
-import net.atos.optimus.m2m.javaxmi.operation.statements.BlockBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.statements.ComplexStatementHelper;
 
 import org.eclipse.gmt.modisco.java.Block;
 import org.eclipse.gmt.modisco.java.ClassDeclaration;
 import org.eclipse.gmt.modisco.java.ConstructorDeclaration;
 import org.eclipse.gmt.modisco.java.Modifier;
-import org.eclipse.gmt.modisco.java.Statement;
 import org.eclipse.gmt.modisco.java.VisibilityKind;
 
 /**
@@ -143,7 +143,7 @@ public class ConstructorHelper {
 	public ConstructorHelper addParameterAndSetAssociatedField(Field field) {
 		String parameterName = ParameterHelper.generateParameterName(field.getTypeName());
 		this.addParameter(field.getTypeName(), parameterName);
-		this.addStatements(ComplexStatementHelper.createSetFieldStatement(field.getName(), parameterName));
+		this.addInstructions(InstructionHelper.createSetFieldInstruction(field.getName(), parameterName));
 		return this;
 	}
 
@@ -160,27 +160,26 @@ public class ConstructorHelper {
 	 */
 	public ConstructorHelper addParameterAndSetAssociatedField(String parameterName, Field field) {
 		this.addParameter(field.getTypeName(), parameterName);
-		this.addStatements(ComplexStatementHelper.createSetFieldStatement(field.getName(), parameterName));
+		this.addInstructions(InstructionHelper.createSetFieldInstruction(field.getName(), parameterName));
 		return this;
 	}
 
 	/**
-	 * Add a statements list to the constructor under construction
+	 * Add an instructions list to the constructor under construction
 	 * 
-	 * @param statements
-	 *            the statements list to add to the constructor under
+	 * @param instructions
+	 *            the instructions list to add to the constructor under
 	 *            construction.
 	 * @return the helper.
 	 */
-	public ConstructorHelper addStatements(Statement... statements) {
+	public ConstructorHelper addInstructions(Instruction... instructions) {
 		Block block = this.buildConstructor.getBody();
 		if (block == null) {
-			block = BlockBuilder.builder().addStatements(statements).build();
+			block = BlockBuilder.builder().build();
 			this.buildConstructor.setBody(block);
-		} else {
-			for (Statement statement : statements) {
-				block.getStatements().add(statement);
-			}
+		}
+		for (Instruction instruction : instructions) {
+			block.getStatements().add(instruction.getStatement());
 		}
 		return this;
 	}
@@ -199,31 +198,30 @@ public class ConstructorHelper {
 	 *         the specified parameters.
 	 */
 	public static Constructor createConstructor(Class javaClass, VisibilityKind visibility, Field... fields) {
-		ConstructorHelper helper =  ConstructorHelper.builder(javaClass).setVisibility(visibility);
-		for(Field field : fields){
+		ConstructorHelper helper = ConstructorHelper.builder(javaClass).setVisibility(visibility);
+		for (Field field : fields) {
 			helper.addParameterAndSetAssociatedField(field);
 		}
 		return helper.build();
 	}
 
 	/**
-	 * Add a list of statements to a constructor
+	 * Add a list of instructions to a constructor
 	 * 
 	 * @param constructor
-	 *            the constructor which we add the statements list.
-	 * @param statements
-	 *            the added statements list of the constructor.
-	 * @return the constructor with the specified body.
+	 *            the constructor which we add the instructions list.
+	 * @param instructions
+	 *            the added instructions list of the constructor.
+	 * @return the constructor with the instructions list added to its body.
 	 */
-	public static Constructor addConstructorBody(Constructor constructor, Statement... statements) {
+	public static Constructor addInstructions(Constructor constructor, Instruction... instructions) {
 		Block block = constructor.getConstructorDeclaration().getBody();
 		if (block == null) {
-			block = BlockBuilder.builder().addStatements(statements).build();
+			block = BlockBuilder.builder().build();
 			constructor.getConstructorDeclaration().setBody(block);
-		} else {
-			for (Statement statement : statements) {
-				block.getStatements().add(statement);
-			}
+		}
+		for (Instruction instruction : instructions) {
+			block.getStatements().add(instruction.getStatement());
 		}
 		return constructor;
 	}

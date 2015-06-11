@@ -19,64 +19,60 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.javaxmi.operation.statements;
+package net.atos.optimus.m2m.javaxmi.operation.instruction;
 
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.gmt.modisco.java.Block;
-import org.eclipse.gmt.modisco.java.Statement;
+import org.eclipse.gmt.modisco.java.Expression;
+import org.eclipse.gmt.modisco.java.ExpressionStatement;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
 
 /**
- * A builder dedicated to create block of modisco model
+ * A builder dedicated to create expression statement of modisco model
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
  *
  */
 
-public class BlockBuilder {
+public class ExpressionStatementBuilder {
 
-	/** The build block */
-	private Block buildBlock;
+	/** The build expression statement */
+	private ExpressionStatement buildExpressionStatement;
 
 	/**
-	 * Give a new block builder
+	 * Give a expression statement unit builder
 	 * 
-	 * @return a new block builder.
+	 * @return a new expression statement builder.
 	 */
-	public static BlockBuilder builder() {
-		return new BlockBuilder();
+	public static ExpressionStatementBuilder builder() {
+		return new ExpressionStatementBuilder();
 	}
 
 	/**
 	 * Private constructor
 	 * 
 	 */
-	private BlockBuilder() {
-		this.buildBlock = JavaFactory.eINSTANCE.createBlock();
+	private ExpressionStatementBuilder() {
+		this.buildExpressionStatement = JavaFactory.eINSTANCE.createExpressionStatement();
 	}
 
 	/**
-	 * Build a block of modisco model
+	 * Build a expression statement of modisco model
 	 * 
-	 * @return a new block of modisco model.
+	 * @return a new expression statement of modisco model.
 	 */
-	public Block build() {
-		return this.buildBlock;
+	public ExpressionStatement build() {
+		return this.buildExpressionStatement;
 	}
 
 	/**
-	 * Add a list of statements to the block under construction
+	 * Set the expression of the expression statement under construction
 	 * 
-	 * @param statements
-	 *            the list of statements to add to the block under construction.
+	 * @param expression
+	 *            the expression of the expression statement under construction.
 	 * @return the builder.
 	 */
-	public BlockBuilder addStatements(Statement... statements) {
-		EList<Statement> statementsList = this.buildBlock.getStatements();
-		for (Statement statement : statements) {
-			statementsList.add(statement);
-		}
+	public ExpressionStatementBuilder setExpression(Expression expression) {
+		this.buildExpressionStatement.setExpression(expression);
 		return this;
 	}
 

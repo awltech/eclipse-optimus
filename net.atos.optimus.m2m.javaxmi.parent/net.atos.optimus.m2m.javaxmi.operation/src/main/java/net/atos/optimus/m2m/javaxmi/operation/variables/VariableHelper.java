@@ -21,7 +21,7 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.variables;
 
-import net.atos.optimus.m2m.javaxmi.operation.types.TypeAccessHelper;
+import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 
 import org.eclipse.gmt.modisco.java.SingleVariableDeclaration;
 
@@ -100,7 +100,7 @@ public class VariableHelper {
 	 * Generate the variable name with the variable type name
 	 * 
 	 * @param variableTypeName
-	 *            the variable type name
+	 *            the variable type name.
 	 * @return the variable name associated to the variable type name.
 	 */
 	public static String generateVariableName(String variableTypeName) {

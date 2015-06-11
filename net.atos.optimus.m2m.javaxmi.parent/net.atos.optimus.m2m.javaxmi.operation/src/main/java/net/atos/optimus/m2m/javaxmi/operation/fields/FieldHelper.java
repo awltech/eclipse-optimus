@@ -21,9 +21,9 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.fields;
 
+import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.classes.Class;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.types.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.variables.VariableDeclarationFragmentBuilder;
 
 import org.eclipse.gmt.modisco.java.ClassDeclaration;

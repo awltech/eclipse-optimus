@@ -19,60 +19,60 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.javaxmi.operation.statements;
+package net.atos.optimus.m2m.javaxmi.operation.accesses;
 
-import org.eclipse.gmt.modisco.java.Expression;
-import org.eclipse.gmt.modisco.java.ExpressionStatement;
+import org.eclipse.gmt.modisco.java.Type;
+import org.eclipse.gmt.modisco.java.TypeAccess;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
 
 /**
- * A builder dedicated to create expression statement of modisco model
+ * A builder dedicated to create type access of modisco model
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
  *
  */
 
-public class ExpressionStatementBuilder {
+public class TypeAccessBuilder {
 
-	/** The build expression statement */
-	private ExpressionStatement buildExpressionStatement;
+	/** The build type access */
+	private TypeAccess buildTypeAccess;
 
 	/**
-	 * Give a expression statement unit builder
+	 * Give a new type access builder
 	 * 
-	 * @return a new expression statement builder.
+	 * @return a new type access builder.
 	 */
-	public static ExpressionStatementBuilder builder() {
-		return new ExpressionStatementBuilder();
+	public static TypeAccessBuilder builder() {
+		return new TypeAccessBuilder();
 	}
 
 	/**
 	 * Private constructor
 	 * 
 	 */
-	private ExpressionStatementBuilder() {
-		this.buildExpressionStatement = JavaFactory.eINSTANCE.createExpressionStatement();
+	private TypeAccessBuilder() {
+		this.buildTypeAccess = JavaFactory.eINSTANCE.createTypeAccess();
 	}
 
 	/**
-	 * Build a expression statement of modisco model
+	 * Build a type access of modisco model
 	 * 
-	 * @return a new expression statement of modisco model.
+	 * @return a new type access of modisco model.
 	 */
-	public ExpressionStatement build() {
-		return this.buildExpressionStatement;
+	public TypeAccess build() {
+		return this.buildTypeAccess;
 	}
 
 	/**
-	 * Set the expression of the expression statement under construction
+	 * Set the type of the type access under construction
 	 * 
-	 * @param expression
-	 *            the expression of the expression statement under construction.
+	 * @param type
+	 *            the type of the type access under construction.
 	 * @return the builder.
 	 */
-	public ExpressionStatementBuilder setExpression(Expression expression) {
-		this.buildExpressionStatement.setExpression(expression);
+	public TypeAccessBuilder setType(Type type) {
+		this.buildTypeAccess.setType(type);
 		return this;
 	}
 

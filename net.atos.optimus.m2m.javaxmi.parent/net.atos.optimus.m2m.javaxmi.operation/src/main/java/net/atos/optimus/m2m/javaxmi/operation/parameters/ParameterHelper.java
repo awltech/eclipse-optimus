@@ -21,7 +21,7 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.parameters;
 
-import net.atos.optimus.m2m.javaxmi.operation.types.TypeAccessHelper;
+import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.variables.SingleVariableDeclarationBuilder;
 
 import org.eclipse.gmt.modisco.java.AbstractMethodDeclaration;
