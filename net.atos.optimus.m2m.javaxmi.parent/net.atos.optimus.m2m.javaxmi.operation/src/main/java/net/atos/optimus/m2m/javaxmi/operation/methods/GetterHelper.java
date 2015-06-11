@@ -25,6 +25,7 @@ import net.atos.optimus.m2m.javaxmi.operation.classes.Class;
 import net.atos.optimus.m2m.javaxmi.operation.fields.Field;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.InstructionHelper;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.util.NameGenerator;
 
 import org.eclipse.gmt.modisco.java.Modifier;
 import org.eclipse.gmt.modisco.java.VisibilityKind;
@@ -66,7 +67,7 @@ public class GetterHelper {
 	 *            the field associated to the getter method under construction.
 	 */
 	private GetterHelper(Class javaClass, Field field) {
-		this.buildGetterMethod = MethodHelper.builder(javaClass, GetterHelper.generateGetterName(field.getName()))
+		this.buildGetterMethod = MethodHelper.builder(javaClass, NameGenerator.generateGetterName(field.getName()))
 				.setVisibility(VisibilityKind.PUBLIC).setReturnType(field.getTypeName())
 				.addInstructions(InstructionHelper.createFieldReturnInstruction(field.getName())).build();
 	}
@@ -122,25 +123,6 @@ public class GetterHelper {
 	 */
 	public static Method createGetter(Class javaClass, VisibilityKind visibility, Field field, String getterName) {
 		return GetterHelper.builder(javaClass, field).setVisibility(visibility).setName(getterName).build();
-	}
-
-	/**
-	 * Generate the getter name associated to a field name
-	 * 
-	 * @param fieldName
-	 *            the field name associated to the getter.
-	 * @return the getter name associated to the field name.
-	 */
-	public static String generateGetterName(String fieldName) {
-		StringBuilder s = new StringBuilder();
-		s.append(GetterHelper.GET_PREFIX);
-		if (!"".equals(fieldName.trim())) {
-			s.append(fieldName.trim().substring(0, 1).toUpperCase());
-			if (fieldName.length() > 1) {
-				s.append(fieldName.substring(1));
-			}
-		}
-		return s.toString();
 	}
 
 }

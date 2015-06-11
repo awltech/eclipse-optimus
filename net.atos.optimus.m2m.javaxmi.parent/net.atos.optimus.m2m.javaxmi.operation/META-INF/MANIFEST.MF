@@ -23,4 +23,5 @@ Export-Package: net.atos.optimus.m2m.javaxmi.operation.accesses,
  net.atos.optimus.m2m.javaxmi.operation.packages,
  net.atos.optimus.m2m.javaxmi.operation.parameters,
  net.atos.optimus.m2m.javaxmi.operation.types,
+ net.atos.optimus.m2m.javaxmi.operation.util,
  net.atos.optimus.m2m.javaxmi.operation.variables

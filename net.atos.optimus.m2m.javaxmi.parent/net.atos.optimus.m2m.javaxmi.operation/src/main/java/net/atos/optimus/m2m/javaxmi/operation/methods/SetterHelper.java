@@ -25,7 +25,7 @@ import net.atos.optimus.m2m.javaxmi.operation.classes.Class;
 import net.atos.optimus.m2m.javaxmi.operation.fields.Field;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.InstructionHelper;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.parameters.ParameterHelper;
+import net.atos.optimus.m2m.javaxmi.operation.util.NameGenerator;
 
 import org.eclipse.gmt.modisco.java.Modifier;
 import org.eclipse.gmt.modisco.java.VisibilityKind;
@@ -72,8 +72,8 @@ public class SetterHelper {
 	 *            the field associated to the setter method under construction.
 	 */
 	private SetterHelper(Class javaClass, Field field) {
-		String parameterName = ParameterHelper.generateParameterName(field.getTypeName());
-		this.buildSetterMethod = MethodHelper.builder(javaClass, SetterHelper.generateSetterName(field.getName()))
+		String parameterName = NameGenerator.generateNameWithTypeName(field.getTypeName());
+		this.buildSetterMethod = MethodHelper.builder(javaClass, NameGenerator.generateSetterName(field.getName()))
 				.setVisibility(VisibilityKind.PUBLIC).addParameter(field.getTypeName(), parameterName)
 				.addInstructions(InstructionHelper.createSetFieldInstruction(field.getName(), parameterName)).build();
 		this.field = field;
@@ -148,25 +148,6 @@ public class SetterHelper {
 			String parameterName) {
 		return SetterHelper.builder(javaClass, field).setVisibility(visibility).setName(setterName)
 				.setParameterName(parameterName).build();
-	}
-
-	/**
-	 * Generate the setter name associated to a field name
-	 * 
-	 * @param fieldName
-	 *            the field name associated to the setter.
-	 * @return the setter name associated to the field name.
-	 */
-	public static String generateSetterName(String fieldName) {
-		StringBuilder s = new StringBuilder();
-		s.append(SetterHelper.SET_PREFIX);
-		if (!"".equals(fieldName.trim())) {
-			s.append(fieldName.trim().substring(0, 1).toUpperCase());
-			if (fieldName.length() > 1) {
-				s.append(fieldName.substring(1));
-			}
-		}
-		return s.toString();
 	}
 
 }

@@ -24,6 +24,7 @@ package net.atos.optimus.m2m.javaxmi.operation.fields;
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.classes.Class;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.util.NameGenerator;
 import net.atos.optimus.m2m.javaxmi.operation.variables.VariableDeclarationFragmentBuilder;
 
 import org.eclipse.gmt.modisco.java.ClassDeclaration;
@@ -69,7 +70,7 @@ public class FieldHelper {
 	 */
 	private FieldHelper(Class javaClass, String fieldTypeName) {
 		ClassDeclaration internalClass = javaClass.getClassDeclaration();
-		String fieldName = FieldHelper.generateFieldName(fieldTypeName);
+		String fieldName = NameGenerator.generateNameWithTypeName(fieldTypeName);
 		Modifier modifier = ModifierBuilder.builder().setVisibility(VisibilityKind.PRIVATE)
 				.setCompilationUnit(internalClass.getOriginalCompilationUnit()).build();
 		VariableDeclarationFragment variableDeclarationFragment = VariableDeclarationFragmentBuilder.builder()
@@ -130,24 +131,6 @@ public class FieldHelper {
 	 */
 	public static Field createField(Class javaClass, VisibilityKind visibility, String fieldTypeName, String fieldName) {
 		return FieldHelper.builder(javaClass, fieldTypeName).setVisibility(visibility).setName(fieldName).build();
-	}
-
-	/**
-	 * Generate the field name with the field type name
-	 * 
-	 * @param fieldTypeName
-	 *            the field type name.
-	 * @return the field name associated to the field type name.
-	 */
-	public static String generateFieldName(String fieldTypeName) {
-		StringBuilder s = new StringBuilder();
-		if (s != null && !"".equals(fieldTypeName.trim())) {
-			s.append(fieldTypeName.trim().substring(0, 1).toLowerCase());
-			if (fieldTypeName.length() > 1) {
-				s.append(fieldTypeName.substring(1));
-			}
-		}
-		return s.toString();
 	}
 
 }

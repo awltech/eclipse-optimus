@@ -28,6 +28,7 @@ import net.atos.optimus.m2m.javaxmi.operation.instruction.InstructionHelper;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.block.BlockBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.parameters.ParameterHelper;
+import net.atos.optimus.m2m.javaxmi.operation.util.NameGenerator;
 
 import org.eclipse.gmt.modisco.java.Block;
 import org.eclipse.gmt.modisco.java.ClassDeclaration;
@@ -142,7 +143,7 @@ public class ConstructorHelper {
 	 * @return the helper.
 	 */
 	public ConstructorHelper addParameterAndSetAssociatedField(Field field) {
-		String parameterName = ParameterHelper.generateParameterName(field.getTypeName());
+		String parameterName = NameGenerator.generateNameWithTypeName(field.getTypeName());
 		this.addParameter(field.getTypeName(), parameterName);
 		this.addInstructions(InstructionHelper.createSetFieldInstruction(field.getName(), parameterName));
 		return this;

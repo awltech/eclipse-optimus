@@ -23,6 +23,7 @@ package net.atos.optimus.m2m.javaxmi.operation.parameters;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.methods.AbstractMethod;
+import net.atos.optimus.m2m.javaxmi.operation.util.NameGenerator;
 import net.atos.optimus.m2m.javaxmi.operation.variables.SingleVariableDeclarationBuilder;
 
 import org.eclipse.gmt.modisco.java.SingleVariableDeclaration;
@@ -68,7 +69,7 @@ public class ParameterHelper {
 				.setMethodDeclaration(method.getAbstractMethodDeclaration())
 				.setCompilationUnit(method.getCompilationUnit())
 				.setType(TypeAccessHelper.createVariableTypeAccess(parameterTypeName))
-				.setName(ParameterHelper.generateParameterName(parameterTypeName)).setVarargs(false).build();
+				.setName(NameGenerator.generateNameWithTypeName(parameterTypeName)).setVarargs(false).build();
 		method.getParameters().add(this.buildParameter);
 	}
 
@@ -122,24 +123,6 @@ public class ParameterHelper {
 			boolean varargsState) {
 		return ParameterHelper.builder(method, parameterTypeName).setName(parameterName).setVarargs(varargsState)
 				.build();
-	}
-
-	/**
-	 * Generate the parameter name with the parameter type name
-	 * 
-	 * @param parameterTypeName
-	 *            the parameter type name.
-	 * @return the parameter name associated to the parameter type name.
-	 */
-	public static String generateParameterName(String parameterTypeName) {
-		StringBuilder s = new StringBuilder();
-		if (s != null && !"".equals(parameterTypeName.trim())) {
-			s.append(parameterTypeName.trim().substring(0, 1).toLowerCase());
-			if (parameterTypeName.length() > 1) {
-				s.append(parameterTypeName.substring(1));
-			}
-		}
-		return s.toString();
 	}
 
 }
