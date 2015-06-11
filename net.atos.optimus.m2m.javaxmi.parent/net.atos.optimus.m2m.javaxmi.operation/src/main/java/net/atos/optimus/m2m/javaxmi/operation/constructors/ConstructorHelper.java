@@ -73,7 +73,7 @@ public class ConstructorHelper {
 		Modifier modifier = ModifierBuilder.builder().setVisibility(VisibilityKind.PUBLIC)
 				.setCompilationUnit(internalClass.getOriginalCompilationUnit()).build();
 		this.buildConstructor = ConstructorDeclarationBuilder.builder().setModifier(modifier)
-				.setName(internalClass.getName()).setAbstractTypeDeclaration(internalClass)
+				.setName(javaClass.getName()).setAbstractTypeDeclaration(internalClass)
 				.setCompilationUnit(internalClass.getOriginalCompilationUnit()).build();
 	}
 
@@ -112,7 +112,8 @@ public class ConstructorHelper {
 	 * @return the helper.
 	 */
 	public ConstructorHelper addParameter(String parameterTypeName, String parameterName) {
-		ParameterHelper.builder(this.buildConstructor, parameterTypeName).setName(parameterName).build();
+		ParameterHelper.builder(new Constructor(this.buildConstructor), parameterTypeName).setName(parameterName)
+				.build();
 		return this;
 	}
 
@@ -127,7 +128,7 @@ public class ConstructorHelper {
 	 */
 	public ConstructorHelper addParameters(String... parameterTypeNames) {
 		for (String parameterTypeName : parameterTypeNames) {
-			ParameterHelper.builder(this.buildConstructor, parameterTypeName).build();
+			ParameterHelper.builder(new Constructor(this.buildConstructor), parameterTypeName).build();
 		}
 		return this;
 	}

@@ -21,34 +21,44 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.methods;
 
-import org.eclipse.gmt.modisco.java.MethodDeclaration;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.gmt.modisco.java.AbstractMethodDeclaration;
+import org.eclipse.gmt.modisco.java.CompilationUnit;
+import org.eclipse.gmt.modisco.java.SingleVariableDeclaration;
 
 /**
- * Models a method : wrapper of MethodDeclaration in modisco model
+ * Models an abstract method : method or constructor
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
  *
  */
 
-public class Method extends AbstractMethod {
+public class AbstractMethod {
+
+	/** The abstract method declaration */
+	private AbstractMethodDeclaration abstractMethodDeclaration;
 
 	/**
-	 * Constructor of method
+	 * Constructor of abstract method
 	 * 
-	 * @param methodDeclaration
-	 *            the method declaration.
+	 * @param abstractMethodDeclaration
+	 *            the abstract method declaration.
 	 */
-	public Method(MethodDeclaration methodDeclaration) {
-		super(methodDeclaration);
+	public AbstractMethod(AbstractMethodDeclaration abstractMethodDeclaration) {
+		this.abstractMethodDeclaration = abstractMethodDeclaration;
 	}
 
-	public MethodDeclaration getMethodDeclaration() {
-		return (MethodDeclaration) this.getAbstractMethodDeclaration();
+	public AbstractMethodDeclaration getAbstractMethodDeclaration() {
+		return this.abstractMethodDeclaration;
 	}
-	
-	public String getName() {
-		return this.getAbstractMethodDeclaration().getName();
+
+	public CompilationUnit getCompilationUnit() {
+		return this.abstractMethodDeclaration.getOriginalCompilationUnit();
+	}
+
+	public EList<SingleVariableDeclaration> getParameters() {
+		return this.abstractMethodDeclaration.getParameters();
 	}
 
 }

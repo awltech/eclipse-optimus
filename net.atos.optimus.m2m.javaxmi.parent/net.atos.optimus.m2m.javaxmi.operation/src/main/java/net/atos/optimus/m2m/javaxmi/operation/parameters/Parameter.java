@@ -49,4 +49,13 @@ public class Parameter {
 	public SingleVariableDeclaration getSingleVariableDeclaration() {
 		return this.parameter;
 	}
+	
+	public String getName(){
+		return this.getSingleVariableDeclaration().getName();
+	}
+	
+	public String getTypeName(){
+		return this.getSingleVariableDeclaration().getType().getType().getName();
+	}
+	
 }

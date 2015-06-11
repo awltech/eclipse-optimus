@@ -130,7 +130,7 @@ public class MethodHelper {
 	 * @return the helper.
 	 */
 	public MethodHelper addParameter(String parameterTypeName, String parameterName) {
-		ParameterHelper.builder(this.buildMethod, parameterTypeName).setName(parameterName).build();
+		ParameterHelper.builder(new Method(this.buildMethod), parameterTypeName).setName(parameterName).build();
 		return this;
 	}
 
@@ -145,7 +145,7 @@ public class MethodHelper {
 	 */
 	public MethodHelper addParameters(String... parameterTypeNames) {
 		for (String parameterTypeName : parameterTypeNames) {
-			ParameterHelper.builder(this.buildMethod, parameterTypeName).build();
+			ParameterHelper.builder(new Method(this.buildMethod), parameterTypeName).build();
 		}
 		return this;
 	}

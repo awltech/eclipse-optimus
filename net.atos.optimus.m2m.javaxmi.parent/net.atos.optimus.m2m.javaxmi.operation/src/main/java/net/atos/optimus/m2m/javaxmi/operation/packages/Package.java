@@ -47,5 +47,9 @@ public class Package {
 	public org.eclipse.gmt.modisco.java.Package getPackage() {
 		return javaPackage;
 	}
+	
+	public String getName(){
+		return this.javaPackage.getName();
+	}
 
 }

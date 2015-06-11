@@ -24,7 +24,6 @@ package net.atos.optimus.m2m.javaxmi.operation.instruction;
 import net.atos.optimus.m2m.javaxmi.operation.comments.LineCommentBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.part.InstructionPart;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.part.InstructionPartHelper;
-import net.atos.optimus.m2m.javaxmi.operation.variables.AssignmentBuilder;
 
 import org.eclipse.gmt.modisco.java.AssignmentKind;
 import org.eclipse.gmt.modisco.java.Expression;
@@ -40,6 +39,42 @@ import org.eclipse.gmt.modisco.java.ReturnStatement;
  */
 
 public class InstructionHelper {
+
+	/**
+	 * Create an assignment instruction
+	 * 
+	 * @param leftHandSide
+	 *            the assign instruction part.
+	 * @param assignmentOperator
+	 *            the assignment operator.
+	 * @param rightHandSide
+	 *            the instruction part with the value to assign.
+	 * @return the created assignment instruction.
+	 */
+	public static Instruction createAssignmentInstruction(InstructionPart leftHandSide,
+			AssignmentKind assignmentOperator, InstructionPart rightHandSide) {
+		Expression assignmentExpression = AssignmentBuilder.builder().setLeftHandSide(leftHandSide.getExpression())
+				.setOperator(assignmentOperator).setRightHandSide(rightHandSide.getExpression()).build();
+		return new Instruction(ExpressionStatementBuilder.builder().setExpression(assignmentExpression).build());
+	}
+
+	/**
+	 * Create an instruction to set a field
+	 * 
+	 * @param fieldName
+	 *            the name of the field to set.
+	 * @param variableName
+	 *            the name of the variable containing the new value of the
+	 *            field.
+	 * @return the created instruction setting the specified field with the
+	 *         specified variable.
+	 */
+	public static Instruction createSetFieldInstruction(String fieldName, String variableName) {
+		InstructionPart fieldInstruction = InstructionPartHelper.createFieldInstructionPart(fieldName);
+		InstructionPart variableInstruction = InstructionPartHelper.createVariableInstructionPart(variableName);
+		return InstructionHelper.createAssignmentInstruction(fieldInstruction, AssignmentKind.ASSIGN,
+				variableInstruction);
+	}
 
 	/**
 	 * Create a return instruction based on an instruction part
@@ -155,42 +190,6 @@ public class InstructionHelper {
 	public static Instruction createClassInstantiationReturnInstruction(String className, InstructionPart... arguments) {
 		return InstructionHelper.createReturnInstruction(InstructionPartHelper.createClassInstantiationInstructionPart(
 				className, arguments));
-	}
-
-	/**
-	 * Create an assignment instruction
-	 * 
-	 * @param leftHandSide
-	 *            the assign instruction part.
-	 * @param assignmentOperator
-	 *            the assignment operator.
-	 * @param rightHandSide
-	 *            the instruction part with the value to assign.
-	 * @return the created assignment instruction.
-	 */
-	public static Instruction createAssignmentInstruction(InstructionPart leftHandSide,
-			AssignmentKind assignmentOperator, InstructionPart rightHandSide) {
-		Expression assignmentExpression = AssignmentBuilder.builder().setLeftHandSide(leftHandSide.getExpression())
-				.setOperator(assignmentOperator).setRightHandSide(rightHandSide.getExpression()).build();
-		return new Instruction(ExpressionStatementBuilder.builder().setExpression(assignmentExpression).build());
-	}
-
-	/**
-	 * Create an instruction to set a field
-	 * 
-	 * @param fieldName
-	 *            the name of the field to set.
-	 * @param variableName
-	 *            the name of the variable containing the new value of the
-	 *            field.
-	 * @return the created instruction setting the specified field with the
-	 *         specified variable.
-	 */
-	public static Instruction createSetFieldInstruction(String fieldName, String variableName) {
-		InstructionPart fieldInstruction = InstructionPartHelper.createFieldInstructionPart(fieldName);
-		InstructionPart variableInstruction = InstructionPartHelper.createVariableInstructionPart(variableName);
-		return InstructionHelper.createAssignmentInstruction(fieldInstruction, AssignmentKind.ASSIGN,
-				variableInstruction);
 	}
 
 	/**

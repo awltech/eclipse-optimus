@@ -21,6 +21,8 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.constructors;
 
+import net.atos.optimus.m2m.javaxmi.operation.methods.AbstractMethod;
+
 import org.eclipse.gmt.modisco.java.ConstructorDeclaration;
 
 /**
@@ -31,10 +33,7 @@ import org.eclipse.gmt.modisco.java.ConstructorDeclaration;
  *
  */
 
-public class Constructor {
-
-	/** The constructor declaration */
-	private ConstructorDeclaration constructorDeclaration;
+public class Constructor extends AbstractMethod {
 
 	/**
 	 * Constructor of constructor
@@ -43,11 +42,11 @@ public class Constructor {
 	 *            the constructor declaration.
 	 */
 	public Constructor(ConstructorDeclaration constructorDeclaration) {
-		this.constructorDeclaration = constructorDeclaration;
+		super(constructorDeclaration);
 	}
 
 	public ConstructorDeclaration getConstructorDeclaration() {
-		return this.constructorDeclaration;
+		return (ConstructorDeclaration) this.getAbstractMethodDeclaration();
 	}
 
 }

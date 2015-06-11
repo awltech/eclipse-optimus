@@ -49,5 +49,9 @@ public class Class {
 	public ClassDeclaration getClassDeclaration() {
 		return this.classDeclaration;
 	}
+	
+	public String getName() {
+		return this.classDeclaration.getName();
+	}
 
 }

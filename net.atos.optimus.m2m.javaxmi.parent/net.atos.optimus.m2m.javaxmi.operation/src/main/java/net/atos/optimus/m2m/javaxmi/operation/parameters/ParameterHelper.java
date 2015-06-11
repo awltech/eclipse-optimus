@@ -22,9 +22,9 @@
 package net.atos.optimus.m2m.javaxmi.operation.parameters;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
+import net.atos.optimus.m2m.javaxmi.operation.methods.AbstractMethod;
 import net.atos.optimus.m2m.javaxmi.operation.variables.SingleVariableDeclarationBuilder;
 
-import org.eclipse.gmt.modisco.java.AbstractMethodDeclaration;
 import org.eclipse.gmt.modisco.java.SingleVariableDeclaration;
 
 /**
@@ -50,7 +50,7 @@ public class ParameterHelper {
 	 *            the type name of the parameter under construction.
 	 * @return a new helper.
 	 */
-	public static ParameterHelper builder(AbstractMethodDeclaration method, String parameterTypeName) {
+	public static ParameterHelper builder(AbstractMethod method, String parameterTypeName) {
 		return new ParameterHelper(method, parameterTypeName);
 	}
 
@@ -63,9 +63,10 @@ public class ParameterHelper {
 	 * @param parameterTypeName
 	 *            the type name of the parameter under construction.
 	 */
-	private ParameterHelper(AbstractMethodDeclaration method, String parameterTypeName) {
-		this.buildParameter = SingleVariableDeclarationBuilder.builder().setMethodDeclaration(method)
-				.setCompilationUnit(method.getOriginalCompilationUnit())
+	private ParameterHelper(AbstractMethod method, String parameterTypeName) {
+		this.buildParameter = SingleVariableDeclarationBuilder.builder()
+				.setMethodDeclaration(method.getAbstractMethodDeclaration())
+				.setCompilationUnit(method.getCompilationUnit())
 				.setType(TypeAccessHelper.createVariableTypeAccess(parameterTypeName))
 				.setName(ParameterHelper.generateParameterName(parameterTypeName)).setVarargs(false).build();
 		method.getParameters().add(this.buildParameter);
@@ -117,8 +118,8 @@ public class ParameterHelper {
 	 *            the varargs state of the created parameter.
 	 * @return the created parameter accordingly to the specified parameters.
 	 */
-	public static Parameter createParameter(AbstractMethodDeclaration method, String parameterTypeName,
-			String parameterName, boolean varargsState) {
+	public static Parameter createParameter(AbstractMethod method, String parameterTypeName, String parameterName,
+			boolean varargsState) {
 		return ParameterHelper.builder(method, parameterTypeName).setName(parameterName).setVarargs(varargsState)
 				.build();
 	}

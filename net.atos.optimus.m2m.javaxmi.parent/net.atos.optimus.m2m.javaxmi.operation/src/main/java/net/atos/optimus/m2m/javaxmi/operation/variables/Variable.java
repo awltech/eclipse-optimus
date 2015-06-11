@@ -49,5 +49,13 @@ public class Variable {
 	public SingleVariableDeclaration getSingleVariableDeclaration() {
 		return this.variable;
 	}
+	
+	public String getName(){
+		return this.variable.getName();
+	}
+	
+	public String getTypeName(){
+		return this.getSingleVariableDeclaration().getType().getType().getName();
+	}
 
 }
