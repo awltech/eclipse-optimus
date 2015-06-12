@@ -21,49 +21,38 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.classes;
 
-import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
-
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.gmt.modisco.java.ClassDeclaration;
-import org.eclipse.gmt.modisco.java.TypeAccess;
+import org.eclipse.gmt.modisco.java.AbstractTypeDeclaration;
 
 /**
- * Models a class : wrapper of ClassDeclaration in modisco model
+ * Models an abstract class : wrapper of ClassDeclaration and
+ * InterfaceDeclaration (AbstractTypeDeclaration) in modisco model
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
  *
  */
 
-public class Class extends AbstractClass {
+public class AbstractClass {
+
+	/** The abstract type declaration */
+	private AbstractTypeDeclaration abstractTypeDeclaration;
 
 	/**
-	 * Constructor of class
+	 * Constructor of abstract class
 	 * 
-	 * @param classDeclaration
-	 *            the class declaration.
+	 * @param abstractTypeDeclaration
+	 *            the abstract type declaration.
 	 */
-	public Class(ClassDeclaration classDeclaration) {
-		super(classDeclaration);
+	public AbstractClass(AbstractTypeDeclaration abstractTypeDeclaration) {
+		this.abstractTypeDeclaration = abstractTypeDeclaration;
 	}
 
-	public ClassDeclaration getClassDeclaration() {
-		return (ClassDeclaration) this.getAbstractTypeDeclaration();
+	public AbstractTypeDeclaration getAbstractTypeDeclaration() {
+		return this.abstractTypeDeclaration;
 	}
 
-	/**
-	 * Add interfaces list to the class
-	 * 
-	 * @param interfacesNames
-	 *            the interfaces names list to add to the class.
-	 * @return the builder.
-	 */
-	public Class addInterfaces(String... interfacesNames) {
-		EList<TypeAccess> interfacesList = this.getClassDeclaration().getSuperInterfaces();
-		for (String javaInterface : interfacesNames) {
-			interfacesList.add(TypeAccessHelper.createInterfaceTypeAccess(javaInterface));
-		}
-		return this;
+	public String getName() {
+		return this.abstractTypeDeclaration.getName();
 	}
 
 }

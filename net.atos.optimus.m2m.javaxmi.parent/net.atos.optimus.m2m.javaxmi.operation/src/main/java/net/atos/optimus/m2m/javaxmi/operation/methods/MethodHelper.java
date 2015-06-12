@@ -22,15 +22,15 @@
 package net.atos.optimus.m2m.javaxmi.operation.methods;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
-import net.atos.optimus.m2m.javaxmi.operation.classes.Class;
+import net.atos.optimus.m2m.javaxmi.operation.classes.AbstractClass;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.Instruction;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.block.BlockBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.parameters.ParameterHelper;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.gmt.modisco.java.AbstractTypeDeclaration;
 import org.eclipse.gmt.modisco.java.Block;
-import org.eclipse.gmt.modisco.java.ClassDeclaration;
 import org.eclipse.gmt.modisco.java.InheritanceKind;
 import org.eclipse.gmt.modisco.java.MethodDeclaration;
 import org.eclipse.gmt.modisco.java.Modifier;
@@ -56,35 +56,37 @@ public class MethodHelper {
 	 * Launch the build of a new method (void, public, not static, inheritance
 	 * set to none with no parameter, no exceptions and no body by default)
 	 * 
-	 * @param javaClass
-	 *            the class where is the method under construction.
+	 * @param abstractClass
+	 *            the class or the interface where is the method under
+	 *            construction.
 	 * @param methodName
 	 *            the name of the created method under construction.
 	 * 
 	 * @return a new method helper.
 	 */
-	public static MethodHelper builder(Class javaClass, String methodName) {
-		return new MethodHelper(javaClass, methodName);
+	public static MethodHelper builder(AbstractClass abstractClass, String methodName) {
+		return new MethodHelper(abstractClass, methodName);
 	}
 
 	/**
 	 * Private constructor : a new method (void, public, not static, inheritance
 	 * set to none with no parameter, no exceptions and no body by default)
 	 * 
-	 * @param javaClass
-	 *            the class where is the method under construction.
+	 * @param abstractClass
+	 *            the class or the interface where is the method under
+	 *            construction.
 	 * @param methodName
 	 *            the name of the created method under construction.
 	 */
-	private MethodHelper(Class javaClass, String methodName) {
-		ClassDeclaration internalClass = javaClass.getClassDeclaration();
+	private MethodHelper(AbstractClass abstractClass, String methodName) {
+		AbstractTypeDeclaration abstractType = abstractClass.getAbstractTypeDeclaration();
 		Modifier modifier = ModifierBuilder.builder().setVisibility(VisibilityKind.PUBLIC).setStatic(false)
-				.setInheritance(InheritanceKind.NONE).setCompilationUnit(internalClass.getOriginalCompilationUnit())
+				.setInheritance(InheritanceKind.NONE).setCompilationUnit(abstractType.getOriginalCompilationUnit())
 				.build();
 		this.buildMethod = MethodDeclarationBuilder.builder().setModifier(modifier)
 				.setReturnType(TypeAccessHelper.createVariableTypeAccess(MethodHelper.VOID_TYPE)).setName(methodName)
-				.setAbstractTypeDeclaration(internalClass)
-				.setCompilationUnit(internalClass.getOriginalCompilationUnit()).build();
+				.setAbstractTypeDeclaration(abstractType).setCompilationUnit(abstractType.getOriginalCompilationUnit())
+				.build();
 	}
 
 	/**
@@ -213,8 +215,8 @@ public class MethodHelper {
 	/**
 	 * Create a method with exceptions but no parameter and no body
 	 * 
-	 * @param javaClass
-	 *            the class where is the created method.
+	 * @param abstractClass
+	 *            the class or the interface where is the created method.
 	 * @param visibility
 	 *            the visibility the created method.
 	 * @param isStatic
@@ -230,9 +232,9 @@ public class MethodHelper {
 	 * @return the created method with instructions and no parameter accordingly
 	 *         to the specified parameters.
 	 */
-	public static Method createMethod(Class javaClass, VisibilityKind visibility, boolean isStatic,
+	public static Method createMethod(AbstractClass abstractClass, VisibilityKind visibility, boolean isStatic,
 			InheritanceKind inheritance, String returnTypeName, String methodName, String... exceptionsNames) {
-		return MethodHelper.builder(javaClass, methodName).setVisibility(visibility).setStatic(isStatic)
+		return MethodHelper.builder(abstractClass, methodName).setVisibility(visibility).setStatic(isStatic)
 				.setInheritance(inheritance).setReturnType(returnTypeName).addExceptions(exceptionsNames).build();
 	}
 

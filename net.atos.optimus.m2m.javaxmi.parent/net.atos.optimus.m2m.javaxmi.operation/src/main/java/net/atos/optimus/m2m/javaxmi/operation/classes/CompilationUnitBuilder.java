@@ -21,7 +21,7 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.classes;
 
-import org.eclipse.gmt.modisco.java.ClassDeclaration;
+import org.eclipse.gmt.modisco.java.AbstractTypeDeclaration;
 import org.eclipse.gmt.modisco.java.CompilationUnit;
 import org.eclipse.gmt.modisco.java.Package;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
@@ -90,15 +90,15 @@ public class CompilationUnitBuilder {
 	}
 
 	/**
-	 * Add a class declaration of the compilation unit under construction
+	 * Add a type declaration of the compilation unit under construction
 	 * 
-	 * @param classDeclaration
-	 *            the class declaration to add to the compilation unit under
+	 * @param typeDeclaration
+	 *            the type declaration to add to the compilation unit under
 	 *            construction
 	 * @return the builder.
 	 */
-	public CompilationUnitBuilder addClassDeclaration(ClassDeclaration classDeclaration) {
-		this.buildCompilationUnit.getTypes().add(classDeclaration);
+	public CompilationUnitBuilder addAbstractTypeDeclaration(AbstractTypeDeclaration typeDeclaration) {
+		this.buildCompilationUnit.getTypes().add(typeDeclaration);
 		return this;
 	}
 

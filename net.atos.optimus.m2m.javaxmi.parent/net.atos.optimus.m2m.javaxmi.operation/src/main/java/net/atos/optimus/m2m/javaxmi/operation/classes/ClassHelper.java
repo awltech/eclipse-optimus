@@ -56,7 +56,7 @@ public class ClassHelper {
 	 *            the name of the class under construction.
 	 * @return a new helper.
 	 */
-	public static ClassHelper classBuilder(Package javaPackage, String className) {
+	public static ClassHelper builder(Package javaPackage, String className) {
 		return new ClassHelper(javaPackage, className);
 	}
 
@@ -175,11 +175,11 @@ public class ClassHelper {
 	}
 
 	/**
-	 * Add interfaces list to the class declaration under construction
+	 * Add interfaces list to the class under construction
 	 * 
 	 * @param interfacesNames
-	 *            the interfaces names list to add to the class declaration
-	 *            under construction.
+	 *            the interfaces names list to add to the class under
+	 *            construction.
 	 * @return the builder.
 	 */
 	public ClassHelper addInterfaces(String... interfacesNames) {
@@ -212,7 +212,7 @@ public class ClassHelper {
 	 */
 	public static Class createClass(Package javaPackage, String className, VisibilityKind visibility,
 			InheritanceKind inheritance, boolean proxyState, String superClassName, String... interfacesNames) {
-		return ClassHelper.classBuilder(javaPackage, className).setVisibility(visibility).setInheritance(inheritance)
+		return ClassHelper.builder(javaPackage, className).setVisibility(visibility).setInheritance(inheritance)
 				.setProxy(proxyState).setSuperClass(superClassName).addInterfaces(interfacesNames).build();
 	}
 

@@ -19,47 +19,48 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.javaxmi.operation.classes;
+package net.atos.optimus.m2m.javaxmi.operation.interfaces;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
+import net.atos.optimus.m2m.javaxmi.operation.classes.AbstractClass;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.gmt.modisco.java.ClassDeclaration;
+import org.eclipse.gmt.modisco.java.InterfaceDeclaration;
 import org.eclipse.gmt.modisco.java.TypeAccess;
 
 /**
- * Models a class : wrapper of ClassDeclaration in modisco model
+ * Models an interface : wrapper of InterfaceDeclaration in modisco model
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
  *
  */
 
-public class Class extends AbstractClass {
+public class Interface extends AbstractClass {
 
 	/**
-	 * Constructor of class
+	 * Constructor of interface
 	 * 
-	 * @param classDeclaration
-	 *            the class declaration.
+	 * @param interfaceDeclaration
+	 *            the interface declaration.
 	 */
-	public Class(ClassDeclaration classDeclaration) {
-		super(classDeclaration);
+	public Interface(InterfaceDeclaration interfaceDeclaration) {
+		super(interfaceDeclaration);
 	}
 
-	public ClassDeclaration getClassDeclaration() {
-		return (ClassDeclaration) this.getAbstractTypeDeclaration();
+	public InterfaceDeclaration getInterfaceDeclaration() {
+		return (InterfaceDeclaration) this.getAbstractTypeDeclaration();
 	}
 
 	/**
-	 * Add interfaces list to the class
+	 * Add interfaces list to the interface
 	 * 
 	 * @param interfacesNames
-	 *            the interfaces names list to add to the class.
+	 *            the interfaces names list to add to the interface.
 	 * @return the builder.
 	 */
-	public Class addInterfaces(String... interfacesNames) {
-		EList<TypeAccess> interfacesList = this.getClassDeclaration().getSuperInterfaces();
+	public Interface addInterfaces(String... interfacesNames) {
+		EList<TypeAccess> interfacesList = this.getInterfaceDeclaration().getSuperInterfaces();
 		for (String javaInterface : interfacesNames) {
 			interfacesList.add(TypeAccessHelper.createInterfaceTypeAccess(javaInterface));
 		}

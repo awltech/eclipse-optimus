@@ -22,13 +22,13 @@
 package net.atos.optimus.m2m.javaxmi.operation.methods;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.gmt.modisco.java.AbstractTypeDeclaration;
 import org.eclipse.gmt.modisco.java.Block;
 import org.eclipse.gmt.modisco.java.CompilationUnit;
 import org.eclipse.gmt.modisco.java.MethodDeclaration;
 import org.eclipse.gmt.modisco.java.Modifier;
 import org.eclipse.gmt.modisco.java.SingleVariableDeclaration;
 import org.eclipse.gmt.modisco.java.TypeAccess;
-import org.eclipse.gmt.modisco.java.TypeDeclaration;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
 
 /**
@@ -115,7 +115,7 @@ public class MethodDeclarationBuilder {
 	 *            construction.
 	 * @return the builder.
 	 */
-	public MethodDeclarationBuilder setAbstractTypeDeclaration(TypeDeclaration typeDeclaration) {
+	public MethodDeclarationBuilder setAbstractTypeDeclaration(AbstractTypeDeclaration typeDeclaration) {
 		this.buildMethodDeclaration.setAbstractTypeDeclaration(typeDeclaration);
 		return this;
 	}
