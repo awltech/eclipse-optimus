@@ -22,11 +22,13 @@
 package net.atos.optimus.m2m.javaxmi.operation.accesses;
 
 import net.atos.optimus.m2m.javaxmi.operation.classes.UnresolvedClassDeclarationBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.interfaces.UnresolvedInterfaceDeclarationBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.types.PrimitiveTypeBuilder;
 
 import org.eclipse.gmt.modisco.java.PrimitiveType;
 import org.eclipse.gmt.modisco.java.TypeAccess;
 import org.eclipse.gmt.modisco.java.UnresolvedClassDeclaration;
+import org.eclipse.gmt.modisco.java.UnresolvedInterfaceDeclaration;
 
 /**
  * The purpose of such class is to help with the creation of type access
@@ -43,8 +45,8 @@ public class TypeAccessHelper {
 	 * 
 	 * @param variableTypeName
 	 *            the variable type name which we want a type access.
-	 * @return the created type access associated to the specified variable
-	 *         type name.
+	 * @return the created type access associated to the specified variable type
+	 *         name.
 	 */
 	public static TypeAccess createVariableTypeAccess(String variableTypeName) {
 		PrimitiveType primitiveType = PrimitiveTypeBuilder.builder().setName(variableTypeName).build();
@@ -62,7 +64,21 @@ public class TypeAccessHelper {
 		UnresolvedClassDeclaration classType = UnresolvedClassDeclarationBuilder.builder().setName(className).build();
 		return TypeAccessBuilder.builder().setType(classType).build();
 	}
-	
+
+	/**
+	 * Create a type access associated to an interface
+	 * 
+	 * @param interfaceName
+	 *            the interface name which we want a type access.
+	 * @return the created type access associated to the specified interface
+	 *         name.
+	 */
+	public static TypeAccess createInterfaceTypeAccess(String interfaceName) {
+		UnresolvedInterfaceDeclaration interfaceType = UnresolvedInterfaceDeclarationBuilder.builder()
+				.setName(interfaceName).build();
+		return TypeAccessBuilder.builder().setType(interfaceType).build();
+	}
+
 	/**
 	 * Create a type access associated to an exception
 	 * 

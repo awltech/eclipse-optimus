@@ -21,13 +21,16 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.classes;
 
+import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.packages.Package;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmt.modisco.java.ClassDeclaration;
 import org.eclipse.gmt.modisco.java.CompilationUnit;
 import org.eclipse.gmt.modisco.java.InheritanceKind;
 import org.eclipse.gmt.modisco.java.Modifier;
+import org.eclipse.gmt.modisco.java.TypeAccess;
 import org.eclipse.gmt.modisco.java.VisibilityKind;
 
 /**
@@ -44,8 +47,8 @@ public class ClassHelper {
 	private ClassDeclaration buildClass;
 
 	/**
-	 * Launch the build of a new class (public, proxy state set to false and
-	 * inheritance state set to none by default)
+	 * Launch the build of a new class (public, proxy state set to false, no
+	 * super class, no interface and inheritance state set to none by default)
 	 * 
 	 * @param javaPackage
 	 *            the package a the class under construction.
@@ -59,7 +62,8 @@ public class ClassHelper {
 
 	/**
 	 * Launch the build of a new internal class (public, proxy state set to
-	 * false and inheritance state set to none by default)
+	 * false, no super class, no interface and inheritance state set to none by
+	 * default)
 	 * 
 	 * @param javaClass
 	 *            the class containing the class under construction.
@@ -72,8 +76,8 @@ public class ClassHelper {
 	}
 
 	/**
-	 * Private constructor : a new class (public, proxy state set to false and
-	 * inheritance state set to none by default)
+	 * Private constructor : a new class (public, proxy state set to false, no
+	 * super class, no interface and inheritance state set to none by default)
 	 * 
 	 * @param javaPackage
 	 *            the package a the class under construction.
@@ -94,7 +98,8 @@ public class ClassHelper {
 
 	/**
 	 * Private constructor : a new internal class (public, proxy state set to
-	 * false and inheritance state set to none by default)
+	 * false, no super class, no interface and inheritance state set to none by
+	 * default)
 	 * 
 	 * @param javaClass
 	 *            the class containing the class under construction.
@@ -158,6 +163,34 @@ public class ClassHelper {
 	}
 
 	/**
+	 * Set the super class of the class under construction
+	 * 
+	 * @param superClassName
+	 *            the super class name of the class under construction.
+	 * @return the builder.
+	 */
+	public ClassHelper setSuperClass(String superClassName) {
+		this.buildClass.setSuperClass(TypeAccessHelper.createClassTypeAccess(superClassName));
+		return this;
+	}
+
+	/**
+	 * Add interfaces list to the class declaration under construction
+	 * 
+	 * @param interfacesNames
+	 *            the interfaces names list to add to the class declaration
+	 *            under construction.
+	 * @return the builder.
+	 */
+	public ClassHelper addInterfaces(String... interfacesNames) {
+		EList<TypeAccess> interfacesList = this.buildClass.getSuperInterfaces();
+		for (String javaInterface : interfacesNames) {
+			interfacesList.add(TypeAccessHelper.createInterfaceTypeAccess(javaInterface));
+		}
+		return this;
+	}
+
+	/**
 	 * Create a class in a stand alone compilation unit
 	 * 
 	 * @param javaPackage
@@ -170,12 +203,17 @@ public class ClassHelper {
 	 *            the inheritance state of the created class.
 	 * @param proxyState
 	 *            the proxy state of of the created class.
+	 * @param superClassName
+	 *            the super class name of the created class.
+	 * @param interfacesNames
+	 *            the interfaces names list to add to the created class
+	 *            declaration.
 	 * @return the created class accordingly to the specified parameters.
 	 */
 	public static Class createClass(Package javaPackage, String className, VisibilityKind visibility,
-			InheritanceKind inheritance, boolean proxyState) {
+			InheritanceKind inheritance, boolean proxyState, String superClassName, String... interfacesNames) {
 		return ClassHelper.classBuilder(javaPackage, className).setVisibility(visibility).setInheritance(inheritance)
-				.setProxy(proxyState).build();
+				.setProxy(proxyState).setSuperClass(superClassName).addInterfaces(interfacesNames).build();
 	}
 
 	/**
@@ -191,13 +229,19 @@ public class ClassHelper {
 	 *            the inheritance state of the created class.
 	 * @param proxyState
 	 *            the proxy state of of the created class.
+	 * @param superClassName
+	 *            the super class name of the created class.
+	 * @param interfacesNames
+	 *            the interfaces names list to add to the created class
+	 *            declaration.
 	 * @return the created internal class accordingly to the specified
 	 *         parameters.
 	 */
 	public static Class createInternalClass(Class javaClass, String className, VisibilityKind visibility,
-			InheritanceKind inheritance, boolean proxyState) {
+			InheritanceKind inheritance, boolean proxyState, String superClassName, String... interfacesNames) {
 		return ClassHelper.internalClassBuilder(javaClass, className).setVisibility(visibility)
-				.setInheritance(inheritance).setProxy(proxyState).build();
+				.setInheritance(inheritance).setProxy(proxyState).setSuperClass(superClassName)
+				.addInterfaces(interfacesNames).build();
 	}
 
 }

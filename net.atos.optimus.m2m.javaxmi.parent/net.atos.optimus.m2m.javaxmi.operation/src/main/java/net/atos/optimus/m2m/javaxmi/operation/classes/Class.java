@@ -21,7 +21,11 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.classes;
 
+import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
+
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmt.modisco.java.ClassDeclaration;
+import org.eclipse.gmt.modisco.java.TypeAccess;
 
 /**
  * Models a class : wrapper of ClassDeclaration in modisco model
@@ -49,9 +53,24 @@ public class Class {
 	public ClassDeclaration getClassDeclaration() {
 		return this.classDeclaration;
 	}
-	
+
 	public String getName() {
 		return this.classDeclaration.getName();
+	}
+
+	/**
+	 * Add interfaces list to the class
+	 * 
+	 * @param interfacesNames
+	 *            the interfaces names list to add to the class.
+	 * @return the builder.
+	 */
+	public Class addInterfaces(String... interfacesNames) {
+		EList<TypeAccess> interfacesList = this.getClassDeclaration().getSuperInterfaces();
+		for (String javaInterface : interfacesNames) {
+			interfacesList.add(TypeAccessHelper.createInterfaceTypeAccess(javaInterface));
+		}
+		return this;
 	}
 
 }

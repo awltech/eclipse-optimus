@@ -21,10 +21,12 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.classes;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmt.modisco.java.ClassDeclaration;
 import org.eclipse.gmt.modisco.java.CompilationUnit;
 import org.eclipse.gmt.modisco.java.Modifier;
 import org.eclipse.gmt.modisco.java.Package;
+import org.eclipse.gmt.modisco.java.TypeAccess;
 import org.eclipse.gmt.modisco.java.TypeDeclaration;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
 
@@ -138,6 +140,35 @@ public class ClassDeclarationBuilder {
 	 */
 	public ClassDeclarationBuilder setAbstractTypeDeclaration(TypeDeclaration typeDeclaration) {
 		this.buildClassDeclaration.setAbstractTypeDeclaration(typeDeclaration);
+		return this;
+	}
+
+	/**
+	 * Set the super type class of the class declaration under construction
+	 * 
+	 * @param superType
+	 *            the super type class of the class declaration under
+	 *            construction.
+	 * @return the builder.
+	 */
+	public ClassDeclarationBuilder setSuperClass(TypeAccess superType) {
+		this.buildClassDeclaration.setSuperClass(superType);
+		return this;
+	}
+
+	/**
+	 * Add interfaces list to the class declaration under construction
+	 * 
+	 * @param interfaces
+	 *            the interfaces list to add to the class declaration under
+	 *            construction.
+	 * @return the builder.
+	 */
+	public ClassDeclarationBuilder addInterfaces(TypeAccess... interfaces) {
+		EList<TypeAccess> interfacesList = this.buildClassDeclaration.getSuperInterfaces();
+		for (TypeAccess javaInterface : interfaces) {
+			interfacesList.add(javaInterface);
+		}
 		return this;
 	}
 
