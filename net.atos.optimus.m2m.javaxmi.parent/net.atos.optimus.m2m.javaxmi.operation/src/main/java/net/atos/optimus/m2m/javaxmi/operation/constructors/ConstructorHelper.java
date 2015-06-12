@@ -24,7 +24,7 @@ package net.atos.optimus.m2m.javaxmi.operation.constructors;
 import net.atos.optimus.m2m.javaxmi.operation.classes.Class;
 import net.atos.optimus.m2m.javaxmi.operation.fields.Field;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.Instruction;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.InstructionHelper;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.InstructionSetterHelper;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.block.BlockBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.parameters.ParameterHelper;
@@ -145,7 +145,7 @@ public class ConstructorHelper {
 	public ConstructorHelper addParameterAndSetAssociatedField(Field field) {
 		String parameterName = NameGenerator.generateNameWithTypeName(field.getTypeName());
 		this.addParameter(field.getTypeName(), parameterName);
-		this.addInstructions(InstructionHelper.createSetFieldInstruction(field.getName(), parameterName));
+		this.addInstructions(InstructionSetterHelper.createSetFieldInstruction(field.getName(), parameterName));
 		return this;
 	}
 
@@ -162,7 +162,7 @@ public class ConstructorHelper {
 	 */
 	public ConstructorHelper addParameterAndSetAssociatedField(String parameterName, Field field) {
 		this.addParameter(field.getTypeName(), parameterName);
-		this.addInstructions(InstructionHelper.createSetFieldInstruction(field.getName(), parameterName));
+		this.addInstructions(InstructionSetterHelper.createSetFieldInstruction(field.getName(), parameterName));
 		return this;
 	}
 
@@ -205,27 +205,6 @@ public class ConstructorHelper {
 			helper.addParameterAndSetAssociatedField(field);
 		}
 		return helper.build();
-	}
-
-	/**
-	 * Add a list of instructions to a constructor
-	 * 
-	 * @param constructor
-	 *            the constructor which we add the instructions list.
-	 * @param instructions
-	 *            the added instructions list of the constructor.
-	 * @return the constructor with the instructions list added to its body.
-	 */
-	public static Constructor addInstructions(Constructor constructor, Instruction... instructions) {
-		Block block = constructor.getConstructorDeclaration().getBody();
-		if (block == null) {
-			block = BlockBuilder.builder().build();
-			constructor.getConstructorDeclaration().setBody(block);
-		}
-		for (Instruction instruction : instructions) {
-			block.getStatements().add(instruction.getStatement());
-		}
-		return constructor;
 	}
 
 }

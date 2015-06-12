@@ -191,25 +191,4 @@ public class MethodHelper {
 				.addInstructions(instructions).build();
 	}
 
-	/**
-	 * Add a list of instructions to a method
-	 * 
-	 * @param method
-	 *            the method which we add the instructions list.
-	 * @param instructions
-	 *            the added instructions list of the method.
-	 * @return the method with the instructions list added to its body.
-	 */
-	public static Method addInstructions(Method method, Instruction... instructions) {
-		Block block = method.getMethodDeclaration().getBody();
-		if (block == null) {
-			block = BlockBuilder.builder().build();
-			method.getMethodDeclaration().setBody(block);
-		}
-		for (Instruction instruction : instructions) {
-			block.getStatements().add(instruction.getStatement());
-		}
-		return method;
-	}
-
 }
