@@ -23,9 +23,11 @@ package net.atos.optimus.m2m.javaxmi.operation.parameters;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.methods.AbstractMethod;
+import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.util.NameGenerator;
 import net.atos.optimus.m2m.javaxmi.operation.variables.SingleVariableDeclarationBuilder;
 
+import org.eclipse.gmt.modisco.java.InheritanceKind;
 import org.eclipse.gmt.modisco.java.SingleVariableDeclaration;
 
 /**
@@ -42,8 +44,8 @@ public class ParameterHelper {
 	private SingleVariableDeclaration buildParameter;
 
 	/**
-	 * Launch the build of a new parameter (with generated name and varargs set
-	 * to false)
+	 * Launch the build of a new parameter (with generated name, not final and
+	 * varargs set to false)
 	 * 
 	 * @param method
 	 *            the method associated to the parameter under construction.
@@ -56,8 +58,8 @@ public class ParameterHelper {
 	}
 
 	/**
-	 * Private constructor : a new parameter (with generated name and varargs
-	 * set to false)
+	 * Private constructor : a new parameter (with generated name, not final and
+	 * varargs set to false)
 	 * 
 	 * @param method
 	 *            the method associated to the parameter under construction.
@@ -68,6 +70,7 @@ public class ParameterHelper {
 		this.buildParameter = SingleVariableDeclarationBuilder.builder()
 				.setMethodDeclaration(method.getAbstractMethodDeclaration())
 				.setCompilationUnit(method.getCompilationUnit())
+				.setModifier(ModifierBuilder.builder().setInheritance(InheritanceKind.NONE).build())
 				.setType(TypeAccessHelper.createVariableTypeAccess(parameterTypeName))
 				.setName(NameGenerator.generateNameWithTypeName(parameterTypeName)).setVarargs(false).build();
 		method.getParameters().add(this.buildParameter);
@@ -80,6 +83,18 @@ public class ParameterHelper {
 	 */
 	public Parameter build() {
 		return new Parameter(this.buildParameter);
+	}
+
+	/**
+	 * Set the final state of the parameter under construction
+	 * 
+	 * @param isFinal
+	 *            the final state of the parameter under construction.
+	 * @return the helper.
+	 */
+	public ParameterHelper setFinal(boolean isFinal) {
+		this.buildParameter.getModifier().setInheritance(isFinal ? InheritanceKind.FINAL : InheritanceKind.NONE);
+		return this;
 	}
 
 	/**
@@ -111,6 +126,8 @@ public class ParameterHelper {
 	 * 
 	 * @param method
 	 *            the method associated to the created parameter.
+	 * @param isFinal
+	 *            the final state of the created parameter.
 	 * @param parameterTypeName
 	 *            the type name of the created parameter.
 	 * @param parameterName
@@ -119,10 +136,10 @@ public class ParameterHelper {
 	 *            the varargs state of the created parameter.
 	 * @return the created parameter accordingly to the specified parameters.
 	 */
-	public static Parameter createParameter(AbstractMethod method, String parameterTypeName, String parameterName,
-			boolean varargsState) {
-		return ParameterHelper.builder(method, parameterTypeName).setName(parameterName).setVarargs(varargsState)
-				.build();
+	public static Parameter createParameter(AbstractMethod method, boolean isFinal, String parameterTypeName,
+			String parameterName, boolean varargsState) {
+		return ParameterHelper.builder(method, parameterTypeName).setFinal(isFinal).setName(parameterName)
+				.setVarargs(varargsState).build();
 	}
 
 }

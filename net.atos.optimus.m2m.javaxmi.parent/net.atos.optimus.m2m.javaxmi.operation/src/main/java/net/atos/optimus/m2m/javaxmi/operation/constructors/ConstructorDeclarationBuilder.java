@@ -27,6 +27,7 @@ import org.eclipse.gmt.modisco.java.CompilationUnit;
 import org.eclipse.gmt.modisco.java.ConstructorDeclaration;
 import org.eclipse.gmt.modisco.java.Modifier;
 import org.eclipse.gmt.modisco.java.SingleVariableDeclaration;
+import org.eclipse.gmt.modisco.java.TypeAccess;
 import org.eclipse.gmt.modisco.java.TypeDeclaration;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
 
@@ -146,6 +147,23 @@ public class ConstructorDeclarationBuilder {
 		EList<SingleVariableDeclaration> parameters = this.buildConstructorDeclaration.getParameters();
 		for (SingleVariableDeclaration singleVariableDeclaration : singleVariableDeclarations) {
 			parameters.add(singleVariableDeclaration);
+		}
+		return this;
+	}
+
+	/**
+	 * Add a list of exceptions to the constructor declaration under
+	 * construction
+	 * 
+	 * @param exceptions
+	 *            the list of exceptions to add to the constructor declaration
+	 *            under construction.
+	 * @return the builder.
+	 */
+	public ConstructorDeclarationBuilder addExceptions(TypeAccess... exceptions) {
+		EList<TypeAccess> exceptionsList = this.buildConstructorDeclaration.getThrownExceptions();
+		for (TypeAccess exception : exceptions) {
+			exceptionsList.add(exception);
 		}
 		return this;
 	}

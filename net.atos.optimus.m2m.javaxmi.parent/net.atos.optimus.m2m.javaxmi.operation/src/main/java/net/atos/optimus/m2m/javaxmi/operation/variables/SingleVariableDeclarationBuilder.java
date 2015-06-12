@@ -25,6 +25,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmt.modisco.java.AbstractMethodDeclaration;
 import org.eclipse.gmt.modisco.java.Annotation;
 import org.eclipse.gmt.modisco.java.CompilationUnit;
+import org.eclipse.gmt.modisco.java.Modifier;
 import org.eclipse.gmt.modisco.java.SingleVariableDeclaration;
 import org.eclipse.gmt.modisco.java.TypeAccess;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
@@ -78,6 +79,19 @@ public class SingleVariableDeclarationBuilder {
 	 */
 	public SingleVariableDeclarationBuilder setName(String name) {
 		this.buildSingleVariableDeclaration.setName(name);
+		return this;
+	}
+
+	/**
+	 * Set the modifier of the single variable declaration under construction
+	 * 
+	 * @param modifier
+	 *            the modifier of the single variable declaration under
+	 *            construction.
+	 * @return the builder.
+	 */
+	public SingleVariableDeclarationBuilder setModifier(Modifier modifier) {
+		this.buildSingleVariableDeclaration.setModifier(modifier);
 		return this;
 	}
 

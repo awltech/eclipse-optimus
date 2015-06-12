@@ -21,6 +21,7 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.instruction.part;
 
+import org.eclipse.gmt.modisco.java.Modifier;
 import org.eclipse.gmt.modisco.java.TypeAccess;
 import org.eclipse.gmt.modisco.java.VariableDeclarationExpression;
 import org.eclipse.gmt.modisco.java.VariableDeclarationFragment;
@@ -64,6 +65,19 @@ public class VariableDeclarationExpressionBuilder {
 	 */
 	public VariableDeclarationExpression build() {
 		return this.buildVariableDeclarationExpression;
+	}
+
+	/**
+	 * Set the modifier of the variable declaration expression under
+	 * construction
+	 * 
+	 * @param modifier
+	 *            the modifier of the variable expression under construction.
+	 * @return the builder.
+	 */
+	public VariableDeclarationExpressionBuilder setModifier(Modifier modifier) {
+		this.buildVariableDeclarationExpression.setModifier(modifier);
+		return this;
 	}
 
 	/**

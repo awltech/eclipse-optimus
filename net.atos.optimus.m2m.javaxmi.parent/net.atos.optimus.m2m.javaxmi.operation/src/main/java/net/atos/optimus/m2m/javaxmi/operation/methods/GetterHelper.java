@@ -24,10 +24,9 @@ package net.atos.optimus.m2m.javaxmi.operation.methods;
 import net.atos.optimus.m2m.javaxmi.operation.classes.Class;
 import net.atos.optimus.m2m.javaxmi.operation.fields.Field;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.InstructionReturnHelper;
-import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.util.NameGenerator;
 
-import org.eclipse.gmt.modisco.java.Modifier;
+import org.eclipse.gmt.modisco.java.InheritanceKind;
 import org.eclipse.gmt.modisco.java.VisibilityKind;
 
 /**
@@ -46,7 +45,8 @@ public class GetterHelper {
 	private Method buildGetterMethod;
 
 	/**
-	 * Launch the build of a new getter method (public, with generated name)
+	 * Launch the build of a new getter method (public, not final, with
+	 * generated name)
 	 * 
 	 * @param javaClass
 	 *            the class where is the getter method under construction.
@@ -59,7 +59,8 @@ public class GetterHelper {
 	}
 
 	/**
-	 * Private constructor : a new getter method (public, with generated name)
+	 * Private constructor : a new getter method (public, not final, with
+	 * generated name)
 	 * 
 	 * @param javaClass
 	 *            the class where is the getter method under construction.
@@ -68,7 +69,8 @@ public class GetterHelper {
 	 */
 	private GetterHelper(Class javaClass, Field field) {
 		this.buildGetterMethod = MethodHelper.builder(javaClass, NameGenerator.generateGetterName(field.getName()))
-				.setVisibility(VisibilityKind.PUBLIC).setReturnType(field.getTypeName())
+				.setVisibility(VisibilityKind.PUBLIC).setInheritance(InheritanceKind.NONE)
+				.setReturnType(field.getTypeName())
 				.addInstructions(InstructionReturnHelper.createFieldReturnInstruction(field.getName())).build();
 	}
 
@@ -101,9 +103,20 @@ public class GetterHelper {
 	 * @return the helper.
 	 */
 	public GetterHelper setVisibility(VisibilityKind visibility) {
-		Modifier modifier = ModifierBuilder.builder().setVisibility(visibility)
-				.setCompilationUnit(this.buildGetterMethod.getMethodDeclaration().getOriginalCompilationUnit()).build();
-		this.buildGetterMethod.getMethodDeclaration().setModifier(modifier);
+		this.buildGetterMethod.getMethodDeclaration().getModifier().setVisibility(visibility);
+		return this;
+	}
+
+	/**
+	 * Set the final state of the getter method under construction
+	 * 
+	 * @param isFinal
+	 *            the final state of the getter method under construction.
+	 * @return the helper.
+	 */
+	public GetterHelper setFinal(boolean isFinal) {
+		this.buildGetterMethod.getMethodDeclaration().getModifier()
+				.setInheritance(isFinal ? InheritanceKind.FINAL : InheritanceKind.NONE);
 		return this;
 	}
 
@@ -114,6 +127,8 @@ public class GetterHelper {
 	 *            the class where is the created getter method.
 	 * @param visibility
 	 *            the visibility of the created getter method.
+	 * @param isFinal
+	 *            the final state of the created getter method.
 	 * @param field
 	 *            the field associated with the created getter method.
 	 * @param getterName
@@ -121,8 +136,10 @@ public class GetterHelper {
 	 * @return the created getter method accordingly to the specified
 	 *         parameters.
 	 */
-	public static Method createGetter(Class javaClass, VisibilityKind visibility, Field field, String getterName) {
-		return GetterHelper.builder(javaClass, field).setVisibility(visibility).setName(getterName).build();
+	public static Method createGetter(Class javaClass, VisibilityKind visibility, boolean isFinal, Field field,
+			String getterName) {
+		return GetterHelper.builder(javaClass, field).setVisibility(visibility).setFinal(isFinal).setName(getterName)
+				.build();
 	}
 
 }

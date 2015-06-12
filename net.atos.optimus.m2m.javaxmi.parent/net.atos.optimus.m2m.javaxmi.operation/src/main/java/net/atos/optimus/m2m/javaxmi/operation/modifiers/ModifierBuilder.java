@@ -22,6 +22,7 @@
 package net.atos.optimus.m2m.javaxmi.operation.modifiers;
 
 import org.eclipse.gmt.modisco.java.CompilationUnit;
+import org.eclipse.gmt.modisco.java.InheritanceKind;
 import org.eclipse.gmt.modisco.java.Modifier;
 import org.eclipse.gmt.modisco.java.VisibilityKind;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
@@ -86,6 +87,30 @@ public class ModifierBuilder {
 	 */
 	public ModifierBuilder setCompilationUnit(CompilationUnit compilationUnit) {
 		this.buildModifier.setOriginalCompilationUnit(compilationUnit);
+		return this;
+	}
+
+	/**
+	 * Set the static state of the modifier under construction
+	 * 
+	 * @param isStatic
+	 *            the static state of the modifier under construction.
+	 * @return the builder.
+	 */
+	public ModifierBuilder setStatic(boolean isStatic) {
+		this.buildModifier.setStatic(isStatic);
+		return this;
+	}
+
+	/**
+	 * Set the inheritance state of the modifier under construction
+	 * 
+	 * @param inheritance
+	 *            the inheritance state of the modifier under construction.
+	 * @return the builder.
+	 */
+	public ModifierBuilder setInheritance(InheritanceKind inheritance) {
+		this.buildModifier.setInheritance(inheritance);
 		return this;
 	}
 

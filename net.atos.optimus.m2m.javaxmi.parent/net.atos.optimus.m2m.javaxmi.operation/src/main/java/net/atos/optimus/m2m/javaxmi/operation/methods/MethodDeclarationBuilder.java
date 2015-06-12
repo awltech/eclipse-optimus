@@ -161,4 +161,20 @@ public class MethodDeclarationBuilder {
 		return this;
 	}
 
+	/**
+	 * Add a list of exceptions to the method declaration under construction
+	 * 
+	 * @param exceptions
+	 *            the list of exceptions to add to the method declaration under
+	 *            construction.
+	 * @return the builder.
+	 */
+	public MethodDeclarationBuilder addExceptions(TypeAccess... exceptions) {
+		EList<TypeAccess> exceptionsList = this.buildMethodDeclaration.getThrownExceptions();
+		for (TypeAccess exception : exceptions) {
+			exceptionsList.add(exception);
+		}
+		return this;
+	}
+
 }

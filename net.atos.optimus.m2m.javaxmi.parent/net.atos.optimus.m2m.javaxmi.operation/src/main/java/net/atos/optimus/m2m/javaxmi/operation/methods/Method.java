@@ -21,11 +21,14 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.methods;
 
+import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.Instruction;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.block.BlockBuilder;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmt.modisco.java.Block;
 import org.eclipse.gmt.modisco.java.MethodDeclaration;
+import org.eclipse.gmt.modisco.java.TypeAccess;
 
 /**
  * Models a method : wrapper of MethodDeclaration in modisco model
@@ -70,6 +73,21 @@ public class Method extends AbstractMethod {
 		}
 		for (Instruction instruction : instructions) {
 			block.getStatements().add(instruction.getStatement());
+		}
+		return this;
+	}
+
+	/**
+	 * Add an exceptions list to the current method
+	 * 
+	 * @param exceptionsNames
+	 *            the exceptions list to add to the current method.
+	 * @return the method with the exceptions list added.
+	 */
+	public Method addExceptions(String... exceptionsNames) {
+		EList<TypeAccess> exceptionsList = this.getAbstractMethodDeclaration().getThrownExceptions();
+		for (String exceptionName : exceptionsNames) {
+			exceptionsList.add(TypeAccessHelper.createExceptionTypeAccess(exceptionName));
 		}
 		return this;
 	}

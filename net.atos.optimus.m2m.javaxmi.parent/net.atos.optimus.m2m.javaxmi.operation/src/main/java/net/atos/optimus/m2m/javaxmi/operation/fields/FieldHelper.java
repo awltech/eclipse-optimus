@@ -29,6 +29,7 @@ import net.atos.optimus.m2m.javaxmi.operation.variables.VariableDeclarationFragm
 
 import org.eclipse.gmt.modisco.java.ClassDeclaration;
 import org.eclipse.gmt.modisco.java.FieldDeclaration;
+import org.eclipse.gmt.modisco.java.InheritanceKind;
 import org.eclipse.gmt.modisco.java.Modifier;
 import org.eclipse.gmt.modisco.java.VariableDeclarationFragment;
 import org.eclipse.gmt.modisco.java.VisibilityKind;
@@ -47,7 +48,8 @@ public class FieldHelper {
 	private FieldDeclaration buildField;
 
 	/**
-	 * Launch the build of a new field (private, with generated name)
+	 * Launch the build of a new field (private, not static, nor abstract, with
+	 * generated name)
 	 * 
 	 * @param javaClass
 	 *            the class where is the field under construction.
@@ -60,7 +62,8 @@ public class FieldHelper {
 	}
 
 	/**
-	 * Private constructor : a new field (private, with generated name)
+	 * Private constructor : a new field (private, not static, nor abstract,
+	 * with generated name)
 	 * 
 	 * @param javaClass
 	 *            the class where is the field under construction.
@@ -71,8 +74,9 @@ public class FieldHelper {
 	private FieldHelper(Class javaClass, String fieldTypeName) {
 		ClassDeclaration internalClass = javaClass.getClassDeclaration();
 		String fieldName = NameGenerator.generateNameWithTypeName(fieldTypeName);
-		Modifier modifier = ModifierBuilder.builder().setVisibility(VisibilityKind.PRIVATE)
-				.setCompilationUnit(internalClass.getOriginalCompilationUnit()).build();
+		Modifier modifier = ModifierBuilder.builder().setVisibility(VisibilityKind.PRIVATE).setStatic(false)
+				.setInheritance(InheritanceKind.NONE).setCompilationUnit(internalClass.getOriginalCompilationUnit())
+				.build();
 		VariableDeclarationFragment variableDeclarationFragment = VariableDeclarationFragmentBuilder.builder()
 				.setName(fieldName).build();
 		this.buildField = FieldDeclarationBuilder.builder().setModifier(modifier)
@@ -110,9 +114,31 @@ public class FieldHelper {
 	 * @return the helper.
 	 */
 	public FieldHelper setVisibility(VisibilityKind visibility) {
-		Modifier modifier = ModifierBuilder.builder().setVisibility(visibility)
-				.setCompilationUnit(this.buildField.getOriginalCompilationUnit()).build();
-		this.buildField.setModifier(modifier);
+		this.buildField.getModifier().setVisibility(visibility);
+		return this;
+	}
+
+	/**
+	 * Set the static state of the field under construction
+	 * 
+	 * @param isStatic
+	 *            the static state of the field under construction.
+	 * @return the helper.
+	 */
+	public FieldHelper setStatic(boolean isStatic) {
+		this.buildField.getModifier().setStatic(isStatic);
+		return this;
+	}
+
+	/**
+	 * Set the final state of the field under construction
+	 * 
+	 * @param isFinal
+	 *            the final state of the field under construction.
+	 * @return the helper.
+	 */
+	public FieldHelper setFinal(boolean isFinal) {
+		this.buildField.getModifier().setInheritance(isFinal ? InheritanceKind.FINAL : InheritanceKind.NONE);
 		return this;
 	}
 
@@ -123,14 +149,20 @@ public class FieldHelper {
 	 *            the class where is the created field.
 	 * @param visibility
 	 *            the visibility of the created field.
+	 * @param isStatic
+	 *            the static state of the created field.
+	 * @param isFinal
+	 *            the final state of the created field.
 	 * @param fieldTypeName
 	 *            the type name of the created field.
 	 * @param fieldName
 	 *            the name of the created field.
 	 * @return the created field accordingly to the specified parameters.
 	 */
-	public static Field createField(Class javaClass, VisibilityKind visibility, String fieldTypeName, String fieldName) {
-		return FieldHelper.builder(javaClass, fieldTypeName).setVisibility(visibility).setName(fieldName).build();
+	public static Field createField(Class javaClass, VisibilityKind visibility, boolean isStatic, boolean isFinal,
+			String fieldTypeName, String fieldName) {
+		return FieldHelper.builder(javaClass, fieldTypeName).setVisibility(visibility).setStatic(isStatic)
+				.setFinal(isFinal).setName(fieldName).build();
 	}
 
 }

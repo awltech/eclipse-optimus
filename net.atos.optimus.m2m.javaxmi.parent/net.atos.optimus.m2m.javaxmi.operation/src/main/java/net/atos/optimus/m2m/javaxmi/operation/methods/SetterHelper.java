@@ -24,10 +24,9 @@ package net.atos.optimus.m2m.javaxmi.operation.methods;
 import net.atos.optimus.m2m.javaxmi.operation.classes.Class;
 import net.atos.optimus.m2m.javaxmi.operation.fields.Field;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.InstructionSetterHelper;
-import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.util.NameGenerator;
 
-import org.eclipse.gmt.modisco.java.Modifier;
+import org.eclipse.gmt.modisco.java.InheritanceKind;
 import org.eclipse.gmt.modisco.java.VisibilityKind;
 
 /**
@@ -49,8 +48,8 @@ public class SetterHelper {
 	private Field field;
 
 	/**
-	 * Launch the build of a new setter method (public, with generated name and
-	 * generated parameter name)
+	 * Launch the build of a new setter method (public, not final, with
+	 * generated name and generated parameter name)
 	 * 
 	 * @param javaClass
 	 *            the class where is the setter method under construction.
@@ -63,8 +62,8 @@ public class SetterHelper {
 	}
 
 	/**
-	 * Private constructor : a new setter method (public, with generated name
-	 * and generated parameter name)
+	 * Private constructor : a new setter method (public, not final, with
+	 * generated name and generated parameter name)
 	 * 
 	 * @param javaClass
 	 *            the class where is the setter method under construction.
@@ -74,7 +73,8 @@ public class SetterHelper {
 	private SetterHelper(Class javaClass, Field field) {
 		String parameterName = NameGenerator.generateNameWithTypeName(field.getTypeName());
 		this.buildSetterMethod = MethodHelper.builder(javaClass, NameGenerator.generateSetterName(field.getName()))
-				.setVisibility(VisibilityKind.PUBLIC).addParameter(field.getTypeName(), parameterName)
+				.setVisibility(VisibilityKind.PUBLIC).setInheritance(InheritanceKind.NONE)
+				.addParameter(field.getTypeName(), parameterName)
 				.addInstructions(InstructionSetterHelper.createSetFieldInstruction(field.getName(), parameterName))
 				.build();
 		this.field = field;
@@ -109,9 +109,20 @@ public class SetterHelper {
 	 * @return the helper.
 	 */
 	public SetterHelper setVisibility(VisibilityKind visibility) {
-		Modifier modifier = ModifierBuilder.builder().setVisibility(visibility)
-				.setCompilationUnit(this.buildSetterMethod.getMethodDeclaration().getOriginalCompilationUnit()).build();
-		this.buildSetterMethod.getMethodDeclaration().setModifier(modifier);
+		this.buildSetterMethod.getMethodDeclaration().getModifier().setVisibility(visibility);
+		return this;
+	}
+
+	/**
+	 * Set the final state of the setter method under construction
+	 * 
+	 * @param isFinal
+	 *            the final state of the setter method under construction.
+	 * @return the helper.
+	 */
+	public SetterHelper setFinal(boolean isFinal) {
+		this.buildSetterMethod.getMethodDeclaration().getModifier()
+				.setInheritance(isFinal ? InheritanceKind.FINAL : InheritanceKind.NONE);
 		return this;
 	}
 
@@ -136,6 +147,8 @@ public class SetterHelper {
 	 *            the class where is the created setter method.
 	 * @param visibility
 	 *            the visibility of the created setter method.
+	 * @param isFinal
+	 *            the final state of the created setter method.
 	 * @param field
 	 *            the field associated to the created setter method.
 	 * @param setterName
@@ -145,9 +158,9 @@ public class SetterHelper {
 	 * @return the created setter method accordingly to the specified
 	 *         parameters.
 	 */
-	public static Method createSetter(Class javaClass, VisibilityKind visibility, Field field, String setterName,
-			String parameterName) {
-		return SetterHelper.builder(javaClass, field).setVisibility(visibility).setName(setterName)
+	public static Method createSetter(Class javaClass, VisibilityKind visibility, boolean isFinal, Field field,
+			String setterName, String parameterName) {
+		return SetterHelper.builder(javaClass, field).setVisibility(visibility).setFinal(isFinal).setName(setterName)
 				.setParameterName(parameterName).build();
 	}
 

@@ -25,15 +25,19 @@ import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.part.AssignableInstructionPart;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.part.InstructionPart;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.part.VariableDeclarationExpressionBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.util.NameGenerator;
 import net.atos.optimus.m2m.javaxmi.operation.variables.VariableDeclarationFragmentBuilder;
 
 import org.eclipse.gmt.modisco.java.AssignmentKind;
+import org.eclipse.gmt.modisco.java.InheritanceKind;
+import org.eclipse.gmt.modisco.java.Modifier;
 import org.eclipse.gmt.modisco.java.VariableDeclarationFragment;
+import org.eclipse.gmt.modisco.java.VariableDeclarationStatement;
 
 /**
  * The purpose of such class is to help with the creation of variable
- * instructions
+ * declaration instructions
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
@@ -42,75 +46,145 @@ import org.eclipse.gmt.modisco.java.VariableDeclarationFragment;
 
 public class InstructionVariableHelper {
 
+	/** The build variable declaration instruction */
+	private VariableDeclarationStatement buildVariableDeclarationStatement;
+
 	/**
-	 * Create a variable declaration instruction, variable name generated
+	 * Launch the build of a new variable declaration instruction (no
+	 * assignment, not final, with generated name)
 	 * 
 	 * @param variableTypeName
-	 *            the type name of the variable in the created declaration.
-	 * @return the created variable declaration instruction.
+	 *            the type name of the variable in the created variable
+	 *            declaration instruction.
+	 * @return a new helper.
 	 */
-	public static Instruction createVariableDeclarationInstruction(String variableTypeName) {
+	public static InstructionVariableHelper builder(String variableTypeName) {
+		return new InstructionVariableHelper(variableTypeName);
+	}
+
+	/**
+	 * Private constructor : a new variable declaration instruction (no
+	 * assignment, not final, with generated name)
+	 * 
+	 * @param variableTypeName
+	 *            the type name of the variable in the created variable
+	 *            declaration instruction.
+	 */
+	private InstructionVariableHelper(String variableTypeName) {
+		Modifier modifier = ModifierBuilder.builder().setInheritance(InheritanceKind.NONE).build();
 		VariableDeclarationFragment variableDeclarationFragment = VariableDeclarationFragmentBuilder.builder()
 				.setName(NameGenerator.generateNameWithTypeName(variableTypeName)).build();
-		return new Instruction(VariableDeclarationStatementBuilder.builder()
-				.setType(TypeAccessHelper.createVariableTypeAccess(variableTypeName))
-				.addFragment(variableDeclarationFragment).build());
+		this.buildVariableDeclarationStatement = VariableDeclarationStatementBuilder.builder()
+				.setType(TypeAccessHelper.createVariableTypeAccess(variableTypeName)).setModifier(modifier)
+				.addFragment(variableDeclarationFragment).build();
 	}
 
 	/**
-	 * Create a variable declaration instruction
+	 * Give the build variable declaration instruction
 	 * 
-	 * @param variableTypeName
-	 *            the type name of the variable in the created declaration.
-	 * @param variableName
-	 *            the name of the variable in the created declaration.
-	 * @return the created variable declaration instruction.
+	 * @return the build variable declaration instruction.
 	 */
-	public static Instruction createVariableDeclarationInstruction(String variableTypeName, String variableName) {
-		VariableDeclarationFragment variableDeclarationFragment = VariableDeclarationFragmentBuilder.builder()
-				.setName(variableName).build();
-		return new Instruction(VariableDeclarationStatementBuilder.builder()
-				.setType(TypeAccessHelper.createVariableTypeAccess(variableTypeName))
-				.addFragment(variableDeclarationFragment).build());
+	public Instruction build() {
+		return new Instruction(this.buildVariableDeclarationStatement);
 	}
 
 	/**
-	 * Create a variable declaration instruction with assignment part, variable
-	 * name generated
+	 * Set the final state of the variable in the variable declaration
+	 * instruction under construction
 	 * 
-	 * @param variableTypeName
-	 *            the type name of the variable in the created declaration.
+	 * @param isFinal
+	 *            the final state of the variable in the variable declaration
+	 *            instruction under construction.
+	 * @return the helper.
+	 */
+	public InstructionVariableHelper setFinal(boolean isFinal) {
+		this.buildVariableDeclarationStatement.getModifier().setInheritance(
+				isFinal ? InheritanceKind.FINAL : InheritanceKind.NONE);
+		return this;
+	}
+
+	/**
+	 * Set the name of the variable in the variable declaration instruction
+	 * under construction
+	 * 
+	 * @param variableName
+	 *            the name of the variable in the variable declaration
+	 *            instruction under construction.
+	 * @return the helper.
+	 */
+	public InstructionVariableHelper setName(String variableName) {
+		this.buildVariableDeclarationStatement.getFragments().get(0).setName(variableName);
+		return this;
+	}
+
+	/**
+	 * Set the assignment part of the variable declaration instruction under
+	 * construction
+	 * 
 	 * @param assignmentOperator
 	 *            the assignment operator.
 	 * @param assignmentPart
 	 *            the assignment part.
-	 * @return the created variable declaration instruction.
+	 * @return the variable declaration instruction with assignment part.
 	 */
-	public static Instruction createAndSetVariableDeclarationInstruction(String variableTypeName,
-			AssignmentKind assignmentOperator, InstructionPart assignmentPart) {
-		return InstructionVariableHelper.createAndSetVariableDeclarationInstruction(variableTypeName,
-				NameGenerator.generateNameWithTypeName(variableTypeName), assignmentOperator, assignmentPart);
+	public Instruction setVariableAssignement(AssignmentKind assignmentOperator, InstructionPart assignmentPart) {
+		String variableName = this.buildVariableDeclarationStatement.getFragments().get(0).getName();
+		String variableTypeName = this.buildVariableDeclarationStatement.getType().getType().getName();
+		VariableDeclarationFragment variableDeclarationFragment = VariableDeclarationFragmentBuilder.builder()
+				.setName(variableName).build();
+		AssignableInstructionPart leftHandSide = new AssignableInstructionPart(VariableDeclarationExpressionBuilder
+				.builder().setType(TypeAccessHelper.createVariableTypeAccess(variableTypeName))
+				.addFragment(variableDeclarationFragment).build());
+		return InstructionSetterHelper.createAssignmentInstruction(leftHandSide, assignmentOperator, assignmentPart);
+	}
+
+	/**
+	 * Create a variable declaration instruction without assignment part
+	 * 
+	 * @param variableTypeName
+	 *            the type name of the variable in the created variable
+	 *            declaration instruction.
+	 * @param isFinal
+	 *            the final state of the variable in the created variable
+	 *            declaration instruction.
+	 * @param variableName
+	 *            the name of the variable in the created variable declaration
+	 *            instruction.
+	 * @return the created variable declaration instruction with assignment
+	 *         part.
+	 */
+	public static Instruction createVariableDeclarationInstruction(String variableTypeName, boolean isFinal,
+			String variableName) {
+		return InstructionVariableHelper.builder(variableTypeName).setFinal(isFinal).setName(variableName).build();
 	}
 
 	/**
 	 * Create a variable declaration instruction with assignment part
 	 * 
 	 * @param variableTypeName
-	 *            the type name of the variable in the created declaration.
+	 *            the type name of the variable in the created variable
+	 *            declaration instruction.
+	 * @param isFinal
+	 *            the final state of the variable in the created variable
+	 *            declaration instruction.
 	 * @param variableName
-	 *            the name of the variable in the created declaration.
+	 *            the name of the variable in the created variable declaration
+	 *            instruction.
 	 * @param assignmentOperator
 	 *            the assignment operator.
 	 * @param assignmentPart
 	 *            the assignment part.
-	 * @return the created variable declaration instruction.
+	 * @return the created variable declaration instruction with assignment
+	 *         part.
 	 */
-	public static Instruction createAndSetVariableDeclarationInstruction(String variableTypeName, String variableName,
-			AssignmentKind assignmentOperator, InstructionPart assignmentPart) {
+	public static Instruction createAndSetVariableDeclarationInstruction(String variableTypeName, boolean isFinal,
+			String variableName, AssignmentKind assignmentOperator, InstructionPart assignmentPart) {
+		Modifier modifier = ModifierBuilder.builder()
+				.setInheritance(isFinal ? InheritanceKind.FINAL : InheritanceKind.NONE).build();
 		VariableDeclarationFragment variableDeclarationFragment = VariableDeclarationFragmentBuilder.builder()
 				.setName(variableName).build();
 		AssignableInstructionPart leftHandSide = new AssignableInstructionPart(VariableDeclarationExpressionBuilder
-				.builder().setType(TypeAccessHelper.createVariableTypeAccess(variableTypeName))
+				.builder().setType(TypeAccessHelper.createVariableTypeAccess(variableTypeName)).setModifier(modifier)
 				.addFragment(variableDeclarationFragment).build());
 		return InstructionSetterHelper.createAssignmentInstruction(leftHandSide, assignmentOperator, assignmentPart);
 	}

@@ -21,6 +21,7 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.constructors;
 
+import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.classes.Class;
 import net.atos.optimus.m2m.javaxmi.operation.fields.Field;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.Instruction;
@@ -30,10 +31,12 @@ import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.parameters.ParameterHelper;
 import net.atos.optimus.m2m.javaxmi.operation.util.NameGenerator;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmt.modisco.java.Block;
 import org.eclipse.gmt.modisco.java.ClassDeclaration;
 import org.eclipse.gmt.modisco.java.ConstructorDeclaration;
 import org.eclipse.gmt.modisco.java.Modifier;
+import org.eclipse.gmt.modisco.java.TypeAccess;
 import org.eclipse.gmt.modisco.java.VisibilityKind;
 
 /**
@@ -130,6 +133,22 @@ public class ConstructorHelper {
 	public ConstructorHelper addParameters(String... parameterTypeNames) {
 		for (String parameterTypeName : parameterTypeNames) {
 			ParameterHelper.builder(new Constructor(this.buildConstructor), parameterTypeName).build();
+		}
+		return this;
+	}
+
+	/**
+	 * Add an exceptions list to the constructor under construction
+	 * 
+	 * @param exceptionsNames
+	 *            the exceptions list to add to the constructor under
+	 *            construction.
+	 * @return the helper.
+	 */
+	public ConstructorHelper addExceptions(String... exceptionsNames) {
+		EList<TypeAccess> exceptionsList = this.buildConstructor.getThrownExceptions();
+		for (String exceptionName : exceptionsNames) {
+			exceptionsList.add(TypeAccessHelper.createExceptionTypeAccess(exceptionName));
 		}
 		return this;
 	}

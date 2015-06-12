@@ -21,12 +21,15 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.constructors;
 
+import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.Instruction;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.block.BlockBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.methods.AbstractMethod;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmt.modisco.java.Block;
 import org.eclipse.gmt.modisco.java.ConstructorDeclaration;
+import org.eclipse.gmt.modisco.java.TypeAccess;
 
 /**
  * Models a constructor : wrapper of ConstructorDeclaration in modisco model
@@ -67,6 +70,21 @@ public class Constructor extends AbstractMethod {
 		}
 		for (Instruction instruction : instructions) {
 			block.getStatements().add(instruction.getStatement());
+		}
+		return this;
+	}
+
+	/**
+	 * Add an exceptions list to the current constructor
+	 * 
+	 * @param exceptionsNames
+	 *            the exceptions list to add to the current constructor.
+	 * @return the constructor with the exceptions list added.
+	 */
+	public Constructor addExceptions(String... exceptionsNames) {
+		EList<TypeAccess> exceptionsList = this.getAbstractMethodDeclaration().getThrownExceptions();
+		for (String exceptionName : exceptionsNames) {
+			exceptionsList.add(TypeAccessHelper.createExceptionTypeAccess(exceptionName));
 		}
 		return this;
 	}
