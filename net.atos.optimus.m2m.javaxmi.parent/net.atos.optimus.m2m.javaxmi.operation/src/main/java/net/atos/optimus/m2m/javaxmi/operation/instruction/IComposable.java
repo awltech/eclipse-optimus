@@ -19,37 +19,20 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.javaxmi.operation.instruction.part;
-
-import net.atos.optimus.m2m.javaxmi.operation.instruction.IComposable;
+package net.atos.optimus.m2m.javaxmi.operation.instruction;
 
 import org.eclipse.gmt.modisco.java.Expression;
 
 /**
- * Models an instruction part : wrapper of Expression in modisco model
+ * Models a composable instruction or instruction part
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
  *
  */
 
-public class InstructionPart implements IComposable {
-
-	/** The expression */
-	private Expression expression;
-
-	/**
-	 * Constructor of instruction part
-	 * 
-	 * @param expression
-	 *            the expression.
-	 */
-	public InstructionPart(Expression expression) {
-		this.expression = expression;
-	}
-
-	public Expression getExpression() {
-		return this.expression;
-	}
+public interface IComposable {
+	
+	public Expression getExpression();
 
 }

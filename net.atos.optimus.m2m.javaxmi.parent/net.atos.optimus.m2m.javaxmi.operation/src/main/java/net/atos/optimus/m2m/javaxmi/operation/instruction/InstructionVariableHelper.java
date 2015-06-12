@@ -22,9 +22,13 @@
 package net.atos.optimus.m2m.javaxmi.operation.instruction;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.part.AssignableInstructionPart;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.part.InstructionPart;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.part.VariableDeclarationExpressionBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.util.NameGenerator;
 import net.atos.optimus.m2m.javaxmi.operation.variables.VariableDeclarationFragmentBuilder;
 
+import org.eclipse.gmt.modisco.java.AssignmentKind;
 import org.eclipse.gmt.modisco.java.VariableDeclarationFragment;
 
 /**
@@ -68,6 +72,47 @@ public class InstructionVariableHelper {
 		return new Instruction(VariableDeclarationStatementBuilder.builder()
 				.setType(TypeAccessHelper.createVariableTypeAccess(variableTypeName))
 				.addFragment(variableDeclarationFragment).build());
+	}
+
+	/**
+	 * Create a variable declaration instruction with assignment part, variable
+	 * name generated
+	 * 
+	 * @param variableTypeName
+	 *            the type name of the variable in the created declaration.
+	 * @param assignmentOperator
+	 *            the assignment operator.
+	 * @param assignmentPart
+	 *            the assignment part.
+	 * @return the created variable declaration instruction.
+	 */
+	public static Instruction createAndSetVariableDeclarationInstruction(String variableTypeName,
+			AssignmentKind assignmentOperator, InstructionPart assignmentPart) {
+		return InstructionVariableHelper.createAndSetVariableDeclarationInstruction(variableTypeName,
+				NameGenerator.generateNameWithTypeName(variableTypeName), assignmentOperator, assignmentPart);
+	}
+
+	/**
+	 * Create a variable declaration instruction with assignment part
+	 * 
+	 * @param variableTypeName
+	 *            the type name of the variable in the created declaration.
+	 * @param variableName
+	 *            the name of the variable in the created declaration.
+	 * @param assignmentOperator
+	 *            the assignment operator.
+	 * @param assignmentPart
+	 *            the assignment part.
+	 * @return the created variable declaration instruction.
+	 */
+	public static Instruction createAndSetVariableDeclarationInstruction(String variableTypeName, String variableName,
+			AssignmentKind assignmentOperator, InstructionPart assignmentPart) {
+		VariableDeclarationFragment variableDeclarationFragment = VariableDeclarationFragmentBuilder.builder()
+				.setName(variableName).build();
+		AssignableInstructionPart leftHandSide = new AssignableInstructionPart(VariableDeclarationExpressionBuilder
+				.builder().setType(TypeAccessHelper.createVariableTypeAccess(variableTypeName))
+				.addFragment(variableDeclarationFragment).build());
+		return InstructionSetterHelper.createAssignmentInstruction(leftHandSide, assignmentOperator, assignmentPart);
 	}
 
 }

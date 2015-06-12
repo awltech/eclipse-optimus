@@ -58,7 +58,8 @@ public class InstructionPartHelper {
 	 * 
 	 * @param value
 	 *            the boolean value.
-	 * @return the created boolean constant instruction part with the specified value.
+	 * @return the created boolean constant instruction part with the specified
+	 *         value.
 	 */
 	public static InstructionPart createInstructionPart(boolean value) {
 		BooleanLiteral literal = JavaFactory.eINSTANCE.createBooleanLiteral();
@@ -71,7 +72,8 @@ public class InstructionPartHelper {
 	 * 
 	 * @param value
 	 *            the integer value.
-	 * @return the created integer constant instruction part with the specified value.
+	 * @return the created integer constant instruction part with the specified
+	 *         value.
 	 */
 	public static InstructionPart createInstructionPart(int value) {
 		NumberLiteral literal = JavaFactory.eINSTANCE.createNumberLiteral();
@@ -84,7 +86,8 @@ public class InstructionPartHelper {
 	 * 
 	 * @param value
 	 *            the char value.
-	 * @return the created char constant instruction part with the specified value.
+	 * @return the created char constant instruction part with the specified
+	 *         value.
 	 */
 	public static InstructionPart createInstructionPart(char value) {
 		CharacterLiteral literal = JavaFactory.eINSTANCE.createCharacterLiteral();
@@ -97,7 +100,8 @@ public class InstructionPartHelper {
 	 * 
 	 * @param value
 	 *            the string value.
-	 * @return the created string constant instruction part with the specified value.
+	 * @return the created string constant instruction part with the specified
+	 *         value.
 	 */
 	public static InstructionPart createInstructionPart(String value) {
 		StringLiteral literal = JavaFactory.eINSTANCE.createStringLiteral();
@@ -112,8 +116,8 @@ public class InstructionPartHelper {
 	 *            the name of the field.
 	 * @return the created field instruction part.
 	 */
-	public static InstructionPart createFieldInstructionPart(String fieldName) {
-		return new InstructionPart(FieldAccessHelper.createFieldAccess(fieldName));
+	public static AssignableInstructionPart createFieldInstructionPart(String fieldName) {
+		return new AssignableInstructionPart(FieldAccessHelper.createFieldAccess(fieldName));
 	}
 
 	/**
@@ -123,8 +127,8 @@ public class InstructionPartHelper {
 	 *            the name of the variable.
 	 * @return the created variable instruction part.
 	 */
-	public static InstructionPart createVariableInstructionPart(String variableName) {
-		return new InstructionPart(VariableAccessHelper.createVariableAccess(variableName));
+	public static AssignableInstructionPart createVariableInstructionPart(String variableName) {
+		return new AssignableInstructionPart(VariableAccessHelper.createVariableAccess(variableName));
 	}
 
 	/**
@@ -133,9 +137,10 @@ public class InstructionPartHelper {
 	 * @param className
 	 *            the name of the class to instantiate.
 	 * @param arguments
-	 *            the arguments list of the class instantiation instruction part.
-	 * @return a new class instantiation instruction part instantiating the class with
-	 *         the specified name.
+	 *            the arguments list of the class instantiation instruction
+	 *            part.
+	 * @return a new class instantiation instruction part instantiating the
+	 *         class with the specified name.
 	 */
 	public static InstructionPart createClassInstantiationInstructionPart(String className,
 			InstructionPart... arguments) {

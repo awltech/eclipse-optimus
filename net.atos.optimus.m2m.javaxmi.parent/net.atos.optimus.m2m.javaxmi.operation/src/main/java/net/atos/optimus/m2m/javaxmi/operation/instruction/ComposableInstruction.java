@@ -19,33 +19,58 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.javaxmi.operation.instruction.part;
+package net.atos.optimus.m2m.javaxmi.operation.instruction;
 
-import net.atos.optimus.m2m.javaxmi.operation.instruction.IComposable;
-
+import org.eclipse.gmt.modisco.java.AssertStatement;
 import org.eclipse.gmt.modisco.java.Expression;
+import org.eclipse.gmt.modisco.java.ExpressionStatement;
+import org.eclipse.gmt.modisco.java.SwitchStatement;
 
 /**
- * Models an instruction part : wrapper of Expression in modisco model
+ * Models a composable instruction : wrapper of ExpressionStatement,
+ * SwitchStatement or AssertStatement in modisco model
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
  *
  */
 
-public class InstructionPart implements IComposable {
+public class ComposableInstruction extends Instruction implements IComposable {
 
 	/** The expression */
 	private Expression expression;
 
 	/**
-	 * Constructor of instruction part
+	 * Constructor of composable instruction
 	 * 
-	 * @param expression
-	 *            the expression.
+	 * @param statement
+	 *            the expression statement.
 	 */
-	public InstructionPart(Expression expression) {
-		this.expression = expression;
+	public ComposableInstruction(ExpressionStatement statement) {
+		super(statement);
+		this.expression = statement.getExpression();
+	}
+
+	/**
+	 * Constructor of composable instruction
+	 * 
+	 * @param statement
+	 *            the assert statement.
+	 */
+	public ComposableInstruction(AssertStatement statement) {
+		super(statement);
+		this.expression = statement.getExpression();
+	}
+
+	/**
+	 * Constructor of composable instruction
+	 * 
+	 * @param statement
+	 *            the switch statement.
+	 */
+	public ComposableInstruction(SwitchStatement statement) {
+		super(statement);
+		this.expression = statement.getExpression();
 	}
 
 	public Expression getExpression() {

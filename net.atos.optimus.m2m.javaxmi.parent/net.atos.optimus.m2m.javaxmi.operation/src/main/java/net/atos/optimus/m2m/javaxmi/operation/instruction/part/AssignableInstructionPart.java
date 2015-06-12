@@ -21,22 +21,17 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.instruction.part;
 
-import net.atos.optimus.m2m.javaxmi.operation.instruction.IComposable;
-
 import org.eclipse.gmt.modisco.java.Expression;
 
 /**
- * Models an instruction part : wrapper of Expression in modisco model
+ * Models an assignable instruction part
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
  *
  */
 
-public class InstructionPart implements IComposable {
-
-	/** The expression */
-	private Expression expression;
+public class AssignableInstructionPart extends InstructionPart {
 
 	/**
 	 * Constructor of instruction part
@@ -44,12 +39,8 @@ public class InstructionPart implements IComposable {
 	 * @param expression
 	 *            the expression.
 	 */
-	public InstructionPart(Expression expression) {
-		this.expression = expression;
-	}
-
-	public Expression getExpression() {
-		return this.expression;
+	public AssignableInstructionPart(Expression expression) {
+		super(expression);
 	}
 
 }

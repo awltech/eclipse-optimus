@@ -21,16 +21,12 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.instruction;
 
-import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.part.AssignableInstructionPart;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.part.InstructionPart;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.part.InstructionPartHelper;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.part.VariableDeclarationExpressionBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.util.NameGenerator;
-import net.atos.optimus.m2m.javaxmi.operation.variables.VariableDeclarationFragmentBuilder;
 
 import org.eclipse.gmt.modisco.java.AssignmentKind;
 import org.eclipse.gmt.modisco.java.Expression;
-import org.eclipse.gmt.modisco.java.VariableDeclarationFragment;
 
 /**
  * The purpose of such class is to help with the creation of setter instructions
@@ -53,7 +49,7 @@ public class InstructionSetterHelper {
 	 *            the instruction part with the value to assign.
 	 * @return the created assignment instruction.
 	 */
-	public static Instruction createAssignmentInstruction(InstructionPart leftHandSide,
+	public static Instruction createAssignmentInstruction(AssignableInstructionPart leftHandSide,
 			AssignmentKind assignmentOperator, InstructionPart rightHandSide) {
 		Expression assignmentExpression = AssignmentBuilder.builder().setLeftHandSide(leftHandSide.getExpression())
 				.setOperator(assignmentOperator).setRightHandSide(rightHandSide.getExpression()).build();
@@ -72,55 +68,10 @@ public class InstructionSetterHelper {
 	 *         specified variable.
 	 */
 	public static Instruction createSetFieldInstruction(String fieldName, String variableName) {
-		InstructionPart fieldInstruction = InstructionPartHelper.createFieldInstructionPart(fieldName);
+		AssignableInstructionPart fieldInstruction = InstructionPartHelper.createFieldInstructionPart(fieldName);
 		InstructionPart variableInstruction = InstructionPartHelper.createVariableInstructionPart(variableName);
 		return InstructionSetterHelper.createAssignmentInstruction(fieldInstruction, AssignmentKind.ASSIGN,
 				variableInstruction);
-	}
-
-	/**
-	 * Create a variable declaration instruction with assignment part, variable
-	 * name generated
-	 * 
-	 * @param variableTypeName
-	 *            the type name of the variable in the created declaration.
-	 * @param assignmentOperator
-	 *            the assignment operator.
-	 * @param assignmentPart
-	 *            the assignment part.
-	 * @return the created variable declaration instruction.
-	 */
-	public static Instruction createAndSetVariableDeclarationInstruction(String variableTypeName,
-			AssignmentKind assignmentOperator, InstructionPart assignmentPart) {
-		VariableDeclarationFragment variableDeclarationFragment = VariableDeclarationFragmentBuilder.builder()
-				.setName(NameGenerator.generateNameWithTypeName(variableTypeName)).build();
-		InstructionPart leftHandSide = new InstructionPart(VariableDeclarationExpressionBuilder.builder()
-				.setType(TypeAccessHelper.createVariableTypeAccess(variableTypeName))
-				.addFragment(variableDeclarationFragment).build());
-		return InstructionSetterHelper.createAssignmentInstruction(leftHandSide, assignmentOperator, assignmentPart);
-	}
-
-	/**
-	 * Create a variable declaration instruction with assignment part
-	 * 
-	 * @param variableTypeName
-	 *            the type name of the variable in the created declaration.
-	 * @param variableName
-	 *            the name of the variable in the created declaration.
-	 * @param assignmentOperator
-	 *            the assignment operator.
-	 * @param assignmentPart
-	 *            the assignment part.
-	 * @return the created variable declaration instruction.
-	 */
-	public static Instruction createAndSetVariableDeclarationInstruction(String variableTypeName, String variableName,
-			AssignmentKind assignmentOperator, InstructionPart assignmentPart) {
-		VariableDeclarationFragment variableDeclarationFragment = VariableDeclarationFragmentBuilder.builder()
-				.setName(variableName).build();
-		InstructionPart leftHandSide = new InstructionPart(VariableDeclarationExpressionBuilder.builder()
-				.setType(TypeAccessHelper.createVariableTypeAccess(variableTypeName))
-				.addFragment(variableDeclarationFragment).build());
-		return InstructionSetterHelper.createAssignmentInstruction(leftHandSide, assignmentOperator, assignmentPart);
 	}
 
 }
