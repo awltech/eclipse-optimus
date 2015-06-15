@@ -22,8 +22,10 @@
 package net.atos.optimus.m2m.javaxmi.operation.instruction.part;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.FieldAccessHelper;
+import net.atos.optimus.m2m.javaxmi.operation.accesses.ThisExpressionBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.accesses.VariableAccessHelper;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.IComposable;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmt.modisco.java.BooleanLiteral;
@@ -110,6 +112,15 @@ public class InstructionPartHelper {
 	}
 
 	/**
+	 * Create a this instruction part
+	 * 
+	 * @return the created this instruction part.
+	 */
+	public static AssignableInstructionPart createThisInstructionPart() {
+		return new AssignableInstructionPart(ThisExpressionBuilder.builder().build());
+	}
+
+	/**
 	 * Create a field instruction part
 	 * 
 	 * @param fieldName
@@ -142,12 +153,11 @@ public class InstructionPartHelper {
 	 * @return a new class instantiation instruction part instantiating the
 	 *         class with the specified name.
 	 */
-	public static InstructionPart createClassInstantiationInstructionPart(String className,
-			InstructionPart... arguments) {
+	public static InstructionPart createClassInstantiationInstructionPart(String className, IComposable... arguments) {
 		ClassInstanceCreation classInstanceCreation = ClassInstanceCreationBuilder.builder()
 				.setType(TypeAccessHelper.createClassTypeAccess(className)).build();
 		EList<Expression> argumentsList = classInstanceCreation.getArguments();
-		for (InstructionPart argument : arguments) {
+		for (IComposable argument : arguments) {
 			argumentsList.add(argument.getExpression());
 		}
 		return new InstructionPart(classInstanceCreation);

@@ -148,16 +148,31 @@ public class InterfaceHelper {
 	/**
 	 * Add imports list to the interface under construction
 	 * 
-	 * @param isStatic
-	 *            the static state of the added imports.
 	 * @param importsNames
-	 *            the imports names list to add to the interface under construction.
+	 *            the imports names list to add to the interface under
+	 *            construction.
 	 * @return the builder.
 	 */
-	public InterfaceHelper addImports(boolean isStatic, String... importsNames) {
+	public InterfaceHelper addImports(String... importsNames) {
 		EList<ImportDeclaration> importsList = this.buildInterface.getOriginalCompilationUnit().getImports();
 		for (String javaImport : importsNames) {
-			importsList.add(ImportDeclarationHelper.createImportDeclaration(javaImport, isStatic));
+			importsList.add(ImportDeclarationHelper.createImportDeclaration(javaImport, false));
+		}
+		return this;
+	}
+
+	/**
+	 * Add static imports list to the interface under construction
+	 * 
+	 * @param importsNames
+	 *            the static imports names list to add to the interface under
+	 *            construction.
+	 * @return the builder.
+	 */
+	public InterfaceHelper addStaticImports(String... importsNames) {
+		EList<ImportDeclaration> importsList = this.buildInterface.getOriginalCompilationUnit().getImports();
+		for (String javaImport : importsNames) {
+			importsList.add(ImportDeclarationHelper.createImportDeclaration(javaImport, true));
 		}
 		return this;
 	}

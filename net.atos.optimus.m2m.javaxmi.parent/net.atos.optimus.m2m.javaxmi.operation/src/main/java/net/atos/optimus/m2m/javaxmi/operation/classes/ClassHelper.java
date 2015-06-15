@@ -197,20 +197,33 @@ public class ClassHelper {
 		}
 		return this;
 	}
-
+	
 	/**
 	 * Add imports list to the class under construction
 	 * 
-	 * @param isStatic
-	 *            the static state of the added imports.
 	 * @param importsNames
 	 *            the imports names list to add to the class under construction.
 	 * @return the builder.
 	 */
-	public ClassHelper addImports(boolean isStatic, String... importsNames) {
+	public ClassHelper addImports(String... importsNames) {
 		EList<ImportDeclaration> importsList = this.buildClass.getOriginalCompilationUnit().getImports();
 		for (String javaImport : importsNames) {
-			importsList.add(ImportDeclarationHelper.createImportDeclaration(javaImport, isStatic));
+			importsList.add(ImportDeclarationHelper.createImportDeclaration(javaImport, false));
+		}
+		return this;
+	}
+
+	/**
+	 * Add static imports list to the class under construction
+	 * 
+	 * @param importsNames
+	 *            the static imports names list to add to the class under construction.
+	 * @return the builder.
+	 */
+	public ClassHelper addStaticImports(String... importsNames) {
+		EList<ImportDeclaration> importsList = this.buildClass.getOriginalCompilationUnit().getImports();
+		for (String javaImport : importsNames) {
+			importsList.add(ImportDeclarationHelper.createImportDeclaration(javaImport, true));
 		}
 		return this;
 	}

@@ -21,7 +21,6 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.instruction;
 
-import net.atos.optimus.m2m.javaxmi.operation.instruction.part.InstructionPart;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.part.InstructionPartHelper;
 
 import org.eclipse.gmt.modisco.java.ReturnStatement;
@@ -39,14 +38,14 @@ public class InstructionReturnHelper {
 	/**
 	 * Create a return instruction based on an instruction part
 	 * 
-	 * @param instructionPart
-	 *            the instruction part convert to a return instruction.
+	 * @param composableInstruction
+	 *            the composable instruction convert to a return instruction.
 	 * @return the created return instruction based on the specified instruction
 	 *         part.
 	 */
-	public static Instruction createReturnInstruction(InstructionPart instructionPart) {
+	public static Instruction createReturnInstruction(IComposable composableInstruction) {
 		ReturnStatement returnStatement = ReturnStatementBuilder.builder()
-				.setExpression(instructionPart.getExpression()).build();
+				.setExpression(composableInstruction.getExpression()).build();
 		return new Instruction(returnStatement);
 	}
 
@@ -113,6 +112,15 @@ public class InstructionReturnHelper {
 	}
 
 	/**
+	 * Create a this return instruction part
+	 * 
+	 * @return the created this return instruction part.
+	 */
+	public static Instruction createThisInstructionPart() {
+		return InstructionReturnHelper.createReturnInstruction(InstructionPartHelper.createThisInstructionPart());
+	}
+
+	/**
 	 * Create a field return instruction
 	 * 
 	 * @param fieldName
@@ -148,7 +156,7 @@ public class InstructionReturnHelper {
 	 * @return the created class instantiation return instruction returning the
 	 *         instantiation of the class with the specified name and arguments.
 	 */
-	public static Instruction createClassInstantiationReturnInstruction(String className, InstructionPart... arguments) {
+	public static Instruction createClassInstantiationReturnInstruction(String className, IComposable... arguments) {
 		return InstructionReturnHelper.createReturnInstruction(InstructionPartHelper
 				.createClassInstantiationInstructionPart(className, arguments));
 	}

@@ -23,7 +23,6 @@ package net.atos.optimus.m2m.javaxmi.operation.instruction;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.part.AssignableInstructionPart;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.part.InstructionPart;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.part.VariableDeclarationExpressionBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.util.NameGenerator;
@@ -123,11 +122,11 @@ public class InstructionVariableHelper {
 	 * 
 	 * @param assignmentOperator
 	 *            the assignment operator.
-	 * @param assignmentPart
-	 *            the assignment part.
+	 * @param assignmentInstruction
+	 *            the assignment instruction.
 	 * @return the variable declaration instruction with assignment part.
 	 */
-	public Instruction setVariableAssignement(AssignmentKind assignmentOperator, InstructionPart assignmentPart) {
+	public Instruction setVariableAssignement(AssignmentKind assignmentOperator, IComposable assignmentInstruction) {
 		String variableName = this.buildVariableDeclarationStatement.getFragments().get(0).getName();
 		String variableTypeName = this.buildVariableDeclarationStatement.getType().getType().getName();
 		VariableDeclarationFragment variableDeclarationFragment = VariableDeclarationFragmentBuilder.builder()
@@ -135,7 +134,8 @@ public class InstructionVariableHelper {
 		AssignableInstructionPart leftHandSide = new AssignableInstructionPart(VariableDeclarationExpressionBuilder
 				.builder().setType(TypeAccessHelper.createVariableTypeAccess(variableTypeName))
 				.addFragment(variableDeclarationFragment).build());
-		return InstructionSetterHelper.createAssignmentInstruction(leftHandSide, assignmentOperator, assignmentPart);
+		return InstructionSetterHelper.createAssignmentInstruction(leftHandSide, assignmentOperator,
+				assignmentInstruction);
 	}
 
 	/**
@@ -172,13 +172,13 @@ public class InstructionVariableHelper {
 	 *            instruction.
 	 * @param assignmentOperator
 	 *            the assignment operator.
-	 * @param assignmentPart
-	 *            the assignment part.
+	 * @param assignmentInstruction
+	 *            the assignment instruction.
 	 * @return the created variable declaration instruction with assignment
 	 *         part.
 	 */
 	public static Instruction createAndSetVariableDeclarationInstruction(String variableTypeName, boolean isFinal,
-			String variableName, AssignmentKind assignmentOperator, InstructionPart assignmentPart) {
+			String variableName, AssignmentKind assignmentOperator, IComposable assignmentInstruction) {
 		Modifier modifier = ModifierBuilder.builder()
 				.setInheritance(isFinal ? InheritanceKind.FINAL : InheritanceKind.NONE).build();
 		VariableDeclarationFragment variableDeclarationFragment = VariableDeclarationFragmentBuilder.builder()
@@ -186,7 +186,8 @@ public class InstructionVariableHelper {
 		AssignableInstructionPart leftHandSide = new AssignableInstructionPart(VariableDeclarationExpressionBuilder
 				.builder().setType(TypeAccessHelper.createVariableTypeAccess(variableTypeName)).setModifier(modifier)
 				.addFragment(variableDeclarationFragment).build());
-		return InstructionSetterHelper.createAssignmentInstruction(leftHandSide, assignmentOperator, assignmentPart);
+		return InstructionSetterHelper.createAssignmentInstruction(leftHandSide, assignmentOperator,
+				assignmentInstruction);
 	}
 
 }

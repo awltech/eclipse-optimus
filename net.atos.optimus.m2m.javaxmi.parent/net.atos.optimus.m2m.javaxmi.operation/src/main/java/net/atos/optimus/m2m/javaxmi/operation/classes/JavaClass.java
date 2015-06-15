@@ -71,16 +71,29 @@ public class JavaClass extends AbstractClass {
 	/**
 	 * Add imports list to the class
 	 * 
-	 * @param isStatic
-	 *            the static state of the added imports.
 	 * @param importsNames
 	 *            the imports names list to add to the class.
 	 * @return the builder.
 	 */
-	public JavaClass addImports(boolean isStatic, String... importsNames) {
+	public JavaClass addImports(String... importsNames) {
 		EList<ImportDeclaration> importsList = this.getClassDeclaration().getOriginalCompilationUnit().getImports();
 		for (String javaImport : importsNames) {
-			importsList.add(ImportDeclarationHelper.createImportDeclaration(javaImport, isStatic));
+			importsList.add(ImportDeclarationHelper.createImportDeclaration(javaImport, false));
+		}
+		return this;
+	}
+
+	/**
+	 * Add static imports list to the class
+	 * 
+	 * @param importsNames
+	 *            the static imports names list to add to the class.
+	 * @return the builder.
+	 */
+	public JavaClass addStaticImports(String... importsNames) {
+		EList<ImportDeclaration> importsList = this.getClassDeclaration().getOriginalCompilationUnit().getImports();
+		for (String javaImport : importsNames) {
+			importsList.add(ImportDeclarationHelper.createImportDeclaration(javaImport, true));
 		}
 		return this;
 	}

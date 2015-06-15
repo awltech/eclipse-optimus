@@ -68,20 +68,33 @@ public class Interface extends AbstractClass {
 		}
 		return this;
 	}
-
+	
 	/**
 	 * Add imports list to the interface
 	 * 
-	 * @param isStatic
-	 *            the static state of the added imports.
 	 * @param importsNames
 	 *            the imports names list to add to the interface.
 	 * @return the builder.
 	 */
-	public Interface addImports(boolean isStatic, String... importsNames) {
+	public Interface addImports(String... importsNames) {
 		EList<ImportDeclaration> importsList = this.getInterfaceDeclaration().getOriginalCompilationUnit().getImports();
 		for (String javaImport : importsNames) {
-			importsList.add(ImportDeclarationHelper.createImportDeclaration(javaImport, isStatic));
+			importsList.add(ImportDeclarationHelper.createImportDeclaration(javaImport, false));
+		}
+		return this;
+	}
+
+	/**
+	 * Add static imports list to the interface
+	 * 
+	 * @param importsNames
+	 *            the static imports names list to add to the interface.
+	 * @return the builder.
+	 */
+	public Interface addStaticImports(String... importsNames) {
+		EList<ImportDeclaration> importsList = this.getInterfaceDeclaration().getOriginalCompilationUnit().getImports();
+		for (String javaImport : importsNames) {
+			importsList.add(ImportDeclarationHelper.createImportDeclaration(javaImport, true));
 		}
 		return this;
 	}

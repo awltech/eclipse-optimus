@@ -50,7 +50,7 @@ public class InstructionSetterHelper {
 	 * @return the created assignment instruction.
 	 */
 	public static Instruction createAssignmentInstruction(AssignableInstructionPart leftHandSide,
-			AssignmentKind assignmentOperator, InstructionPart rightHandSide) {
+			AssignmentKind assignmentOperator, IComposable rightHandSide) {
 		Expression assignmentExpression = AssignmentBuilder.builder().setLeftHandSide(leftHandSide.getExpression())
 				.setOperator(assignmentOperator).setRightHandSide(rightHandSide.getExpression()).build();
 		return new Instruction(ExpressionStatementBuilder.builder().setExpression(assignmentExpression).build());
