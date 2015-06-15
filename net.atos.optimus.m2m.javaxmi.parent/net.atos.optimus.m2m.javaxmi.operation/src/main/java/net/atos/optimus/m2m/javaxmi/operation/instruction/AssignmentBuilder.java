@@ -40,7 +40,7 @@ public class AssignmentBuilder {
 	private Assignment buildAssignment;
 
 	/**
-	 * Give an assignment unit builder
+	 * Give an assignment builder
 	 * 
 	 * @return a new assignment builder.
 	 */

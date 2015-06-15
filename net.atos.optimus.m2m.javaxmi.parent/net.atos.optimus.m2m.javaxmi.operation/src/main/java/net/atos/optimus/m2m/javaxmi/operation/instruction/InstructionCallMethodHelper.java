@@ -28,6 +28,8 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmt.modisco.java.Expression;
 import org.eclipse.gmt.modisco.java.MethodDeclaration;
 import org.eclipse.gmt.modisco.java.MethodInvocation;
+import org.eclipse.gmt.modisco.java.SuperConstructorInvocation;
+import org.eclipse.gmt.modisco.java.SuperMethodInvocation;
 
 /**
  * The purpose of such class is to help with the creation of call method
@@ -110,6 +112,45 @@ public class InstructionCallMethodHelper {
 			argumentsList.add(argument.getExpression());
 		}
 		return new ComposableInstruction(ExpressionStatementBuilder.builder().setExpression(methodInvocation).build());
+	}
+
+	/**
+	 * Create a call super method instruction with arguments
+	 * 
+	 * @param superMethodName
+	 *            the name of the super method to call.
+	 * @param arguments
+	 *            the arguments list of the call super method instruction.
+	 * @return the created call method instruction with the specified name and
+	 *         arguments.
+	 */
+	public static ComposableInstruction createCallSuperMethodInstruction(String superMethodName,
+			IComposable... arguments) {
+		MethodDeclaration methodDeclaration = MethodDeclarationBuilder.builder().setName(superMethodName).build();
+		SuperMethodInvocation superMethodInvocation = SuperMethodInvocationBuilder.builder()
+				.setMethod(methodDeclaration).build();
+		EList<Expression> argumentsList = superMethodInvocation.getArguments();
+		for (IComposable argument : arguments) {
+			argumentsList.add(argument.getExpression());
+		}
+		return new ComposableInstruction(ExpressionStatementBuilder.builder().setExpression(superMethodInvocation)
+				.build());
+	}
+
+	/**
+	 * Create a call super constructor instruction with arguments
+	 * 
+	 * @param arguments
+	 *            the arguments list of the call super method instruction.
+	 * @return the created call super constructor instruction.
+	 */
+	public static Instruction createCallSuperConstructorInstruction(IComposable... arguments) {
+		SuperConstructorInvocation superConstructorInvocation = SuperConstructorInvocationBuilder.builder().build();
+		EList<Expression> argumentsList = superConstructorInvocation.getArguments();
+		for (IComposable argument : arguments) {
+			argumentsList.add(argument.getExpression());
+		}
+		return new Instruction(superConstructorInvocation);
 	}
 
 }
