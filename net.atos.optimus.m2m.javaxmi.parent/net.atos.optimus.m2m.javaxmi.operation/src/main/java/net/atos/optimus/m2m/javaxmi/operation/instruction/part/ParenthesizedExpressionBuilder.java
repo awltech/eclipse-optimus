@@ -19,60 +19,61 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.javaxmi.operation.instruction;
+package net.atos.optimus.m2m.javaxmi.operation.instruction.part;
 
 import org.eclipse.gmt.modisco.java.Expression;
-import org.eclipse.gmt.modisco.java.ExpressionStatement;
+import org.eclipse.gmt.modisco.java.ParenthesizedExpression;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
 
 /**
- * A builder dedicated to create expression statement of modisco model
+ * A builder dedicated to create parenthesized expression of modisco model
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
  *
  */
 
-public class ExpressionStatementBuilder {
+public class ParenthesizedExpressionBuilder {
 
-	/** The build expression statement */
-	private ExpressionStatement buildExpressionStatement;
+	/** The build parenthesized expression */
+	private ParenthesizedExpression buildParenthesizedExpression;
 
 	/**
-	 * Give a expression statement builder
+	 * Give an parenthesized expression builder
 	 * 
-	 * @return a new expression statement builder.
+	 * @return a new parenthesized expression builder.
 	 */
-	public static ExpressionStatementBuilder builder() {
-		return new ExpressionStatementBuilder();
+	public static ParenthesizedExpressionBuilder builder() {
+		return new ParenthesizedExpressionBuilder();
 	}
 
 	/**
 	 * Private constructor
 	 * 
 	 */
-	private ExpressionStatementBuilder() {
-		this.buildExpressionStatement = JavaFactory.eINSTANCE.createExpressionStatement();
+	private ParenthesizedExpressionBuilder() {
+		this.buildParenthesizedExpression = JavaFactory.eINSTANCE.createParenthesizedExpression();
 	}
 
 	/**
-	 * Build a expression statement of modisco model
+	 * Build an parenthesized expression of modisco model
 	 * 
-	 * @return a new expression statement of modisco model.
+	 * @return a new parenthesized expression of modisco model.
 	 */
-	public ExpressionStatement build() {
-		return this.buildExpressionStatement;
+	public ParenthesizedExpression build() {
+		return this.buildParenthesizedExpression;
 	}
 
 	/**
-	 * Set the expression of the expression statement under construction
+	 * Set the expression of the parenthesized expression under construction
 	 * 
 	 * @param expression
-	 *            the expression of the expression statement under construction.
+	 *            the expression of the parenthesized expression under
+	 *            construction.
 	 * @return the builder.
 	 */
-	public ExpressionStatementBuilder setExpression(Expression expression) {
-		this.buildExpressionStatement.setExpression(expression);
+	public ParenthesizedExpressionBuilder setExpression(Expression expression) {
+		this.buildParenthesizedExpression.setExpression(expression);
 		return this;
 	}
 

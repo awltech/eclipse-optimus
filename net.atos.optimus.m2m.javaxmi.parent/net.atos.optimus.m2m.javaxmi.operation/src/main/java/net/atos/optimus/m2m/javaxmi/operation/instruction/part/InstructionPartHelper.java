@@ -32,6 +32,7 @@ import org.eclipse.gmt.modisco.java.BooleanLiteral;
 import org.eclipse.gmt.modisco.java.CharacterLiteral;
 import org.eclipse.gmt.modisco.java.ClassInstanceCreation;
 import org.eclipse.gmt.modisco.java.Expression;
+import org.eclipse.gmt.modisco.java.InfixExpressionKind;
 import org.eclipse.gmt.modisco.java.NumberLiteral;
 import org.eclipse.gmt.modisco.java.StringLiteral;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
@@ -163,4 +164,24 @@ public class InstructionPartHelper {
 		return new InstructionPart(classInstanceCreation);
 	}
 
+	/**
+	 * Create an operation instruction part
+	 * 
+	 * @param operator
+	 *            the operator of the operation.
+	 * @param leftOperand
+	 *            the left operand of the operation.
+	 * @param rightOperand
+	 *            the right operand of the operation.
+	 * @return a new operation instruction part.
+	 */
+	public static InstructionPart createOperationInstructionPart(InfixExpressionKind operator, IComposable leftOperand,
+			IComposable rightOperand, boolean needParenthesis) {
+		Expression operationInstruction = InfixExpressionBuilder.builder().setLeftOperand(leftOperand.getExpression())
+				.setOperator(operator).setRightOperand(rightOperand.getExpression()).build();
+		if (needParenthesis) {
+			operationInstruction = ParenthesizedExpressionBuilder.builder().setExpression(operationInstruction).build();
+		}
+		return new InstructionPart(operationInstruction);
+	}
 }

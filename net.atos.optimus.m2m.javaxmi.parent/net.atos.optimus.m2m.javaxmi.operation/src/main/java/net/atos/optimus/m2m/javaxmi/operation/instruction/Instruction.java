@@ -36,14 +36,14 @@ import org.eclipse.gmt.modisco.java.Statement;
 
 public class Instruction {
 
-	/** The statement seen as a single instruction */
+	/** The statement */
 	private Statement statement;
 
 	/**
 	 * Constructor of instruction
 	 * 
 	 * @param statement
-	 *            the statement seen as a single instruction.
+	 *            the statement.
 	 */
 	public Instruction(Statement statement) {
 		this.statement = statement;

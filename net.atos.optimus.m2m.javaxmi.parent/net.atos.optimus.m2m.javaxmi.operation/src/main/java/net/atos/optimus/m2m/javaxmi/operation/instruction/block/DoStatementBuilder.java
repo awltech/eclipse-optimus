@@ -19,60 +19,73 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.javaxmi.operation.instruction;
+package net.atos.optimus.m2m.javaxmi.operation.instruction.block;
 
+import org.eclipse.gmt.modisco.java.DoStatement;
 import org.eclipse.gmt.modisco.java.Expression;
-import org.eclipse.gmt.modisco.java.ExpressionStatement;
+import org.eclipse.gmt.modisco.java.Statement;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
 
 /**
- * A builder dedicated to create expression statement of modisco model
+ * A builder dedicated to create do statement of modisco model
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
  *
  */
 
-public class ExpressionStatementBuilder {
+public class DoStatementBuilder {
 
-	/** The build expression statement */
-	private ExpressionStatement buildExpressionStatement;
+	/** The build do statement */
+	private DoStatement buildDoStatement;
 
 	/**
-	 * Give a expression statement builder
+	 * Give a do statement builder
 	 * 
-	 * @return a new expression statement builder.
+	 * @return a new do statement builder.
 	 */
-	public static ExpressionStatementBuilder builder() {
-		return new ExpressionStatementBuilder();
+	public static DoStatementBuilder builder() {
+		return new DoStatementBuilder();
 	}
 
 	/**
 	 * Private constructor
 	 * 
 	 */
-	private ExpressionStatementBuilder() {
-		this.buildExpressionStatement = JavaFactory.eINSTANCE.createExpressionStatement();
+	private DoStatementBuilder() {
+		this.buildDoStatement = JavaFactory.eINSTANCE.createDoStatement();
 	}
 
 	/**
-	 * Build a expression statement of modisco model
+	 * Build a do statement of modisco model
 	 * 
-	 * @return a new expression statement of modisco model.
+	 * @return a new do statement of modisco model.
 	 */
-	public ExpressionStatement build() {
-		return this.buildExpressionStatement;
+	public DoStatement build() {
+		return this.buildDoStatement;
 	}
 
 	/**
-	 * Set the expression of the expression statement under construction
+	 * Set the expression of the do statement under construction
 	 * 
 	 * @param expression
-	 *            the expression of the expression statement under construction.
+	 *            the expression of the do statement under construction.
 	 * @return the builder.
 	 */
-	public ExpressionStatementBuilder setExpression(Expression expression) {
-		this.buildExpressionStatement.setExpression(expression);
+	public DoStatementBuilder setExpression(Expression expression) {
+		this.buildDoStatement.setExpression(expression);
+		return this;
+	}
+
+	/**
+	 * Set the body of the do statement under construction
+	 * 
+	 * @param body
+	 *            the body of the do statement under construction.
+	 * @return the builder.
+	 */
+	public DoStatementBuilder setBody(Statement body) {
+		this.buildDoStatement.setBody(body);
 		return this;
 	}
 

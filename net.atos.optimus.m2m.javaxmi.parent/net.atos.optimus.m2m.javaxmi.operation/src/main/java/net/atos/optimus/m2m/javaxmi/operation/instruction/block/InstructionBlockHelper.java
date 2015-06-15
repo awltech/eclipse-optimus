@@ -21,6 +21,13 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.instruction.block;
 
+import net.atos.optimus.m2m.javaxmi.operation.instruction.IComposable;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.Instruction;
+
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.gmt.modisco.java.Block;
+import org.eclipse.gmt.modisco.java.Statement;
+
 /**
  * The purpose of such class is to help with the creation of instructions blocks
  * 
@@ -30,5 +37,43 @@ package net.atos.optimus.m2m.javaxmi.operation.instruction.block;
  */
 
 public class InstructionBlockHelper {
+
+	/**
+	 * Create a new while instruction block
+	 * 
+	 * @param condition
+	 *            the condition of the created while instruction block.
+	 * @param instructions
+	 *            the instructions list in the created while instruction block.
+	 * @return the created while instruction block.
+	 */
+	public static Instruction createWhileInstruction(IComposable condition, Instruction... instructions) {
+		Block block = BlockBuilder.builder().build();
+		EList<Statement> statements = block.getStatements();
+		for (Instruction instruction : instructions) {
+			statements.add(instruction.getStatement());
+		}
+		return new Instruction(WhileStatementBuilder.builder().setBody(block).setExpression(condition.getExpression())
+				.build());
+	}
+
+	/**
+	 * Create a new do instruction block
+	 * 
+	 * @param condition
+	 *            the condition of the created do instruction block.
+	 * @param instructions
+	 *            the instructions list in the created do instruction block.
+	 * @return the created do instruction block.
+	 */
+	public static Instruction createDoInstruction(IComposable condition, Instruction... instructions) {
+		Block block = BlockBuilder.builder().build();
+		EList<Statement> statements = block.getStatements();
+		for (Instruction instruction : instructions) {
+			statements.add(instruction.getStatement());
+		}
+		return new Instruction(DoStatementBuilder.builder().setBody(block).setExpression(condition.getExpression())
+				.build());
+	}
 
 }
