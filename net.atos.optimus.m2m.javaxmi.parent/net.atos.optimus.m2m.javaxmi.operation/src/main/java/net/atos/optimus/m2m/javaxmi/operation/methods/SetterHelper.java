@@ -21,7 +21,7 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.methods;
 
-import net.atos.optimus.m2m.javaxmi.operation.classes.Class;
+import net.atos.optimus.m2m.javaxmi.operation.classes.JavaClass;
 import net.atos.optimus.m2m.javaxmi.operation.fields.Field;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.InstructionSetterHelper;
 import net.atos.optimus.m2m.javaxmi.operation.util.NameGenerator;
@@ -57,7 +57,7 @@ public class SetterHelper {
 	 *            the field associated to the setter method under construction.
 	 * @return a new setter method helper.
 	 */
-	public static SetterHelper builder(Class javaClass, Field field) {
+	public static SetterHelper builder(JavaClass javaClass, Field field) {
 		return new SetterHelper(javaClass, field);
 	}
 
@@ -70,7 +70,7 @@ public class SetterHelper {
 	 * @param field
 	 *            the field associated to the setter method under construction.
 	 */
-	private SetterHelper(Class javaClass, Field field) {
+	private SetterHelper(JavaClass javaClass, Field field) {
 		String parameterName = NameGenerator.generateNameWithTypeName(field.getTypeName());
 		this.buildSetterMethod = MethodHelper.builder(javaClass, NameGenerator.generateSetterName(field.getName()))
 				.setVisibility(VisibilityKind.PUBLIC).setInheritance(InheritanceKind.NONE)
@@ -158,7 +158,7 @@ public class SetterHelper {
 	 * @return the created setter method accordingly to the specified
 	 *         parameters.
 	 */
-	public static Method createSetter(Class javaClass, VisibilityKind visibility, boolean isFinal, Field field,
+	public static Method createSetter(JavaClass javaClass, VisibilityKind visibility, boolean isFinal, Field field,
 			String setterName, String parameterName) {
 		return SetterHelper.builder(javaClass, field).setVisibility(visibility).setFinal(isFinal).setName(setterName)
 				.setParameterName(parameterName).build();

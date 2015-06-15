@@ -29,7 +29,7 @@ package net.atos.optimus.m2m.javaxmi.operation.packages;
  *
  */
 
-public class Package {
+public class JavaPackage {
 
 	/** The package */
 	protected org.eclipse.gmt.modisco.java.Package javaPackage;
@@ -40,7 +40,7 @@ public class Package {
 	 * @param javaPackage
 	 *            the package of the modicso model.
 	 */
-	public Package(org.eclipse.gmt.modisco.java.Package javaPackage) {
+	public JavaPackage(org.eclipse.gmt.modisco.java.Package javaPackage) {
 		this.javaPackage = javaPackage;
 	}
 

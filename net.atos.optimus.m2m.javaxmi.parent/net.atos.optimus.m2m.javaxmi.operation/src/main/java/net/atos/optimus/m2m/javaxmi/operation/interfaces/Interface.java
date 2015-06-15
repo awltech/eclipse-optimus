@@ -23,8 +23,10 @@ package net.atos.optimus.m2m.javaxmi.operation.interfaces;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.classes.AbstractClass;
+import net.atos.optimus.m2m.javaxmi.operation.imports.ImportDeclarationHelper;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.gmt.modisco.java.ImportDeclaration;
 import org.eclipse.gmt.modisco.java.InterfaceDeclaration;
 import org.eclipse.gmt.modisco.java.TypeAccess;
 
@@ -63,6 +65,23 @@ public class Interface extends AbstractClass {
 		EList<TypeAccess> interfacesList = this.getInterfaceDeclaration().getSuperInterfaces();
 		for (String javaInterface : interfacesNames) {
 			interfacesList.add(TypeAccessHelper.createInterfaceTypeAccess(javaInterface));
+		}
+		return this;
+	}
+
+	/**
+	 * Add imports list to the interface
+	 * 
+	 * @param isStatic
+	 *            the static state of the added imports.
+	 * @param importsNames
+	 *            the imports names list to add to the interface.
+	 * @return the builder.
+	 */
+	public Interface addImports(boolean isStatic, String... importsNames) {
+		EList<ImportDeclaration> importsList = this.getInterfaceDeclaration().getOriginalCompilationUnit().getImports();
+		for (String javaImport : importsNames) {
+			importsList.add(ImportDeclarationHelper.createImportDeclaration(javaImport, isStatic));
 		}
 		return this;
 	}

@@ -22,7 +22,7 @@
 package net.atos.optimus.m2m.javaxmi.operation.constructors;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
-import net.atos.optimus.m2m.javaxmi.operation.classes.Class;
+import net.atos.optimus.m2m.javaxmi.operation.classes.JavaClass;
 import net.atos.optimus.m2m.javaxmi.operation.fields.Field;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.Instruction;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.InstructionSetterHelper;
@@ -61,7 +61,7 @@ public class ConstructorHelper {
 	 * 
 	 * @return a new constructor helper.
 	 */
-	public static ConstructorHelper builder(Class javaClass) {
+	public static ConstructorHelper builder(JavaClass javaClass) {
 		return new ConstructorHelper(javaClass);
 	}
 
@@ -72,7 +72,7 @@ public class ConstructorHelper {
 	 * @param javaClass
 	 *            the class associated to the constructor under construction.
 	 */
-	private ConstructorHelper(Class javaClass) {
+	private ConstructorHelper(JavaClass javaClass) {
 		ClassDeclaration internalClass = javaClass.getClassDeclaration();
 		Modifier modifier = ModifierBuilder.builder().setVisibility(VisibilityKind.PUBLIC)
 				.setCompilationUnit(internalClass.getOriginalCompilationUnit()).build();
@@ -218,7 +218,7 @@ public class ConstructorHelper {
 	 * @return the created constructor with automatic set fields accordingly to
 	 *         the specified parameters.
 	 */
-	public static Constructor createConstructor(Class javaClass, VisibilityKind visibility, Field... fields) {
+	public static Constructor createConstructor(JavaClass javaClass, VisibilityKind visibility, Field... fields) {
 		ConstructorHelper helper = ConstructorHelper.builder(javaClass).setVisibility(visibility);
 		for (Field field : fields) {
 			helper.addParameterAndSetAssociatedField(field);

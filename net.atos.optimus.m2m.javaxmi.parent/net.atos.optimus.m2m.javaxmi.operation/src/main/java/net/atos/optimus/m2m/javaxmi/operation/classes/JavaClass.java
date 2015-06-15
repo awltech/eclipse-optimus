@@ -22,9 +22,11 @@
 package net.atos.optimus.m2m.javaxmi.operation.classes;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
+import net.atos.optimus.m2m.javaxmi.operation.imports.ImportDeclarationHelper;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmt.modisco.java.ClassDeclaration;
+import org.eclipse.gmt.modisco.java.ImportDeclaration;
 import org.eclipse.gmt.modisco.java.TypeAccess;
 
 /**
@@ -35,7 +37,7 @@ import org.eclipse.gmt.modisco.java.TypeAccess;
  *
  */
 
-public class Class extends AbstractClass {
+public class JavaClass extends AbstractClass {
 
 	/**
 	 * Constructor of class
@@ -43,7 +45,7 @@ public class Class extends AbstractClass {
 	 * @param classDeclaration
 	 *            the class declaration.
 	 */
-	public Class(ClassDeclaration classDeclaration) {
+	public JavaClass(ClassDeclaration classDeclaration) {
 		super(classDeclaration);
 	}
 
@@ -58,10 +60,27 @@ public class Class extends AbstractClass {
 	 *            the interfaces names list to add to the class.
 	 * @return the builder.
 	 */
-	public Class addInterfaces(String... interfacesNames) {
+	public JavaClass addInterfaces(String... interfacesNames) {
 		EList<TypeAccess> interfacesList = this.getClassDeclaration().getSuperInterfaces();
 		for (String javaInterface : interfacesNames) {
 			interfacesList.add(TypeAccessHelper.createInterfaceTypeAccess(javaInterface));
+		}
+		return this;
+	}
+
+	/**
+	 * Add imports list to the class
+	 * 
+	 * @param isStatic
+	 *            the static state of the added imports.
+	 * @param importsNames
+	 *            the imports names list to add to the class.
+	 * @return the builder.
+	 */
+	public JavaClass addImports(boolean isStatic, String... importsNames) {
+		EList<ImportDeclaration> importsList = this.getClassDeclaration().getOriginalCompilationUnit().getImports();
+		for (String javaImport : importsNames) {
+			importsList.add(ImportDeclarationHelper.createImportDeclaration(javaImport, isStatic));
 		}
 		return this;
 	}

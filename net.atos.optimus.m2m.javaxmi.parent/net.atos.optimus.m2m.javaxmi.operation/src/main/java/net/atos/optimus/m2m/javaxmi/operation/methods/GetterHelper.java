@@ -21,7 +21,7 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.methods;
 
-import net.atos.optimus.m2m.javaxmi.operation.classes.Class;
+import net.atos.optimus.m2m.javaxmi.operation.classes.JavaClass;
 import net.atos.optimus.m2m.javaxmi.operation.fields.Field;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.InstructionReturnHelper;
 import net.atos.optimus.m2m.javaxmi.operation.util.NameGenerator;
@@ -54,7 +54,7 @@ public class GetterHelper {
 	 *            the field associated to the getter method under construction.
 	 * @return a new getter method helper.
 	 */
-	public static GetterHelper builder(Class javaClass, Field field) {
+	public static GetterHelper builder(JavaClass javaClass, Field field) {
 		return new GetterHelper(javaClass, field);
 	}
 
@@ -67,7 +67,7 @@ public class GetterHelper {
 	 * @param field
 	 *            the field associated to the getter method under construction.
 	 */
-	private GetterHelper(Class javaClass, Field field) {
+	private GetterHelper(JavaClass javaClass, Field field) {
 		this.buildGetterMethod = MethodHelper.builder(javaClass, NameGenerator.generateGetterName(field.getName()))
 				.setVisibility(VisibilityKind.PUBLIC).setInheritance(InheritanceKind.NONE)
 				.setReturnType(field.getTypeName())
@@ -136,7 +136,7 @@ public class GetterHelper {
 	 * @return the created getter method accordingly to the specified
 	 *         parameters.
 	 */
-	public static Method createGetter(Class javaClass, VisibilityKind visibility, boolean isFinal, Field field,
+	public static Method createGetter(JavaClass javaClass, VisibilityKind visibility, boolean isFinal, Field field,
 			String getterName) {
 		return GetterHelper.builder(javaClass, field).setVisibility(visibility).setFinal(isFinal).setName(getterName)
 				.build();

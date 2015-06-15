@@ -95,14 +95,14 @@ public class ClassDeclarationBuilder {
 	}
 
 	/**
-	 * Set the proxy of the class declaration under construction
+	 * Set the proxy state of the class declaration under construction
 	 * 
-	 * @param value
-	 *            the proxy value.
+	 * @param isProxy
+	 *            the proxy state of the class declaration under construction.
 	 * @return the builder.
 	 */
-	public ClassDeclarationBuilder setProxy(boolean value) {
-		this.buildClassDeclaration.setProxy(value);
+	public ClassDeclarationBuilder setProxy(boolean isProxy) {
+		this.buildClassDeclaration.setProxy(isProxy);
 		return this;
 	}
 

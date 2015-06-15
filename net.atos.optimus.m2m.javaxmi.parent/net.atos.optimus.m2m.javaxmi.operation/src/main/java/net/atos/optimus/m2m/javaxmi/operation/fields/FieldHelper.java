@@ -22,7 +22,7 @@
 package net.atos.optimus.m2m.javaxmi.operation.fields;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
-import net.atos.optimus.m2m.javaxmi.operation.classes.Class;
+import net.atos.optimus.m2m.javaxmi.operation.classes.JavaClass;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.util.NameGenerator;
 import net.atos.optimus.m2m.javaxmi.operation.variables.VariableDeclarationFragmentBuilder;
@@ -57,7 +57,7 @@ public class FieldHelper {
 	 *            the type name of the field under construction.
 	 * @return a new helper.
 	 */
-	public static FieldHelper builder(Class javaClass, String fieldTypeName) {
+	public static FieldHelper builder(JavaClass javaClass, String fieldTypeName) {
 		return new FieldHelper(javaClass, fieldTypeName);
 	}
 
@@ -71,7 +71,7 @@ public class FieldHelper {
 	 *            the type name of the field under construction.
 	 * @return a new helper.
 	 */
-	private FieldHelper(Class javaClass, String fieldTypeName) {
+	private FieldHelper(JavaClass javaClass, String fieldTypeName) {
 		ClassDeclaration internalClass = javaClass.getClassDeclaration();
 		String fieldName = NameGenerator.generateNameWithTypeName(fieldTypeName);
 		Modifier modifier = ModifierBuilder.builder().setVisibility(VisibilityKind.PRIVATE).setStatic(false)
@@ -159,7 +159,7 @@ public class FieldHelper {
 	 *            the name of the created field.
 	 * @return the created field accordingly to the specified parameters.
 	 */
-	public static Field createField(Class javaClass, VisibilityKind visibility, boolean isStatic, boolean isFinal,
+	public static Field createField(JavaClass javaClass, VisibilityKind visibility, boolean isStatic, boolean isFinal,
 			String fieldTypeName, String fieldName) {
 		return FieldHelper.builder(javaClass, fieldTypeName).setVisibility(visibility).setStatic(isStatic)
 				.setFinal(isFinal).setName(fieldName).build();

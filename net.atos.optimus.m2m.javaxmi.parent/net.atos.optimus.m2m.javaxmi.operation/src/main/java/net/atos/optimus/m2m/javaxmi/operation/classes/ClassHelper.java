@@ -22,13 +22,16 @@
 package net.atos.optimus.m2m.javaxmi.operation.classes;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
+import net.atos.optimus.m2m.javaxmi.operation.imports.ImportDeclarationHelper;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.packages.Package;
+import net.atos.optimus.m2m.javaxmi.operation.packages.JavaPackage;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmt.modisco.java.ClassDeclaration;
 import org.eclipse.gmt.modisco.java.CompilationUnit;
+import org.eclipse.gmt.modisco.java.ImportDeclaration;
 import org.eclipse.gmt.modisco.java.InheritanceKind;
+import org.eclipse.gmt.modisco.java.Model;
 import org.eclipse.gmt.modisco.java.Modifier;
 import org.eclipse.gmt.modisco.java.TypeAccess;
 import org.eclipse.gmt.modisco.java.VisibilityKind;
@@ -56,7 +59,7 @@ public class ClassHelper {
 	 *            the name of the class under construction.
 	 * @return a new helper.
 	 */
-	public static ClassHelper builder(Package javaPackage, String className) {
+	public static ClassHelper builder(JavaPackage javaPackage, String className) {
 		return new ClassHelper(javaPackage, className);
 	}
 
@@ -71,7 +74,7 @@ public class ClassHelper {
 	 *            the name of the class under construction.
 	 * @return a new helper.
 	 */
-	public static ClassHelper internalClassBuilder(Class javaClass, String className) {
+	public static ClassHelper internalClassBuilder(JavaClass javaClass, String className) {
 		return new ClassHelper(javaClass, className);
 	}
 
@@ -84,7 +87,7 @@ public class ClassHelper {
 	 * @param className
 	 *            the name of the class under construction.
 	 */
-	private ClassHelper(Package javaPackage, String className) {
+	private ClassHelper(JavaPackage javaPackage, String className) {
 		org.eclipse.gmt.modisco.java.Package internalPackage = javaPackage.getPackage();
 		CompilationUnit compilationUnit = CompilationUnitBuilder.builder().setName(className + ".java")
 				.setPackage(internalPackage).build();
@@ -93,7 +96,12 @@ public class ClassHelper {
 		this.buildClass = ClassDeclarationBuilder.builder().setName(className).setPackage(internalPackage)
 				.setProxy(false).setModifier(modifier).setCompilationUnit(compilationUnit).build();
 		compilationUnit.getTypes().add(this.buildClass);
-		internalPackage.getModel().getCompilationUnits().add(compilationUnit);
+		Model model = internalPackage.getModel();
+		while (model == null && internalPackage != internalPackage.getPackage()) {
+			internalPackage = internalPackage.getPackage();
+			model = internalPackage.getModel();
+		}
+		model.getCompilationUnits().add(compilationUnit);
 	}
 
 	/**
@@ -106,7 +114,7 @@ public class ClassHelper {
 	 * @param className
 	 *            the name of the class under construction.
 	 */
-	private ClassHelper(Class javaClass, String className) {
+	private ClassHelper(JavaClass javaClass, String className) {
 		ClassDeclaration classDeclaration = javaClass.getClassDeclaration();
 		Modifier modifier = ModifierBuilder.builder().setVisibility(VisibilityKind.PUBLIC)
 				.setInheritance(InheritanceKind.NONE).setCompilationUnit(classDeclaration.getOriginalCompilationUnit())
@@ -122,8 +130,8 @@ public class ClassHelper {
 	 * 
 	 * @return the build class.
 	 */
-	public Class build() {
-		return new Class(this.buildClass);
+	public JavaClass build() {
+		return new JavaClass(this.buildClass);
 	}
 
 	/**
@@ -191,6 +199,23 @@ public class ClassHelper {
 	}
 
 	/**
+	 * Add imports list to the class under construction
+	 * 
+	 * @param isStatic
+	 *            the static state of the added imports.
+	 * @param importsNames
+	 *            the imports names list to add to the class under construction.
+	 * @return the builder.
+	 */
+	public ClassHelper addImports(boolean isStatic, String... importsNames) {
+		EList<ImportDeclaration> importsList = this.buildClass.getOriginalCompilationUnit().getImports();
+		for (String javaImport : importsNames) {
+			importsList.add(ImportDeclarationHelper.createImportDeclaration(javaImport, isStatic));
+		}
+		return this;
+	}
+
+	/**
 	 * Create a class in a stand alone compilation unit
 	 * 
 	 * @param javaPackage
@@ -210,7 +235,7 @@ public class ClassHelper {
 	 *            declaration.
 	 * @return the created class accordingly to the specified parameters.
 	 */
-	public static Class createClass(Package javaPackage, String className, VisibilityKind visibility,
+	public static JavaClass createClass(JavaPackage javaPackage, String className, VisibilityKind visibility,
 			InheritanceKind inheritance, boolean proxyState, String superClassName, String... interfacesNames) {
 		return ClassHelper.builder(javaPackage, className).setVisibility(visibility).setInheritance(inheritance)
 				.setProxy(proxyState).setSuperClass(superClassName).addInterfaces(interfacesNames).build();
@@ -237,7 +262,7 @@ public class ClassHelper {
 	 * @return the created internal class accordingly to the specified
 	 *         parameters.
 	 */
-	public static Class createInternalClass(Class javaClass, String className, VisibilityKind visibility,
+	public static JavaClass createInternalClass(JavaClass javaClass, String className, VisibilityKind visibility,
 			InheritanceKind inheritance, boolean proxyState, String superClassName, String... interfacesNames) {
 		return ClassHelper.internalClassBuilder(javaClass, className).setVisibility(visibility)
 				.setInheritance(inheritance).setProxy(proxyState).setSuperClass(superClassName)

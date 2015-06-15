@@ -43,7 +43,7 @@ public class PackageHelper {
 	 * @return the created package with the specified name in the specified java
 	 *         model, null if the package name is invalid.
 	 */
-	public static Package createPackage(Model javaModel, String packageName) {
+	public static JavaPackage createPackage(Model javaModel, String packageName) {
 		String[] packageNames = packageName.split("\\.");
 		int packageNumber = packageNames.length;
 		org.eclipse.gmt.modisco.java.Package createdPackage = null;
@@ -56,7 +56,7 @@ public class PackageHelper {
 					.build();
 		}
 
-		return new Package(createdPackage);
+		return new JavaPackage(createdPackage);
 	}
 
 }

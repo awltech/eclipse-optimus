@@ -23,11 +23,13 @@ package net.atos.optimus.m2m.javaxmi.operation.interfaces;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.classes.CompilationUnitBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.imports.ImportDeclarationHelper;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.packages.Package;
+import net.atos.optimus.m2m.javaxmi.operation.packages.JavaPackage;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmt.modisco.java.CompilationUnit;
+import org.eclipse.gmt.modisco.java.ImportDeclaration;
 import org.eclipse.gmt.modisco.java.InheritanceKind;
 import org.eclipse.gmt.modisco.java.InterfaceDeclaration;
 import org.eclipse.gmt.modisco.java.Modifier;
@@ -57,7 +59,7 @@ public class InterfaceHelper {
 	 *            the name of the interface under construction.
 	 * @return a new helper.
 	 */
-	public static InterfaceHelper builder(Package javaPackage, String interfaceName) {
+	public static InterfaceHelper builder(JavaPackage javaPackage, String interfaceName) {
 		return new InterfaceHelper(javaPackage, interfaceName);
 	}
 
@@ -70,7 +72,7 @@ public class InterfaceHelper {
 	 * @param interfaceName
 	 *            the name of the interface under construction.
 	 */
-	private InterfaceHelper(Package javaPackage, String interfaceName) {
+	private InterfaceHelper(JavaPackage javaPackage, String interfaceName) {
 		org.eclipse.gmt.modisco.java.Package internalPackage = javaPackage.getPackage();
 		CompilationUnit compilationUnit = CompilationUnitBuilder.builder().setName(interfaceName + ".java")
 				.setPackage(internalPackage).build();
@@ -144,6 +146,23 @@ public class InterfaceHelper {
 	}
 
 	/**
+	 * Add imports list to the interface under construction
+	 * 
+	 * @param isStatic
+	 *            the static state of the added imports.
+	 * @param importsNames
+	 *            the imports names list to add to the interface under construction.
+	 * @return the builder.
+	 */
+	public InterfaceHelper addImports(boolean isStatic, String... importsNames) {
+		EList<ImportDeclaration> importsList = this.buildInterface.getOriginalCompilationUnit().getImports();
+		for (String javaImport : importsNames) {
+			importsList.add(ImportDeclarationHelper.createImportDeclaration(javaImport, isStatic));
+		}
+		return this;
+	}
+
+	/**
 	 * Create an interface in a stand alone compilation unit
 	 * 
 	 * @param javaPackage
@@ -161,7 +180,7 @@ public class InterfaceHelper {
 	 *            declaration.
 	 * @return the created interface accordingly to the specified parameters.
 	 */
-	public static Interface createClass(Package javaPackage, String interfaceName, VisibilityKind visibility,
+	public static Interface createClass(JavaPackage javaPackage, String interfaceName, VisibilityKind visibility,
 			boolean isAbstract, InheritanceKind inheritance, boolean proxyState, String superClassName,
 			String... interfacesNames) {
 		return InterfaceHelper.builder(javaPackage, interfaceName).setVisibility(visibility).setAbstract(isAbstract)
