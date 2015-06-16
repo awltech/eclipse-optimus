@@ -34,6 +34,7 @@ import org.eclipse.gmt.modisco.java.ClassInstanceCreation;
 import org.eclipse.gmt.modisco.java.Expression;
 import org.eclipse.gmt.modisco.java.InfixExpressionKind;
 import org.eclipse.gmt.modisco.java.NumberLiteral;
+import org.eclipse.gmt.modisco.java.PostfixExpressionKind;
 import org.eclipse.gmt.modisco.java.StringLiteral;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
 
@@ -94,7 +95,7 @@ public class InstructionPartHelper {
 	 */
 	public static InstructionPart createInstructionPart(char value) {
 		CharacterLiteral literal = JavaFactory.eINSTANCE.createCharacterLiteral();
-		literal.setEscapedValue("\'"+value+"\'");
+		literal.setEscapedValue("\'" + value + "\'");
 		return new InstructionPart(literal);
 	}
 
@@ -108,7 +109,7 @@ public class InstructionPartHelper {
 	 */
 	public static InstructionPart createInstructionPart(String value) {
 		StringLiteral literal = JavaFactory.eINSTANCE.createStringLiteral();
-		literal.setEscapedValue("\""+value+"\"");
+		literal.setEscapedValue("\"" + value + "\"");
 		return new InstructionPart(literal);
 	}
 
@@ -162,6 +163,20 @@ public class InstructionPartHelper {
 			argumentsList.add(argument.getExpression());
 		}
 		return new InstructionPart(classInstanceCreation);
+	}
+
+	/**
+	 * Create an operation instruction part
+	 * 
+	 * @param operator
+	 *            the operator of the operation.
+	 * @param operand
+	 *            the operand of the operation.
+	 * @return a new operation instruction part.
+	 */
+	public static InstructionPart createOperationInstructionPart(PostfixExpressionKind operator, IComposable operand) {
+		return new InstructionPart(PostfixExpressionBuilder.builder().setOperand(operand.getExpression())
+				.setOperator(operator).build());
 	}
 
 	/**
