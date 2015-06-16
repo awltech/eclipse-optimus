@@ -21,6 +21,8 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.instruction;
 
+import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.part.InstructionPart;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.part.InstructionPartHelper;
 import net.atos.optimus.m2m.javaxmi.operation.methods.MethodDeclarationBuilder;
 
@@ -88,6 +90,23 @@ public class InstructionCallMethodHelper {
 			IComposable... arguments) {
 		return InstructionCallMethodHelper.createCallMethodInstruction(
 				InstructionPartHelper.createVariableInstructionPart(variableName), methodName, arguments);
+	}
+
+	/**
+	 * Create a call static method instruction
+	 * 
+	 * @param className
+	 *            the name of the caller variable.
+	 * @param methodName
+	 *            the name of the method to call.
+	 * @param arguments
+	 *            the arguments list of the call static method instruction.
+	 * @return the created call static method instruction.
+	 */
+	public static ComposableInstruction createCallStaticMethodInstruction(String className, String methodName,
+			IComposable... arguments) {
+		return InstructionCallMethodHelper.createCallMethodInstruction(
+				new InstructionPart(TypeAccessHelper.createClassTypeAccess(className)), methodName, arguments);
 	}
 
 	/**

@@ -52,7 +52,8 @@ public class TryCatchInstructionHelper {
 	private Block finallyBlock;
 
 	/**
-	 * Launch the build of a new try/catch instruction (without finally block)
+	 * Launch the build of a new try/catch instruction (without catch block and
+	 * finally block)
 	 * 
 	 * @param tryInstructions
 	 *            the instruction list in the try block of the try/catch
@@ -64,7 +65,8 @@ public class TryCatchInstructionHelper {
 	}
 
 	/**
-	 * Private constructor : a new try/catch instruction (without finally block)
+	 * Private constructor : a new try/catch instruction (without catch block
+	 * and finally block)
 	 * 
 	 * @param tryInstructions
 	 *            the instruction list in the try block of the try/catch
