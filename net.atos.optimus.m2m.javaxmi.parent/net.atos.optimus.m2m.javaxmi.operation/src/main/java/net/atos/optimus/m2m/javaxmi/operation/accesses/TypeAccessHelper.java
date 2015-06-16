@@ -25,10 +25,11 @@ import net.atos.optimus.m2m.javaxmi.operation.classes.UnresolvedClassDeclaration
 import net.atos.optimus.m2m.javaxmi.operation.interfaces.UnresolvedInterfaceDeclarationBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.types.PrimitiveTypeBuilder;
 
-import org.eclipse.gmt.modisco.java.PrimitiveType;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.gmt.modisco.java.ParameterizedType;
 import org.eclipse.gmt.modisco.java.TypeAccess;
-import org.eclipse.gmt.modisco.java.UnresolvedClassDeclaration;
-import org.eclipse.gmt.modisco.java.UnresolvedInterfaceDeclaration;
+import org.eclipse.gmt.modisco.java.WildCardType;
+import org.eclipse.gmt.modisco.java.emf.JavaFactory;
 
 /**
  * The purpose of such class is to help with the creation of type access
@@ -40,6 +41,16 @@ import org.eclipse.gmt.modisco.java.UnresolvedInterfaceDeclaration;
 
 public class TypeAccessHelper {
 
+	public static final String PARAMETRIZED_ENTRY = "<";
+
+	public static final String PARAMETRIZED_SEPARATOR = ",";
+
+	public static final String WILD_CARD = "?";
+
+	public static final String EXTENSION = "extends";
+
+	public static final String GENERALIZATION = "super";
+
 	/**
 	 * Create a type access associated to a variable type
 	 * 
@@ -49,8 +60,13 @@ public class TypeAccessHelper {
 	 *         name.
 	 */
 	public static TypeAccess createVariableTypeAccess(String variableTypeName) {
-		PrimitiveType primitiveType = PrimitiveTypeBuilder.builder().setName(variableTypeName).build();
-		return TypeAccessBuilder.builder().setType(primitiveType).build();
+		if (variableTypeName.contains(TypeAccessHelper.PARAMETRIZED_ENTRY)) {
+			return TypeAccessHelper.createParameterizedType(
+					TypeAccessHelper.createVariableTypeAccess(variableTypeName.substring(0,
+							variableTypeName.indexOf(TypeAccessHelper.PARAMETRIZED_ENTRY))), variableTypeName);
+		}
+		return TypeAccessBuilder.builder().setType(PrimitiveTypeBuilder.builder().setName(variableTypeName).build())
+				.build();
 	}
 
 	/**
@@ -61,8 +77,13 @@ public class TypeAccessHelper {
 	 * @return the created type access associated to the specified class name.
 	 */
 	public static TypeAccess createClassTypeAccess(String className) {
-		UnresolvedClassDeclaration classType = UnresolvedClassDeclarationBuilder.builder().setName(className).build();
-		return TypeAccessBuilder.builder().setType(classType).build();
+		if (className.contains(TypeAccessHelper.PARAMETRIZED_ENTRY)) {
+			return TypeAccessHelper.createParameterizedType(
+					TypeAccessHelper.createClassTypeAccess(className.substring(0,
+							className.indexOf(TypeAccessHelper.PARAMETRIZED_ENTRY))), className);
+		}
+		return TypeAccessBuilder.builder()
+				.setType(UnresolvedClassDeclarationBuilder.builder().setName(className).build()).build();
 	}
 
 	/**
@@ -74,9 +95,13 @@ public class TypeAccessHelper {
 	 *         name.
 	 */
 	public static TypeAccess createInterfaceTypeAccess(String interfaceName) {
-		UnresolvedInterfaceDeclaration interfaceType = UnresolvedInterfaceDeclarationBuilder.builder()
-				.setName(interfaceName).build();
-		return TypeAccessBuilder.builder().setType(interfaceType).build();
+		if (interfaceName.contains(TypeAccessHelper.PARAMETRIZED_ENTRY)) {
+			return TypeAccessHelper.createParameterizedType(
+					TypeAccessHelper.createInterfaceTypeAccess(interfaceName.substring(0,
+							interfaceName.indexOf(TypeAccessHelper.PARAMETRIZED_ENTRY))), interfaceName);
+		}
+		return TypeAccessBuilder.builder()
+				.setType(UnresolvedInterfaceDeclarationBuilder.builder().setName(interfaceName).build()).build();
 	}
 
 	/**
@@ -88,8 +113,46 @@ public class TypeAccessHelper {
 	 *         name.
 	 */
 	public static TypeAccess createExceptionTypeAccess(String exceptionName) {
-		PrimitiveType primitiveType = PrimitiveTypeBuilder.builder().setName(exceptionName).build();
-		return TypeAccessBuilder.builder().setType(primitiveType).build();
+		if (exceptionName.contains(TypeAccessHelper.PARAMETRIZED_ENTRY)) {
+			return TypeAccessHelper.createParameterizedType(
+					TypeAccessHelper.createExceptionTypeAccess(exceptionName.substring(0,
+							exceptionName.indexOf(TypeAccessHelper.PARAMETRIZED_ENTRY))), exceptionName);
+		}
+		return TypeAccessBuilder.builder().setType(PrimitiveTypeBuilder.builder().setName(exceptionName).build())
+				.build();
 	}
 
+	/**
+	 * Create a parameterized type
+	 * 
+	 * @param mainType
+	 *            the main type of the parameterized type.
+	 * @param name
+	 *            the name of the parameterized type.
+	 * @return the created type access associated to these parameters.
+	 */
+	protected static TypeAccess createParameterizedType(TypeAccess mainType, String name) {
+		String[] arguments = name.substring(name.indexOf(TypeAccessHelper.PARAMETRIZED_ENTRY)+1, name.length() - 1)
+				.split(TypeAccessHelper.PARAMETRIZED_SEPARATOR);
+		ParameterizedType parameterizedType = ParameterizedTypeBuilder.builder().setType(mainType).build();
+		EList<TypeAccess> argumentsList = parameterizedType.getTypeArguments();
+		for (String argument : arguments) {
+			argumentsList.add(TypeAccessHelper.treatArgument(argument.trim()));
+		}
+		return TypeAccessBuilder.builder().setType(parameterizedType).build();
+	}
+
+	protected static TypeAccess treatArgument(String argument) {
+		
+		if (argument.contains(TypeAccessHelper.WILD_CARD)) {
+			WildCardType type = JavaFactory.eINSTANCE.createWildCardType();
+			type.setUpperBound(argument.contains(TypeAccessHelper.EXTENSION));
+			int index = argument.lastIndexOf(' ');
+			if (index != -1) {
+				type.setBound(TypeAccessHelper.createClassTypeAccess(argument.substring(index + 1, argument.length())));
+			}
+			return TypeAccessBuilder.builder().setType(type).build();
+		}
+		return TypeAccessHelper.createClassTypeAccess(argument);
+	}
 }
