@@ -59,7 +59,7 @@ public class Interface extends AbstractClass {
 	 * 
 	 * @param interfacesNames
 	 *            the interfaces names list to add to the interface.
-	 * @return the builder.
+	 * @return the interface.
 	 */
 	public Interface addInterfaces(String... interfacesNames) {
 		EList<TypeAccess> interfacesList = this.getInterfaceDeclaration().getSuperInterfaces();
@@ -68,13 +68,13 @@ public class Interface extends AbstractClass {
 		}
 		return this;
 	}
-	
+
 	/**
 	 * Add imports list to the interface
 	 * 
 	 * @param importsNames
 	 *            the imports names list to add to the interface.
-	 * @return the builder.
+	 * @return the interface.
 	 */
 	public Interface addImports(String... importsNames) {
 		EList<ImportDeclaration> importsList = this.getInterfaceDeclaration().getOriginalCompilationUnit().getImports();
@@ -89,7 +89,7 @@ public class Interface extends AbstractClass {
 	 * 
 	 * @param importsNames
 	 *            the static imports names list to add to the interface.
-	 * @return the builder.
+	 * @return the interface.
 	 */
 	public Interface addStaticImports(String... importsNames) {
 		EList<ImportDeclaration> importsList = this.getInterfaceDeclaration().getOriginalCompilationUnit().getImports();

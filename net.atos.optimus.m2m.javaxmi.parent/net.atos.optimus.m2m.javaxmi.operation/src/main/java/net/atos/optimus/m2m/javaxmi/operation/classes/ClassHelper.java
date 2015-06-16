@@ -197,7 +197,7 @@ public class ClassHelper {
 		}
 		return this;
 	}
-	
+
 	/**
 	 * Add imports list to the class under construction
 	 * 
@@ -217,7 +217,8 @@ public class ClassHelper {
 	 * Add static imports list to the class under construction
 	 * 
 	 * @param importsNames
-	 *            the static imports names list to add to the class under construction.
+	 *            the static imports names list to add to the class under
+	 *            construction.
 	 * @return the builder.
 	 */
 	public ClassHelper addStaticImports(String... importsNames) {
@@ -244,8 +245,7 @@ public class ClassHelper {
 	 * @param superClassName
 	 *            the super class name of the created class.
 	 * @param interfacesNames
-	 *            the interfaces names list to add to the created class
-	 *            declaration.
+	 *            the interfaces names list to add to the created class.
 	 * @return the created class accordingly to the specified parameters.
 	 */
 	public static JavaClass createClass(JavaPackage javaPackage, String className, VisibilityKind visibility,
@@ -270,8 +270,7 @@ public class ClassHelper {
 	 * @param superClassName
 	 *            the super class name of the created class.
 	 * @param interfacesNames
-	 *            the interfaces names list to add to the created class
-	 *            declaration.
+	 *            the interfaces names list to add to the created class.
 	 * @return the created internal class accordingly to the specified
 	 *         parameters.
 	 */

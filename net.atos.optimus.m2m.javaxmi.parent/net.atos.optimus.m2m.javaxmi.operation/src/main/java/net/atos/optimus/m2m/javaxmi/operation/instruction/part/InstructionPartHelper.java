@@ -94,7 +94,7 @@ public class InstructionPartHelper {
 	 */
 	public static InstructionPart createInstructionPart(char value) {
 		CharacterLiteral literal = JavaFactory.eINSTANCE.createCharacterLiteral();
-		literal.setEscapedValue(((Character) value).toString());
+		literal.setEscapedValue("\'"+value+"\'");
 		return new InstructionPart(literal);
 	}
 
@@ -108,7 +108,7 @@ public class InstructionPartHelper {
 	 */
 	public static InstructionPart createInstructionPart(String value) {
 		StringLiteral literal = JavaFactory.eINSTANCE.createStringLiteral();
-		literal.setEscapedValue(value);
+		literal.setEscapedValue("\""+value+"\"");
 		return new InstructionPart(literal);
 	}
 

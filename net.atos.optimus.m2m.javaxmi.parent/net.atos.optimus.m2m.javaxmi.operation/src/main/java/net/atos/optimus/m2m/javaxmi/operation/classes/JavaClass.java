@@ -58,7 +58,7 @@ public class JavaClass extends AbstractClass {
 	 * 
 	 * @param interfacesNames
 	 *            the interfaces names list to add to the class.
-	 * @return the builder.
+	 * @return the class.
 	 */
 	public JavaClass addInterfaces(String... interfacesNames) {
 		EList<TypeAccess> interfacesList = this.getClassDeclaration().getSuperInterfaces();
@@ -73,7 +73,7 @@ public class JavaClass extends AbstractClass {
 	 * 
 	 * @param importsNames
 	 *            the imports names list to add to the class.
-	 * @return the builder.
+	 * @return the class.
 	 */
 	public JavaClass addImports(String... importsNames) {
 		EList<ImportDeclaration> importsList = this.getClassDeclaration().getOriginalCompilationUnit().getImports();
@@ -88,7 +88,7 @@ public class JavaClass extends AbstractClass {
 	 * 
 	 * @param importsNames
 	 *            the static imports names list to add to the class.
-	 * @return the builder.
+	 * @return the class.
 	 */
 	public JavaClass addStaticImports(String... importsNames) {
 		EList<ImportDeclaration> importsList = this.getClassDeclaration().getOriginalCompilationUnit().getImports();
