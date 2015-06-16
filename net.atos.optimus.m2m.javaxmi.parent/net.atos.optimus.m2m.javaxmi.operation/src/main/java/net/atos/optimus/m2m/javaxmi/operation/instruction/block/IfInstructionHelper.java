@@ -91,7 +91,7 @@ public class IfInstructionHelper {
 	}
 
 	/**
-	 * Add an instructions list to the then block of the if instruction under
+	 * Add an instructions list to the then block to the if instruction under
 	 * construction
 	 * 
 	 * @param thenInstructions
@@ -108,7 +108,7 @@ public class IfInstructionHelper {
 	}
 
 	/**
-	 * Add an instructions list to the else block of the if instruction under
+	 * Add an instructions list to the else block to the if instruction under
 	 * construction
 	 * 
 	 * @param elseInstructions
