@@ -25,6 +25,7 @@ import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.imports.ImportDeclarationHelper;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.packages.JavaPackage;
+import net.atos.optimus.m2m.javaxmi.operation.types.TypeParameterHelper;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmt.modisco.java.ClassDeclaration;
@@ -96,6 +97,7 @@ public class ClassHelper {
 		this.buildClass = ClassDeclarationBuilder.builder().setName(className).setPackage(internalPackage)
 				.setProxy(false).setModifier(modifier).setCompilationUnit(compilationUnit).build();
 		compilationUnit.getTypes().add(this.buildClass);
+		TypeParameterHelper.addTypeParametersToTypeDeclaration(this.buildClass);
 		Model model = internalPackage.getModel();
 		while (model == null && internalPackage != internalPackage.getPackage()) {
 			internalPackage = internalPackage.getPackage();
@@ -123,6 +125,7 @@ public class ClassHelper {
 				.setPackage(classDeclaration.getPackage()).setProxy(false).setModifier(modifier)
 				.setCompilationUnit(classDeclaration.getOriginalCompilationUnit())
 				.setAbstractTypeDeclaration(classDeclaration).build();
+		TypeParameterHelper.addTypeParametersToTypeDeclaration(this.buildClass);
 	}
 
 	/**

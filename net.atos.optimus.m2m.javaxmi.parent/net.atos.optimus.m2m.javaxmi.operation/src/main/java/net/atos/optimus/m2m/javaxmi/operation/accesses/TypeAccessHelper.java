@@ -24,12 +24,12 @@ package net.atos.optimus.m2m.javaxmi.operation.accesses;
 import net.atos.optimus.m2m.javaxmi.operation.classes.UnresolvedClassDeclarationBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.interfaces.UnresolvedInterfaceDeclarationBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.types.PrimitiveTypeBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.types.UnresolvedTypeBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.types.WildCardTypeBuilder;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmt.modisco.java.ParameterizedType;
 import org.eclipse.gmt.modisco.java.TypeAccess;
-import org.eclipse.gmt.modisco.java.WildCardType;
-import org.eclipse.gmt.modisco.java.emf.JavaFactory;
 
 /**
  * The purpose of such class is to help with the creation of type access
@@ -123,6 +123,22 @@ public class TypeAccessHelper {
 	}
 
 	/**
+	 * Create a type associated to a class or an interface
+	 * 
+	 * @param typeName
+	 *            the type name which we want a type access.
+	 * @return the created type access associated to the specified type name.
+	 */
+	public static TypeAccess createTypeAccess(String typeName) {
+		if (typeName.contains(TypeAccessHelper.PARAMETRIZED_ENTRY)) {
+			return TypeAccessHelper.createParameterizedType(
+					TypeAccessHelper.createTypeAccess(typeName.substring(0,
+							typeName.indexOf(TypeAccessHelper.PARAMETRIZED_ENTRY))), typeName);
+		}
+		return TypeAccessBuilder.builder().setType(UnresolvedTypeBuilder.builder().setName(typeName).build()).build();
+	}
+
+	/**
 	 * Create a parameterized type
 	 * 
 	 * @param mainType
@@ -132,27 +148,41 @@ public class TypeAccessHelper {
 	 * @return the created type access associated to these parameters.
 	 */
 	protected static TypeAccess createParameterizedType(TypeAccess mainType, String name) {
-		String[] arguments = name.substring(name.indexOf(TypeAccessHelper.PARAMETRIZED_ENTRY)+1, name.length() - 1)
+		String[] arguments = name.substring(name.indexOf(TypeAccessHelper.PARAMETRIZED_ENTRY) + 1, name.length() - 1)
 				.split(TypeAccessHelper.PARAMETRIZED_SEPARATOR);
 		ParameterizedType parameterizedType = ParameterizedTypeBuilder.builder().setType(mainType).build();
 		EList<TypeAccess> argumentsList = parameterizedType.getTypeArguments();
 		for (String argument : arguments) {
-			argumentsList.add(TypeAccessHelper.treatArgument(argument.trim()));
+			argumentsList.add(TypeAccessHelper.createTypeParametrizedArgument(argument));
 		}
 		return TypeAccessBuilder.builder().setType(parameterizedType).build();
 	}
 
-	protected static TypeAccess treatArgument(String argument) {
-		
-		if (argument.contains(TypeAccessHelper.WILD_CARD)) {
-			WildCardType type = JavaFactory.eINSTANCE.createWildCardType();
-			type.setUpperBound(argument.contains(TypeAccessHelper.EXTENSION));
-			int index = argument.lastIndexOf(' ');
-			if (index != -1) {
-				type.setBound(TypeAccessHelper.createClassTypeAccess(argument.substring(index + 1, argument.length())));
+	/**
+	 * Create type for an argument of a parameterized type
+	 * 
+	 * @param argument
+	 *            the argument of the parameterized type in one string.
+	 * @return the created type for the specified argument of a parameterized
+	 *         type
+	 */
+	protected static TypeAccess createTypeParametrizedArgument(String argument) {
+		String[] argumentParts = argument.trim().split("\\s+");
+		if (argumentParts.length >= 3) {
+			if (TypeAccessHelper.WILD_CARD.equals(argumentParts[0])) {
+				return TypeAccessBuilder
+						.builder()
+						.setType(
+								WildCardTypeBuilder.builder()
+										.setUpperBound(TypeAccessHelper.EXTENSION.equals(argumentParts[1]))
+										.setBound(TypeAccessHelper.createClassTypeAccess(argumentParts[2])).build())
+						.build();
 			}
-			return TypeAccessBuilder.builder().setType(type).build();
+			return TypeAccessHelper.createClassTypeAccess(argumentParts[0]);
 		}
-		return TypeAccessHelper.createClassTypeAccess(argument);
+		if (TypeAccessHelper.WILD_CARD.equals(argumentParts[0])) {
+			TypeAccessBuilder.builder().setType(WildCardTypeBuilder.builder().build()).build();
+		}
+		return TypeAccessHelper.createClassTypeAccess(argumentParts[0]);
 	}
 }

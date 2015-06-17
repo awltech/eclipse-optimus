@@ -27,6 +27,7 @@ import net.atos.optimus.m2m.javaxmi.operation.instruction.Instruction;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.block.BlockBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.parameters.ParameterHelper;
+import net.atos.optimus.m2m.javaxmi.operation.types.TypeParameterHelper;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmt.modisco.java.AbstractTypeDeclaration;
@@ -142,7 +143,7 @@ public class MethodHelper {
 	 * @return the helper.
 	 */
 	public MethodHelper setReturnType(String returnTypeName) {
-		this.buildMethod.setReturnType(TypeAccessHelper.createVariableTypeAccess(returnTypeName));
+		TypeParameterHelper.addReturnTypeToMethodDeclaration(this.buildMethod, returnTypeName);
 		return this;
 	}
 

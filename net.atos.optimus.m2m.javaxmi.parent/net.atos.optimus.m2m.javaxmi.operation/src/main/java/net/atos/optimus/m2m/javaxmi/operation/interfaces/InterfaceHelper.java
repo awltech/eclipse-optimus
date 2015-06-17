@@ -26,12 +26,14 @@ import net.atos.optimus.m2m.javaxmi.operation.classes.CompilationUnitBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.imports.ImportDeclarationHelper;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.packages.JavaPackage;
+import net.atos.optimus.m2m.javaxmi.operation.types.TypeParameterHelper;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmt.modisco.java.CompilationUnit;
 import org.eclipse.gmt.modisco.java.ImportDeclaration;
 import org.eclipse.gmt.modisco.java.InheritanceKind;
 import org.eclipse.gmt.modisco.java.InterfaceDeclaration;
+import org.eclipse.gmt.modisco.java.Model;
 import org.eclipse.gmt.modisco.java.Modifier;
 import org.eclipse.gmt.modisco.java.TypeAccess;
 import org.eclipse.gmt.modisco.java.VisibilityKind;
@@ -80,8 +82,14 @@ public class InterfaceHelper {
 				.setInheritance(InheritanceKind.NONE).setCompilationUnit(compilationUnit).build();
 		this.buildInterface = InterfaceDeclarationBuilder.builder().setName(interfaceName).setPackage(internalPackage)
 				.setProxy(false).setModifier(modifier).setCompilationUnit(compilationUnit).build();
+		TypeParameterHelper.addTypeParametersToTypeDeclaration(this.buildInterface);
 		compilationUnit.getTypes().add(this.buildInterface);
-		internalPackage.getModel().getCompilationUnits().add(compilationUnit);
+		Model model = internalPackage.getModel();
+		while (model == null && internalPackage != internalPackage.getPackage()) {
+			internalPackage = internalPackage.getPackage();
+			model = internalPackage.getModel();
+		}
+		model.getCompilationUnits().add(compilationUnit);
 	}
 
 	/**
