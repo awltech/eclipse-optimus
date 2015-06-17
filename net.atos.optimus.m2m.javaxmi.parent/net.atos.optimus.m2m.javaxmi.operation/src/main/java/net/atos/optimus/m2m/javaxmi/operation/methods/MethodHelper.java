@@ -85,7 +85,7 @@ public class MethodHelper {
 				.setInheritance(InheritanceKind.NONE).setCompilationUnit(abstractType.getOriginalCompilationUnit())
 				.build();
 		this.buildMethod = MethodDeclarationBuilder.builder().setModifier(modifier)
-				.setReturnType(TypeAccessHelper.createVariableTypeAccess(MethodHelper.VOID_TYPE)).setName(methodName)
+				.setReturnType(TypeAccessHelper.createTypeAccess(MethodHelper.VOID_TYPE)).setName(methodName)
 				.setAbstractTypeDeclaration(abstractType).setCompilationUnit(abstractType.getOriginalCompilationUnit())
 				.build();
 	}

@@ -76,8 +76,8 @@ public class TypeParameterHelper {
 		if (returnTypeName.contains(TypeParameterHelper.PARAMETER_EXIT)) {
 			returnTypeName = returnTypeName.trim();
 			int index = returnTypeName.indexOf(TypeParameterHelper.PARAMETER_EXIT);
-			methodDeclaration.setReturnType(TypeAccessHelper.createVariableTypeAccess(returnTypeName.substring(
-					index + 1, returnTypeName.length()).trim()));
+			methodDeclaration.setReturnType(TypeAccessHelper.createTypeAccess(returnTypeName.substring(index + 1,
+					returnTypeName.length()).trim()));
 			String[] parametersTypes = returnTypeName.substring(1, index)
 					.split(TypeParameterHelper.PARAMETER_SEPARATOR);
 			EList<TypeParameter> typeParametersList = methodDeclaration.getTypeParameters();
@@ -85,7 +85,7 @@ public class TypeParameterHelper {
 				typeParametersList.add(TypeParameterHelper.createTypeParameter(parameterTypeName));
 			}
 		} else {
-			methodDeclaration.setReturnType(TypeAccessHelper.createVariableTypeAccess(returnTypeName));
+			methodDeclaration.setReturnType(TypeAccessHelper.createTypeAccess(returnTypeName));
 		}
 
 	}

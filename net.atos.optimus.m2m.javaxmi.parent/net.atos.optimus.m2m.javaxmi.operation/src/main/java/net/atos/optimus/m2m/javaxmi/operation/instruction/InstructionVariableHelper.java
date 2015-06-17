@@ -74,7 +74,7 @@ public class InstructionVariableHelper {
 		VariableDeclarationFragment variableDeclarationFragment = VariableDeclarationFragmentBuilder.builder()
 				.setName(NameGenerator.generateNameWithTypeName(variableTypeName)).build();
 		this.buildVariableDeclarationStatement = VariableDeclarationStatementBuilder.builder()
-				.setType(TypeAccessHelper.createVariableTypeAccess(variableTypeName)).setModifier(modifier)
+				.setType(TypeAccessHelper.createTypeAccess(variableTypeName)).setModifier(modifier)
 				.addFragment(variableDeclarationFragment).build();
 	}
 
@@ -132,7 +132,7 @@ public class InstructionVariableHelper {
 		VariableDeclarationFragment variableDeclarationFragment = VariableDeclarationFragmentBuilder.builder()
 				.setName(variableName).build();
 		AssignableInstructionPart leftHandSide = new AssignableInstructionPart(VariableDeclarationExpressionBuilder
-				.builder().setType(TypeAccessHelper.createVariableTypeAccess(variableTypeName))
+				.builder().setType(TypeAccessHelper.createTypeAccess(variableTypeName))
 				.addFragment(variableDeclarationFragment).build());
 		return InstructionSetterHelper.createAssignmentInstruction(leftHandSide, assignmentOperator,
 				assignmentInstruction);
@@ -184,7 +184,7 @@ public class InstructionVariableHelper {
 		VariableDeclarationFragment variableDeclarationFragment = VariableDeclarationFragmentBuilder.builder()
 				.setName(variableName).build();
 		AssignableInstructionPart leftHandSide = new AssignableInstructionPart(VariableDeclarationExpressionBuilder
-				.builder().setType(TypeAccessHelper.createVariableTypeAccess(variableTypeName)).setModifier(modifier)
+				.builder().setType(TypeAccessHelper.createTypeAccess(variableTypeName)).setModifier(modifier)
 				.addFragment(variableDeclarationFragment).build());
 		return InstructionSetterHelper.createAssignmentInstruction(leftHandSide, assignmentOperator,
 				assignmentInstruction);

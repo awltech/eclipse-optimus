@@ -52,24 +52,6 @@ public class TypeAccessHelper {
 	public static final String GENERALIZATION = "super";
 
 	/**
-	 * Create a type access associated to a variable type
-	 * 
-	 * @param variableTypeName
-	 *            the variable type name which we want a type access.
-	 * @return the created type access associated to the specified variable type
-	 *         name.
-	 */
-	public static TypeAccess createVariableTypeAccess(String variableTypeName) {
-		if (variableTypeName.contains(TypeAccessHelper.PARAMETRIZED_ENTRY)) {
-			return TypeAccessHelper.createParameterizedType(
-					TypeAccessHelper.createVariableTypeAccess(variableTypeName.substring(0,
-							variableTypeName.indexOf(TypeAccessHelper.PARAMETRIZED_ENTRY))), variableTypeName);
-		}
-		return TypeAccessBuilder.builder().setType(PrimitiveTypeBuilder.builder().setName(variableTypeName).build())
-				.build();
-	}
-
-	/**
 	 * Create a type access associated to a class
 	 * 
 	 * @param className
@@ -134,6 +116,10 @@ public class TypeAccessHelper {
 			return TypeAccessHelper.createParameterizedType(
 					TypeAccessHelper.createTypeAccess(typeName.substring(0,
 							typeName.indexOf(TypeAccessHelper.PARAMETRIZED_ENTRY))), typeName);
+		}
+		if (Character.isLowerCase(typeName.charAt(0))) {
+			return TypeAccessBuilder.builder().setType(PrimitiveTypeBuilder.builder().setName(typeName).build())
+					.build();
 		}
 		return TypeAccessBuilder.builder().setType(UnresolvedTypeBuilder.builder().setName(typeName).build()).build();
 	}

@@ -110,8 +110,8 @@ public class InstructionLoopHelper {
 		VariableDeclarationFragment variableDeclarationFragment = VariableDeclarationFragmentBuilder.builder()
 				.setName(variableName).build();
 		VariableDeclarationExpression variableDeclarationExpression = VariableDeclarationExpressionBuilder.builder()
-				.setType(TypeAccessHelper.createVariableTypeAccess(variableTypeName))
-				.addFragment(variableDeclarationFragment).build();
+				.setType(TypeAccessHelper.createTypeAccess(variableTypeName)).addFragment(variableDeclarationFragment)
+				.build();
 		return new Instruction(ForStatementBuilder.builder().addInitializerExpression(variableDeclarationExpression)
 				.setExpression(condition.getExpression()).addUpdaterExpression(update.getExpression()).setBody(block)
 				.build());
@@ -140,7 +140,7 @@ public class InstructionLoopHelper {
 			statements.add(instruction.getStatement());
 		}
 		SingleVariableDeclaration parameter = SingleVariableDeclarationBuilder.builder().setName(variableName)
-				.setType(TypeAccessHelper.createVariableTypeAccess(variableTypeName)).build();
+				.setType(TypeAccessHelper.createTypeAccess(variableTypeName)).build();
 		return new Instruction(EnhancedForStatementBuilder.builder().setParameter(parameter)
 				.setExpression(iterableInstruction.getExpression()).setBody(block).build());
 	}

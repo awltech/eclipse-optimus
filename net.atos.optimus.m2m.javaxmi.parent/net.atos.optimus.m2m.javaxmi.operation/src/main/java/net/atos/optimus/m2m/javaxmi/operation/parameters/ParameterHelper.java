@@ -71,7 +71,7 @@ public class ParameterHelper {
 				.setMethodDeclaration(method.getAbstractMethodDeclaration())
 				.setCompilationUnit(method.getCompilationUnit())
 				.setModifier(ModifierBuilder.builder().setInheritance(InheritanceKind.NONE).build())
-				.setType(TypeAccessHelper.createVariableTypeAccess(parameterTypeName))
+				.setType(TypeAccessHelper.createTypeAccess(parameterTypeName))
 				.setName(NameGenerator.generateNameWithTypeName(parameterTypeName)).setVarargs(false).build();
 		method.getParameters().add(this.buildParameter);
 	}
