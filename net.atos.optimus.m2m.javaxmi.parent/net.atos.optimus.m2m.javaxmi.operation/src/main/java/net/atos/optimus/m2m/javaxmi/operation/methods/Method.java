@@ -23,7 +23,7 @@ package net.atos.optimus.m2m.javaxmi.operation.methods;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.Instruction;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.block.BlockBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.block.BlockBuilder;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmt.modisco.java.Block;

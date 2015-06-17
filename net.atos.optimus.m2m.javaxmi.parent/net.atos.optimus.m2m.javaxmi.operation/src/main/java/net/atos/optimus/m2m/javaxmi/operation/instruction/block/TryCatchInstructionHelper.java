@@ -23,6 +23,9 @@ package net.atos.optimus.m2m.javaxmi.operation.instruction.block;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.Instruction;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.block.BlockBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.block.CatchClauseBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.block.TryStatementBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.variables.SingleVariableDeclarationBuilder;
 
 import org.eclipse.emf.common.util.EList;

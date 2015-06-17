@@ -19,72 +19,73 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.javaxmi.operation.instruction.block;
+package net.atos.optimus.m2m.javaxmi.operation.instruction.builder.block;
 
+import org.eclipse.gmt.modisco.java.DoStatement;
 import org.eclipse.gmt.modisco.java.Expression;
-import org.eclipse.gmt.modisco.java.SwitchCase;
+import org.eclipse.gmt.modisco.java.Statement;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
 
 /**
- * A builder dedicated to create switch case of modisco model
+ * A builder dedicated to create do statement of modisco model
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
  *
  */
 
-public class SwitchCaseBuilder {
+public class DoStatementBuilder {
 
-	/** The build switch case */
-	private SwitchCase buildSwitchCase;
+	/** The build do statement */
+	private DoStatement buildDoStatement;
 
 	/**
-	 * Give a switch case builder
+	 * Give a do statement builder
 	 * 
-	 * @return a new switch case builder.
+	 * @return a new do statement builder.
 	 */
-	public static SwitchCaseBuilder builder() {
-		return new SwitchCaseBuilder();
+	public static DoStatementBuilder builder() {
+		return new DoStatementBuilder();
 	}
 
 	/**
 	 * Private constructor
 	 * 
 	 */
-	private SwitchCaseBuilder() {
-		this.buildSwitchCase = JavaFactory.eINSTANCE.createSwitchCase();
+	private DoStatementBuilder() {
+		this.buildDoStatement = JavaFactory.eINSTANCE.createDoStatement();
 	}
 
 	/**
-	 * Build a switch case of modisco model
+	 * Build a do statement of modisco model
 	 * 
-	 * @return a new switch case of modisco model.
+	 * @return a new do statement of modisco model.
 	 */
-	public SwitchCase build() {
-		return this.buildSwitchCase;
+	public DoStatement build() {
+		return this.buildDoStatement;
 	}
 
 	/**
-	 * Set the expression of the switch case under construction
+	 * Set the expression of the do statement under construction
 	 * 
 	 * @param expression
-	 *            the expression of the switch case under construction.
+	 *            the expression of the do statement under construction.
 	 * @return the builder.
 	 */
-	public SwitchCaseBuilder setExpression(Expression expression) {
-		this.buildSwitchCase.setExpression(expression);
+	public DoStatementBuilder setExpression(Expression expression) {
+		this.buildDoStatement.setExpression(expression);
 		return this;
 	}
 
 	/**
-	 * Set the default state of the switch case under construction
+	 * Set the body of the do statement under construction
 	 * 
-	 * @param isDefault
-	 *            the default state of the switch case under construction.
+	 * @param body
+	 *            the body of the do statement under construction.
 	 * @return the builder.
 	 */
-	public SwitchCaseBuilder setDefault(boolean isDefault) {
-		this.buildSwitchCase.setDefault(isDefault);
+	public DoStatementBuilder setBody(Statement body) {
+		this.buildDoStatement.setBody(body);
 		return this;
 	}
 

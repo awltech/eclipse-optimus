@@ -21,6 +21,8 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.instruction;
 
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.AssignmentBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.ExpressionStatementBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.part.AssignableInstructionPart;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.part.InstructionPart;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.part.InstructionPartHelper;

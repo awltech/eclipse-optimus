@@ -22,6 +22,9 @@
 package net.atos.optimus.m2m.javaxmi.operation.instruction;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.MethodInvocationBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.SuperConstructorInvocationBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.SuperMethodInvocationBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.part.InstructionPart;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.part.InstructionPartHelper;
 import net.atos.optimus.m2m.javaxmi.operation.methods.MethodDeclarationBuilder;
@@ -49,13 +52,11 @@ public class InstructionCallMethodHelper {
 	 * 
 	 * @param methodName
 	 *            the name of the method to call.
-	 * @param arguments
-	 *            the arguments list of the call method instruction.
 	 * @return the created call method instruction from this.
 	 */
-	public static ComposableInstruction createThisCallMethodInstruction(String methodName, IComposable... arguments) {
+	public static AbstractMethodInstruction createThisCallMethodInstruction(String methodName) {
 		return InstructionCallMethodHelper.createCallMethodInstruction(
-				InstructionPartHelper.createThisInstructionPart(), methodName, arguments);
+				InstructionPartHelper.createThisInstructionPart(), methodName);
 	}
 
 	/**
@@ -65,14 +66,11 @@ public class InstructionCallMethodHelper {
 	 *            the name of the caller field.
 	 * @param methodName
 	 *            the name of the method to call.
-	 * @param arguments
-	 *            the arguments list of the call method instruction.
 	 * @return the created call method instruction from a field.
 	 */
-	public static ComposableInstruction createFieldCallMethodInstruction(String fieldName, String methodName,
-			IComposable... arguments) {
+	public static AbstractMethodInstruction createFieldCallMethodInstruction(String fieldName, String methodName) {
 		return InstructionCallMethodHelper.createCallMethodInstruction(
-				InstructionPartHelper.createFieldInstructionPart(fieldName), methodName, arguments);
+				InstructionPartHelper.createFieldInstructionPart(fieldName), methodName);
 	}
 
 	/**
@@ -82,14 +80,11 @@ public class InstructionCallMethodHelper {
 	 *            the name of the caller variable.
 	 * @param methodName
 	 *            the name of the method to call.
-	 * @param arguments
-	 *            the arguments list of the call method instruction.
 	 * @return the created call method instruction from a variable.
 	 */
-	public static ComposableInstruction createVariableCallMethodInstruction(String variableName, String methodName,
-			IComposable... arguments) {
+	public static AbstractMethodInstruction createVariableCallMethodInstruction(String variableName, String methodName) {
 		return InstructionCallMethodHelper.createCallMethodInstruction(
-				InstructionPartHelper.createVariableInstructionPart(variableName), methodName, arguments);
+				InstructionPartHelper.createVariableInstructionPart(variableName), methodName);
 	}
 
 	/**
@@ -99,14 +94,11 @@ public class InstructionCallMethodHelper {
 	 *            the name of the caller variable.
 	 * @param methodName
 	 *            the name of the method to call.
-	 * @param arguments
-	 *            the arguments list of the call static method instruction.
 	 * @return the created call static method instruction.
 	 */
-	public static ComposableInstruction createCallStaticMethodInstruction(String className, String methodName,
-			IComposable... arguments) {
+	public static AbstractMethodInstruction createCallStaticMethodInstruction(String className, String methodName) {
 		return InstructionCallMethodHelper.createCallMethodInstruction(
-				new InstructionPart(TypeAccessHelper.createClassTypeAccess(className)), methodName, arguments);
+				new InstructionPart(TypeAccessHelper.createClassTypeAccess(className)), methodName);
 	}
 
 	/**
@@ -116,21 +108,14 @@ public class InstructionCallMethodHelper {
 	 *            the caller of the method.
 	 * @param methodName
 	 *            the name of the method to call.
-	 * @param arguments
-	 *            the arguments list of the call method instruction.
 	 * @return the created call method instruction with the specified name and
 	 *         arguments.
 	 */
-	public static ComposableInstruction createCallMethodInstruction(IComposable caller, String methodName,
-			IComposable... arguments) {
+	public static AbstractMethodInstruction createCallMethodInstruction(IComposable caller, String methodName) {
 		MethodDeclaration methodDeclaration = MethodDeclarationBuilder.builder().setName(methodName).build();
 		MethodInvocation methodInvocation = MethodInvocationBuilder.builder().setMethod(methodDeclaration)
 				.setExpression(caller.getExpression()).build();
-		EList<Expression> argumentsList = methodInvocation.getArguments();
-		for (IComposable argument : arguments) {
-			argumentsList.add(argument.getExpression());
-		}
-		return new ComposableInstruction(ExpressionStatementBuilder.builder().setExpression(methodInvocation).build());
+		return new AbstractMethodInstruction(methodInvocation);
 	}
 
 	/**
@@ -138,22 +123,14 @@ public class InstructionCallMethodHelper {
 	 * 
 	 * @param superMethodName
 	 *            the name of the super method to call.
-	 * @param arguments
-	 *            the arguments list of the call super method instruction.
 	 * @return the created call method instruction with the specified name and
 	 *         arguments.
 	 */
-	public static ComposableInstruction createCallSuperMethodInstruction(String superMethodName,
-			IComposable... arguments) {
+	public static AbstractMethodInstruction createCallSuperMethodInstruction(String superMethodName) {
 		MethodDeclaration methodDeclaration = MethodDeclarationBuilder.builder().setName(superMethodName).build();
 		SuperMethodInvocation superMethodInvocation = SuperMethodInvocationBuilder.builder()
 				.setMethod(methodDeclaration).build();
-		EList<Expression> argumentsList = superMethodInvocation.getArguments();
-		for (IComposable argument : arguments) {
-			argumentsList.add(argument.getExpression());
-		}
-		return new ComposableInstruction(ExpressionStatementBuilder.builder().setExpression(superMethodInvocation)
-				.build());
+		return new AbstractMethodInstruction(superMethodInvocation);
 	}
 
 	/**

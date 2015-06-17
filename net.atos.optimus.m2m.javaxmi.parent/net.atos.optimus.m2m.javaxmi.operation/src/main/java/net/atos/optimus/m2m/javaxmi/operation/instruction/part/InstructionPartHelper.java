@@ -26,6 +26,10 @@ import net.atos.optimus.m2m.javaxmi.operation.accesses.ThisExpressionBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.accesses.VariableAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.IComposable;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.part.ClassInstanceCreationBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.part.InfixExpressionBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.part.ParenthesizedExpressionBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.part.PostfixExpressionBuilder;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmt.modisco.java.BooleanLiteral;

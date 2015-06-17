@@ -22,8 +22,9 @@
 package net.atos.optimus.m2m.javaxmi.operation.instruction;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.VariableDeclarationStatementBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.part.VariableDeclarationExpressionBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.part.AssignableInstructionPart;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.part.VariableDeclarationExpressionBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.util.NameGenerator;
 import net.atos.optimus.m2m.javaxmi.operation.variables.VariableDeclarationFragmentBuilder;

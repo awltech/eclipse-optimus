@@ -21,6 +21,7 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.instruction;
 
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.ReturnStatementBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.part.InstructionPartHelper;
 
 import org.eclipse.gmt.modisco.java.ReturnStatement;

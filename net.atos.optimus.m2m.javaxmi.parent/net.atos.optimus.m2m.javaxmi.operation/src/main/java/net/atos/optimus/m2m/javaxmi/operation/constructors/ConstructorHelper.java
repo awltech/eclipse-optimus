@@ -26,7 +26,7 @@ import net.atos.optimus.m2m.javaxmi.operation.classes.JavaClass;
 import net.atos.optimus.m2m.javaxmi.operation.fields.Field;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.Instruction;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.InstructionSetterHelper;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.block.BlockBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.block.BlockBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.parameters.ParameterHelper;
 import net.atos.optimus.m2m.javaxmi.operation.util.NameGenerator;

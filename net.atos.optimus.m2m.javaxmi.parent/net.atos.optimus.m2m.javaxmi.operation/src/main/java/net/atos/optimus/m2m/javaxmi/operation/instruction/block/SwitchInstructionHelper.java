@@ -23,6 +23,8 @@ package net.atos.optimus.m2m.javaxmi.operation.instruction.block;
 
 import net.atos.optimus.m2m.javaxmi.operation.instruction.IComposable;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.Instruction;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.block.SwitchCaseBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.block.SwitchStatementBuilder;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmt.modisco.java.Statement;

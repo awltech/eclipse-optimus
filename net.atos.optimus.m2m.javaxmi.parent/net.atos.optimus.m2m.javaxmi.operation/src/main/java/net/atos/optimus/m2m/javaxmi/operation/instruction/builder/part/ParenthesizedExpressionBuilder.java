@@ -19,73 +19,61 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.javaxmi.operation.instruction.block;
+package net.atos.optimus.m2m.javaxmi.operation.instruction.builder.part;
 
-import org.eclipse.gmt.modisco.java.DoStatement;
 import org.eclipse.gmt.modisco.java.Expression;
-import org.eclipse.gmt.modisco.java.Statement;
+import org.eclipse.gmt.modisco.java.ParenthesizedExpression;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
 
 /**
- * A builder dedicated to create do statement of modisco model
+ * A builder dedicated to create parenthesized expression of modisco model
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
  *
  */
 
-public class DoStatementBuilder {
+public class ParenthesizedExpressionBuilder {
 
-	/** The build do statement */
-	private DoStatement buildDoStatement;
+	/** The build parenthesized expression */
+	private ParenthesizedExpression buildParenthesizedExpression;
 
 	/**
-	 * Give a do statement builder
+	 * Give an parenthesized expression builder
 	 * 
-	 * @return a new do statement builder.
+	 * @return a new parenthesized expression builder.
 	 */
-	public static DoStatementBuilder builder() {
-		return new DoStatementBuilder();
+	public static ParenthesizedExpressionBuilder builder() {
+		return new ParenthesizedExpressionBuilder();
 	}
 
 	/**
 	 * Private constructor
 	 * 
 	 */
-	private DoStatementBuilder() {
-		this.buildDoStatement = JavaFactory.eINSTANCE.createDoStatement();
+	private ParenthesizedExpressionBuilder() {
+		this.buildParenthesizedExpression = JavaFactory.eINSTANCE.createParenthesizedExpression();
 	}
 
 	/**
-	 * Build a do statement of modisco model
+	 * Build an parenthesized expression of modisco model
 	 * 
-	 * @return a new do statement of modisco model.
+	 * @return a new parenthesized expression of modisco model.
 	 */
-	public DoStatement build() {
-		return this.buildDoStatement;
+	public ParenthesizedExpression build() {
+		return this.buildParenthesizedExpression;
 	}
 
 	/**
-	 * Set the expression of the do statement under construction
+	 * Set the expression of the parenthesized expression under construction
 	 * 
 	 * @param expression
-	 *            the expression of the do statement under construction.
+	 *            the expression of the parenthesized expression under
+	 *            construction.
 	 * @return the builder.
 	 */
-	public DoStatementBuilder setExpression(Expression expression) {
-		this.buildDoStatement.setExpression(expression);
-		return this;
-	}
-
-	/**
-	 * Set the body of the do statement under construction
-	 * 
-	 * @param body
-	 *            the body of the do statement under construction.
-	 * @return the builder.
-	 */
-	public DoStatementBuilder setBody(Statement body) {
-		this.buildDoStatement.setBody(body);
+	public ParenthesizedExpressionBuilder setExpression(Expression expression) {
+		this.buildParenthesizedExpression.setExpression(expression);
 		return this;
 	}
 
