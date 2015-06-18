@@ -28,83 +28,80 @@ import org.eclipse.gmt.modisco.java.PostfixExpressionKind;
 
 /**
  * The purpose of such class is to help with the creation of postfix operation
- * instruction
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
  *
  */
 
-public class PostfixOperationInstructionHelper {
+public class PostfixOperationHelper {
 
-	/** The build postfix operation instruction */
-	private PostfixExpression buildPostfixOperationInstruction;
+	/** The build postfix operation */
+	private PostfixExpression buildPostfixOperation;
 
 	/**
-	 * Launch the build of a new postfix operation instruction
+	 * Launch the build of a new postfix operation
 	 * 
 	 * @return a new helper.
 	 */
-	public static PostfixOperationInstructionHelper builder() {
-		return new PostfixOperationInstructionHelper();
+	public static PostfixOperationHelper builder() {
+		return new PostfixOperationHelper();
 	}
 
 	/**
-	 * Private constructor : a new postfix operation instruction
+	 * Private constructor : a new postfix operation
 	 * 
 	 */
-	private PostfixOperationInstructionHelper() {
-		this.buildPostfixOperationInstruction = PostfixExpressionBuilder.builder().build();
+	private PostfixOperationHelper() {
+		this.buildPostfixOperation = PostfixExpressionBuilder.builder().build();
 	}
 
 	/**
-	 * Give the build postfix operation instruction
+	 * Give the build postfix operation
 	 * 
-	 * @return the build postfix operation instruction.
+	 * @return the build postfix operation.
 	 */
 	public ElementaryInstruction build() {
-		return new ElementaryInstruction(this.buildPostfixOperationInstruction);
+		return new ElementaryInstruction(this.buildPostfixOperation);
 	}
 
 	/**
-	 * Set the operator of the postfix operation instruction under construction
+	 * Set the operator of the postfix operation under construction
 	 * 
 	 * @param operator
-	 *            the operator of the current postfix expression.
+	 *            the operator of the current postfix operation.
 	 * @return the helper.
 	 */
-	public PostfixOperationInstructionHelper setOperator(PostfixExpressionKind operator) {
-		this.buildPostfixOperationInstruction.setOperator(operator);
+	public PostfixOperationHelper setOperator(PostfixExpressionKind operator) {
+		this.buildPostfixOperation.setOperator(operator);
 		return this;
 	}
 
 	/**
-	 * Set the field operand of the postfix operation instruction under
-	 * construction
+	 * Set the field operand of the postfix operation under construction
 	 * 
 	 * @param fieldName
 	 *            the name of the field operand of the current postfix
-	 *            expression.
+	 *            operation.
 	 * @return the helper.
 	 */
-	public PostfixOperationInstructionHelper setFieldOperand(String fieldName) {
-		this.buildPostfixOperationInstruction.setOperand(ElementaryInstructionHelper.createFieldInstruction(fieldName)
+	public PostfixOperationHelper setFieldOperand(String fieldName) {
+		this.buildPostfixOperation.setOperand(ElementaryInstructionHelper.createFieldInstruction(fieldName)
 				.getExpression());
 		return this;
 	}
 
 	/**
-	 * Set the variable operand of the postfix operation instruction under
-	 * construction
+	 * Set the variable operand of the postfix operation under construction
 	 * 
 	 * @param variableName
 	 *            the name of the variable operand of the current postfix
-	 *            expression.
+	 *            operation.
 	 * @return the helper.
 	 */
-	public PostfixOperationInstructionHelper setVariableOperand(String variableName) {
-		this.buildPostfixOperationInstruction.setOperand(ElementaryInstructionHelper.createVariableInstruction(
-				variableName).getExpression());
+	public PostfixOperationHelper setVariableOperand(String variableName) {
+		this.buildPostfixOperation.setOperand(ElementaryInstructionHelper.createVariableInstruction(variableName)
+				.getExpression());
 		return this;
 	}
 

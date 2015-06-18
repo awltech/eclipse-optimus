@@ -25,6 +25,7 @@ import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.comments.LineCommentBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.ReturnStatementBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.elementary.CastExpressionBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.elementary.ParenthesizedExpressionBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.complex.ComplexInstruction;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.complex.IComplexInstruction;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.ElementaryInstruction;
@@ -80,6 +81,12 @@ public class Instruction implements IElementaryInstruction, IComplexInstruction 
 
 	public Expression getExpression() {
 		return this.expression;
+	}
+
+	@Override
+	public ElementaryInstruction withParentheses() {
+		return new ElementaryInstruction(ParenthesizedExpressionBuilder.builder().setExpression(this.getExpression())
+				.build());
 	}
 
 	@Override

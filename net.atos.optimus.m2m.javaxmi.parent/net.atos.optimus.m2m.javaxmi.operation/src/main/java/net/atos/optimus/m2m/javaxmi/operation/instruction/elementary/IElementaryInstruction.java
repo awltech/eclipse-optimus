@@ -37,6 +37,12 @@ import org.eclipse.gmt.modisco.java.Expression;
 public interface IElementaryInstruction extends IInstruction {
 
 	public Expression getExpression();
+	
+	/** Add parenthesis to the current instruction
+	 * 
+	 * @return the instruction with parentheses  based on the current instruction.
+	 */
+	public ElementaryInstruction withParentheses();
 
 	/**
 	 * Convert the current instruction to a return instruction

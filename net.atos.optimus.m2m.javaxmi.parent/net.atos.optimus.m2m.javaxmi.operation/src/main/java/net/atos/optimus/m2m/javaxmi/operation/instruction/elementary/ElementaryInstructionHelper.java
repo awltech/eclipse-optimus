@@ -24,13 +24,9 @@ package net.atos.optimus.m2m.javaxmi.operation.instruction.elementary;
 import net.atos.optimus.m2m.javaxmi.operation.accesses.FieldAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.accesses.ThisExpressionBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.accesses.VariableAccessHelper;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.elementary.InfixExpressionBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.elementary.ParenthesizedExpressionBuilder;
 
 import org.eclipse.gmt.modisco.java.BooleanLiteral;
 import org.eclipse.gmt.modisco.java.CharacterLiteral;
-import org.eclipse.gmt.modisco.java.Expression;
-import org.eclipse.gmt.modisco.java.InfixExpressionKind;
 import org.eclipse.gmt.modisco.java.NumberLiteral;
 import org.eclipse.gmt.modisco.java.StringLiteral;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
@@ -140,24 +136,4 @@ public class ElementaryInstructionHelper {
 		return new ElementaryInstruction(VariableAccessHelper.createVariableAccess(variableName));
 	}
 
-	/**
-	 * Create an operation instruction
-	 * 
-	 * @param operator
-	 *            the operator of the operation.
-	 * @param leftOperand
-	 *            the left operand of the operation.
-	 * @param rightOperand
-	 *            the right operand of the operation.
-	 * @return a new operation instruction.
-	 */
-	public static ElementaryInstruction createOperationInstruction(InfixExpressionKind operator,
-			IElementaryInstruction leftOperand, IElementaryInstruction rightOperand, boolean needParenthesis) {
-		Expression operationInstruction = InfixExpressionBuilder.builder().setLeftOperand(leftOperand.getExpression())
-				.setOperator(operator).setRightOperand(rightOperand.getExpression()).build();
-		if (needParenthesis) {
-			operationInstruction = ParenthesizedExpressionBuilder.builder().setExpression(operationInstruction).build();
-		}
-		return new ElementaryInstruction(operationInstruction);
-	}
 }
