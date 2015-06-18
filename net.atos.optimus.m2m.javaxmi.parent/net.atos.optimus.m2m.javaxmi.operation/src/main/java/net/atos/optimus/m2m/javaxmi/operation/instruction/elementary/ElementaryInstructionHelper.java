@@ -26,14 +26,12 @@ import net.atos.optimus.m2m.javaxmi.operation.accesses.ThisExpressionBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.accesses.VariableAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.elementary.InfixExpressionBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.elementary.ParenthesizedExpressionBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.elementary.PostfixExpressionBuilder;
 
 import org.eclipse.gmt.modisco.java.BooleanLiteral;
 import org.eclipse.gmt.modisco.java.CharacterLiteral;
 import org.eclipse.gmt.modisco.java.Expression;
 import org.eclipse.gmt.modisco.java.InfixExpressionKind;
 import org.eclipse.gmt.modisco.java.NumberLiteral;
-import org.eclipse.gmt.modisco.java.PostfixExpressionKind;
 import org.eclipse.gmt.modisco.java.StringLiteral;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
 
@@ -140,21 +138,6 @@ public class ElementaryInstructionHelper {
 	 */
 	public static ElementaryInstruction createVariableInstruction(String variableName) {
 		return new ElementaryInstruction(VariableAccessHelper.createVariableAccess(variableName));
-	}
-
-	/**
-	 * Create an operation instruction
-	 * 
-	 * @param operator
-	 *            the operator of the operation.
-	 * @param operand
-	 *            the operand of the operation.
-	 * @return a new operation instruction.
-	 */
-	public static ElementaryInstruction createOperationInstruction(PostfixExpressionKind operator,
-			IElementaryInstruction operand) {
-		return new ElementaryInstruction(PostfixExpressionBuilder.builder().setOperand(operand.getExpression())
-				.setOperator(operator).build());
 	}
 
 	/**

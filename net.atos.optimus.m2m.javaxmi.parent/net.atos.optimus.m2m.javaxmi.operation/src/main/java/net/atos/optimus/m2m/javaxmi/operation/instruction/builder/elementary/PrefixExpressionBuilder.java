@@ -22,70 +22,70 @@
 package net.atos.optimus.m2m.javaxmi.operation.instruction.builder.elementary;
 
 import org.eclipse.gmt.modisco.java.Expression;
-import org.eclipse.gmt.modisco.java.PostfixExpression;
-import org.eclipse.gmt.modisco.java.PostfixExpressionKind;
+import org.eclipse.gmt.modisco.java.PrefixExpression;
+import org.eclipse.gmt.modisco.java.PrefixExpressionKind;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
 
 /**
- * A builder dedicated to create postfix expression of modisco model
+ * A builder dedicated to create prefix expression of modisco model
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
  *
  */
 
-public class PostfixExpressionBuilder {
+public class PrefixExpressionBuilder {
 
-	/** The build postfix expression */
-	private PostfixExpression buildPostfixExpression;
+	/** The build prefix expression */
+	private PrefixExpression buildPrefixExpression;
 
 	/**
-	 * Give a postfix expression builder
+	 * Give a prefix expression builder
 	 * 
-	 * @return a new postfix expression builder.
+	 * @return a new prefix expression builder.
 	 */
-	public static PostfixExpressionBuilder builder() {
-		return new PostfixExpressionBuilder();
+	public static PrefixExpressionBuilder builder() {
+		return new PrefixExpressionBuilder();
 	}
 
 	/**
 	 * Private constructor
 	 * 
 	 */
-	private PostfixExpressionBuilder() {
-		this.buildPostfixExpression = JavaFactory.eINSTANCE.createPostfixExpression();
+	private PrefixExpressionBuilder() {
+		this.buildPrefixExpression = JavaFactory.eINSTANCE.createPrefixExpression();
 	}
 
 	/**
-	 * Build a postfix expression of modisco model
+	 * Build a prefix expression of modisco model
 	 * 
-	 * @return a new postfix expression of modisco model.
+	 * @return a new prefix expression of modisco model.
 	 */
-	public PostfixExpression build() {
-		return this.buildPostfixExpression;
+	public PrefixExpression build() {
+		return this.buildPrefixExpression;
 	}
 
 	/**
-	 * Set the operator of the postfix expression under construction
+	 * Set the operator of the prefix expression under construction
 	 * 
 	 * @param operator
-	 *            the operator of the postfix expression under construction.
+	 *            the operator of the prefix expression under construction.
 	 * @return the builder.
 	 */
-	public PostfixExpressionBuilder setOperator(PostfixExpressionKind operator) {
-		this.buildPostfixExpression.setOperator(operator);
+	public PrefixExpressionBuilder setOperator(PrefixExpressionKind operator) {
+		this.buildPrefixExpression.setOperator(operator);
 		return this;
 	}
 
 	/**
-	 * Set the operand of the postfix expression under construction
+	 * Set the operand of the prefix expression under construction
 	 * 
 	 * @param operand
-	 *            the operand of the postfix expression under construction.
+	 *            the operand of the prefix expression under construction.
 	 * @return the builder.
 	 */
-	public PostfixExpressionBuilder setOperand(Expression operand) {
-		this.buildPostfixExpression.setOperand(operand);
+	public PrefixExpressionBuilder setOperand(Expression operand) {
+		this.buildPrefixExpression.setOperand(operand);
 		return this;
 	}
 
