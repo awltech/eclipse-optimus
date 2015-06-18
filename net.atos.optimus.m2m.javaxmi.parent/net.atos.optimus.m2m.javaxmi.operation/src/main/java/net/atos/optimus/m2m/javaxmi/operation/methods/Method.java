@@ -22,8 +22,8 @@
 package net.atos.optimus.m2m.javaxmi.operation.methods;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.Instruction;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.block.BlockBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.complex.BlockBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.complex.IComplexInstruction;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmt.modisco.java.Block;
@@ -65,13 +65,13 @@ public class Method extends AbstractMethod {
 	 *            the added instructions list of the method.
 	 * @return the method with the instructions list added to its body.
 	 */
-	public Method addInstructions(Instruction... instructions) {
+	public Method addInstructions(IComplexInstruction... instructions) {
 		Block block = this.getMethodDeclaration().getBody();
 		if (block == null) {
 			block = BlockBuilder.builder().build();
 			this.getMethodDeclaration().setBody(block);
 		}
-		for (Instruction instruction : instructions) {
+		for (IComplexInstruction instruction : instructions) {
 			block.getStatements().add(instruction.getStatement());
 		}
 		return this;

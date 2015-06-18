@@ -23,7 +23,7 @@ package net.atos.optimus.m2m.javaxmi.operation.methods;
 
 import net.atos.optimus.m2m.javaxmi.operation.classes.JavaClass;
 import net.atos.optimus.m2m.javaxmi.operation.fields.Field;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.InstructionReturnHelper;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.complex.InstructionReturnHelper;
 import net.atos.optimus.m2m.javaxmi.operation.util.NameGenerator;
 
 import org.eclipse.gmt.modisco.java.InheritanceKind;

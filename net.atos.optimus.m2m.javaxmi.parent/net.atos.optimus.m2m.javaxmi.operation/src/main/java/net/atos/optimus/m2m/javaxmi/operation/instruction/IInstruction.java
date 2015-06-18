@@ -19,28 +19,15 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.javaxmi.operation.instruction.part;
-
-import org.eclipse.gmt.modisco.java.Expression;
+package net.atos.optimus.m2m.javaxmi.operation.instruction;
 
 /**
- * Models an assignable instruction part
+ * General description of an instruction
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
  *
  */
-
-public class AssignableInstructionPart extends InstructionPart {
-
-	/**
-	 * Constructor of instruction part
-	 * 
-	 * @param expression
-	 *            the expression.
-	 */
-	public AssignableInstructionPart(Expression expression) {
-		super(expression);
-	}
+public interface IInstruction {
 
 }

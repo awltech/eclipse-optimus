@@ -23,9 +23,9 @@ package net.atos.optimus.m2m.javaxmi.operation.instruction;
 
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.AssignmentBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.ExpressionStatementBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.part.AssignableInstructionPart;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.part.InstructionPart;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.part.InstructionPartHelper;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.ElementaryInstruction;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.ElementaryInstructionHelper;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.IElementaryInstruction;
 
 import org.eclipse.gmt.modisco.java.AssignmentKind;
 import org.eclipse.gmt.modisco.java.Expression;
@@ -44,15 +44,15 @@ public class InstructionSetterHelper {
 	 * Create an assignment instruction
 	 * 
 	 * @param leftHandSide
-	 *            the assign instruction part.
+	 *            the assign instruction.
 	 * @param assignmentOperator
 	 *            the assignment operator.
 	 * @param rightHandSide
-	 *            the instruction part with the value to assign.
+	 *            the instruction with the value to assign.
 	 * @return the created assignment instruction.
 	 */
-	public static Instruction createAssignmentInstruction(AssignableInstructionPart leftHandSide,
-			AssignmentKind assignmentOperator, IComposable rightHandSide) {
+	public static Instruction createAssignmentInstruction(IElementaryInstruction leftHandSide,
+			AssignmentKind assignmentOperator, IElementaryInstruction rightHandSide) {
 		Expression assignmentExpression = AssignmentBuilder.builder().setLeftHandSide(leftHandSide.getExpression())
 				.setOperator(assignmentOperator).setRightHandSide(rightHandSide.getExpression()).build();
 		return new Instruction(ExpressionStatementBuilder.builder().setExpression(assignmentExpression).build());
@@ -70,8 +70,8 @@ public class InstructionSetterHelper {
 	 *         specified variable.
 	 */
 	public static Instruction createSetFieldInstruction(String fieldName, String variableName) {
-		AssignableInstructionPart fieldInstruction = InstructionPartHelper.createFieldInstructionPart(fieldName);
-		InstructionPart variableInstruction = InstructionPartHelper.createVariableInstructionPart(variableName);
+		ElementaryInstruction fieldInstruction = ElementaryInstructionHelper.createFieldInstruction(fieldName);
+		ElementaryInstruction variableInstruction = ElementaryInstructionHelper.createVariableInstruction(variableName);
 		return InstructionSetterHelper.createAssignmentInstruction(fieldInstruction, AssignmentKind.ASSIGN,
 				variableInstruction);
 	}

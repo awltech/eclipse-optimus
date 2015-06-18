@@ -25,8 +25,10 @@ import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.MethodInvocationBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.SuperConstructorInvocationBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.SuperMethodInvocationBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.part.InstructionPart;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.part.InstructionPartHelper;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.complex.ComplexInstruction;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.ElementaryInstruction;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.ElementaryInstructionHelper;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.IElementaryInstruction;
 import net.atos.optimus.m2m.javaxmi.operation.methods.MethodDeclarationBuilder;
 
 import org.eclipse.emf.common.util.EList;
@@ -56,7 +58,7 @@ public class InstructionCallMethodHelper {
 	 */
 	public static AbstractMethodInstruction createThisCallMethodInstruction(String methodName) {
 		return InstructionCallMethodHelper.createCallMethodInstruction(
-				InstructionPartHelper.createThisInstructionPart(), methodName);
+				ElementaryInstructionHelper.createThisInstruction(), methodName);
 	}
 
 	/**
@@ -70,7 +72,7 @@ public class InstructionCallMethodHelper {
 	 */
 	public static AbstractMethodInstruction createFieldCallMethodInstruction(String fieldName, String methodName) {
 		return InstructionCallMethodHelper.createCallMethodInstruction(
-				InstructionPartHelper.createFieldInstructionPart(fieldName), methodName);
+				ElementaryInstructionHelper.createFieldInstruction(fieldName), methodName);
 	}
 
 	/**
@@ -84,7 +86,7 @@ public class InstructionCallMethodHelper {
 	 */
 	public static AbstractMethodInstruction createVariableCallMethodInstruction(String variableName, String methodName) {
 		return InstructionCallMethodHelper.createCallMethodInstruction(
-				InstructionPartHelper.createVariableInstructionPart(variableName), methodName);
+				ElementaryInstructionHelper.createVariableInstruction(variableName), methodName);
 	}
 
 	/**
@@ -98,7 +100,7 @@ public class InstructionCallMethodHelper {
 	 */
 	public static AbstractMethodInstruction createCallStaticMethodInstruction(String className, String methodName) {
 		return InstructionCallMethodHelper.createCallMethodInstruction(
-				new InstructionPart(TypeAccessHelper.createClassTypeAccess(className)), methodName);
+				new ElementaryInstruction(TypeAccessHelper.createClassTypeAccess(className)), methodName);
 	}
 
 	/**
@@ -111,7 +113,7 @@ public class InstructionCallMethodHelper {
 	 * @return the created call method instruction with the specified name and
 	 *         arguments.
 	 */
-	public static AbstractMethodInstruction createCallMethodInstruction(IComposable caller, String methodName) {
+	public static AbstractMethodInstruction createCallMethodInstruction(IElementaryInstruction caller, String methodName) {
 		MethodDeclaration methodDeclaration = MethodDeclarationBuilder.builder().setName(methodName).build();
 		MethodInvocation methodInvocation = MethodInvocationBuilder.builder().setMethod(methodDeclaration)
 				.setExpression(caller.getExpression()).build();
@@ -140,13 +142,13 @@ public class InstructionCallMethodHelper {
 	 *            the arguments list of the call super method instruction.
 	 * @return the created call super constructor instruction.
 	 */
-	public static Instruction createCallSuperConstructorInstruction(IComposable... arguments) {
+	public static ComplexInstruction createCallSuperConstructorInstruction(IElementaryInstruction... arguments) {
 		SuperConstructorInvocation superConstructorInvocation = SuperConstructorInvocationBuilder.builder().build();
 		EList<Expression> argumentsList = superConstructorInvocation.getArguments();
-		for (IComposable argument : arguments) {
+		for (IElementaryInstruction argument : arguments) {
 			argumentsList.add(argument.getExpression());
 		}
-		return new Instruction(superConstructorInvocation);
+		return new ComplexInstruction(superConstructorInvocation);
 	}
 
 }

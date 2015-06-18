@@ -19,12 +19,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.javaxmi.operation.instruction.block;
+package net.atos.optimus.m2m.javaxmi.operation.instruction.complex;
 
-import net.atos.optimus.m2m.javaxmi.operation.instruction.IComposable;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.Instruction;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.block.SwitchCaseBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.block.SwitchStatementBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.complex.SwitchCaseBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.complex.SwitchStatementBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.IElementaryInstruction;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmt.modisco.java.Statement;
@@ -52,7 +51,7 @@ public class SwitchInstructionHelper {
 	 *            construction.
 	 * @return a new helper.
 	 */
-	public static SwitchInstructionHelper builder(IComposable testedInstruction) {
+	public static SwitchInstructionHelper builder(IElementaryInstruction testedInstruction) {
 		return new SwitchInstructionHelper(testedInstruction);
 	}
 
@@ -63,7 +62,7 @@ public class SwitchInstructionHelper {
 	 *            the tested instruction in the switch instruction under
 	 *            construction.
 	 */
-	private SwitchInstructionHelper(IComposable testedInstruction) {
+	private SwitchInstructionHelper(IElementaryInstruction testedInstruction) {
 		this.buildSwitchInstruction = SwitchStatementBuilder.builder().setExpression(testedInstruction.getExpression())
 				.build();
 	}
@@ -73,8 +72,8 @@ public class SwitchInstructionHelper {
 	 * 
 	 * @return the build switch instruction.
 	 */
-	public Instruction build() {
-		return new Instruction(this.buildSwitchInstruction);
+	public ComplexInstruction build() {
+		return new ComplexInstruction(this.buildSwitchInstruction);
 	}
 
 	/**
@@ -91,12 +90,12 @@ public class SwitchInstructionHelper {
 	 *            instruction under construction.
 	 * @return the helper.
 	 */
-	public SwitchInstructionHelper addCaseBlock(IComposable condition, boolean withBreak,
-			Instruction... caseInstructions) {
+	public SwitchInstructionHelper addCaseBlock(IElementaryInstruction condition, boolean withBreak,
+			IComplexInstruction... caseInstructions) {
 		EList<Statement> statementList = this.buildSwitchInstruction.getStatements();
 		statementList.add(SwitchCaseBuilder.builder().setExpression(condition.getExpression()).setDefault(false)
 				.build());
-		for (Instruction caseInstruction : caseInstructions) {
+		for (IComplexInstruction caseInstruction : caseInstructions) {
 			statementList.add(caseInstruction.getStatement());
 		}
 		if (withBreak) {
@@ -113,10 +112,10 @@ public class SwitchInstructionHelper {
 	 *            switch instruction under construction.
 	 * @return the build switch instruction.
 	 */
-	public Instruction addFinalCaseBlock(Instruction... caseInstructions) {
+	public ComplexInstruction addFinalCaseBlock(IComplexInstruction... caseInstructions) {
 		EList<Statement> statementList = this.buildSwitchInstruction.getStatements();
 		statementList.add(SwitchCaseBuilder.builder().setDefault(true).build());
-		for (Instruction caseInstruction : caseInstructions) {
+		for (IComplexInstruction caseInstruction : caseInstructions) {
 			statementList.add(caseInstruction.getStatement());
 		}
 		return this.build();

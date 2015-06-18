@@ -19,12 +19,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.javaxmi.operation.instruction.block;
+package net.atos.optimus.m2m.javaxmi.operation.instruction.complex;
 
-import net.atos.optimus.m2m.javaxmi.operation.instruction.IComposable;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.Instruction;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.block.BlockBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.block.IfStatementBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.complex.BlockBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.complex.IfStatementBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.IElementaryInstruction;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmt.modisco.java.Block;
@@ -56,11 +55,11 @@ public class IfInstructionHelper {
 	 * @param condition
 	 *            the condition of the if instruction under construction.
 	 * @param thenInstructions
-	 *            the instruction list in the then block of the if instruction
+	 *            the instructions list in the then block of the if instruction
 	 *            under construction.
 	 * @return a new helper.
 	 */
-	public static IfInstructionHelper builder(IComposable condition, Instruction... thenInstructions) {
+	public static IfInstructionHelper builder(IElementaryInstruction condition, IComplexInstruction... thenInstructions) {
 		return new IfInstructionHelper(condition, thenInstructions);
 	}
 
@@ -70,13 +69,13 @@ public class IfInstructionHelper {
 	 * @param condition
 	 *            the condition of the if instruction under construction.
 	 * @param thenInstructions
-	 *            the instruction list in the then block of the if instruction
+	 *            the instructions list in the then block of the if instruction
 	 *            under construction.
 	 */
-	private IfInstructionHelper(IComposable condition, Instruction... thenInstructions) {
+	private IfInstructionHelper(IElementaryInstruction condition, IComplexInstruction... thenInstructions) {
 		this.thenBlock = BlockBuilder.builder().build();
 		EList<Statement> statementsList = this.thenBlock.getStatements();
-		for (Instruction thenInstruction : thenInstructions) {
+		for (IComplexInstruction thenInstruction : thenInstructions) {
 			statementsList.add(thenInstruction.getStatement());
 		}
 		this.buildIfInstruction = IfStatementBuilder.builder().setExpression(condition.getExpression())
@@ -88,8 +87,8 @@ public class IfInstructionHelper {
 	 * 
 	 * @return the build if instruction.
 	 */
-	public Instruction build() {
-		return new Instruction(this.buildIfInstruction);
+	public ComplexInstruction build() {
+		return new ComplexInstruction(this.buildIfInstruction);
 	}
 
 	/**
@@ -101,9 +100,9 @@ public class IfInstructionHelper {
 	 *            instruction under construction.
 	 * @return the helper.
 	 */
-	public IfInstructionHelper addThenBlockInstruction(Instruction... thenInstructions) {
+	public IfInstructionHelper addThenBlockInstruction(IComplexInstruction... thenInstructions) {
 		EList<Statement> statementsList = this.thenBlock.getStatements();
-		for (Instruction thenInstruction : thenInstructions) {
+		for (IComplexInstruction thenInstruction : thenInstructions) {
 			statementsList.add(thenInstruction.getStatement());
 		}
 		return this;
@@ -118,13 +117,13 @@ public class IfInstructionHelper {
 	 *            instruction under construction.
 	 * @return the helper.
 	 */
-	public IfInstructionHelper addElseBlockInstruction(Instruction... elseInstructions) {
+	public IfInstructionHelper addElseBlockInstruction(IComplexInstruction... elseInstructions) {
 		if (this.elseBlock == null) {
 			this.elseBlock = BlockBuilder.builder().build();
 			this.buildIfInstruction.setElseStatement(this.elseBlock);
 		}
 		EList<Statement> statementsList = this.elseBlock.getStatements();
-		for (Instruction thenInstruction : elseInstructions) {
+		for (IComplexInstruction thenInstruction : elseInstructions) {
 			statementsList.add(thenInstruction.getStatement());
 		}
 		return this;

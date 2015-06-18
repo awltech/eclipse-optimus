@@ -19,66 +19,54 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.javaxmi.operation.instruction;
+package net.atos.optimus.m2m.javaxmi.operation.instruction.complex;
 
 import net.atos.optimus.m2m.javaxmi.operation.comments.LineCommentBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.complex.IComplexInstruction;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.IElementaryInstruction;
 
-import org.eclipse.gmt.modisco.java.Expression;
-import org.eclipse.gmt.modisco.java.ExpressionStatement;
 import org.eclipse.gmt.modisco.java.LineComment;
 import org.eclipse.gmt.modisco.java.Statement;
 
 /**
- * Models an instruction : wrapper of ExpressionStatement in modisco model
+ * Models a complex instruction : wrapper of Statement in modisco model
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
  *
  */
 
-public class Instruction implements IElementaryInstruction, IComplexInstruction {
+public class ComplexInstruction implements IComplexInstruction {
 
 	/** The statement */
 	private Statement statement;
 
-	/** The expression */
-	private Expression expression;
-
 	/**
-	 * Constructor of instruction
+	 * Constructor of complex instruction
 	 * 
 	 * @param statement
-	 *            the expression statement.
+	 *            the statement.
 	 */
-	public Instruction(ExpressionStatement statement) {
+	public ComplexInstruction(Statement statement) {
 		this.statement = statement;
-		this.expression = statement.getExpression();
 	}
 
 	public Statement getStatement() {
 		return this.statement;
 	}
 
-	public Expression getExpression() {
-		return this.expression;
-	}
-
 	/**
-	 * Add a comment to the current instruction and set to true the prefix of
+	 * Add a comment to the current complex instruction and set to true the prefix of
 	 * parent state
 	 * 
 	 * @param commentText
 	 *            the text of the comment.
 	 * @return the commented instruction.
 	 */
-	public Instruction addComment(String commentText) {
+	public ComplexInstruction addComment(String commentText) {
 		return this.addComment(commentText, true);
 	}
 
 	/**
-	 * Add a comment to the current instruction
+	 * Add a comment to the current complex instruction
 	 * 
 	 * @param commentText
 	 *            the text of the comment.
@@ -86,7 +74,7 @@ public class Instruction implements IElementaryInstruction, IComplexInstruction 
 	 *            the prefix of parent state of the comment.
 	 * @return the commented instruction.
 	 */
-	public Instruction addComment(String commentText, boolean prefixOfParent) {
+	public ComplexInstruction addComment(String commentText, boolean prefixOfParent) {
 		LineComment comment = LineCommentBuilder.builder().setContent(commentText).setPrefixOfParent(prefixOfParent)
 				.build();
 		this.getStatement().getComments().add(comment);

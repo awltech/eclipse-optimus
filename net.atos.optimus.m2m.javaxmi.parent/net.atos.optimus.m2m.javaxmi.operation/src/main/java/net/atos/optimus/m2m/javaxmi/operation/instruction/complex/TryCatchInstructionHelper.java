@@ -19,13 +19,12 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.javaxmi.operation.instruction.block;
+package net.atos.optimus.m2m.javaxmi.operation.instruction.complex;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.Instruction;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.block.BlockBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.block.CatchClauseBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.block.TryStatementBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.complex.BlockBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.complex.CatchClauseBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.complex.TryStatementBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.variables.SingleVariableDeclarationBuilder;
 
 import org.eclipse.emf.common.util.EList;
@@ -59,11 +58,11 @@ public class TryCatchInstructionHelper {
 	 * finally block)
 	 * 
 	 * @param tryInstructions
-	 *            the instruction list in the try block of the try/catch
+	 *            the instructions list in the try block of the try/catch
 	 *            instruction under construction.
 	 * @return a new helper.
 	 */
-	public static TryCatchInstructionHelper builder(Instruction... tryInstructions) {
+	public static TryCatchInstructionHelper builder(IComplexInstruction... tryInstructions) {
 		return new TryCatchInstructionHelper(tryInstructions);
 	}
 
@@ -72,13 +71,13 @@ public class TryCatchInstructionHelper {
 	 * and finally block)
 	 * 
 	 * @param tryInstructions
-	 *            the instruction list in the try block of the try/catch
+	 *            the instructions list in the try block of the try/catch
 	 *            instruction under construction.
 	 */
-	private TryCatchInstructionHelper(Instruction... tryInstructions) {
+	private TryCatchInstructionHelper(IComplexInstruction... tryInstructions) {
 		this.tryBlock = BlockBuilder.builder().build();
 		EList<Statement> statementsList = this.tryBlock.getStatements();
-		for (Instruction tryInstruction : tryInstructions) {
+		for (IComplexInstruction tryInstruction : tryInstructions) {
 			statementsList.add(tryInstruction.getStatement());
 		}
 		this.buildTryInstruction = TryStatementBuilder.builder().setBody(this.tryBlock).build();
@@ -89,8 +88,8 @@ public class TryCatchInstructionHelper {
 	 * 
 	 * @return the build try/catch instruction.
 	 */
-	public Instruction build() {
-		return new Instruction(this.buildTryInstruction);
+	public ComplexInstruction build() {
+		return new ComplexInstruction(this.buildTryInstruction);
 	}
 
 	/**
@@ -102,9 +101,9 @@ public class TryCatchInstructionHelper {
 	 *            instruction under construction.
 	 * @return the helper.
 	 */
-	public TryCatchInstructionHelper addTryBlockInstruction(Instruction... tryInstructions) {
+	public TryCatchInstructionHelper addTryBlockInstruction(IComplexInstruction... tryInstructions) {
 		EList<Statement> statementsList = this.tryBlock.getStatements();
-		for (Instruction tryInstruction : tryInstructions) {
+		for (IComplexInstruction tryInstruction : tryInstructions) {
 			statementsList.add(tryInstruction.getStatement());
 		}
 		return this;
@@ -125,10 +124,10 @@ public class TryCatchInstructionHelper {
 	 * @return the helper.
 	 */
 	public TryCatchInstructionHelper addCatchBlock(String exceptionTypeName, String exceptionName,
-			Instruction... catchInstructions) {
+			IComplexInstruction... catchInstructions) {
 		Block catchBlock = BlockBuilder.builder().build();
 		EList<Statement> statementsList = catchBlock.getStatements();
-		for (Instruction catchInstruction : catchInstructions) {
+		for (IComplexInstruction catchInstruction : catchInstructions) {
 			statementsList.add(catchInstruction.getStatement());
 		}
 		SingleVariableDeclaration exceptionDeclaration = SingleVariableDeclarationBuilder.builder()
@@ -147,13 +146,13 @@ public class TryCatchInstructionHelper {
 	 *            try/catch instruction under construction.
 	 * @return the helper.
 	 */
-	public TryCatchInstructionHelper addFinallyBlockInstruction(Instruction... finallyInstructions) {
+	public TryCatchInstructionHelper addFinallyBlockInstruction(IComplexInstruction... finallyInstructions) {
 		if (this.finallyBlock == null) {
 			this.finallyBlock = BlockBuilder.builder().build();
 			this.buildTryInstruction.setFinally(finallyBlock);
 		}
 		EList<Statement> statementsList = this.finallyBlock.getStatements();
-		for (Instruction finallyInstruction : finallyInstructions) {
+		for (IComplexInstruction finallyInstruction : finallyInstructions) {
 			statementsList.add(finallyInstruction.getStatement());
 		}
 		return this;

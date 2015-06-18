@@ -19,10 +19,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.javaxmi.operation.instruction;
+package net.atos.optimus.m2m.javaxmi.operation.instruction.complex;
 
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.ReturnStatementBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.part.InstructionPartHelper;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.ElementaryInstructionHelper;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.IElementaryInstruction;
 
 import org.eclipse.gmt.modisco.java.ReturnStatement;
 
@@ -39,15 +40,15 @@ public class InstructionReturnHelper {
 	/**
 	 * Create a return instruction based on an instruction part
 	 * 
-	 * @param composableInstruction
-	 *            the composable instruction convert to a return instruction.
+	 * @param elementaryInstruction
+	 *            the elementary instruction convert to a return instruction.
 	 * @return the created return instruction based on the specified instruction
 	 *         part.
 	 */
-	public static Instruction createReturnInstruction(IComposable composableInstruction) {
+	public static ComplexInstruction createReturnInstruction(IElementaryInstruction elementaryInstruction) {
 		ReturnStatement returnStatement = ReturnStatementBuilder.builder()
-				.setExpression(composableInstruction.getExpression()).build();
-		return new Instruction(returnStatement);
+				.setExpression(elementaryInstruction.getExpression()).build();
+		return new ComplexInstruction(returnStatement);
 	}
 
 	/**
@@ -55,8 +56,8 @@ public class InstructionReturnHelper {
 	 * 
 	 * @return the empty return instruction.
 	 */
-	public static Instruction createReturnInstruction() {
-		return new Instruction(ReturnStatementBuilder.builder().build());
+	public static ComplexInstruction createReturnInstruction() {
+		return new ComplexInstruction(ReturnStatementBuilder.builder().build());
 	}
 
 	/**
@@ -64,8 +65,8 @@ public class InstructionReturnHelper {
 	 * 
 	 * @return the created null return instruction.
 	 */
-	public static Instruction createNullReturnInstruction() {
-		return InstructionReturnHelper.createReturnInstruction(InstructionPartHelper.createInstructionPart());
+	public static ComplexInstruction createNullReturnInstruction() {
+		return InstructionReturnHelper.createReturnInstruction(ElementaryInstructionHelper.createNullInstruction());
 	}
 
 	/**
@@ -75,8 +76,8 @@ public class InstructionReturnHelper {
 	 *            the boolean value.
 	 * @return the created boolean return instruction with the specified value.
 	 */
-	public static Instruction createReturnInstruction(boolean value) {
-		return InstructionReturnHelper.createReturnInstruction(InstructionPartHelper.createInstructionPart(value));
+	public static ComplexInstruction createReturnInstruction(boolean value) {
+		return InstructionReturnHelper.createReturnInstruction(ElementaryInstructionHelper.createInstruction(value));
 	}
 
 	/**
@@ -86,8 +87,8 @@ public class InstructionReturnHelper {
 	 *            the integer value.
 	 * @return the created integer return instruction with the specified value.
 	 */
-	public static Instruction createReturnInstruction(int value) {
-		return InstructionReturnHelper.createReturnInstruction(InstructionPartHelper.createInstructionPart(value));
+	public static ComplexInstruction createReturnInstruction(int value) {
+		return InstructionReturnHelper.createReturnInstruction(ElementaryInstructionHelper.createInstruction(value));
 	}
 
 	/**
@@ -97,8 +98,8 @@ public class InstructionReturnHelper {
 	 *            the char value.
 	 * @return the created char return instruction with the specified value.
 	 */
-	public static Instruction createReturnInstruction(char value) {
-		return InstructionReturnHelper.createReturnInstruction(InstructionPartHelper.createInstructionPart(value));
+	public static ComplexInstruction createReturnInstruction(char value) {
+		return InstructionReturnHelper.createReturnInstruction(ElementaryInstructionHelper.createInstruction(value));
 	}
 
 	/**
@@ -108,8 +109,8 @@ public class InstructionReturnHelper {
 	 *            the string value.
 	 * @return the created string return instruction with the specified value.
 	 */
-	public static Instruction createReturnInstruction(String value) {
-		return InstructionReturnHelper.createReturnInstruction(InstructionPartHelper.createInstructionPart(value));
+	public static ComplexInstruction createReturnInstruction(String value) {
+		return InstructionReturnHelper.createReturnInstruction(ElementaryInstructionHelper.createInstruction(value));
 	}
 
 	/**
@@ -117,8 +118,8 @@ public class InstructionReturnHelper {
 	 * 
 	 * @return the created this return instruction part.
 	 */
-	public static Instruction createThisInstructionPart() {
-		return InstructionReturnHelper.createReturnInstruction(InstructionPartHelper.createThisInstructionPart());
+	public static ComplexInstruction createThisInstructionPart() {
+		return InstructionReturnHelper.createReturnInstruction(ElementaryInstructionHelper.createThisInstruction());
 	}
 
 	/**
@@ -129,9 +130,9 @@ public class InstructionReturnHelper {
 	 * @return the created field return instruction returning the field with the
 	 *         specified name.
 	 */
-	public static Instruction createFieldReturnInstruction(String fieldName) {
-		return InstructionReturnHelper.createReturnInstruction(InstructionPartHelper
-				.createFieldInstructionPart(fieldName));
+	public static ComplexInstruction createFieldReturnInstruction(String fieldName) {
+		return InstructionReturnHelper.createReturnInstruction(ElementaryInstructionHelper
+				.createFieldInstruction(fieldName));
 	}
 
 	/**
@@ -141,9 +142,9 @@ public class InstructionReturnHelper {
 	 *            the name of the variable.
 	 * @return the created variable return instruction.
 	 */
-	public static Instruction createVariableReturnInstruction(String variableName) {
-		return InstructionReturnHelper.createReturnInstruction(InstructionPartHelper
-				.createVariableInstructionPart(variableName));
+	public static ComplexInstruction createVariableReturnInstruction(String variableName) {
+		return InstructionReturnHelper.createReturnInstruction(ElementaryInstructionHelper
+				.createVariableInstruction(variableName));
 	}
 
 	/**
@@ -157,9 +158,10 @@ public class InstructionReturnHelper {
 	 * @return the created class instantiation return instruction returning the
 	 *         instantiation of the class with the specified name and arguments.
 	 */
-	public static Instruction createClassInstantiationReturnInstruction(String className, IComposable... arguments) {
-		return InstructionReturnHelper.createReturnInstruction(InstructionPartHelper
-				.createClassInstantiationInstructionPart(className, arguments));
+	public static ComplexInstruction createClassInstantiationReturnInstruction(String className,
+			IElementaryInstruction... arguments) {
+		return InstructionReturnHelper.createReturnInstruction(ElementaryInstructionHelper
+				.createClassInstantiationInstruction(className, arguments));
 	}
 
 }

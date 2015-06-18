@@ -19,72 +19,61 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.javaxmi.operation.instruction.builder.block;
+package net.atos.optimus.m2m.javaxmi.operation.instruction.builder.elementary;
 
 import org.eclipse.gmt.modisco.java.Expression;
-import org.eclipse.gmt.modisco.java.SwitchCase;
+import org.eclipse.gmt.modisco.java.ParenthesizedExpression;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
 
 /**
- * A builder dedicated to create switch case of modisco model
+ * A builder dedicated to create parenthesized expression of modisco model
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
  *
  */
 
-public class SwitchCaseBuilder {
+public class ParenthesizedExpressionBuilder {
 
-	/** The build switch case */
-	private SwitchCase buildSwitchCase;
+	/** The build parenthesized expression */
+	private ParenthesizedExpression buildParenthesizedExpression;
 
 	/**
-	 * Give a switch case builder
+	 * Give an parenthesized expression builder
 	 * 
-	 * @return a new switch case builder.
+	 * @return a new parenthesized expression builder.
 	 */
-	public static SwitchCaseBuilder builder() {
-		return new SwitchCaseBuilder();
+	public static ParenthesizedExpressionBuilder builder() {
+		return new ParenthesizedExpressionBuilder();
 	}
 
 	/**
 	 * Private constructor
 	 * 
 	 */
-	private SwitchCaseBuilder() {
-		this.buildSwitchCase = JavaFactory.eINSTANCE.createSwitchCase();
+	private ParenthesizedExpressionBuilder() {
+		this.buildParenthesizedExpression = JavaFactory.eINSTANCE.createParenthesizedExpression();
 	}
 
 	/**
-	 * Build a switch case of modisco model
+	 * Build an parenthesized expression of modisco model
 	 * 
-	 * @return a new switch case of modisco model.
+	 * @return a new parenthesized expression of modisco model.
 	 */
-	public SwitchCase build() {
-		return this.buildSwitchCase;
+	public ParenthesizedExpression build() {
+		return this.buildParenthesizedExpression;
 	}
 
 	/**
-	 * Set the expression of the switch case under construction
+	 * Set the expression of the parenthesized expression under construction
 	 * 
 	 * @param expression
-	 *            the expression of the switch case under construction.
+	 *            the expression of the parenthesized expression under
+	 *            construction.
 	 * @return the builder.
 	 */
-	public SwitchCaseBuilder setExpression(Expression expression) {
-		this.buildSwitchCase.setExpression(expression);
-		return this;
-	}
-
-	/**
-	 * Set the default state of the switch case under construction
-	 * 
-	 * @param isDefault
-	 *            the default state of the switch case under construction.
-	 * @return the builder.
-	 */
-	public SwitchCaseBuilder setDefault(boolean isDefault) {
-		this.buildSwitchCase.setDefault(isDefault);
+	public ParenthesizedExpressionBuilder setExpression(Expression expression) {
+		this.buildParenthesizedExpression.setExpression(expression);
 		return this;
 	}
 

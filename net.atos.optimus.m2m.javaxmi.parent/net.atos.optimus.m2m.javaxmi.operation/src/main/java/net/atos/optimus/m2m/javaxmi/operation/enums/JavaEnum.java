@@ -24,7 +24,7 @@ package net.atos.optimus.m2m.javaxmi.operation.enums;
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.classes.AbstractClass;
 import net.atos.optimus.m2m.javaxmi.operation.imports.ImportDeclarationHelper;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.IComposable;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.IElementaryInstruction;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmt.modisco.java.EnumConstantDeclaration;
@@ -67,11 +67,11 @@ public class JavaEnum extends AbstractClass {
 	 *            the enumeration.
 	 * @return the enumeration.
 	 */
-	public JavaEnum addEnumConstant(String constantName, IComposable... arguments) {
+	public JavaEnum addEnumConstant(String constantName, IElementaryInstruction... arguments) {
 		EnumConstantDeclaration enumConstantDeclaration = EnumConstantDeclarationBuilder.builder()
 				.setName(constantName).build();
 		EList<Expression> argumentsList = enumConstantDeclaration.getArguments();
-		for (IComposable argument : arguments) {
+		for (IElementaryInstruction argument : arguments) {
 			argumentsList.add(argument.getExpression());
 		}
 		this.getEnumDeclaration().getEnumConstants().add(enumConstantDeclaration);

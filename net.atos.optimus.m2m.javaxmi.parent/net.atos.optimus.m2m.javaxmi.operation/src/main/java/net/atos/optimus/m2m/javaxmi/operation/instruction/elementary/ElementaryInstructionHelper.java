@@ -19,17 +19,16 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.javaxmi.operation.instruction.part;
+package net.atos.optimus.m2m.javaxmi.operation.instruction.elementary;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.FieldAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.accesses.ThisExpressionBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.accesses.VariableAccessHelper;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.IComposable;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.part.ClassInstanceCreationBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.part.InfixExpressionBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.part.ParenthesizedExpressionBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.part.PostfixExpressionBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.elementary.ClassInstanceCreationBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.elementary.InfixExpressionBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.elementary.ParenthesizedExpressionBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.elementary.PostfixExpressionBuilder;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmt.modisco.java.BooleanLiteral;
@@ -43,148 +42,149 @@ import org.eclipse.gmt.modisco.java.StringLiteral;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
 
 /**
- * The purpose of such class is to help with the creation of instruction part
+ * The purpose of such class is to help with the creation of elementary
+ * instruction
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
  *
  */
 
-public class InstructionPartHelper {
+public class ElementaryInstructionHelper {
 
 	/**
-	 * Create a null constant instruction part
+	 * Create a null constant instruction
 	 * 
-	 * @return a null constant instruction part.
+	 * @return a null constant instruction.
 	 */
-	public static InstructionPart createInstructionPart() {
-		return new InstructionPart(JavaFactory.eINSTANCE.createNullLiteral());
+	public static ElementaryInstruction createNullInstruction() {
+		return new ElementaryInstruction(JavaFactory.eINSTANCE.createNullLiteral());
 	}
 
 	/**
-	 * Create a boolean constant instruction part
+	 * Create a boolean constant instruction
 	 * 
 	 * @param value
 	 *            the boolean value.
-	 * @return the created boolean constant instruction part with the specified
+	 * @return the created boolean constant instruction with the specified
 	 *         value.
 	 */
-	public static InstructionPart createInstructionPart(boolean value) {
+	public static ElementaryInstruction createInstruction(boolean value) {
 		BooleanLiteral literal = JavaFactory.eINSTANCE.createBooleanLiteral();
 		literal.setValue(value);
-		return new InstructionPart(literal);
+		return new ElementaryInstruction(literal);
 	}
 
 	/**
-	 * Create an integer constant instruction part
+	 * Create an integer constant instruction
 	 * 
 	 * @param value
 	 *            the integer value.
-	 * @return the created integer constant instruction part with the specified
+	 * @return the created integer constant instruction with the specified
 	 *         value.
 	 */
-	public static InstructionPart createInstructionPart(int value) {
+	public static ElementaryInstruction createInstruction(int value) {
 		NumberLiteral literal = JavaFactory.eINSTANCE.createNumberLiteral();
 		literal.setTokenValue(((Integer) value).toString());
-		return new InstructionPart(literal);
+		return new ElementaryInstruction(literal);
 	}
 
 	/**
-	 * Create a char constant instruction part
+	 * Create a char constant instruction
 	 * 
 	 * @param value
 	 *            the char value.
-	 * @return the created char constant instruction part with the specified
-	 *         value.
+	 * @return the created char constant instruction with the specified value.
 	 */
-	public static InstructionPart createInstructionPart(char value) {
+	public static ElementaryInstruction createInstruction(char value) {
 		CharacterLiteral literal = JavaFactory.eINSTANCE.createCharacterLiteral();
 		literal.setEscapedValue("\'" + value + "\'");
-		return new InstructionPart(literal);
+		return new ElementaryInstruction(literal);
 	}
 
 	/**
-	 * Create a string constant instruction part
+	 * Create a string constant instruction
 	 * 
 	 * @param value
 	 *            the string value.
-	 * @return the created string constant instruction part with the specified
-	 *         value.
+	 * @return the created string constant instruction with the specified value.
 	 */
-	public static InstructionPart createInstructionPart(String value) {
+	public static ElementaryInstruction createInstruction(String value) {
 		StringLiteral literal = JavaFactory.eINSTANCE.createStringLiteral();
 		literal.setEscapedValue("\"" + value + "\"");
-		return new InstructionPart(literal);
+		return new ElementaryInstruction(literal);
 	}
 
 	/**
-	 * Create a this instruction part
+	 * Create a this instruction
 	 * 
-	 * @return the created this instruction part.
+	 * @return the created this instruction.
 	 */
-	public static AssignableInstructionPart createThisInstructionPart() {
-		return new AssignableInstructionPart(ThisExpressionBuilder.builder().build());
+	public static ElementaryInstruction createThisInstruction() {
+		return new ElementaryInstruction(ThisExpressionBuilder.builder().build());
 	}
 
 	/**
-	 * Create a field instruction part
+	 * Create a field instruction
 	 * 
 	 * @param fieldName
 	 *            the name of the field.
-	 * @return the created field instruction part.
+	 * @return the created field instruction.
 	 */
-	public static AssignableInstructionPart createFieldInstructionPart(String fieldName) {
-		return new AssignableInstructionPart(FieldAccessHelper.createFieldAccess(fieldName));
+	public static ElementaryInstruction createFieldInstruction(String fieldName) {
+		return new ElementaryInstruction(FieldAccessHelper.createFieldAccess(fieldName));
 	}
 
 	/**
-	 * Create a variable instruction part
+	 * Create a variable instruction
 	 * 
 	 * @param variableName
 	 *            the name of the variable.
-	 * @return the created variable instruction part.
+	 * @return the created variable instruction.
 	 */
-	public static AssignableInstructionPart createVariableInstructionPart(String variableName) {
-		return new AssignableInstructionPart(VariableAccessHelper.createVariableAccess(variableName));
+	public static ElementaryInstruction createVariableInstruction(String variableName) {
+		return new ElementaryInstruction(VariableAccessHelper.createVariableAccess(variableName));
 	}
 
 	/**
-	 * Create a class instantiation instruction part with arguments
-	 * 
+	 * Create a class instantiation instruction with arguments
+	 *
 	 * @param className
 	 *            the name of the class to instantiate.
 	 * @param arguments
-	 *            the arguments list of the class instantiation instruction
-	 *            part.
-	 * @return a new class instantiation instruction part instantiating the
-	 *         class with the specified name.
+	 *            the arguments list of the class instantiation elementary
+	 *            instruction.
+	 * @return a new class instantiation instruction instantiating the class
+	 *         with the specified name.
 	 */
-	public static InstructionPart createClassInstantiationInstructionPart(String className, IComposable... arguments) {
+	public static ElementaryInstruction createClassInstantiationInstruction(String className,
+			IElementaryInstruction... arguments) {
 		ClassInstanceCreation classInstanceCreation = ClassInstanceCreationBuilder.builder()
 				.setType(TypeAccessHelper.createClassTypeAccess(className)).build();
 		EList<Expression> argumentsList = classInstanceCreation.getArguments();
-		for (IComposable argument : arguments) {
+		for (IElementaryInstruction argument : arguments) {
 			argumentsList.add(argument.getExpression());
 		}
-		return new InstructionPart(classInstanceCreation);
+		return new ElementaryInstruction(classInstanceCreation);
 	}
 
 	/**
-	 * Create an operation instruction part
+	 * Create an operation instruction
 	 * 
 	 * @param operator
 	 *            the operator of the operation.
 	 * @param operand
 	 *            the operand of the operation.
-	 * @return a new operation instruction part.
+	 * @return a new operation instruction.
 	 */
-	public static InstructionPart createOperationInstructionPart(PostfixExpressionKind operator, IComposable operand) {
-		return new InstructionPart(PostfixExpressionBuilder.builder().setOperand(operand.getExpression())
+	public static ElementaryInstruction createOperationInstruction(PostfixExpressionKind operator,
+			IElementaryInstruction operand) {
+		return new ElementaryInstruction(PostfixExpressionBuilder.builder().setOperand(operand.getExpression())
 				.setOperator(operator).build());
 	}
 
 	/**
-	 * Create an operation instruction part
+	 * Create an operation instruction
 	 * 
 	 * @param operator
 	 *            the operator of the operation.
@@ -192,15 +192,15 @@ public class InstructionPartHelper {
 	 *            the left operand of the operation.
 	 * @param rightOperand
 	 *            the right operand of the operation.
-	 * @return a new operation instruction part.
+	 * @return a new operation instruction.
 	 */
-	public static InstructionPart createOperationInstructionPart(InfixExpressionKind operator, IComposable leftOperand,
-			IComposable rightOperand, boolean needParenthesis) {
+	public static ElementaryInstruction createOperationInstruction(InfixExpressionKind operator,
+			IElementaryInstruction leftOperand, IElementaryInstruction rightOperand, boolean needParenthesis) {
 		Expression operationInstruction = InfixExpressionBuilder.builder().setLeftOperand(leftOperand.getExpression())
 				.setOperator(operator).setRightOperand(rightOperand.getExpression()).build();
 		if (needParenthesis) {
 			operationInstruction = ParenthesizedExpressionBuilder.builder().setExpression(operationInstruction).build();
 		}
-		return new InstructionPart(operationInstruction);
+		return new ElementaryInstruction(operationInstruction);
 	}
 }

@@ -22,8 +22,8 @@
 package net.atos.optimus.m2m.javaxmi.operation.constructors;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.Instruction;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.block.BlockBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.complex.BlockBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.complex.IComplexInstruction;
 import net.atos.optimus.m2m.javaxmi.operation.methods.AbstractMethod;
 
 import org.eclipse.emf.common.util.EList;
@@ -62,13 +62,13 @@ public class Constructor extends AbstractMethod {
 	 *            the added instructions list of the constructor.
 	 * @return the constructor with the instructions list added to its body.
 	 */
-	public Constructor addInstructions(Instruction... instructions) {
+	public Constructor addInstructions(IComplexInstruction... instructions) {
 		Block block = this.getConstructorDeclaration().getBody();
 		if (block == null) {
 			block = BlockBuilder.builder().build();
 			this.getConstructorDeclaration().setBody(block);
 		}
-		for (Instruction instruction : instructions) {
+		for (IComplexInstruction instruction : instructions) {
 			block.getStatements().add(instruction.getStatement());
 		}
 		return this;

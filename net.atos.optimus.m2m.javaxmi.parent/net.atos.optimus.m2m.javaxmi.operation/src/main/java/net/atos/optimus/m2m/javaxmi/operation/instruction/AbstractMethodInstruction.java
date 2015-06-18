@@ -22,7 +22,8 @@
 package net.atos.optimus.m2m.javaxmi.operation.instruction;
 
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.ExpressionStatementBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.part.InstructionPartHelper;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.ElementaryInstructionHelper;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.IElementaryInstruction;
 
 import org.eclipse.gmt.modisco.java.AbstractMethodInvocation;
 import org.eclipse.gmt.modisco.java.MethodInvocation;
@@ -36,7 +37,7 @@ import org.eclipse.gmt.modisco.java.SuperMethodInvocation;
  *
  */
 
-public class AbstractMethodInstruction extends ComposableInstruction {
+public class AbstractMethodInstruction extends Instruction {
 
 	/** The abstract method invocation */
 	private AbstractMethodInvocation abstractMethodInvocation;
@@ -68,8 +69,9 @@ public class AbstractMethodInstruction extends ComposableInstruction {
 	 * 
 	 * @return the current abstract method with the new added argument.
 	 */
-	public AbstractMethodInstruction addArgument() {
-		this.abstractMethodInvocation.getArguments().add(InstructionPartHelper.createInstructionPart().getExpression());
+	public AbstractMethodInstruction addNullArgument() {
+		this.abstractMethodInvocation.getArguments().add(
+				ElementaryInstructionHelper.createNullInstruction().getExpression());
 		return this;
 	}
 
@@ -82,7 +84,7 @@ public class AbstractMethodInstruction extends ComposableInstruction {
 	 */
 	public AbstractMethodInstruction addArgument(boolean argument) {
 		this.abstractMethodInvocation.getArguments().add(
-				InstructionPartHelper.createInstructionPart(argument).getExpression());
+				ElementaryInstructionHelper.createInstruction(argument).getExpression());
 		return this;
 	}
 
@@ -95,7 +97,7 @@ public class AbstractMethodInstruction extends ComposableInstruction {
 	 */
 	public AbstractMethodInstruction addArgument(int argument) {
 		this.abstractMethodInvocation.getArguments().add(
-				InstructionPartHelper.createInstructionPart(argument).getExpression());
+				ElementaryInstructionHelper.createInstruction(argument).getExpression());
 		return this;
 	}
 
@@ -108,7 +110,7 @@ public class AbstractMethodInstruction extends ComposableInstruction {
 	 */
 	public AbstractMethodInstruction addArgument(char argument) {
 		this.abstractMethodInvocation.getArguments().add(
-				InstructionPartHelper.createInstructionPart(argument).getExpression());
+				ElementaryInstructionHelper.createInstruction(argument).getExpression());
 		return this;
 	}
 
@@ -121,7 +123,7 @@ public class AbstractMethodInstruction extends ComposableInstruction {
 	 */
 	public AbstractMethodInstruction addArgument(String argument) {
 		this.abstractMethodInvocation.getArguments().add(
-				InstructionPartHelper.createInstructionPart(argument).getExpression());
+				ElementaryInstructionHelper.createInstruction(argument).getExpression());
 		return this;
 	}
 
@@ -132,7 +134,7 @@ public class AbstractMethodInstruction extends ComposableInstruction {
 	 */
 	public AbstractMethodInstruction addThisArgument() {
 		this.abstractMethodInvocation.getArguments().add(
-				InstructionPartHelper.createThisInstructionPart().getExpression());
+				ElementaryInstructionHelper.createThisInstruction().getExpression());
 		return this;
 	}
 
@@ -145,7 +147,7 @@ public class AbstractMethodInstruction extends ComposableInstruction {
 	 */
 	public AbstractMethodInstruction addFieldArgument(String fieldName) {
 		this.abstractMethodInvocation.getArguments().add(
-				InstructionPartHelper.createFieldInstructionPart(fieldName).getExpression());
+				ElementaryInstructionHelper.createFieldInstruction(fieldName).getExpression());
 		return this;
 	}
 
@@ -158,7 +160,7 @@ public class AbstractMethodInstruction extends ComposableInstruction {
 	 */
 	public AbstractMethodInstruction addVariableArgument(String variableName) {
 		this.abstractMethodInvocation.getArguments().add(
-				InstructionPartHelper.createVariableInstructionPart(variableName).getExpression());
+				ElementaryInstructionHelper.createVariableInstruction(variableName).getExpression());
 		return this;
 	}
 
@@ -169,7 +171,7 @@ public class AbstractMethodInstruction extends ComposableInstruction {
 	 *            the instruction argument.
 	 * @return the current abstract method with the new added argument.
 	 */
-	public AbstractMethodInstruction addArgument(IComposable argument) {
+	public AbstractMethodInstruction addArgument(IElementaryInstruction argument) {
 		this.abstractMethodInvocation.getArguments().add(argument.getExpression());
 		return this;
 	}

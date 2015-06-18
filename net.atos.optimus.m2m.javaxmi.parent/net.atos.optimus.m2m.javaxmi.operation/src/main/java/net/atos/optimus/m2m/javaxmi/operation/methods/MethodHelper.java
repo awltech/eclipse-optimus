@@ -23,8 +23,8 @@ package net.atos.optimus.m2m.javaxmi.operation.methods;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.classes.AbstractClass;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.Instruction;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.block.BlockBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.complex.BlockBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.complex.IComplexInstruction;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.parameters.ParameterHelper;
 import net.atos.optimus.m2m.javaxmi.operation.types.TypeParameterHelper;
@@ -201,13 +201,13 @@ public class MethodHelper {
 	 *            the instructions list to add to the method under construction.
 	 * @return the helper.
 	 */
-	public MethodHelper addInstructions(Instruction... instructions) {
+	public MethodHelper addInstructions(IComplexInstruction... instructions) {
 		Block block = this.buildMethod.getBody();
 		if (block == null) {
 			block = BlockBuilder.builder().build();
 			this.buildMethod.setBody(block);
 		}
-		for (Instruction instruction : instructions) {
+		for (IComplexInstruction instruction : instructions) {
 			block.getStatements().add(instruction.getStatement());
 		}
 		return this;

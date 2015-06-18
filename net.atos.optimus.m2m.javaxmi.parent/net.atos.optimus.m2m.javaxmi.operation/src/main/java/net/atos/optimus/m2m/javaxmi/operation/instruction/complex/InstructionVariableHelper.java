@@ -19,12 +19,15 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.javaxmi.operation.instruction;
+package net.atos.optimus.m2m.javaxmi.operation.instruction.complex;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.Instruction;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.InstructionSetterHelper;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.VariableDeclarationStatementBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.part.VariableDeclarationExpressionBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.part.AssignableInstructionPart;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.elementary.VariableDeclarationExpressionBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.ElementaryInstruction;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.IElementaryInstruction;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.util.NameGenerator;
 import net.atos.optimus.m2m.javaxmi.operation.variables.VariableDeclarationFragmentBuilder;
@@ -84,8 +87,8 @@ public class InstructionVariableHelper {
 	 * 
 	 * @return the build variable declaration instruction.
 	 */
-	public Instruction build() {
-		return new Instruction(this.buildVariableDeclarationStatement);
+	public ComplexInstruction build() {
+		return new ComplexInstruction(this.buildVariableDeclarationStatement);
 	}
 
 	/**
@@ -127,13 +130,15 @@ public class InstructionVariableHelper {
 	 *            the assignment instruction.
 	 * @return the variable declaration instruction with assignment part.
 	 */
-	public Instruction setVariableAssignement(AssignmentKind assignmentOperator, IComposable assignmentInstruction) {
+	public Instruction setVariableAssignment(AssignmentKind assignmentOperator,
+			IElementaryInstruction assignmentInstruction) {
 		String variableName = this.buildVariableDeclarationStatement.getFragments().get(0).getName();
 		String variableTypeName = this.buildVariableDeclarationStatement.getType().getType().getName();
 		VariableDeclarationFragment variableDeclarationFragment = VariableDeclarationFragmentBuilder.builder()
 				.setName(variableName).build();
-		AssignableInstructionPart leftHandSide = new AssignableInstructionPart(VariableDeclarationExpressionBuilder
-				.builder().setType(TypeAccessHelper.createTypeAccess(variableTypeName))
+		ElementaryInstruction leftHandSide = new ElementaryInstruction(VariableDeclarationExpressionBuilder.builder()
+				.setType(TypeAccessHelper.createTypeAccess(variableTypeName))
+				.setModifier(this.buildVariableDeclarationStatement.getModifier())
 				.addFragment(variableDeclarationFragment).build());
 		return InstructionSetterHelper.createAssignmentInstruction(leftHandSide, assignmentOperator,
 				assignmentInstruction);
@@ -154,7 +159,7 @@ public class InstructionVariableHelper {
 	 * @return the created variable declaration instruction with assignment
 	 *         part.
 	 */
-	public static Instruction createVariableDeclarationInstruction(String variableTypeName, boolean isFinal,
+	public static ComplexInstruction createVariableDeclarationInstruction(String variableTypeName, boolean isFinal,
 			String variableName) {
 		return InstructionVariableHelper.builder(variableTypeName).setFinal(isFinal).setName(variableName).build();
 	}
@@ -179,13 +184,13 @@ public class InstructionVariableHelper {
 	 *         part.
 	 */
 	public static Instruction createAndSetVariableDeclarationInstruction(String variableTypeName, boolean isFinal,
-			String variableName, AssignmentKind assignmentOperator, IComposable assignmentInstruction) {
+			String variableName, AssignmentKind assignmentOperator, IElementaryInstruction assignmentInstruction) {
 		Modifier modifier = ModifierBuilder.builder()
 				.setInheritance(isFinal ? InheritanceKind.FINAL : InheritanceKind.NONE).build();
 		VariableDeclarationFragment variableDeclarationFragment = VariableDeclarationFragmentBuilder.builder()
 				.setName(variableName).build();
-		AssignableInstructionPart leftHandSide = new AssignableInstructionPart(VariableDeclarationExpressionBuilder
-				.builder().setType(TypeAccessHelper.createTypeAccess(variableTypeName)).setModifier(modifier)
+		ElementaryInstruction leftHandSide = new ElementaryInstruction(VariableDeclarationExpressionBuilder.builder()
+				.setType(TypeAccessHelper.createTypeAccess(variableTypeName)).setModifier(modifier)
 				.addFragment(variableDeclarationFragment).build());
 		return InstructionSetterHelper.createAssignmentInstruction(leftHandSide, assignmentOperator,
 				assignmentInstruction);

@@ -24,7 +24,7 @@ package net.atos.optimus.m2m.javaxmi.operation.enums;
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.classes.CompilationUnitBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.imports.ImportDeclarationHelper;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.IComposable;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.IElementaryInstruction;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.packages.JavaPackage;
 
@@ -125,11 +125,11 @@ public class EnumHelper {
 	 *            the enumeration under construction.
 	 * @return the helper.
 	 */
-	public EnumHelper addEnumConstant(String constantName, IComposable... arguments) {
+	public EnumHelper addEnumConstant(String constantName, IElementaryInstruction... arguments) {
 		EnumConstantDeclaration enumConstantDeclaration = EnumConstantDeclarationBuilder.builder()
 				.setName(constantName).build();
 		EList<Expression> argumentsList = enumConstantDeclaration.getArguments();
-		for (IComposable argument : arguments) {
+		for (IElementaryInstruction argument : arguments) {
 			argumentsList.add(argument.getExpression());
 		}
 		this.buildEnum.getEnumConstants().add(enumConstantDeclaration);

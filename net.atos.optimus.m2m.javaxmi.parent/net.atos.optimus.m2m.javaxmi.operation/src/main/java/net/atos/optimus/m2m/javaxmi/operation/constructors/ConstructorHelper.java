@@ -24,9 +24,9 @@ package net.atos.optimus.m2m.javaxmi.operation.constructors;
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.classes.JavaClass;
 import net.atos.optimus.m2m.javaxmi.operation.fields.Field;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.Instruction;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.InstructionSetterHelper;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.block.BlockBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.complex.BlockBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.complex.IComplexInstruction;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.parameters.ParameterHelper;
 import net.atos.optimus.m2m.javaxmi.operation.util.NameGenerator;
@@ -193,13 +193,13 @@ public class ConstructorHelper {
 	 *            construction.
 	 * @return the helper.
 	 */
-	public ConstructorHelper addInstructions(Instruction... instructions) {
+	public ConstructorHelper addInstructions(IComplexInstruction... instructions) {
 		Block block = this.buildConstructor.getBody();
 		if (block == null) {
 			block = BlockBuilder.builder().build();
 			this.buildConstructor.setBody(block);
 		}
-		for (Instruction instruction : instructions) {
+		for (IComplexInstruction instruction : instructions) {
 			block.getStatements().add(instruction.getStatement());
 		}
 		return this;
