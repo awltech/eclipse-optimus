@@ -25,17 +25,14 @@ import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.MethodInvocationBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.SuperConstructorInvocationBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.SuperMethodInvocationBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.complex.ComplexInstruction;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.elementary.ClassInstanceCreationBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.ElementaryInstruction;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.ElementaryInstructionHelper;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.IElementaryInstruction;
 import net.atos.optimus.m2m.javaxmi.operation.methods.MethodDeclarationBuilder;
 
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.gmt.modisco.java.Expression;
 import org.eclipse.gmt.modisco.java.MethodDeclaration;
 import org.eclipse.gmt.modisco.java.MethodInvocation;
-import org.eclipse.gmt.modisco.java.SuperConstructorInvocation;
 import org.eclipse.gmt.modisco.java.SuperMethodInvocation;
 
 /**
@@ -47,70 +44,82 @@ import org.eclipse.gmt.modisco.java.SuperMethodInvocation;
  *
  */
 
-public class InstructionCallMethodHelper {
+public class InstructionCallHelper {
 
 	/**
-	 * Create a call method instruction from this
-	 * 
-	 * @param methodName
-	 *            the name of the method to call.
-	 * @return the created call method instruction from this.
+	 * Create a class instantiation instruction
+	 *
+	 * @param className
+	 *            the name of the class to instantiate.
+	 * @return a new class instantiation instruction.
 	 */
-	public static AbstractMethodInstruction createThisCallMethodInstruction(String methodName) {
-		return InstructionCallMethodHelper.createCallMethodInstruction(
-				ElementaryInstructionHelper.createThisInstruction(), methodName);
+	public static AbstractMethodInstruction createClassInstanciationInstruction(String className) {
+		return new AbstractMethodInstruction(ClassInstanceCreationBuilder.builder()
+				.setType(TypeAccessHelper.createClassTypeAccess(className)).build());
 	}
 
 	/**
-	 * Create a call method instruction from field
+	 * Create a method call instruction from this
+	 * 
+	 * @param methodName
+	 *            the name of the method to call.
+	 * @return the created method call instruction from this.
+	 */
+	public static AbstractMethodInstruction createThisMethodCallInstruction(String methodName) {
+		return InstructionCallHelper.createCallMethodInstruction(ElementaryInstructionHelper.createThisInstruction(),
+				methodName);
+	}
+
+	/**
+	 * Create a method call instruction from field
 	 * 
 	 * @param fieldName
 	 *            the name of the caller field.
 	 * @param methodName
 	 *            the name of the method to call.
-	 * @return the created call method instruction from a field.
+	 * @return the created method call instruction from a field.
 	 */
-	public static AbstractMethodInstruction createFieldCallMethodInstruction(String fieldName, String methodName) {
-		return InstructionCallMethodHelper.createCallMethodInstruction(
+	public static AbstractMethodInstruction createFieldMethodCallInstruction(String fieldName, String methodName) {
+		return InstructionCallHelper.createCallMethodInstruction(
 				ElementaryInstructionHelper.createFieldInstruction(fieldName), methodName);
 	}
 
 	/**
-	 * Create a call method instruction from variable
+	 * Create a method call instruction from variable
 	 * 
 	 * @param variableName
 	 *            the name of the caller variable.
 	 * @param methodName
 	 *            the name of the method to call.
-	 * @return the created call method instruction from a variable.
+	 * @return the created method call instruction from a variable.
 	 */
-	public static AbstractMethodInstruction createVariableCallMethodInstruction(String variableName, String methodName) {
-		return InstructionCallMethodHelper.createCallMethodInstruction(
+	public static AbstractMethodInstruction createVariableMethodCallInstruction(String variableName, String methodName) {
+		return InstructionCallHelper.createCallMethodInstruction(
 				ElementaryInstructionHelper.createVariableInstruction(variableName), methodName);
 	}
 
 	/**
-	 * Create a call static method instruction
+	 * Create a static method call instruction
 	 * 
 	 * @param className
 	 *            the name of the caller variable.
 	 * @param methodName
 	 *            the name of the method to call.
-	 * @return the created call static method instruction.
+	 * @return the created static call method instruction.
 	 */
-	public static AbstractMethodInstruction createCallStaticMethodInstruction(String className, String methodName) {
-		return InstructionCallMethodHelper.createCallMethodInstruction(
+	public static AbstractMethodInstruction createStaticMethodCallInstruction(String className, String methodName) {
+		return InstructionCallHelper.createCallMethodInstruction(
 				new ElementaryInstruction(TypeAccessHelper.createClassTypeAccess(className)), methodName);
 	}
 
 	/**
-	 * Create a call method instruction with arguments
+	 * Create a method call instruction with arguments
 	 * 
 	 * @param caller
 	 *            the caller of the method.
 	 * @param methodName
 	 *            the name of the method to call.
-	 * @return the created call method instruction with the specified name and
+	 * @return the created method call instruction with the specified name and
 	 *         arguments.
 	 */
 	public static AbstractMethodInstruction createCallMethodInstruction(IElementaryInstruction caller, String methodName) {
@@ -121,14 +130,14 @@ public class InstructionCallMethodHelper {
 	}
 
 	/**
-	 * Create a call super method instruction with arguments
+	 * Create a super method call instruction with arguments
 	 * 
 	 * @param superMethodName
 	 *            the name of the super method to call.
-	 * @return the created call method instruction with the specified name and
+	 * @return the created method call instruction with the specified name and
 	 *         arguments.
 	 */
-	public static AbstractMethodInstruction createCallSuperMethodInstruction(String superMethodName) {
+	public static AbstractMethodInstruction createSuperMethodCallInstruction(String superMethodName) {
 		MethodDeclaration methodDeclaration = MethodDeclarationBuilder.builder().setName(superMethodName).build();
 		SuperMethodInvocation superMethodInvocation = SuperMethodInvocationBuilder.builder()
 				.setMethod(methodDeclaration).build();
@@ -136,19 +145,12 @@ public class InstructionCallMethodHelper {
 	}
 
 	/**
-	 * Create a call super constructor instruction with arguments
+	 * Create a super constructor call instruction with arguments
 	 * 
-	 * @param arguments
-	 *            the arguments list of the call super method instruction.
-	 * @return the created call super constructor instruction.
+	 * @return the created super constructor call instruction.
 	 */
-	public static ComplexInstruction createCallSuperConstructorInstruction(IElementaryInstruction... arguments) {
-		SuperConstructorInvocation superConstructorInvocation = SuperConstructorInvocationBuilder.builder().build();
-		EList<Expression> argumentsList = superConstructorInvocation.getArguments();
-		for (IElementaryInstruction argument : arguments) {
-			argumentsList.add(argument.getExpression());
-		}
-		return new ComplexInstruction(superConstructorInvocation);
+	public static AbstractMethodInstruction createSuperConstructorCallInstruction() {
+		return new AbstractMethodInstruction(SuperConstructorInvocationBuilder.builder().build());
 	}
 
 }

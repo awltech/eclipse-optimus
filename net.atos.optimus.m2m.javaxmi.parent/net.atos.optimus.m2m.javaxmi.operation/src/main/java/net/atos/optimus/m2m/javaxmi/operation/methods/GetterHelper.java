@@ -23,7 +23,7 @@ package net.atos.optimus.m2m.javaxmi.operation.methods;
 
 import net.atos.optimus.m2m.javaxmi.operation.classes.JavaClass;
 import net.atos.optimus.m2m.javaxmi.operation.fields.Field;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.complex.InstructionReturnHelper;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.ElementaryInstructionHelper;
 import net.atos.optimus.m2m.javaxmi.operation.util.NameGenerator;
 
 import org.eclipse.gmt.modisco.java.InheritanceKind;
@@ -68,10 +68,14 @@ public class GetterHelper {
 	 *            the field associated to the getter method under construction.
 	 */
 	private GetterHelper(JavaClass javaClass, Field field) {
-		this.buildGetterMethod = MethodHelper.builder(javaClass, NameGenerator.generateGetterName(field.getName()))
-				.setVisibility(VisibilityKind.PUBLIC).setInheritance(InheritanceKind.NONE)
+		this.buildGetterMethod = MethodHelper
+				.builder(javaClass, NameGenerator.generateGetterName(field.getName()))
+				.setVisibility(VisibilityKind.PUBLIC)
+				.setInheritance(InheritanceKind.NONE)
 				.setReturnType(field.getTypeName())
-				.addInstructions(InstructionReturnHelper.createFieldReturnInstruction(field.getName())).build();
+				.addInstructions(
+						ElementaryInstructionHelper.createFieldInstruction(field.getName())
+								.convertToReturnInstruction()).build();
 	}
 
 	/**

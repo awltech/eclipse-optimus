@@ -102,7 +102,7 @@ public class FieldHelper {
 	 * @return the helper.
 	 */
 	public FieldHelper setName(String fieldName) {
-		this.buildField.setName(fieldName);
+		this.buildField.getFragments().get(0).setName(fieldName);
 		return this;
 	}
 

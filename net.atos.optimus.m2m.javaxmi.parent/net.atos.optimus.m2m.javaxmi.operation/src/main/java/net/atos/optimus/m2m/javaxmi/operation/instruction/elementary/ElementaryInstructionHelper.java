@@ -23,17 +23,13 @@ package net.atos.optimus.m2m.javaxmi.operation.instruction.elementary;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.FieldAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.accesses.ThisExpressionBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.accesses.VariableAccessHelper;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.elementary.ClassInstanceCreationBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.elementary.InfixExpressionBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.elementary.ParenthesizedExpressionBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.elementary.PostfixExpressionBuilder;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmt.modisco.java.BooleanLiteral;
 import org.eclipse.gmt.modisco.java.CharacterLiteral;
-import org.eclipse.gmt.modisco.java.ClassInstanceCreation;
 import org.eclipse.gmt.modisco.java.Expression;
 import org.eclipse.gmt.modisco.java.InfixExpressionKind;
 import org.eclipse.gmt.modisco.java.NumberLiteral;
@@ -144,28 +140,6 @@ public class ElementaryInstructionHelper {
 	 */
 	public static ElementaryInstruction createVariableInstruction(String variableName) {
 		return new ElementaryInstruction(VariableAccessHelper.createVariableAccess(variableName));
-	}
-
-	/**
-	 * Create a class instantiation instruction with arguments
-	 *
-	 * @param className
-	 *            the name of the class to instantiate.
-	 * @param arguments
-	 *            the arguments list of the class instantiation elementary
-	 *            instruction.
-	 * @return a new class instantiation instruction instantiating the class
-	 *         with the specified name.
-	 */
-	public static ElementaryInstruction createClassInstantiationInstruction(String className,
-			IElementaryInstruction... arguments) {
-		ClassInstanceCreation classInstanceCreation = ClassInstanceCreationBuilder.builder()
-				.setType(TypeAccessHelper.createClassTypeAccess(className)).build();
-		EList<Expression> argumentsList = classInstanceCreation.getArguments();
-		for (IElementaryInstruction argument : arguments) {
-			argumentsList.add(argument.getExpression());
-		}
-		return new ElementaryInstruction(classInstanceCreation);
 	}
 
 	/**

@@ -22,6 +22,7 @@
 package net.atos.optimus.m2m.javaxmi.operation.instruction.elementary;
 
 import net.atos.optimus.m2m.javaxmi.operation.instruction.IInstruction;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.complex.ComplexInstruction;
 
 import org.eclipse.gmt.modisco.java.Expression;
 
@@ -36,5 +37,21 @@ import org.eclipse.gmt.modisco.java.Expression;
 public interface IElementaryInstruction extends IInstruction {
 
 	public Expression getExpression();
+
+	/**
+	 * Convert the current instruction to a return instruction
+	 * 
+	 * @return the return instruction based on the current instruction.
+	 */
+	public ComplexInstruction convertToReturnInstruction();
+
+	/**
+	 * Convert the current instruction to a cast instruction
+	 * 
+	 * @param castName
+	 *            the class name or the interface name of the cast instruction.
+	 * @return the cast instruction based on the current instruction.
+	 */
+	public ElementaryInstruction convertToCastInstruction(String castName);
 
 }

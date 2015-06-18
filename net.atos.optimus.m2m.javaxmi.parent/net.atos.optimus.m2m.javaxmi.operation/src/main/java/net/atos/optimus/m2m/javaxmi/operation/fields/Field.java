@@ -49,12 +49,12 @@ public class Field {
 	public FieldDeclaration getFieldDeclaration() {
 		return this.fieldDeclaration;
 	}
-	
-	public String getName(){
-		return this.fieldDeclaration.getName();
+
+	public String getName() {
+		return this.fieldDeclaration.getFragments().get(0).getName();
 	}
-	
-	public String getTypeName(){
+
+	public String getTypeName() {
 		return this.fieldDeclaration.getType().getType().getName();
 	}
 

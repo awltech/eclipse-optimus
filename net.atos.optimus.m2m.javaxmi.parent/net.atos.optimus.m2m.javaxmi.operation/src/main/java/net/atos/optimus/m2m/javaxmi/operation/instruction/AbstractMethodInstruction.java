@@ -26,7 +26,9 @@ import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.ElementaryI
 import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.IElementaryInstruction;
 
 import org.eclipse.gmt.modisco.java.AbstractMethodInvocation;
+import org.eclipse.gmt.modisco.java.ClassInstanceCreation;
 import org.eclipse.gmt.modisco.java.MethodInvocation;
+import org.eclipse.gmt.modisco.java.SuperConstructorInvocation;
 import org.eclipse.gmt.modisco.java.SuperMethodInvocation;
 
 /**
@@ -56,12 +58,34 @@ public class AbstractMethodInstruction extends Instruction {
 	/**
 	 * Constructor of abstract super method instruction
 	 * 
-	 * @param methodInvocation
+	 * @param superMethodInvocation
 	 *            the super method invocation statement.
 	 */
 	public AbstractMethodInstruction(SuperMethodInvocation superMethodInvocation) {
 		super(ExpressionStatementBuilder.builder().setExpression(superMethodInvocation).build());
 		this.abstractMethodInvocation = superMethodInvocation;
+	}
+
+	/**
+	 * Constructor of abstract super constructor instruction
+	 * 
+	 * @param superConstructorInvocation
+	 *            the super method invocation statement.
+	 */
+	public AbstractMethodInstruction(SuperConstructorInvocation superConstructorInvocation) {
+		super(superConstructorInvocation);
+		this.abstractMethodInvocation = superConstructorInvocation;
+	}
+
+	/**
+	 * Constructor of abstract class instance instruction
+	 * 
+	 * @param classInstanceCreation
+	 *            the class instance creation statement.
+	 */
+	public AbstractMethodInstruction(ClassInstanceCreation classInstanceCreation) {
+		super(ExpressionStatementBuilder.builder().setExpression(classInstanceCreation).build());
+		this.abstractMethodInvocation = classInstanceCreation;
 	}
 
 	/**

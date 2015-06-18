@@ -21,14 +21,20 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.instruction;
 
+import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.comments.LineCommentBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.ReturnStatementBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.elementary.CastExpressionBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.complex.ComplexInstruction;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.complex.IComplexInstruction;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.ElementaryInstruction;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.IElementaryInstruction;
 
 import org.eclipse.gmt.modisco.java.Expression;
 import org.eclipse.gmt.modisco.java.ExpressionStatement;
 import org.eclipse.gmt.modisco.java.LineComment;
 import org.eclipse.gmt.modisco.java.Statement;
+import org.eclipse.gmt.modisco.java.SuperConstructorInvocation;
 
 /**
  * Models an instruction : wrapper of ExpressionStatement in modisco model
@@ -57,12 +63,34 @@ public class Instruction implements IElementaryInstruction, IComplexInstruction 
 		this.expression = statement.getExpression();
 	}
 
+	/**
+	 * Constructor of instruction
+	 * 
+	 * @param statement
+	 *            the expression statement.
+	 */
+	public Instruction(SuperConstructorInvocation statement) {
+		this.statement = statement;
+		this.expression = statement.getExpression();
+	}
+
 	public Statement getStatement() {
 		return this.statement;
 	}
 
 	public Expression getExpression() {
 		return this.expression;
+	}
+
+	@Override
+	public ComplexInstruction convertToReturnInstruction() {
+		return new ComplexInstruction(ReturnStatementBuilder.builder().setExpression(this.getExpression()).build());
+	}
+
+	@Override
+	public ElementaryInstruction convertToCastInstruction(String castName) {
+		return new ElementaryInstruction(CastExpressionBuilder.builder().setExpression(this.getExpression())
+				.setType(TypeAccessHelper.createTypeAccess(castName)).build());
 	}
 
 	/**
