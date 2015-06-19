@@ -36,6 +36,8 @@ import org.eclipse.gmt.modisco.java.VariableDeclaration;
 
 public class VariableAccessHelper {
 
+	public static final String STATIC_VARIABLE_SEPARATOR = ".";
+
 	/**
 	 * Create an access to a variable with proxy set to false
 	 * 
@@ -57,6 +59,13 @@ public class VariableAccessHelper {
 	 * @return an access to the variable with the specified name.
 	 */
 	public static SingleVariableAccess createVariableAccess(String variableName, boolean isProxy) {
+		if (variableName.contains(VariableAccessHelper.STATIC_VARIABLE_SEPARATOR)) {
+			int index = variableName.indexOf(VariableAccessHelper.STATIC_VARIABLE_SEPARATOR);
+			SingleVariableAccess singleVariableAccess = VariableAccessHelper.createVariableAccess(
+					variableName.substring(index + 1, variableName.length()), isProxy);
+			singleVariableAccess.setQualifier(TypeAccessHelper.createClassTypeAccess(variableName.substring(0, index)));
+			return singleVariableAccess;
+		}
 		VariableDeclaration variableDeclaration = VariableDeclarationFragmentBuilder.builder().setName(variableName)
 				.setProxy(isProxy).build();
 		return SingleVariableAccessBuilder.builder().setVariable(variableDeclaration).build();
