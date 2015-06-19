@@ -61,4 +61,13 @@ public interface IElementaryInstruction {
 	 */
 	public ElementaryInstruction convertToCastInstruction(String castName);
 
+	/**
+	 * Convert the current instruction to an instanceof instruction
+	 * 
+	 * @param typeName
+	 *            the type name of the instanceof instruction.
+	 * @return the instanceof instruction based on the current instruction.
+	 */
+	public ElementaryInstruction convertToInstanceOfInstruction(String typeName);
+
 }

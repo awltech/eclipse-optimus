@@ -24,6 +24,7 @@ package net.atos.optimus.m2m.javaxmi.operation.instruction.elementary;
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.ReturnStatementBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.elementary.CastExpressionBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.elementary.InstanceOfExpressionBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.elementary.ParenthesizedExpressionBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.complex.ComplexInstruction;
 
@@ -71,6 +72,12 @@ public class ElementaryInstruction implements IElementaryInstruction {
 	public ElementaryInstruction convertToCastInstruction(String castName) {
 		return new ElementaryInstruction(CastExpressionBuilder.builder().setExpression(this.getExpression())
 				.setType(TypeAccessHelper.createTypeAccess(castName)).build());
+	}
+
+	@Override
+	public ElementaryInstruction convertToInstanceOfInstruction(String typeName) {
+		return new ElementaryInstruction(InstanceOfExpressionBuilder.builder().setLeftOperand(this.getExpression())
+				.setRightOperand(TypeAccessHelper.createTypeAccess(typeName)).build());
 	}
 
 }

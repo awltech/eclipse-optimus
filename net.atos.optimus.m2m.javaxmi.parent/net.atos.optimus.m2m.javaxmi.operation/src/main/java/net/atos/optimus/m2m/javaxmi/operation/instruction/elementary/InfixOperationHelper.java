@@ -134,7 +134,7 @@ public class InfixOperationHelper {
 	 * 
 	 * @return the helper.
 	 */
-	public InfixOperationHelper setThisLeftOperand() {
+	public InfixOperationHelper setLeftThisOperand() {
 		this.buildInfixOperation.setLeftOperand(ElementaryInstructionHelper.createThisInstruction().getExpression());
 		return this;
 	}
@@ -147,7 +147,7 @@ public class InfixOperationHelper {
 	 *            operation.
 	 * @return the helper.
 	 */
-	public InfixOperationHelper setFieldLeftOperand(String fieldName) {
+	public InfixOperationHelper setLeftFieldOperand(String fieldName) {
 		this.buildInfixOperation.setLeftOperand(ElementaryInstructionHelper.createFieldInstruction(fieldName)
 				.getExpression());
 		return this;
@@ -161,7 +161,7 @@ public class InfixOperationHelper {
 	 *            operation.
 	 * @return the helper.
 	 */
-	public InfixOperationHelper setVariableLeftOperand(String variableName) {
+	public InfixOperationHelper setLeftVariableOperand(String variableName) {
 		this.buildInfixOperation.setLeftOperand(ElementaryInstructionHelper.createVariableInstruction(variableName)
 				.getExpression());
 		return this;
@@ -236,7 +236,7 @@ public class InfixOperationHelper {
 	 * 
 	 * @return the helper.
 	 */
-	public InfixOperationHelper setThisRightOperand() {
+	public InfixOperationHelper setRightThisOperand() {
 		this.buildInfixOperation.setRightOperand(ElementaryInstructionHelper.createThisInstruction().getExpression());
 		return this;
 	}
@@ -249,7 +249,7 @@ public class InfixOperationHelper {
 	 *            operation.
 	 * @return the helper.
 	 */
-	public InfixOperationHelper setFieldRightOperand(String fieldName) {
+	public InfixOperationHelper setRightFieldOperand(String fieldName) {
 		this.buildInfixOperation.setRightOperand(ElementaryInstructionHelper.createFieldInstruction(fieldName)
 				.getExpression());
 		return this;
@@ -263,7 +263,7 @@ public class InfixOperationHelper {
 	 *            operation.
 	 * @return the helper.
 	 */
-	public InfixOperationHelper setVariableRightOperand(String variableName) {
+	public InfixOperationHelper setRightVariableOperand(String variableName) {
 		this.buildInfixOperation.setRightOperand(ElementaryInstructionHelper.createVariableInstruction(variableName)
 				.getExpression());
 		return this;
