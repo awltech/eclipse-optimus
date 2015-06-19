@@ -24,7 +24,7 @@ package net.atos.optimus.m2m.javaxmi.operation.constructors;
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.classes.JavaClass;
 import net.atos.optimus.m2m.javaxmi.operation.fields.Field;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.InstructionSetterHelper;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.AssignmentOperationHelper;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.complex.BlockBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.complex.IComplexInstruction;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
@@ -32,6 +32,7 @@ import net.atos.optimus.m2m.javaxmi.operation.parameters.ParameterHelper;
 import net.atos.optimus.m2m.javaxmi.operation.util.NameGenerator;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.gmt.modisco.java.AssignmentKind;
 import org.eclipse.gmt.modisco.java.Block;
 import org.eclipse.gmt.modisco.java.ClassDeclaration;
 import org.eclipse.gmt.modisco.java.ConstructorDeclaration;
@@ -164,7 +165,8 @@ public class ConstructorHelper {
 	public ConstructorHelper addParameterAndSetAssociatedField(Field field) {
 		String parameterName = NameGenerator.generateNameWithTypeName(field.getTypeName());
 		this.addParameter(field.getTypeName(), parameterName);
-		this.addInstructions(InstructionSetterHelper.createSetFieldInstruction(field.getName(), parameterName));
+		this.addInstructions(AssignmentOperationHelper.builder().setOperator(AssignmentKind.ASSIGN)
+				.setLeftFieldOperand(field.getName()).setRightVariableOperand(parameterName).build());
 		return this;
 	}
 
@@ -181,7 +183,8 @@ public class ConstructorHelper {
 	 */
 	public ConstructorHelper addParameterAndSetAssociatedField(String parameterName, Field field) {
 		this.addParameter(field.getTypeName(), parameterName);
-		this.addInstructions(InstructionSetterHelper.createSetFieldInstruction(field.getName(), parameterName));
+		this.addInstructions(AssignmentOperationHelper.builder().setOperator(AssignmentKind.ASSIGN)
+				.setLeftFieldOperand(field.getName()).setRightVariableOperand(parameterName).build());
 		return this;
 	}
 

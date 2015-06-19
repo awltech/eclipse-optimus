@@ -47,7 +47,7 @@ import org.eclipse.gmt.modisco.java.VariableDeclarationFragment;
  *
  */
 
-public class InstructionLoopHelper {
+public class LoopInstructionHelper {
 
 	/**
 	 * Create a new while instruction

@@ -21,7 +21,6 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.instruction.elementary;
 
-import net.atos.optimus.m2m.javaxmi.operation.instruction.IInstruction;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.complex.ComplexInstruction;
 
 import org.eclipse.gmt.modisco.java.Expression;
@@ -34,13 +33,15 @@ import org.eclipse.gmt.modisco.java.Expression;
  *
  */
 
-public interface IElementaryInstruction extends IInstruction {
+public interface IElementaryInstruction {
 
 	public Expression getExpression();
-	
-	/** Add parenthesis to the current instruction
+
+	/**
+	 * Add parenthesis to the current instruction
 	 * 
-	 * @return the instruction with parentheses  based on the current instruction.
+	 * @return the instruction with parentheses based on the current
+	 *         instruction.
 	 */
 	public ElementaryInstruction withParentheses();
 

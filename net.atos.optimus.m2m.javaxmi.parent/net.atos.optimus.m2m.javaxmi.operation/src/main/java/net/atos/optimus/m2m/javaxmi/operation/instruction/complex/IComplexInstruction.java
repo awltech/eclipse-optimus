@@ -21,8 +21,6 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.instruction.complex;
 
-import net.atos.optimus.m2m.javaxmi.operation.instruction.IInstruction;
-
 import org.eclipse.gmt.modisco.java.Statement;
 
 /**
@@ -33,7 +31,7 @@ import org.eclipse.gmt.modisco.java.Statement;
  *
  */
 
-public interface IComplexInstruction extends IInstruction {
+public interface IComplexInstruction {
 
 	public Statement getStatement();
 

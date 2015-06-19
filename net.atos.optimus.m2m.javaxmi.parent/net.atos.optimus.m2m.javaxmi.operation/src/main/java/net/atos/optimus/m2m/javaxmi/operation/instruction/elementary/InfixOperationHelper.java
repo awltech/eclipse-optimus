@@ -130,7 +130,7 @@ public class InfixOperationHelper {
 	}
 
 	/**
-	 * Set the left operand of the infix operation under construction
+	 * Set the left this operand of the infix operation under construction
 	 * 
 	 * @return the helper.
 	 */
@@ -232,7 +232,7 @@ public class InfixOperationHelper {
 	}
 
 	/**
-	 * Set the right operand of the infix operation under construction
+	 * Set the this right operand of the infix operation under construction
 	 * 
 	 * @return the helper.
 	 */

@@ -44,7 +44,7 @@ import org.eclipse.gmt.modisco.java.SuperMethodInvocation;
  *
  */
 
-public class InstructionCallHelper {
+public class CallInstructionHelper {
 
 	/**
 	 * Create a class instantiation instruction
@@ -66,7 +66,7 @@ public class InstructionCallHelper {
 	 * @return the created method call instruction from this.
 	 */
 	public static AbstractMethodInstruction createThisMethodCallInstruction(String methodName) {
-		return InstructionCallHelper.createCallMethodInstruction(ElementaryInstructionHelper.createThisInstruction(),
+		return CallInstructionHelper.createCallMethodInstruction(ElementaryInstructionHelper.createThisInstruction(),
 				methodName);
 	}
 
@@ -80,7 +80,7 @@ public class InstructionCallHelper {
 	 * @return the created method call instruction from a field.
 	 */
 	public static AbstractMethodInstruction createFieldMethodCallInstruction(String fieldName, String methodName) {
-		return InstructionCallHelper.createCallMethodInstruction(
+		return CallInstructionHelper.createCallMethodInstruction(
 				ElementaryInstructionHelper.createFieldInstruction(fieldName), methodName);
 	}
 
@@ -94,7 +94,7 @@ public class InstructionCallHelper {
 	 * @return the created method call instruction from a variable.
 	 */
 	public static AbstractMethodInstruction createVariableMethodCallInstruction(String variableName, String methodName) {
-		return InstructionCallHelper.createCallMethodInstruction(
+		return CallInstructionHelper.createCallMethodInstruction(
 				ElementaryInstructionHelper.createVariableInstruction(variableName), methodName);
 	}
 
@@ -108,7 +108,7 @@ public class InstructionCallHelper {
 	 * @return the created static call method instruction.
 	 */
 	public static AbstractMethodInstruction createStaticMethodCallInstruction(String className, String methodName) {
-		return InstructionCallHelper.createCallMethodInstruction(
+		return CallInstructionHelper.createCallMethodInstruction(
 				new ElementaryInstruction(TypeAccessHelper.createClassTypeAccess(className)), methodName);
 	}
 
