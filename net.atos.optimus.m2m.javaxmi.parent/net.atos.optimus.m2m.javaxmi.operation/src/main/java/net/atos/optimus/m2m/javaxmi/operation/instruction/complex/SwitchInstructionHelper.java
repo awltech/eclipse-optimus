@@ -23,6 +23,7 @@ package net.atos.optimus.m2m.javaxmi.operation.instruction.complex;
 
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.complex.SwitchCaseBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.complex.SwitchStatementBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.ElementaryInstructionHelper;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.IElementaryInstruction;
 
 import org.eclipse.emf.common.util.EList;
@@ -56,6 +57,30 @@ public class SwitchInstructionHelper {
 	}
 
 	/**
+	 * Launch the build of a new switch instruction (without case block)
+	 * 
+	 * @param fieldName
+	 *            the name of the field under test in the switch instruction
+	 *            under construction.
+	 * @return a new helper.
+	 */
+	public static SwitchInstructionHelper builderOnField(String fieldName) {
+		return new SwitchInstructionHelper(ElementaryInstructionHelper.createFieldInstruction(fieldName));
+	}
+
+	/**
+	 * Launch the build of a new switch instruction (without case block)
+	 * 
+	 * @param variableName
+	 *            the name of the variable under test in the switch instruction
+	 *            under construction.
+	 * @return a new helper.
+	 */
+	public static SwitchInstructionHelper builderOnVariable(String variableName) {
+		return new SwitchInstructionHelper(ElementaryInstructionHelper.createVariableInstruction(variableName));
+	}
+
+	/**
 	 * Private constructor : a new switch instruction (without case block)
 	 * 
 	 * @param testedInstruction
@@ -74,6 +99,80 @@ public class SwitchInstructionHelper {
 	 */
 	public ComplexInstruction build() {
 		return new ComplexInstruction(this.buildSwitchInstruction);
+	}
+
+	/**
+	 * Add a case null block to the switch instruction under construction
+	 * 
+	 * @param withBreak
+	 *            tell if a break instruction finished the case null block to
+	 *            add to the switch instruction under construction.
+	 * @param caseInstructions
+	 *            the instructions list of the case null block to add to the
+	 *            switch instruction under construction.
+	 * @return the helper.
+	 */
+	public SwitchInstructionHelper addCaseNullBlock(boolean withBreak, IComplexInstruction... caseInstructions) {
+		this.addCaseBlock(ElementaryInstructionHelper.createNullInstruction(), withBreak, caseInstructions);
+		return this;
+	}
+
+	/**
+	 * Add a case integer block to the switch instruction under construction
+	 * 
+	 * @param condition
+	 *            the integer condition.
+	 * @param withBreak
+	 *            tell if a break instruction finished the case integer block to
+	 *            add to the switch instruction under construction.
+	 * @param caseInstructions
+	 *            the instructions list of the case integer block to add to the
+	 *            switch instruction under construction.
+	 * @return the helper.
+	 */
+	public SwitchInstructionHelper addCaseBlock(int condition, boolean withBreak,
+			IComplexInstruction... caseInstructions) {
+		this.addCaseBlock(ElementaryInstructionHelper.createInstruction(condition), withBreak, caseInstructions);
+		return this;
+	}
+
+	/**
+	 * Add a case char block to the switch instruction under construction
+	 * 
+	 * @param condition
+	 *            the char condition.
+	 * @param withBreak
+	 *            tell if a break instruction finished the case char block to
+	 *            add to the switch instruction under construction.
+	 * @param caseInstructions
+	 *            the instructions list of the case char block to add to the
+	 *            switch instruction under construction.
+	 * @return the helper.
+	 */
+	public SwitchInstructionHelper addCaseBlock(char condition, boolean withBreak,
+			IComplexInstruction... caseInstructions) {
+		this.addCaseBlock(ElementaryInstructionHelper.createInstruction(condition), withBreak, caseInstructions);
+		return this;
+	}
+
+	/**
+	 * Add a case variable block to the switch instruction under construction
+	 * 
+	 * @param variableName
+	 *            the variable name.
+	 * @param withBreak
+	 *            tell if a break instruction finished the case variable block
+	 *            to add to the switch instruction under construction.
+	 * @param caseInstructions
+	 *            the instructions list of the case variable block to add to the
+	 *            switch instruction under construction.
+	 * @return the helper.
+	 */
+	public SwitchInstructionHelper addCaseVariableBlock(String variableName, boolean withBreak,
+			IComplexInstruction... caseInstructions) {
+		this.addCaseBlock(ElementaryInstructionHelper.createVariableInstruction(variableName), withBreak,
+				caseInstructions);
+		return this;
 	}
 
 	/**

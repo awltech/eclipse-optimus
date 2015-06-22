@@ -21,14 +21,11 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.instruction;
 
-import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.AssignmentBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.ExpressionStatementBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.elementary.VariableDeclarationExpressionBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.ElementaryInstructionHelper;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.IElementaryInstruction;
-import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.variables.VariableDeclarationFragmentBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.variables.VariableDeclarationExpressionHelper;
 
 import org.eclipse.gmt.modisco.java.Assignment;
 import org.eclipse.gmt.modisco.java.AssignmentKind;
@@ -140,10 +137,8 @@ public class AssignmentOperationHelper {
 	 * @return the helper.
 	 */
 	public AssignmentOperationHelper setLeftVariableDeclarationOperand(String variableTypeName, String variableName) {
-		this.buildAssignmentOperation.setLeftHandSide(VariableDeclarationExpressionBuilder.builder()
-				.setType(TypeAccessHelper.createTypeAccess(variableTypeName))
-				.setModifier(ModifierBuilder.builder().setInheritance(InheritanceKind.NONE).build())
-				.addFragment(VariableDeclarationFragmentBuilder.builder().setName(variableName).build()).build());
+		this.buildAssignmentOperation.setLeftHandSide(VariableDeclarationExpressionHelper
+				.createVariableDeclarationExpression(variableTypeName, variableName, InheritanceKind.NONE));
 		return this;
 	}
 
@@ -164,13 +159,9 @@ public class AssignmentOperationHelper {
 	 */
 	public AssignmentOperationHelper setLeftVariableDeclarationOperand(String variableTypeName, String variableName,
 			boolean isFinal) {
-		this.buildAssignmentOperation.setLeftHandSide(VariableDeclarationExpressionBuilder
-				.builder()
-				.setType(TypeAccessHelper.createTypeAccess(variableTypeName))
-				.setModifier(
-						ModifierBuilder.builder()
-								.setInheritance(isFinal ? InheritanceKind.FINAL : InheritanceKind.NONE).build())
-				.addFragment(VariableDeclarationFragmentBuilder.builder().setName(variableName).build()).build());
+		this.buildAssignmentOperation.setLeftHandSide(VariableDeclarationExpressionHelper
+				.createVariableDeclarationExpression(variableTypeName, variableName, isFinal ? InheritanceKind.FINAL
+						: InheritanceKind.NONE));
 		return this;
 	}
 
