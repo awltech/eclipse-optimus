@@ -71,10 +71,12 @@ public class TypeParameterHelper {
 	 * including these ones and set its name properly
 	 * 
 	 * @param methodDeclaration
+	 *            the method declaration.
 	 */
 	public static void addReturnTypeToMethodDeclaration(MethodDeclaration methodDeclaration, String returnTypeName) {
-		if (returnTypeName.contains(TypeParameterHelper.PARAMETER_EXIT)) {
-			returnTypeName = returnTypeName.trim();
+		returnTypeName = returnTypeName.trim();
+		if (returnTypeName.contains(TypeParameterHelper.PARAMETER_ENTRY)
+				&& returnTypeName.indexOf(TypeParameterHelper.PARAMETER_ENTRY) == 0) {
 			int index = returnTypeName.indexOf(TypeParameterHelper.PARAMETER_EXIT);
 			methodDeclaration.setReturnType(TypeAccessHelper.createTypeAccess(returnTypeName.substring(index + 1,
 					returnTypeName.length()).trim()));

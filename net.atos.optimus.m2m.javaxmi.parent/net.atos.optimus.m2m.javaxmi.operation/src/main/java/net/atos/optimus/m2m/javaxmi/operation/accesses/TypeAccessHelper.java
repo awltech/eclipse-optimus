@@ -23,6 +23,7 @@ package net.atos.optimus.m2m.javaxmi.operation.accesses;
 
 import net.atos.optimus.m2m.javaxmi.operation.classes.UnresolvedClassDeclarationBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.interfaces.UnresolvedInterfaceDeclarationBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.types.ArrayTypeBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.types.PrimitiveTypeBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.types.UnresolvedTypeBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.types.WildCardTypeBuilder;
@@ -40,6 +41,10 @@ import org.eclipse.gmt.modisco.java.TypeAccess;
  */
 
 public class TypeAccessHelper {
+
+	public static final String ARRAY_ENTRY = "[";
+
+	public static final String ARRAY_EXIT = "]";
 
 	public static final String PARAMETRIZED_ENTRY = "<";
 
@@ -112,6 +117,12 @@ public class TypeAccessHelper {
 	 * @return the created type access associated to the specified type name.
 	 */
 	public static TypeAccess createTypeAccess(String typeName) {
+		typeName = typeName.trim();
+		if (typeName.contains(TypeAccessHelper.ARRAY_ENTRY)) {
+			return TypeAccessHelper.createArrayType(
+					TypeAccessHelper.createTypeAccess(typeName.substring(0,
+							typeName.indexOf(TypeAccessHelper.ARRAY_ENTRY))), typeName);
+		}
 		if (typeName.contains(TypeAccessHelper.PARAMETRIZED_ENTRY)) {
 			return TypeAccessHelper.createParameterizedType(
 					TypeAccessHelper.createTypeAccess(typeName.substring(0,
@@ -122,6 +133,25 @@ public class TypeAccessHelper {
 					.build();
 		}
 		return TypeAccessBuilder.builder().setType(UnresolvedTypeBuilder.builder().setName(typeName).build()).build();
+	}
+
+	/**
+	 * Create a array type
+	 * 
+	 * @param mainType
+	 *            the main type of the array type.
+	 * @param name
+	 *            the name of the array type.
+	 * @return the created type access associated to these parameters.
+	 */
+	protected static TypeAccess createArrayType(TypeAccess mainType, String name) {
+		int dimensions = 0;
+		int index = 0;
+		while ((index = name.indexOf(TypeAccessHelper.ARRAY_EXIT, index + 1)) != -1) {
+			dimensions++;
+		}
+		return TypeAccessBuilder.builder()
+				.setType(ArrayTypeBuilder.builder().setDimensions(dimensions).setElementType(mainType).build()).build();
 	}
 
 	/**

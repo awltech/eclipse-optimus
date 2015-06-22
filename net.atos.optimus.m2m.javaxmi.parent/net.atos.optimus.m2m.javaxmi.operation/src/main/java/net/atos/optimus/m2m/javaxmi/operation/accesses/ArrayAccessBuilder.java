@@ -21,72 +21,70 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.accesses;
 
+import org.eclipse.gmt.modisco.java.ArrayAccess;
 import org.eclipse.gmt.modisco.java.Expression;
-import org.eclipse.gmt.modisco.java.FieldAccess;
-import org.eclipse.gmt.modisco.java.SingleVariableAccess;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
 
 /**
- * A builder dedicated to create field access of modisco model
+ * A builder dedicated to create array access of modisco model
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
  *
  */
 
-public class FieldAccessBuilder {
+public class ArrayAccessBuilder {
 
-	/** The build field access */
-	private FieldAccess buildFieldAccess;
+	/** The build array access */
+	private ArrayAccess buildArrayAccess;
 
 	/**
-	 * Give a field access builder
+	 * Give an array access builder
 	 * 
-	 * @return a new field access builder.
+	 * @return a new array access builder.
 	 */
-	public static FieldAccessBuilder builder() {
-		return new FieldAccessBuilder();
+	public static ArrayAccessBuilder builder() {
+		return new ArrayAccessBuilder();
 	}
 
 	/**
 	 * Private constructor
 	 * 
 	 */
-	private FieldAccessBuilder() {
-		this.buildFieldAccess = JavaFactory.eINSTANCE.createFieldAccess();
+	private ArrayAccessBuilder() {
+		this.buildArrayAccess = JavaFactory.eINSTANCE.createArrayAccess();
 	}
 
 	/**
-	 * Build a field access of modisco model
+	 * Build an array access of modisco model
 	 * 
-	 * @return a new field access of modisco model.
+	 * @return a new array access of modisco model.
 	 */
-	public FieldAccess build() {
-		return this.buildFieldAccess;
+	public ArrayAccess build() {
+		return this.buildArrayAccess;
 	}
 
 	/**
-	 * Set the single variable access of the field access under construction
+	 * Set the array of the array access under construction
 	 * 
-	 * @param singleVariableAccess
-	 *            the single variable access of the field access under
-	 *            construction.
+	 * @param array
+	 *            the array of the array access under construction.
 	 * @return the builder.
 	 */
-	public FieldAccessBuilder setField(SingleVariableAccess singleVariableAccess) {
-		this.buildFieldAccess.setField(singleVariableAccess);
+	public ArrayAccessBuilder setArray(Expression array) {
+		this.buildArrayAccess.setArray(array);
 		return this;
 	}
 
 	/**
-	 * Set the expression of the field access under construction
+	 * Set the index of the array access under construction
 	 * 
-	 * @param expression
-	 *            the expression of the field access under construction.
+	 * @param index
+	 *            the index of the array access under construction.
 	 * @return the builder.
 	 */
-	public FieldAccessBuilder setExpression(Expression expression) {
-		this.buildFieldAccess.setExpression(expression);
+	public ArrayAccessBuilder setIndex(Expression index) {
+		this.buildArrayAccess.setIndex(index);
 		return this;
 	}
 
