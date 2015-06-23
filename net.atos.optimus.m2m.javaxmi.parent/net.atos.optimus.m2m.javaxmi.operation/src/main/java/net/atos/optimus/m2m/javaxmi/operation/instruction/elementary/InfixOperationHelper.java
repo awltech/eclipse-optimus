@@ -154,6 +154,41 @@ public class InfixOperationHelper {
 	}
 
 	/**
+	 * Set the field array left operand of the infix operation under
+	 * construction
+	 * 
+	 * @param fieldName
+	 *            the name of the field left operand of the current infix
+	 *            operation.
+	 * @param indexes
+	 *            the integer indexes of the array field.
+	 * @return the helper.
+	 */
+	public InfixOperationHelper setLeftFieldArrayOperand(String fieldName, int... indexes) {
+		this.buildInfixOperation.setLeftOperand(ArrayInstructionHelper.builderWithField(fieldName).addIndex(indexes)
+				.build().getExpression());
+		return this;
+	}
+
+	/**
+	 * Set the field array left operand of the infix operation under
+	 * construction
+	 * 
+	 * @param fieldName
+	 *            the name of the field left operand of the current infix
+	 *            operation.
+	 * @param variablesNames
+	 *            the names of the variables containing indexes of the array
+	 *            field.
+	 * @return the helper.
+	 */
+	public InfixOperationHelper setLeftFieldArrayOperand(String fieldName, String... variablesNames) {
+		this.buildInfixOperation.setLeftOperand(ArrayInstructionHelper.builderWithField(fieldName)
+				.addVariableIndex(variablesNames).build().getExpression());
+		return this;
+	}
+
+	/**
 	 * Set the variable left operand of the infix operation under construction
 	 * 
 	 * @param variableName
@@ -164,6 +199,41 @@ public class InfixOperationHelper {
 	public InfixOperationHelper setLeftVariableOperand(String variableName) {
 		this.buildInfixOperation.setLeftOperand(ElementaryInstructionHelper.createVariableInstruction(variableName)
 				.getExpression());
+		return this;
+	}
+
+	/**
+	 * Set the variable array left operand of the infix operation under
+	 * construction
+	 * 
+	 * @param variableName
+	 *            the name of the variable left operand of the current infix
+	 *            operation.
+	 * @param indexes
+	 *            the integer indexes of the array variable.
+	 * @return the helper.
+	 */
+	public InfixOperationHelper setLeftVariableArrayOperand(String variableName, int... indexes) {
+		this.buildInfixOperation.setLeftOperand(ArrayInstructionHelper.builderWithVariable(variableName)
+				.addIndex(indexes).build().getExpression());
+		return this;
+	}
+
+	/**
+	 * Set the variable array left operand of the infix operation under
+	 * construction
+	 * 
+	 * @param variableName
+	 *            the name of the variable left operand of the current infix
+	 *            operation.
+	 * @param variablesNames
+	 *            the names of the variables containing indexes of the array
+	 *            variable.
+	 * @return the helper.
+	 */
+	public InfixOperationHelper setLeftVariableArrayOperand(String variableName, String... variablesNames) {
+		this.buildInfixOperation.setLeftOperand(ArrayInstructionHelper.builderWithVariable(variableName)
+				.addVariableIndex(variablesNames).build().getExpression());
 		return this;
 	}
 
@@ -256,6 +326,41 @@ public class InfixOperationHelper {
 	}
 
 	/**
+	 * Set the field array right operand of the infix operation under
+	 * construction
+	 * 
+	 * @param fieldName
+	 *            the name of the right left operand of the current infix
+	 *            operation.
+	 * @param indexes
+	 *            the integer indexes of the array field.
+	 * @return the helper.
+	 */
+	public InfixOperationHelper setRightFieldArrayOperand(String fieldName, int... indexes) {
+		this.buildInfixOperation.setRightOperand(ArrayInstructionHelper.builderWithField(fieldName).addIndex(indexes)
+				.build().getExpression());
+		return this;
+	}
+
+	/**
+	 * Set the field array right operand of the infix operation under
+	 * construction
+	 * 
+	 * @param fieldName
+	 *            the name of the right left operand of the current infix
+	 *            operation.
+	 * @param variablesNames
+	 *            the names of the variables containing indexes of the array
+	 *            field.
+	 * @return the helper.
+	 */
+	public InfixOperationHelper setRightFieldArrayOperand(String fieldName, String... variablesNames) {
+		this.buildInfixOperation.setRightOperand(ArrayInstructionHelper.builderWithField(fieldName)
+				.addVariableIndex(variablesNames).build().getExpression());
+		return this;
+	}
+
+	/**
 	 * Set the variable right operand of the infix operation under construction
 	 * 
 	 * @param variableName
@@ -266,6 +371,41 @@ public class InfixOperationHelper {
 	public InfixOperationHelper setRightVariableOperand(String variableName) {
 		this.buildInfixOperation.setRightOperand(ElementaryInstructionHelper.createVariableInstruction(variableName)
 				.getExpression());
+		return this;
+	}
+
+	/**
+	 * Set the variable array right operand of the infix operation under
+	 * construction
+	 * 
+	 * @param variableName
+	 *            the name of the variable right operand of the current infix
+	 *            operation.
+	 * @param indexes
+	 *            the integer indexes of the array variable.
+	 * @return the helper.
+	 */
+	public InfixOperationHelper setRightVariableArrayOperand(String variableName, int... indexes) {
+		this.buildInfixOperation.setRightOperand(ArrayInstructionHelper.builderWithVariable(variableName)
+				.addIndex(indexes).build().getExpression());
+		return this;
+	}
+
+	/**
+	 * Set the variable array right operand of the infix operation under
+	 * construction
+	 * 
+	 * @param variableName
+	 *            the name of the variable right operand of the current infix
+	 *            operation.
+	 * @param variablesNames
+	 *            the names of the variables containing indexes of the array
+	 *            variable.
+	 * @return the helper.
+	 */
+	public InfixOperationHelper setRightVariableArrayOperand(String variableName, String... variablesNames) {
+		this.buildInfixOperation.setRightOperand(ArrayInstructionHelper.builderWithVariable(variableName)
+				.addVariableIndex(variablesNames).build().getExpression());
 		return this;
 	}
 

@@ -23,6 +23,7 @@ package net.atos.optimus.m2m.javaxmi.operation.instruction;
 
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.AssignmentBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.ExpressionStatementBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.ArrayInstructionHelper;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.ElementaryInstructionHelper;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.IElementaryInstruction;
 import net.atos.optimus.m2m.javaxmi.operation.variables.VariableDeclarationExpressionHelper;
@@ -110,6 +111,41 @@ public class AssignmentOperationHelper {
 	}
 
 	/**
+	 * Set the field array left operand of the assignment operation under
+	 * construction
+	 * 
+	 * @param fieldName
+	 *            the name of the field left operand of the current assignment
+	 *            operation.
+	 * @param indexes
+	 *            the integer indexes of the array field.
+	 * @return the helper.
+	 */
+	public AssignmentOperationHelper setLeftFieldArrayOperand(String fieldName, int... indexes) {
+		this.buildAssignmentOperation.setLeftHandSide(ArrayInstructionHelper.builderWithField(fieldName)
+				.addIndex(indexes).build().getExpression());
+		return this;
+	}
+
+	/**
+	 * Set the field array left operand of the assignment operation under
+	 * construction
+	 * 
+	 * @param fieldName
+	 *            the name of the field left operand of the current assignment
+	 *            operation.
+	 * @param variablesNames
+	 *            the names of the variables containing indexes of the array
+	 *            field.
+	 * @return the helper.
+	 */
+	public AssignmentOperationHelper setLeftFieldArrayOperand(String fieldName, String... variablesNames) {
+		this.buildAssignmentOperation.setLeftHandSide(ArrayInstructionHelper.builderWithField(fieldName)
+				.addVariableIndex(variablesNames).build().getExpression());
+		return this;
+	}
+
+	/**
 	 * Set the variable left operand of the assignment operation under
 	 * construction
 	 * 
@@ -121,6 +157,41 @@ public class AssignmentOperationHelper {
 	public AssignmentOperationHelper setLeftVariableOperand(String variableName) {
 		this.buildAssignmentOperation.setLeftHandSide(ElementaryInstructionHelper.createVariableInstruction(
 				variableName).getExpression());
+		return this;
+	}
+
+	/**
+	 * Set the variable array left operand of the assignment operation under
+	 * construction
+	 * 
+	 * @param variableName
+	 *            the name of the variable left operand of the current
+	 *            assignment operation.
+	 * @param indexes
+	 *            the integer indexes of the array variable.
+	 * @return the helper.
+	 */
+	public AssignmentOperationHelper setLeftVariableArrayOperand(String variableName, int... indexes) {
+		this.buildAssignmentOperation.setLeftHandSide(ArrayInstructionHelper.builderWithVariable(variableName)
+				.addIndex(indexes).build().getExpression());
+		return this;
+	}
+
+	/**
+	 * Set the variable array left operand of the assignment operation under
+	 * construction
+	 * 
+	 * @param variableName
+	 *            the name of the variable left operand of the current
+	 *            assignment operation.
+	 * @param variablesNames
+	 *            the names of the variables containing indexes of the array
+	 *            variable.
+	 * @return the helper.
+	 */
+	public AssignmentOperationHelper setLeftVariableArrayOperand(String variableName, String... variablesNames) {
+		this.buildAssignmentOperation.setLeftHandSide(ArrayInstructionHelper.builderWithVariable(variableName)
+				.addVariableIndex(variablesNames).build().getExpression());
 		return this;
 	}
 
@@ -166,10 +237,10 @@ public class AssignmentOperationHelper {
 	}
 
 	/**
-	 * Set the right operand of the infix operation under construction
+	 * Set the right operand of the assignment operation under construction
 	 * 
 	 * @param rightOperand
-	 *            the right operand of the current infix operation.
+	 *            the right operand of the current assignment operation.
 	 * @return the helper.
 	 */
 	public AssignmentOperationHelper setRightOperand(boolean rightOperand) {
@@ -179,10 +250,10 @@ public class AssignmentOperationHelper {
 	}
 
 	/**
-	 * Set the right operand of the infix operation under construction
+	 * Set the right operand of the assignment operation under construction
 	 * 
 	 * @param rightOperand
-	 *            the right operand of the current infix operation.
+	 *            the right operand of the current assignment operation.
 	 * @return the helper.
 	 */
 	public AssignmentOperationHelper setRightOperand(int rightOperand) {
@@ -192,10 +263,10 @@ public class AssignmentOperationHelper {
 	}
 
 	/**
-	 * Set the right operand of the infix operation under construction
+	 * Set the right operand of the assignment operation under construction
 	 * 
 	 * @param rightOperand
-	 *            the right operand of the current infix operation.
+	 *            the right operand of the current assignment operation.
 	 * @return the helper.
 	 */
 	public AssignmentOperationHelper setRightOperand(char rightOperand) {
@@ -205,10 +276,10 @@ public class AssignmentOperationHelper {
 	}
 
 	/**
-	 * Set the right operand of the infix operation under construction
+	 * Set the right operand of the assignment operation under construction
 	 * 
 	 * @param rightOperand
-	 *            the right operand of the current infix operation.
+	 *            the right operand of the current assignment operation.
 	 * @return the helper.
 	 */
 	public AssignmentOperationHelper setRightOperand(String rightOperand) {
@@ -218,7 +289,7 @@ public class AssignmentOperationHelper {
 	}
 
 	/**
-	 * Set the this right operand of the infix operation under construction
+	 * Set the this right operand of the assignment operation under construction
 	 * 
 	 * @return the helper.
 	 */
@@ -229,10 +300,11 @@ public class AssignmentOperationHelper {
 	}
 
 	/**
-	 * Set the field right operand of the infix operation under construction
+	 * Set the field right operand of the assignment operation under
+	 * construction
 	 * 
 	 * @param fieldName
-	 *            the name of the field right operand of the current infix
+	 *            the name of the field right operand of the current assignment
 	 *            operation.
 	 * @return the helper.
 	 */
@@ -243,11 +315,47 @@ public class AssignmentOperationHelper {
 	}
 
 	/**
-	 * Set the variable right operand of the infix operation under construction
+	 * Set the field array right operand of the assignment operation under
+	 * construction
+	 * 
+	 * @param fieldName
+	 *            the name of the field right operand of the current assignment
+	 *            operation.
+	 * @param indexes
+	 *            the integer indexes of the array field.
+	 * @return the helper.
+	 */
+	public AssignmentOperationHelper setLeftRightArrayOperand(String fieldName, int... indexes) {
+		this.buildAssignmentOperation.setRightHandSide(ArrayInstructionHelper.builderWithField(fieldName)
+				.addIndex(indexes).build().getExpression());
+		return this;
+	}
+
+	/**
+	 * Set the field array right operand of the assignment operation under
+	 * construction
+	 * 
+	 * @param fieldName
+	 *            the name of the field right operand of the current assignment
+	 *            operation.
+	 * @param variablesNames
+	 *            the names of the variables containing indexes of the array
+	 *            field.
+	 * @return the helper.
+	 */
+	public AssignmentOperationHelper setLeftRightArrayOperand(String fieldName, String... variablesNames) {
+		this.buildAssignmentOperation.setRightHandSide(ArrayInstructionHelper.builderWithField(fieldName)
+				.addVariableIndex(variablesNames).build().getExpression());
+		return this;
+	}
+
+	/**
+	 * Set the variable right operand of the assignment operation under
+	 * construction
 	 * 
 	 * @param variableName
-	 *            the name of the variable right operand of the current infix
-	 *            operation.
+	 *            the name of the variable right operand of the current
+	 *            assignment operation.
 	 * @return the helper.
 	 */
 	public AssignmentOperationHelper setRightVariableOperand(String variableName) {
@@ -257,10 +365,45 @@ public class AssignmentOperationHelper {
 	}
 
 	/**
-	 * Set the right operand of the infix operation under construction
+	 * Set the variable array right operand of the assignment operation under
+	 * construction
+	 * 
+	 * @param variableName
+	 *            the name of the variable right operand of the current
+	 *            assignment operation.
+	 * @param indexes
+	 *            the integer indexes of the array variable.
+	 * @return the helper.
+	 */
+	public AssignmentOperationHelper setRightVariableArrayOperand(String variableName, int... indexes) {
+		this.buildAssignmentOperation.setRightHandSide(ArrayInstructionHelper.builderWithVariable(variableName)
+				.addIndex(indexes).build().getExpression());
+		return this;
+	}
+
+	/**
+	 * Set the variable array right operand of the assignment operation under
+	 * construction
+	 * 
+	 * @param variableName
+	 *            the name of the variable right operand of the current
+	 *            assignment operation.
+	 * @param variablesNames
+	 *            the names of the variables containing indexes of the array
+	 *            variable.
+	 * @return the helper.
+	 */
+	public AssignmentOperationHelper setRightVariableArrayOperand(String variableName, String... variablesNames) {
+		this.buildAssignmentOperation.setRightHandSide(ArrayInstructionHelper.builderWithVariable(variableName)
+				.addVariableIndex(variablesNames).build().getExpression());
+		return this;
+	}
+
+	/**
+	 * Set the right operand of the assignment operation under construction
 	 * 
 	 * @param rightOperand
-	 *            the right operand of the current infix operation.
+	 *            the right operand of the current assignment operation.
 	 * @return the helper.
 	 */
 	public AssignmentOperationHelper setRightOperand(IElementaryInstruction rightOperand) {

@@ -103,6 +103,37 @@ public class PrefixOperationHelper {
 	}
 
 	/**
+	 * Set the field array operand of the prefix operation under construction
+	 * 
+	 * @param fieldName
+	 *            the name of the field operand of the current prefix operation.
+	 * @param indexes
+	 *            the integer indexes of the array field.
+	 * @return the helper.
+	 */
+	public PrefixOperationHelper setFieldArrayOperand(String fieldName, int... indexes) {
+		this.buildPrefixOperation.setOperand(ArrayInstructionHelper.builderWithField(fieldName).addIndex(indexes)
+				.build().getExpression());
+		return this;
+	}
+
+	/**
+	 * Set the field array operand of the prefix operation under construction
+	 * 
+	 * @param fieldName
+	 *            the name of the field operand of the current prefix operation.
+	 * @param variablesNames
+	 *            the names of the variables containing indexes of the array
+	 *            field.
+	 * @return the helper.
+	 */
+	public PrefixOperationHelper setFieldArrayOperand(String fieldName, String... variablesNames) {
+		this.buildPrefixOperation.setOperand(ArrayInstructionHelper.builderWithField(fieldName)
+				.addVariableIndex(variablesNames).build().getExpression());
+		return this;
+	}
+
+	/**
 	 * Set the variable operand of the prefix operation under construction
 	 * 
 	 * @param variableName
@@ -113,6 +144,39 @@ public class PrefixOperationHelper {
 	public PrefixOperationHelper setVariableOperand(String variableName) {
 		this.buildPrefixOperation.setOperand(ElementaryInstructionHelper.createVariableInstruction(variableName)
 				.getExpression());
+		return this;
+	}
+
+	/**
+	 * Set the variable array operand of the prefix operation under construction
+	 * 
+	 * @param variableName
+	 *            the name of the variable operand of the current prefix
+	 *            operation.
+	 * @param indexes
+	 *            the integer indexes of the array variable.
+	 * @return the helper.
+	 */
+	public PrefixOperationHelper setVariableArrayOperand(String variableName, int... indexes) {
+		this.buildPrefixOperation.setOperand(ArrayInstructionHelper.builderWithVariable(variableName).addIndex(indexes)
+				.build().getExpression());
+		return this;
+	}
+
+	/**
+	 * Set the variable array operand of the prefix operation under construction
+	 * 
+	 * @param variableName
+	 *            the name of the variable operand of the current prefix
+	 *            operation.
+	 * @param variablesNames
+	 *            the names of the variables containing indexes of the array
+	 *            variable.
+	 * @return the helper.
+	 */
+	public PrefixOperationHelper setVariableArrayOperand(String variableName, String... variablesNames) {
+		this.buildPrefixOperation.setOperand(ArrayInstructionHelper.builderWithVariable(variableName)
+				.addVariableIndex(variablesNames).build().getExpression());
 		return this;
 	}
 

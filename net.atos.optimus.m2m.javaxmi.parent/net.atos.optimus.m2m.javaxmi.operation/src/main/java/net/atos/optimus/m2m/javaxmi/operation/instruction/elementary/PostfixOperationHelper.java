@@ -92,6 +92,39 @@ public class PostfixOperationHelper {
 	}
 
 	/**
+	 * Set the field array operand of the postfix operation under construction
+	 * 
+	 * @param fieldName
+	 *            the name of the field operand of the current postfix
+	 *            operation.
+	 * @param indexes
+	 *            the integer indexes of the array field.
+	 * @return the helper.
+	 */
+	public PostfixOperationHelper setFieldArrayOperand(String fieldName, int... indexes) {
+		this.buildPostfixOperation.setOperand(ArrayInstructionHelper.builderWithField(fieldName).addIndex(indexes)
+				.build().getExpression());
+		return this;
+	}
+
+	/**
+	 * Set the field array operand of the postfix operation under construction
+	 * 
+	 * @param fieldName
+	 *            the name of the field operand of the current postfix
+	 *            operation.
+	 * @param variablesNames
+	 *            the names of the variables containing indexes of the array
+	 *            field.
+	 * @return the helper.
+	 */
+	public PostfixOperationHelper setFieldArrayOperand(String fieldName, String... variablesNames) {
+		this.buildPostfixOperation.setOperand(ArrayInstructionHelper.builderWithField(fieldName)
+				.addVariableIndex(variablesNames).build().getExpression());
+		return this;
+	}
+
+	/**
 	 * Set the variable operand of the postfix operation under construction
 	 * 
 	 * @param variableName
@@ -102,6 +135,41 @@ public class PostfixOperationHelper {
 	public PostfixOperationHelper setVariableOperand(String variableName) {
 		this.buildPostfixOperation.setOperand(ElementaryInstructionHelper.createVariableInstruction(variableName)
 				.getExpression());
+		return this;
+	}
+
+	/**
+	 * Set the variable array operand of the postfix operation under
+	 * construction
+	 * 
+	 * @param variableName
+	 *            the name of the variable operand of the current postfix
+	 *            operation.
+	 * @param indexes
+	 *            the integer indexes of the array variable.
+	 * @return the helper.
+	 */
+	public PostfixOperationHelper setVariableArrayOperand(String variableName, int... indexes) {
+		this.buildPostfixOperation.setOperand(ArrayInstructionHelper.builderWithVariable(variableName)
+				.addIndex(indexes).build().getExpression());
+		return this;
+	}
+
+	/**
+	 * Set the variable array operand of the postfix operation under
+	 * construction
+	 * 
+	 * @param variableName
+	 *            the name of the variable operand of the current postfix
+	 *            operation.
+	 * @param variablesNames
+	 *            the names of the variables containing indexes of the array
+	 *            variable.
+	 * @return the helper.
+	 */
+	public PostfixOperationHelper setVariableArrayOperand(String variableName, String... variablesNames) {
+		this.buildPostfixOperation.setOperand(ArrayInstructionHelper.builderWithVariable(variableName)
+				.addVariableIndex(variablesNames).build().getExpression());
 		return this;
 	}
 
