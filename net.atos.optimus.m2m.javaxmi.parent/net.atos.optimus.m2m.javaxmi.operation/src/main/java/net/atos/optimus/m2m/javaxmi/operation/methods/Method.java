@@ -38,7 +38,7 @@ import org.eclipse.gmt.modisco.java.TypeAccess;
  *
  */
 
-public class Method extends AbstractMethod {
+public class Method extends AbstractMethod<MethodDeclaration> {
 
 	/**
 	 * Constructor of method
@@ -50,12 +50,8 @@ public class Method extends AbstractMethod {
 		super(methodDeclaration);
 	}
 
-	public MethodDeclaration getMethodDeclaration() {
-		return (MethodDeclaration) this.getAbstractMethodDeclaration();
-	}
-
 	public String getName() {
-		return this.getAbstractMethodDeclaration().getName();
+		return this.getDelegate().getName();
 	}
 
 	/**
@@ -66,10 +62,10 @@ public class Method extends AbstractMethod {
 	 * @return the method with the instructions list added to its body.
 	 */
 	public Method addInstructions(IComplexInstruction... instructions) {
-		Block block = this.getMethodDeclaration().getBody();
+		Block block = this.getDelegate().getBody();
 		if (block == null) {
 			block = BlockBuilder.builder().build();
-			this.getMethodDeclaration().setBody(block);
+			this.getDelegate().setBody(block);
 		}
 		for (IComplexInstruction instruction : instructions) {
 			block.getStatements().add(instruction.getStatement());
@@ -85,7 +81,7 @@ public class Method extends AbstractMethod {
 	 * @return the method with the exceptions list added.
 	 */
 	public Method addExceptions(String... exceptionsNames) {
-		EList<TypeAccess> exceptionsList = this.getAbstractMethodDeclaration().getThrownExceptions();
+		EList<TypeAccess> exceptionsList = this.getDelegate().getThrownExceptions();
 		for (String exceptionName : exceptionsNames) {
 			exceptionsList.add(TypeAccessHelper.createExceptionTypeAccess(exceptionName));
 		}

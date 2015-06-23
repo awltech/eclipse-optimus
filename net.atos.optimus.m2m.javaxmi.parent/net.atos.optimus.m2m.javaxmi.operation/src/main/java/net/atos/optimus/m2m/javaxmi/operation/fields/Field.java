@@ -21,6 +21,8 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.fields;
 
+import net.atos.optimus.m2m.javaxmi.operation.element.Element;
+
 import org.eclipse.gmt.modisco.java.FieldDeclaration;
 
 /**
@@ -31,10 +33,7 @@ import org.eclipse.gmt.modisco.java.FieldDeclaration;
  *
  */
 
-public class Field {
-
-	/** The field declaration */
-	protected FieldDeclaration fieldDeclaration;
+public class Field extends Element<FieldDeclaration> {
 
 	/**
 	 * Constructor of field
@@ -43,19 +42,15 @@ public class Field {
 	 *            the field declaration.
 	 */
 	public Field(FieldDeclaration fieldDeclaration) {
-		this.fieldDeclaration = fieldDeclaration;
-	}
-
-	public FieldDeclaration getFieldDeclaration() {
-		return this.fieldDeclaration;
+		super(fieldDeclaration);
 	}
 
 	public String getName() {
-		return this.fieldDeclaration.getFragments().get(0).getName();
+		return this.getDelegate().getFragments().get(0).getName();
 	}
 
 	public String getTypeName() {
-		return this.fieldDeclaration.getType().getType().getName();
+		return this.getDelegate().getType().getType().getName();
 	}
 
 }

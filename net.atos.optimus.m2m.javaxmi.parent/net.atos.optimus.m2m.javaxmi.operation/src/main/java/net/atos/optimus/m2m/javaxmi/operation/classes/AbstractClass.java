@@ -21,6 +21,8 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.classes;
 
+import net.atos.optimus.m2m.javaxmi.operation.element.Element;
+
 import org.eclipse.gmt.modisco.java.AbstractTypeDeclaration;
 
 /**
@@ -32,10 +34,7 @@ import org.eclipse.gmt.modisco.java.AbstractTypeDeclaration;
  *
  */
 
-public class AbstractClass {
-
-	/** The abstract type declaration */
-	private AbstractTypeDeclaration abstractTypeDeclaration;
+public class AbstractClass<S extends AbstractTypeDeclaration> extends Element<S> {
 
 	/**
 	 * Constructor of abstract class
@@ -43,16 +42,12 @@ public class AbstractClass {
 	 * @param abstractTypeDeclaration
 	 *            the abstract type declaration.
 	 */
-	public AbstractClass(AbstractTypeDeclaration abstractTypeDeclaration) {
-		this.abstractTypeDeclaration = abstractTypeDeclaration;
-	}
-
-	public AbstractTypeDeclaration getAbstractTypeDeclaration() {
-		return this.abstractTypeDeclaration;
+	public AbstractClass(S abstractTypeDeclaration) {
+		super(abstractTypeDeclaration);
 	}
 
 	public String getName() {
-		return this.abstractTypeDeclaration.getName();
+		return this.getDelegate().getName();
 	}
 
 }

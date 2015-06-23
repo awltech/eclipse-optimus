@@ -74,7 +74,7 @@ public class ConstructorHelper {
 	 *            the class associated to the constructor under construction.
 	 */
 	private ConstructorHelper(JavaClass javaClass) {
-		ClassDeclaration internalClass = javaClass.getClassDeclaration();
+		ClassDeclaration internalClass = javaClass.getDelegate();
 		Modifier modifier = ModifierBuilder.builder().setVisibility(VisibilityKind.PUBLIC)
 				.setCompilationUnit(internalClass.getOriginalCompilationUnit()).build();
 		this.buildConstructor = ConstructorDeclarationBuilder.builder().setModifier(modifier)

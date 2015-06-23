@@ -21,6 +21,8 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.parameters;
 
+import net.atos.optimus.m2m.javaxmi.operation.element.Element;
+
 import org.eclipse.gmt.modisco.java.SingleVariableDeclaration;
 
 /**
@@ -31,10 +33,7 @@ import org.eclipse.gmt.modisco.java.SingleVariableDeclaration;
  *
  */
 
-public class Parameter {
-
-	/** The single variable declaration seen as parameter */
-	private SingleVariableDeclaration parameter;
+public class Parameter extends Element<SingleVariableDeclaration> {
 
 	/**
 	 * Constructor of parameter
@@ -43,19 +42,15 @@ public class Parameter {
 	 *            the single variable declaration seen as parameter.
 	 */
 	public Parameter(SingleVariableDeclaration parameter) {
-		this.parameter = parameter;
+		super(parameter);
 	}
 
-	public SingleVariableDeclaration getSingleVariableDeclaration() {
-		return this.parameter;
+	public String getName() {
+		return this.getDelegate().getName();
 	}
-	
-	public String getName(){
-		return this.getSingleVariableDeclaration().getName();
+
+	public String getTypeName() {
+		return this.getDelegate().getType().getType().getName();
 	}
-	
-	public String getTypeName(){
-		return this.getSingleVariableDeclaration().getType().getType().getName();
-	}
-	
+
 }

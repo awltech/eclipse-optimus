@@ -37,7 +37,7 @@ import org.eclipse.gmt.modisco.java.TypeAccess;
  *
  */
 
-public class JavaClass extends AbstractClass {
+public class JavaClass extends AbstractClass<ClassDeclaration> {
 
 	/**
 	 * Constructor of class
@@ -49,10 +49,6 @@ public class JavaClass extends AbstractClass {
 		super(classDeclaration);
 	}
 
-	public ClassDeclaration getClassDeclaration() {
-		return (ClassDeclaration) this.getAbstractTypeDeclaration();
-	}
-
 	/**
 	 * Add interfaces list to the class
 	 * 
@@ -61,7 +57,7 @@ public class JavaClass extends AbstractClass {
 	 * @return the class.
 	 */
 	public JavaClass addInterfaces(String... interfacesNames) {
-		EList<TypeAccess> interfacesList = this.getClassDeclaration().getSuperInterfaces();
+		EList<TypeAccess> interfacesList = this.getDelegate().getSuperInterfaces();
 		for (String javaInterface : interfacesNames) {
 			interfacesList.add(TypeAccessHelper.createInterfaceTypeAccess(javaInterface));
 		}
@@ -76,7 +72,7 @@ public class JavaClass extends AbstractClass {
 	 * @return the class.
 	 */
 	public JavaClass addImports(String... importsNames) {
-		EList<ImportDeclaration> importsList = this.getClassDeclaration().getOriginalCompilationUnit().getImports();
+		EList<ImportDeclaration> importsList = this.getDelegate().getOriginalCompilationUnit().getImports();
 		for (String javaImport : importsNames) {
 			importsList.add(ImportDeclarationHelper.createImportDeclaration(javaImport, false));
 		}
@@ -91,7 +87,7 @@ public class JavaClass extends AbstractClass {
 	 * @return the class.
 	 */
 	public JavaClass addStaticImports(String... importsNames) {
-		EList<ImportDeclaration> importsList = this.getClassDeclaration().getOriginalCompilationUnit().getImports();
+		EList<ImportDeclaration> importsList = this.getDelegate().getOriginalCompilationUnit().getImports();
 		for (String javaImport : importsNames) {
 			importsList.add(ImportDeclarationHelper.createImportDeclaration(javaImport, true));
 		}

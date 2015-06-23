@@ -75,7 +75,7 @@ public class InterfaceHelper {
 	 *            the name of the interface under construction.
 	 */
 	private InterfaceHelper(JavaPackage javaPackage, String interfaceName) {
-		org.eclipse.gmt.modisco.java.Package internalPackage = javaPackage.getPackage();
+		org.eclipse.gmt.modisco.java.Package internalPackage = javaPackage.getDelegate();
 		CompilationUnit compilationUnit = CompilationUnitBuilder.builder().setName(interfaceName + ".java")
 				.setPackage(internalPackage).build();
 		Modifier modifier = ModifierBuilder.builder().setVisibility(VisibilityKind.PUBLIC)

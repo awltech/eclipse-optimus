@@ -41,7 +41,7 @@ import org.eclipse.gmt.modisco.java.TypeAccess;
  *
  */
 
-public class JavaEnum extends AbstractClass {
+public class JavaEnum extends AbstractClass<EnumDeclaration> {
 
 	/**
 	 * Constructor of enumeration
@@ -51,10 +51,6 @@ public class JavaEnum extends AbstractClass {
 	 */
 	public JavaEnum(EnumDeclaration enumDeclaration) {
 		super(enumDeclaration);
-	}
-
-	public EnumDeclaration getEnumDeclaration() {
-		return (EnumDeclaration) this.getAbstractTypeDeclaration();
 	}
 
 	/**
@@ -74,7 +70,7 @@ public class JavaEnum extends AbstractClass {
 		for (IElementaryInstruction argument : arguments) {
 			argumentsList.add(argument.getExpression());
 		}
-		this.getEnumDeclaration().getEnumConstants().add(enumConstantDeclaration);
+		this.getDelegate().getEnumConstants().add(enumConstantDeclaration);
 		return this;
 	}
 
@@ -86,7 +82,7 @@ public class JavaEnum extends AbstractClass {
 	 * @return the enumeration.
 	 */
 	public JavaEnum addInterfaces(String... interfacesNames) {
-		EList<TypeAccess> interfacesList = this.getEnumDeclaration().getSuperInterfaces();
+		EList<TypeAccess> interfacesList = this.getDelegate().getSuperInterfaces();
 		for (String javaInterface : interfacesNames) {
 			interfacesList.add(TypeAccessHelper.createInterfaceTypeAccess(javaInterface));
 		}
@@ -101,7 +97,7 @@ public class JavaEnum extends AbstractClass {
 	 * @return the enumeration.
 	 */
 	public JavaEnum addImports(String... importsNames) {
-		EList<ImportDeclaration> importsList = this.getEnumDeclaration().getOriginalCompilationUnit().getImports();
+		EList<ImportDeclaration> importsList = this.getDelegate().getOriginalCompilationUnit().getImports();
 		for (String javaImport : importsNames) {
 			importsList.add(ImportDeclarationHelper.createImportDeclaration(javaImport, false));
 		}
@@ -116,7 +112,7 @@ public class JavaEnum extends AbstractClass {
 	 * @return the enumeration.
 	 */
 	public JavaEnum addStaticImports(String... importsNames) {
-		EList<ImportDeclaration> importsList = this.getEnumDeclaration().getOriginalCompilationUnit().getImports();
+		EList<ImportDeclaration> importsList = this.getDelegate().getOriginalCompilationUnit().getImports();
 		for (String javaImport : importsNames) {
 			importsList.add(ImportDeclarationHelper.createImportDeclaration(javaImport, true));
 		}

@@ -22,7 +22,6 @@
 package net.atos.optimus.m2m.javaxmi.operation.instruction;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
-import net.atos.optimus.m2m.javaxmi.operation.comments.LineCommentBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.ReturnStatementBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.elementary.CastExpressionBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.elementary.InstanceOfExpressionBuilder;
@@ -34,7 +33,6 @@ import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.IElementary
 
 import org.eclipse.gmt.modisco.java.Expression;
 import org.eclipse.gmt.modisco.java.ExpressionStatement;
-import org.eclipse.gmt.modisco.java.LineComment;
 import org.eclipse.gmt.modisco.java.Statement;
 import org.eclipse.gmt.modisco.java.SuperConstructorInvocation;
 
@@ -105,34 +103,6 @@ public class Instruction implements IElementaryInstruction, IComplexInstruction 
 	public ElementaryInstruction convertToInstanceOfInstruction(String typeName) {
 		return new ElementaryInstruction(InstanceOfExpressionBuilder.builder().setLeftOperand(this.getExpression())
 				.setRightOperand(TypeAccessHelper.createTypeAccess(typeName)).build());
-	}
-
-	/**
-	 * Add a comment to the current instruction and set to true the prefix of
-	 * parent state
-	 * 
-	 * @param commentText
-	 *            the text of the comment.
-	 * @return the commented instruction.
-	 */
-	public Instruction addComment(String commentText) {
-		return this.addComment(commentText, true);
-	}
-
-	/**
-	 * Add a comment to the current instruction
-	 * 
-	 * @param commentText
-	 *            the text of the comment.
-	 * @param prefixOfParent
-	 *            the prefix of parent state of the comment.
-	 * @return the commented instruction.
-	 */
-	public Instruction addComment(String commentText, boolean prefixOfParent) {
-		LineComment comment = LineCommentBuilder.builder().setContent(commentText).setPrefixOfParent(prefixOfParent)
-				.build();
-		this.getStatement().getComments().add(comment);
-		return this;
 	}
 
 }

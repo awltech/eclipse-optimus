@@ -89,7 +89,7 @@ public class ClassHelper {
 	 *            the name of the class under construction.
 	 */
 	private ClassHelper(JavaPackage javaPackage, String className) {
-		org.eclipse.gmt.modisco.java.Package internalPackage = javaPackage.getPackage();
+		org.eclipse.gmt.modisco.java.Package internalPackage = javaPackage.getDelegate();
 		CompilationUnit compilationUnit = CompilationUnitBuilder.builder().setName(className + ".java")
 				.setPackage(internalPackage).build();
 		Modifier modifier = ModifierBuilder.builder().setVisibility(VisibilityKind.PUBLIC)
@@ -117,7 +117,7 @@ public class ClassHelper {
 	 *            the name of the class under construction.
 	 */
 	private ClassHelper(JavaClass javaClass, String className) {
-		ClassDeclaration classDeclaration = javaClass.getClassDeclaration();
+		ClassDeclaration classDeclaration = javaClass.getDelegate();
 		Modifier modifier = ModifierBuilder.builder().setVisibility(VisibilityKind.PUBLIC)
 				.setInheritance(InheritanceKind.NONE).setCompilationUnit(classDeclaration.getOriginalCompilationUnit())
 				.build();

@@ -77,7 +77,7 @@ public class EnumHelper {
 	 *            the name of the enumeration under construction.
 	 */
 	private EnumHelper(JavaPackage javaPackage, String enumName) {
-		org.eclipse.gmt.modisco.java.Package internalPackage = javaPackage.getPackage();
+		org.eclipse.gmt.modisco.java.Package internalPackage = javaPackage.getDelegate();
 		CompilationUnit compilationUnit = CompilationUnitBuilder.builder().setName(enumName + ".java")
 				.setPackage(internalPackage).build();
 		Modifier modifier = ModifierBuilder.builder().setVisibility(VisibilityKind.PUBLIC)

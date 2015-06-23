@@ -65,7 +65,7 @@ public class MethodHelper {
 	 * 
 	 * @return a new method helper.
 	 */
-	public static MethodHelper builder(AbstractClass abstractClass, String methodName) {
+	public static MethodHelper builder(AbstractClass<?> abstractClass, String methodName) {
 		return new MethodHelper(abstractClass, methodName);
 	}
 
@@ -79,8 +79,8 @@ public class MethodHelper {
 	 * @param methodName
 	 *            the name of the created method under construction.
 	 */
-	private MethodHelper(AbstractClass abstractClass, String methodName) {
-		AbstractTypeDeclaration abstractType = abstractClass.getAbstractTypeDeclaration();
+	private MethodHelper(AbstractClass<?> abstractClass, String methodName) {
+		AbstractTypeDeclaration abstractType = abstractClass.getDelegate();
 		Modifier modifier = ModifierBuilder.builder().setVisibility(VisibilityKind.PUBLIC).setStatic(false)
 				.setInheritance(InheritanceKind.NONE).setCompilationUnit(abstractType.getOriginalCompilationUnit())
 				.build();
@@ -233,7 +233,7 @@ public class MethodHelper {
 	 * @return the created method with instructions and no parameter accordingly
 	 *         to the specified parameters.
 	 */
-	public static Method createMethod(AbstractClass abstractClass, VisibilityKind visibility, boolean isStatic,
+	public static Method createMethod(AbstractClass<?> abstractClass, VisibilityKind visibility, boolean isStatic,
 			InheritanceKind inheritance, String returnTypeName, String methodName, String... exceptionsNames) {
 		return MethodHelper.builder(abstractClass, methodName).setVisibility(visibility).setStatic(isStatic)
 				.setInheritance(inheritance).setReturnType(returnTypeName).addExceptions(exceptionsNames).build();

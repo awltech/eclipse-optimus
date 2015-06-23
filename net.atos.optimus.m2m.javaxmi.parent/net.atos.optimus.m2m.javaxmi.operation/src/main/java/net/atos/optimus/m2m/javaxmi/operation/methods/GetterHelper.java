@@ -95,7 +95,7 @@ public class GetterHelper {
 	 * @return the helper.
 	 */
 	public GetterHelper setName(String getterName) {
-		this.buildGetterMethod.getMethodDeclaration().setName(getterName);
+		this.buildGetterMethod.getDelegate().setName(getterName);
 		return this;
 	}
 
@@ -107,7 +107,7 @@ public class GetterHelper {
 	 * @return the helper.
 	 */
 	public GetterHelper setVisibility(VisibilityKind visibility) {
-		this.buildGetterMethod.getMethodDeclaration().getModifier().setVisibility(visibility);
+		this.buildGetterMethod.getDelegate().getModifier().setVisibility(visibility);
 		return this;
 	}
 
@@ -119,7 +119,7 @@ public class GetterHelper {
 	 * @return the helper.
 	 */
 	public GetterHelper setFinal(boolean isFinal) {
-		this.buildGetterMethod.getMethodDeclaration().getModifier()
+		this.buildGetterMethod.getDelegate().getModifier()
 				.setInheritance(isFinal ? InheritanceKind.FINAL : InheritanceKind.NONE);
 		return this;
 	}

@@ -21,6 +21,8 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.packages;
 
+import net.atos.optimus.m2m.javaxmi.operation.element.Element;
+
 /**
  * Models a package : wrapper of package in modisco model
  * 
@@ -29,10 +31,7 @@ package net.atos.optimus.m2m.javaxmi.operation.packages;
  *
  */
 
-public class JavaPackage {
-
-	/** The package */
-	protected org.eclipse.gmt.modisco.java.Package javaPackage;
+public class JavaPackage extends Element<org.eclipse.gmt.modisco.java.Package> {
 
 	/**
 	 * Constructor of package of the modicso model
@@ -41,15 +40,11 @@ public class JavaPackage {
 	 *            the package of the modicso model.
 	 */
 	public JavaPackage(org.eclipse.gmt.modisco.java.Package javaPackage) {
-		this.javaPackage = javaPackage;
+		super(javaPackage);
 	}
 
-	public org.eclipse.gmt.modisco.java.Package getPackage() {
-		return javaPackage;
-	}
-	
-	public String getName(){
-		return this.javaPackage.getName();
+	public String getName() {
+		return this.getDelegate().getName();
 	}
 
 }

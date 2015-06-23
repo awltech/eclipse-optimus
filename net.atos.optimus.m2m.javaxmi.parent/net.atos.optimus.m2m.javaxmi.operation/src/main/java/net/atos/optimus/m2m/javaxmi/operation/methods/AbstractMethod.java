@@ -21,6 +21,8 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.methods;
 
+import net.atos.optimus.m2m.javaxmi.operation.element.Element;
+
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmt.modisco.java.AbstractMethodDeclaration;
 import org.eclipse.gmt.modisco.java.CompilationUnit;
@@ -34,10 +36,7 @@ import org.eclipse.gmt.modisco.java.SingleVariableDeclaration;
  *
  */
 
-public class AbstractMethod {
-
-	/** The abstract method declaration */
-	private AbstractMethodDeclaration abstractMethodDeclaration;
+public class AbstractMethod<S extends AbstractMethodDeclaration> extends Element<S> {
 
 	/**
 	 * Constructor of abstract method
@@ -45,20 +44,16 @@ public class AbstractMethod {
 	 * @param abstractMethodDeclaration
 	 *            the abstract method declaration.
 	 */
-	public AbstractMethod(AbstractMethodDeclaration abstractMethodDeclaration) {
-		this.abstractMethodDeclaration = abstractMethodDeclaration;
-	}
-
-	public AbstractMethodDeclaration getAbstractMethodDeclaration() {
-		return this.abstractMethodDeclaration;
+	public AbstractMethod(S abstractMethodDeclaration) {
+		super(abstractMethodDeclaration);
 	}
 
 	public CompilationUnit getCompilationUnit() {
-		return this.abstractMethodDeclaration.getOriginalCompilationUnit();
+		return this.getDelegate().getOriginalCompilationUnit();
 	}
 
 	public EList<SingleVariableDeclaration> getParameters() {
-		return this.abstractMethodDeclaration.getParameters();
+		return this.getDelegate().getParameters();
 	}
 
 }

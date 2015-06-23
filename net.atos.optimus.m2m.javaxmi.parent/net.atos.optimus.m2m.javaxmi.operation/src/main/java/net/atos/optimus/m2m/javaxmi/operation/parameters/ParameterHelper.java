@@ -53,7 +53,7 @@ public class ParameterHelper {
 	 *            the type name of the parameter under construction.
 	 * @return a new helper.
 	 */
-	public static ParameterHelper builder(AbstractMethod method, String parameterTypeName) {
+	public static ParameterHelper builder(AbstractMethod<?> method, String parameterTypeName) {
 		return new ParameterHelper(method, parameterTypeName);
 	}
 
@@ -66,9 +66,8 @@ public class ParameterHelper {
 	 * @param parameterTypeName
 	 *            the type name of the parameter under construction.
 	 */
-	private ParameterHelper(AbstractMethod method, String parameterTypeName) {
-		this.buildParameter = SingleVariableDeclarationBuilder.builder()
-				.setMethodDeclaration(method.getAbstractMethodDeclaration())
+	private ParameterHelper(AbstractMethod<?> method, String parameterTypeName) {
+		this.buildParameter = SingleVariableDeclarationBuilder.builder().setMethodDeclaration(method.getDelegate())
 				.setCompilationUnit(method.getCompilationUnit())
 				.setModifier(ModifierBuilder.builder().setInheritance(InheritanceKind.NONE).build())
 				.setType(TypeAccessHelper.createTypeAccess(parameterTypeName))
@@ -136,7 +135,7 @@ public class ParameterHelper {
 	 *            the varargs state of the created parameter.
 	 * @return the created parameter accordingly to the specified parameters.
 	 */
-	public static Parameter createParameter(AbstractMethod method, boolean isFinal, String parameterTypeName,
+	public static Parameter createParameter(AbstractMethod<?> method, boolean isFinal, String parameterTypeName,
 			String parameterName, boolean varargsState) {
 		return ParameterHelper.builder(method, parameterTypeName).setFinal(isFinal).setName(parameterName)
 				.setVarargs(varargsState).build();

@@ -72,7 +72,7 @@ public class FieldHelper {
 	 * @return a new helper.
 	 */
 	private FieldHelper(JavaClass javaClass, String fieldTypeName) {
-		ClassDeclaration internalClass = javaClass.getClassDeclaration();
+		ClassDeclaration internalClass = javaClass.getDelegate();
 		String fieldName = NameGenerator.generateNameWithTypeName(fieldTypeName);
 		Modifier modifier = ModifierBuilder.builder().setVisibility(VisibilityKind.PRIVATE).setStatic(false)
 				.setInheritance(InheritanceKind.NONE).setCompilationUnit(internalClass.getOriginalCompilationUnit())

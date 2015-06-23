@@ -39,7 +39,7 @@ import org.eclipse.gmt.modisco.java.TypeAccess;
  *
  */
 
-public class Constructor extends AbstractMethod {
+public class Constructor extends AbstractMethod<ConstructorDeclaration> {
 
 	/**
 	 * Constructor of constructor
@@ -51,10 +51,6 @@ public class Constructor extends AbstractMethod {
 		super(constructorDeclaration);
 	}
 
-	public ConstructorDeclaration getConstructorDeclaration() {
-		return (ConstructorDeclaration) this.getAbstractMethodDeclaration();
-	}
-
 	/**
 	 * Add a list of instructions to the current constructor
 	 * 
@@ -63,10 +59,10 @@ public class Constructor extends AbstractMethod {
 	 * @return the constructor with the instructions list added to its body.
 	 */
 	public Constructor addInstructions(IComplexInstruction... instructions) {
-		Block block = this.getConstructorDeclaration().getBody();
+		Block block = this.getDelegate().getBody();
 		if (block == null) {
 			block = BlockBuilder.builder().build();
-			this.getConstructorDeclaration().setBody(block);
+			this.getDelegate().setBody(block);
 		}
 		for (IComplexInstruction instruction : instructions) {
 			block.getStatements().add(instruction.getStatement());
@@ -82,7 +78,7 @@ public class Constructor extends AbstractMethod {
 	 * @return the constructor with the exceptions list added.
 	 */
 	public Constructor addExceptions(String... exceptionsNames) {
-		EList<TypeAccess> exceptionsList = this.getAbstractMethodDeclaration().getThrownExceptions();
+		EList<TypeAccess> exceptionsList = this.getDelegate().getThrownExceptions();
 		for (String exceptionName : exceptionsNames) {
 			exceptionsList.add(TypeAccessHelper.createExceptionTypeAccess(exceptionName));
 		}

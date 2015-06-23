@@ -102,7 +102,7 @@ public class SetterHelper {
 	 * @return the helper.
 	 */
 	public SetterHelper setName(String setterName) {
-		this.buildSetterMethod.getMethodDeclaration().setName(setterName);
+		this.buildSetterMethod.getDelegate().setName(setterName);
 		return this;
 	}
 
@@ -114,7 +114,7 @@ public class SetterHelper {
 	 * @return the helper.
 	 */
 	public SetterHelper setVisibility(VisibilityKind visibility) {
-		this.buildSetterMethod.getMethodDeclaration().getModifier().setVisibility(visibility);
+		this.buildSetterMethod.getDelegate().getModifier().setVisibility(visibility);
 		return this;
 	}
 
@@ -126,7 +126,7 @@ public class SetterHelper {
 	 * @return the helper.
 	 */
 	public SetterHelper setFinal(boolean isFinal) {
-		this.buildSetterMethod.getMethodDeclaration().getModifier()
+		this.buildSetterMethod.getDelegate().getModifier()
 				.setInheritance(isFinal ? InheritanceKind.FINAL : InheritanceKind.NONE);
 		return this;
 	}
@@ -140,7 +140,7 @@ public class SetterHelper {
 	 */
 	public SetterHelper setParameterName(String parameterName) {
 		this.buildSetterMethod.getParameters().get(0).setName(parameterName);
-		this.buildSetterMethod.getMethodDeclaration().setBody(null);
+		this.buildSetterMethod.getDelegate().setBody(null);
 		this.buildSetterMethod.addInstructions(AssignmentOperationHelper.builder().setOperator(AssignmentKind.ASSIGN)
 				.setLeftFieldOperand(this.field.getName()).setRightVariableOperand(parameterName).build());
 		return this;

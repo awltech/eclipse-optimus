@@ -21,9 +21,6 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.instruction.complex;
 
-import net.atos.optimus.m2m.javaxmi.operation.comments.LineCommentBuilder;
-
-import org.eclipse.gmt.modisco.java.LineComment;
 import org.eclipse.gmt.modisco.java.Statement;
 
 /**
@@ -51,34 +48,6 @@ public class ComplexInstruction implements IComplexInstruction {
 
 	public Statement getStatement() {
 		return this.statement;
-	}
-
-	/**
-	 * Add a comment to the current complex instruction and set to true the prefix of
-	 * parent state
-	 * 
-	 * @param commentText
-	 *            the text of the comment.
-	 * @return the commented instruction.
-	 */
-	public ComplexInstruction addComment(String commentText) {
-		return this.addComment(commentText, true);
-	}
-
-	/**
-	 * Add a comment to the current complex instruction
-	 * 
-	 * @param commentText
-	 *            the text of the comment.
-	 * @param prefixOfParent
-	 *            the prefix of parent state of the comment.
-	 * @return the commented instruction.
-	 */
-	public ComplexInstruction addComment(String commentText, boolean prefixOfParent) {
-		LineComment comment = LineCommentBuilder.builder().setContent(commentText).setPrefixOfParent(prefixOfParent)
-				.build();
-		this.getStatement().getComments().add(comment);
-		return this;
 	}
 
 }
