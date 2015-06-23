@@ -47,7 +47,8 @@ public class AssignmentOperationHelper {
 	private Assignment buildAssignmentOperation;
 
 	/**
-	 * Launch the build of a new assignment operation
+	 * Launch the build of a new assignment operation (an equal assignment by
+	 * default)
 	 * 
 	 * @return a new helper.
 	 */
@@ -56,11 +57,12 @@ public class AssignmentOperationHelper {
 	}
 
 	/**
-	 * Private constructor : a new assignment operation
+	 * Private constructor : a new assignment operation (an equal assignment by
+	 * default)
 	 * 
 	 */
 	private AssignmentOperationHelper() {
-		this.buildAssignmentOperation = AssignmentBuilder.builder().build();
+		this.buildAssignmentOperation = AssignmentBuilder.builder().setOperator(AssignmentKind.ASSIGN).build();
 	}
 
 	/**
@@ -90,7 +92,7 @@ public class AssignmentOperationHelper {
 	 * 
 	 * @return the helper.
 	 */
-	public AssignmentOperationHelper setLeftLeftOperand() {
+	public AssignmentOperationHelper setLeftThisOperand() {
 		this.buildAssignmentOperation.setLeftHandSide(ElementaryInstructionHelper.createThisInstruction()
 				.getExpression());
 		return this;
@@ -325,7 +327,7 @@ public class AssignmentOperationHelper {
 	 *            the integer indexes of the array field.
 	 * @return the helper.
 	 */
-	public AssignmentOperationHelper setLeftRightArrayOperand(String fieldName, int... indexes) {
+	public AssignmentOperationHelper setRightFieldArrayOperand(String fieldName, int... indexes) {
 		this.buildAssignmentOperation.setRightHandSide(ArrayInstructionHelper.builderWithField(fieldName)
 				.addIndex(indexes).build().getExpression());
 		return this;
@@ -343,7 +345,7 @@ public class AssignmentOperationHelper {
 	 *            field.
 	 * @return the helper.
 	 */
-	public AssignmentOperationHelper setLeftRightArrayOperand(String fieldName, String... variablesNames) {
+	public AssignmentOperationHelper setRightFieldArrayOperand(String fieldName, String... variablesNames) {
 		this.buildAssignmentOperation.setRightHandSide(ArrayInstructionHelper.builderWithField(fieldName)
 				.addVariableIndex(variablesNames).build().getExpression());
 		return this;
