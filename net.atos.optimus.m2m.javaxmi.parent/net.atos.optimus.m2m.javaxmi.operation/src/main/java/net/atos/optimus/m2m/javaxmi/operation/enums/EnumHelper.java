@@ -27,6 +27,7 @@ import net.atos.optimus.m2m.javaxmi.operation.imports.ImportDeclarationHelper;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.IElementaryInstruction;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.packages.JavaPackage;
+import net.atos.optimus.m2m.javaxmi.operation.util.ASTElementFinder;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmt.modisco.java.CompilationUnit;
@@ -35,7 +36,6 @@ import org.eclipse.gmt.modisco.java.EnumDeclaration;
 import org.eclipse.gmt.modisco.java.Expression;
 import org.eclipse.gmt.modisco.java.ImportDeclaration;
 import org.eclipse.gmt.modisco.java.InheritanceKind;
-import org.eclipse.gmt.modisco.java.Model;
 import org.eclipse.gmt.modisco.java.Modifier;
 import org.eclipse.gmt.modisco.java.TypeAccess;
 import org.eclipse.gmt.modisco.java.VisibilityKind;
@@ -85,12 +85,7 @@ public class EnumHelper {
 		this.buildEnum = EnumDeclarationBuilder.builder().setName(enumName).setPackage(internalPackage).setProxy(false)
 				.setModifier(modifier).setCompilationUnit(compilationUnit).build();
 		compilationUnit.getTypes().add(this.buildEnum);
-		Model model = internalPackage.getModel();
-		while (model == null && internalPackage != internalPackage.getPackage()) {
-			internalPackage = internalPackage.getPackage();
-			model = internalPackage.getModel();
-		}
-		model.getCompilationUnits().add(compilationUnit);
+		ASTElementFinder.findModel(internalPackage).getCompilationUnits().add(compilationUnit);
 	}
 
 	/**
