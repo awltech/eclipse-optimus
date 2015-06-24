@@ -44,17 +44,21 @@ import org.eclipse.gmt.modisco.java.TagElement;
 
 public class Element<T extends ASTNode> {
 
+	public static final String BEGIN_COMMENT = "//";
+
 	private T astNode;
 
 	public T getDelegate() {
 		return this.astNode;
 	}
-	
-	/** Constructor of element
+
+	/**
+	 * Constructor of element
 	 * 
-	 * @param astNode the AST node.
+	 * @param astNode
+	 *            the AST node.
 	 */
-	public Element(T astNode){
+	public Element(T astNode) {
 		this.astNode = astNode;
 	}
 
@@ -119,6 +123,9 @@ public class Element<T extends ASTNode> {
 	 * @return the current element.
 	 */
 	public Element<T> addComment(String commentText, boolean prefixOfParent) {
+		if (!commentText.startsWith(Element.BEGIN_COMMENT)) {
+			commentText = Element.BEGIN_COMMENT + commentText;
+		}
 		LineComment comment = LineCommentBuilder.builder().setContent(commentText).setPrefixOfParent(prefixOfParent)
 				.build();
 		this.astNode.getComments().add(comment);

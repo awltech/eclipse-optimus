@@ -21,6 +21,8 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.instruction.complex;
 
+import net.atos.optimus.m2m.javaxmi.operation.element.Element;
+
 import org.eclipse.gmt.modisco.java.Statement;
 
 /**
@@ -31,10 +33,7 @@ import org.eclipse.gmt.modisco.java.Statement;
  *
  */
 
-public class ComplexInstruction implements IComplexInstruction {
-
-	/** The statement */
-	private Statement statement;
+public class ComplexInstruction extends Element<Statement> implements IComplexInstruction {
 
 	/**
 	 * Constructor of complex instruction
@@ -43,11 +42,11 @@ public class ComplexInstruction implements IComplexInstruction {
 	 *            the statement.
 	 */
 	public ComplexInstruction(Statement statement) {
-		this.statement = statement;
+		super(statement);
 	}
 
 	public Statement getStatement() {
-		return this.statement;
+		return this.getDelegate();
 	}
 
 }

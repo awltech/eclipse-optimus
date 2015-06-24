@@ -22,6 +22,7 @@
 package net.atos.optimus.m2m.javaxmi.operation.instruction.elementary;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
+import net.atos.optimus.m2m.javaxmi.operation.element.Element;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.ReturnStatementBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.elementary.CastExpressionBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.elementary.InstanceOfExpressionBuilder;
@@ -38,10 +39,7 @@ import org.eclipse.gmt.modisco.java.Expression;
  *
  */
 
-public class ElementaryInstruction implements IElementaryInstruction {
-
-	/** The expression */
-	private Expression expression;
+public class ElementaryInstruction extends Element<Expression> implements IElementaryInstruction {
 
 	/**
 	 * Constructor of elementary instruction
@@ -50,11 +48,11 @@ public class ElementaryInstruction implements IElementaryInstruction {
 	 *            the expression.
 	 */
 	public ElementaryInstruction(Expression expression) {
-		this.expression = expression;
+		super(expression);
 	}
 
 	public Expression getExpression() {
-		return this.expression;
+		return this.getDelegate();
 	}
 
 	@Override
