@@ -21,7 +21,10 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.packages;
 
+import java.util.Iterator;
+
 import org.eclipse.gmt.modisco.java.Model;
+import org.eclipse.gmt.modisco.java.Package;
 
 /**
  * The purpose of such class is to help with the creation of package
@@ -46,17 +49,41 @@ public class PackageHelper {
 	public static JavaPackage createPackage(Model javaModel, String packageName) {
 		String[] packageNames = packageName.split("\\.");
 		int packageNumber = packageNames.length;
-		org.eclipse.gmt.modisco.java.Package createdPackage = null;
 
-		if (packageNumber != 0) {
-			createdPackage = PackageBuilder.builder().setModel(javaModel).setName(packageName).build();
+		Package fatherPackage = null;
+		Iterator<Package> iteratorOnModelPackages = javaModel.getOwnedElements().iterator();
+		while (iteratorOnModelPackages.hasNext() && fatherPackage == null) {
+			Package next = iteratorOnModelPackages.next();
+			if (next.getName().equals(packageNames[0])) {
+				fatherPackage = next;
+			}
 		}
+
+		if (fatherPackage == null) {
+			fatherPackage = PackageBuilder.builder().setModel(javaModel).setName(packageNames[0]).build();
+		}
+
 		for (int indexPackage = 1; indexPackage < packageNumber; indexPackage++) {
-			createdPackage = PackageBuilder.builder().setPackage(createdPackage).setName(packageNames[indexPackage])
-					.build();
+			Package childPackage = null;
+			Iterator<Package> iteratorOnSubPackages = fatherPackage.getOwnedPackages().iterator();
+
+			while (iteratorOnSubPackages.hasNext() && childPackage == null) {
+				Package next = iteratorOnSubPackages.next();
+				if (next.getName().equals(packageNames[indexPackage])) {
+					childPackage = next;
+				}
+			}
+
+			if (childPackage == null) {
+				fatherPackage = PackageBuilder.builder().setPackage(fatherPackage).setName(packageNames[indexPackage])
+						.build();
+			} else {
+				fatherPackage = childPackage;
+			}
+
 		}
 
-		return new JavaPackage(createdPackage);
+		return new JavaPackage(fatherPackage);
 	}
 
 }
