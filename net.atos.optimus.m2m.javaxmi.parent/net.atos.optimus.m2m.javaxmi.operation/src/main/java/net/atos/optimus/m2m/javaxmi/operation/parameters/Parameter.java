@@ -21,9 +21,15 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.parameters;
 
+import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
+import net.atos.optimus.m2m.javaxmi.operation.annotations.AnnotationBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.element.Element;
+import net.atos.optimus.m2m.javaxmi.operation.packages.JavaPackage;
+import net.atos.optimus.m2m.javaxmi.operation.util.MissingImportAdder;
 
+import org.eclipse.gmt.modisco.java.CompilationUnit;
 import org.eclipse.gmt.modisco.java.SingleVariableDeclaration;
+import org.eclipse.gmt.modisco.java.TypeAccess;
 
 /**
  * Models a parameter : wrapper of SingleVariableDeclaration in modisco model
@@ -51,6 +57,32 @@ public class Parameter extends Element<SingleVariableDeclaration> {
 
 	public String getTypeName() {
 		return this.getDelegate().getType().getType().getName();
+	}
+
+	/**
+	 * Add an annotation to the current parameter
+	 * 
+	 * @param javaPackage
+	 *            the package of the current parameter.
+	 * @param annotationName
+	 *            the annotation name.
+	 * @return the current parameter.
+	 */
+	public Parameter addAnnotation(JavaPackage javaPackage, String annotationName) {
+		CompilationUnit compilationUnit = this.getDelegate().getOriginalCompilationUnit();
+
+		TypeAccess annotationType = compilationUnit != null ? TypeAccessHelper.createAnnotationTypeAccess(this,
+				javaPackage, annotationName) : TypeAccessHelper.createOrphanAnnotationTypeAccess(this,
+				javaPackage.getFullQualifiedName() + "." + annotationName);
+
+		this.getDelegate().getAnnotations()
+				.add(AnnotationBuilder.builder().setCompilationUnit(compilationUnit).setType(annotationType).build());
+
+		if (compilationUnit != null) {
+			MissingImportAdder.addMissingImport(compilationUnit, annotationType.getType());
+		}
+
+		return this;
 	}
 
 }
