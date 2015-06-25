@@ -51,6 +51,18 @@ public class MissingImportAdder {
 	 */
 	public static void addMissingImport(BodyDeclaration bodyDeclaration, Type type) {
 		CompilationUnit compilationUnit = ASTElementFinder.findCompilationUnit(bodyDeclaration);
+		MissingImportAdder.addMissingImport(compilationUnit, type);
+	}
+
+	/**
+	 * Adds import if missing in the compilation unit for the provided type
+	 * 
+	 * @param compilationUnit
+	 *            the compilation unit.
+	 * @param type
+	 *            the type.
+	 */
+	public static void addMissingImport(CompilationUnit compilationUnit, Type type) {
 		if (type instanceof UnresolvedAnnotationDeclaration || compilationUnit == null) {
 			return;
 		}
@@ -66,4 +78,5 @@ public class MissingImportAdder {
 			compilationUnit.getImports().add(declaration);
 		}
 	}
+
 }

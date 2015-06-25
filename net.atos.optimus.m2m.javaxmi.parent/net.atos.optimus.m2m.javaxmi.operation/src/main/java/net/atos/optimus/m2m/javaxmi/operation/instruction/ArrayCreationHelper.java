@@ -25,6 +25,7 @@ import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.array.ArrayCreationBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.array.ArrayInitializerBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.ArrayInitializerInstruction;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.ElementaryInstruction;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.ElementaryInstructionHelper;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.IElementaryInstruction;
@@ -163,13 +164,13 @@ public class ArrayCreationHelper {
 	 *            the integer elements list.
 	 * @return the created array.
 	 */
-	public static ElementaryInstruction createArray(int... elements) {
+	public static ArrayInitializerInstruction createArray(int... elements) {
 		ArrayInitializer arrayInitializer = ArrayInitializerBuilder.builder().build();
 		EList<Expression> expressionsList = arrayInitializer.getExpressions();
 		for (Integer element : elements) {
 			expressionsList.add(ElementaryInstructionHelper.createInstruction(element).getExpression());
 		}
-		return new ElementaryInstruction(arrayInitializer);
+		return new ArrayInitializerInstruction(arrayInitializer);
 	}
 
 	/**
@@ -179,13 +180,13 @@ public class ArrayCreationHelper {
 	 *            the instruction elements list.
 	 * @return the created array.
 	 */
-	public static ElementaryInstruction createArray(IElementaryInstruction... elements) {
+	public static ArrayInitializerInstruction createArray(IElementaryInstruction... elements) {
 		ArrayInitializer arrayInitializer = ArrayInitializerBuilder.builder().build();
 		EList<Expression> expressionsList = arrayInitializer.getExpressions();
 		for (IElementaryInstruction element : elements) {
 			expressionsList.add(element.getExpression());
 		}
-		return new ElementaryInstruction(arrayInitializer);
+		return new ArrayInitializerInstruction(arrayInitializer);
 	}
 
 }
