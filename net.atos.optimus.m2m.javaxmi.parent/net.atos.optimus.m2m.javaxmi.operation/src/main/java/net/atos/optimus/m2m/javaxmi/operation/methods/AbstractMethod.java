@@ -21,7 +21,7 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.methods;
 
-import net.atos.optimus.m2m.javaxmi.operation.element.Element;
+import net.atos.optimus.m2m.javaxmi.operation.element.AbstractDeclaration;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmt.modisco.java.AbstractMethodDeclaration;
@@ -36,7 +36,7 @@ import org.eclipse.gmt.modisco.java.SingleVariableDeclaration;
  *
  */
 
-public class AbstractMethod<S extends AbstractMethodDeclaration> extends Element<S> {
+public class AbstractMethod<S extends AbstractMethodDeclaration> extends AbstractDeclaration<S> {
 
 	/**
 	 * Constructor of abstract method

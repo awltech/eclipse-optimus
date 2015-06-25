@@ -21,16 +21,28 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.accesses;
 
+import java.util.Iterator;
+
+import net.atos.optimus.m2m.javaxmi.operation.annotations.AnnotationTypeDeclarationBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.annotations.UnresolvedAnnotationDeclarationBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.classes.UnresolvedClassDeclarationBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.element.Element;
 import net.atos.optimus.m2m.javaxmi.operation.interfaces.UnresolvedInterfaceDeclarationBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.packages.JavaPackage;
 import net.atos.optimus.m2m.javaxmi.operation.types.ArrayTypeBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.types.PrimitiveTypeBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.types.UnresolvedTypeBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.types.WildCardTypeBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.util.ASTElementFinder;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.gmt.modisco.java.AbstractTypeDeclaration;
+import org.eclipse.gmt.modisco.java.AnnotationTypeDeclaration;
+import org.eclipse.gmt.modisco.java.Model;
 import org.eclipse.gmt.modisco.java.ParameterizedType;
+import org.eclipse.gmt.modisco.java.Type;
 import org.eclipse.gmt.modisco.java.TypeAccess;
+import org.eclipse.gmt.modisco.java.UnresolvedAnnotationDeclaration;
 
 /**
  * The purpose of such class is to help with the creation of type access
@@ -107,6 +119,75 @@ public class TypeAccessHelper {
 		}
 		return TypeAccessBuilder.builder().setType(PrimitiveTypeBuilder.builder().setName(exceptionName).build())
 				.build();
+	}
+
+	/**
+	 * Create a type access associated to an annotation
+	 * 
+	 * @param element
+	 *            the element which we associate the annotation.
+	 * @param javaPackage
+	 *            the package of the element.
+	 * @param annotationName
+	 *            the name of the annotation.
+	 * @return the created type access associated to the specified annotation
+	 *         name.
+	 */
+	public static TypeAccess createAnnotationTypeAccess(Element<?> element, JavaPackage javaPackage,
+			String annotationName) {
+		AnnotationTypeDeclaration generatedAnnotation = null;
+		Iterator<AbstractTypeDeclaration> declarationIterator = javaPackage.getDelegate().getOwnedElements().iterator();
+
+		while (declarationIterator.hasNext() && generatedAnnotation == null) {
+			AbstractTypeDeclaration next = declarationIterator.next();
+			if (next instanceof AnnotationTypeDeclaration && annotationName.equals(next.getName())) {
+				generatedAnnotation = (AnnotationTypeDeclaration) next;
+			}
+		}
+
+		if (generatedAnnotation == null) {
+			return TypeAccessBuilder
+					.builder()
+					.setType(
+							AnnotationTypeDeclarationBuilder.builder().setName(annotationName)
+									.setPackage(javaPackage.getDelegate()).setProxy(true).build()).build();
+		}
+
+		return TypeAccessBuilder.builder().setType(generatedAnnotation).build();
+	}
+
+	/**
+	 * Create a type access associated to an orphan annotation
+	 * 
+	 * @param element
+	 *            the element which we associate the orphan annotation.
+	 * @param fullyQualifiedName
+	 *            the full qualified name of the orphan annotation.
+	 * @return the created type access associated to the specified orphan
+	 *         annotation name.
+	 */
+	public static TypeAccess createOrphanAnnotationTypeAccess(Element<?> element, String fullyQualifiedName) {
+		Model model = ASTElementFinder.findModel(element.getDelegate());
+		UnresolvedAnnotationDeclaration annotation = null;
+		if (model != null) {
+			Iterator<Type> iterator = model.getOrphanTypes().iterator();
+			while (iterator.hasNext() && annotation == null) {
+				Type orphanType = iterator.next();
+				if (orphanType instanceof UnresolvedAnnotationDeclaration
+						&& fullyQualifiedName.equals(orphanType.getName())) {
+					annotation = (UnresolvedAnnotationDeclaration) orphanType;
+				}
+			}
+		}
+
+		if (annotation == null) {
+			annotation = UnresolvedAnnotationDeclarationBuilder.builder().setName(fullyQualifiedName).build();
+			if (model != null) {
+				model.getOrphanTypes().add(annotation);
+			}
+		}
+
+		return TypeAccessBuilder.builder().setType(annotation).build();
 	}
 
 	/**

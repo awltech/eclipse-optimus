@@ -23,6 +23,8 @@ package net.atos.optimus.m2m.javaxmi.operation.packages;
 
 import net.atos.optimus.m2m.javaxmi.operation.element.Element;
 
+import org.eclipse.gmt.modisco.java.Package;
+
 /**
  * Models a package : wrapper of package in modisco model
  * 
@@ -47,4 +49,15 @@ public class JavaPackage extends Element<org.eclipse.gmt.modisco.java.Package> {
 		return this.getDelegate().getName();
 	}
 
+	public String getFullQualifiedName() {
+		StringBuffer s = new StringBuffer();
+		Package parent = this.getDelegate().getPackage();
+		s.append(this.getName());
+		while (parent != null) {
+			s.insert(0, '.');
+			s.insert(0, parent.getName());
+			parent = parent.getPackage();
+		}
+		return s.toString();
+	}
 }

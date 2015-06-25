@@ -24,6 +24,7 @@ package net.atos.optimus.m2m.javaxmi.operation.annotations;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmt.modisco.java.Annotation;
 import org.eclipse.gmt.modisco.java.AnnotationMemberValuePair;
+import org.eclipse.gmt.modisco.java.CompilationUnit;
 import org.eclipse.gmt.modisco.java.TypeAccess;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
 
@@ -75,6 +76,18 @@ public class AnnotationBuilder {
 	 */
 	public AnnotationBuilder setType(TypeAccess type) {
 		this.buildAnnotation.setType(type);
+		return this;
+	}
+
+	/**
+	 * Set the compilation unit of the annotation under construction
+	 * 
+	 * @param compilationUnit
+	 *            the compilation unit of the annotation under construction.
+	 * @return the builder.
+	 */
+	public AnnotationBuilder setCompilationUnit(CompilationUnit compilationUnit) {
+		this.buildAnnotation.setOriginalCompilationUnit(compilationUnit);
 		return this;
 	}
 

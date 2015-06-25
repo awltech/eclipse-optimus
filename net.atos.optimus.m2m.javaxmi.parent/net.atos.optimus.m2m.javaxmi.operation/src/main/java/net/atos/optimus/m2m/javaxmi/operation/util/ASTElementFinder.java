@@ -23,6 +23,10 @@ package net.atos.optimus.m2m.javaxmi.operation.util;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gmt.modisco.java.ASTNode;
+import org.eclipse.gmt.modisco.java.AbstractTypeDeclaration;
+import org.eclipse.gmt.modisco.java.BodyDeclaration;
+import org.eclipse.gmt.modisco.java.CompilationUnit;
+import org.eclipse.gmt.modisco.java.EnumConstantDeclaration;
 import org.eclipse.gmt.modisco.java.Model;
 
 /**
@@ -54,7 +58,26 @@ public class ASTElementFinder {
 		}
 		return model;
 	}
-	
-	
+
+	/**
+	 * Find the compilation unit of body declaration
+	 * 
+	 * @param bodyDeclaration
+	 *            the body declaration.
+	 * @return the compilation unit of the specified body declaration.
+	 */
+	public static CompilationUnit findCompilationUnit(BodyDeclaration bodyDeclaration) {
+		AbstractTypeDeclaration atd = null;
+
+		if (bodyDeclaration instanceof AbstractTypeDeclaration) {
+			atd = (AbstractTypeDeclaration) bodyDeclaration;
+		} else if (bodyDeclaration instanceof EnumConstantDeclaration) {
+			atd = ((AbstractTypeDeclaration) bodyDeclaration.eContainer());
+		} else {
+			atd = bodyDeclaration.getAbstractTypeDeclaration();
+		}
+
+		return atd == null ? null : atd.getOriginalCompilationUnit();
+	}
 
 }

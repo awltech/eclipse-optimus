@@ -54,7 +54,7 @@ public class PackageHelper {
 		Iterator<Package> iteratorOnModelPackages = javaModel.getOwnedElements().iterator();
 		while (iteratorOnModelPackages.hasNext() && fatherPackage == null) {
 			Package next = iteratorOnModelPackages.next();
-			if (next.getName().equals(packageNames[0])) {
+			if (packageNames[0].equals(next.getName())) {
 				fatherPackage = next;
 			}
 		}
@@ -69,7 +69,7 @@ public class PackageHelper {
 
 			while (iteratorOnSubPackages.hasNext() && childPackage == null) {
 				Package next = iteratorOnSubPackages.next();
-				if (next.getName().equals(packageNames[indexPackage])) {
+				if (packageNames[indexPackage].equals(next.getName())) {
 					childPackage = next;
 				}
 			}
