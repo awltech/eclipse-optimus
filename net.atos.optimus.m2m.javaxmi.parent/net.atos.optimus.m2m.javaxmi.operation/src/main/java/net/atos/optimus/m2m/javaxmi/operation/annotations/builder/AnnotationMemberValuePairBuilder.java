@@ -19,7 +19,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.javaxmi.operation.annotations;
+package net.atos.optimus.m2m.javaxmi.operation.annotations.builder;
 
 import org.eclipse.gmt.modisco.java.AnnotationMemberValuePair;
 import org.eclipse.gmt.modisco.java.AnnotationTypeMemberDeclaration;
@@ -63,6 +63,19 @@ public class AnnotationMemberValuePairBuilder {
 	 */
 	public AnnotationMemberValuePair build() {
 		return this.buildAnnotationMemberValuePair;
+	}
+
+	/**
+	 * Set the name of the annotation member value pair under construction
+	 * 
+	 * @param name
+	 *            the name of the annotation member value pair under
+	 *            construction.
+	 * @return the builder.
+	 */
+	public AnnotationMemberValuePairBuilder setName(String name) {
+		this.buildAnnotationMemberValuePair.setName(name);
+		return this;
 	}
 
 	/**

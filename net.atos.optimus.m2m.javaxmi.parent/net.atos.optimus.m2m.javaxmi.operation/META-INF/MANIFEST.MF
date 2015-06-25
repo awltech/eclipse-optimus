@@ -12,6 +12,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: net.atos.optimus.m2m.javaxmi.operation.accesses,
  net.atos.optimus.m2m.javaxmi.operation.annotations,
+ net.atos.optimus.m2m.javaxmi.operation.annotations.builder,
  net.atos.optimus.m2m.javaxmi.operation.array,
  net.atos.optimus.m2m.javaxmi.operation.classes,
  net.atos.optimus.m2m.javaxmi.operation.comments,

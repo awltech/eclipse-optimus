@@ -22,10 +22,12 @@
 package net.atos.optimus.m2m.javaxmi.operation.element;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
-import net.atos.optimus.m2m.javaxmi.operation.annotations.AnnotationBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.annotations.JavaAnnotation;
+import net.atos.optimus.m2m.javaxmi.operation.annotations.builder.AnnotationBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.packages.JavaPackage;
 import net.atos.optimus.m2m.javaxmi.operation.util.MissingImportAdder;
 
+import org.eclipse.gmt.modisco.java.Annotation;
 import org.eclipse.gmt.modisco.java.BodyDeclaration;
 import org.eclipse.gmt.modisco.java.CompilationUnit;
 import org.eclipse.gmt.modisco.java.TypeAccess;
@@ -57,16 +59,17 @@ public class AbstractDeclaration<S extends BodyDeclaration> extends Element<S> {
 	 *            the package of the current abstract declaration.
 	 * @param annotationName
 	 *            the annotation name.
-	 * @return the current abstract declaration.
+	 * @return the created java annotation.
 	 */
-	public AbstractDeclaration<?> addAnnotation(JavaPackage javaPackage, String annotationName) {
+	public JavaAnnotation addAnnotation(JavaPackage javaPackage, String annotationName) {
 		CompilationUnit compilationUnit = this.getDelegate().getOriginalCompilationUnit();
 		TypeAccess annotationType = compilationUnit != null ? TypeAccessHelper.createAnnotationTypeAccess(this,
 				javaPackage, annotationName) : TypeAccessHelper.createOrphanAnnotationTypeAccess(this,
 				javaPackage.getFullQualifiedName() + "." + annotationName);
-		this.getDelegate().getAnnotations()
-				.add(AnnotationBuilder.builder().setCompilationUnit(compilationUnit).setType(annotationType).build());
+		Annotation annotation = AnnotationBuilder.builder().setCompilationUnit(compilationUnit).setType(annotationType)
+				.build();
+		this.getDelegate().getAnnotations().add(annotation);
 		MissingImportAdder.addMissingImport(this.getDelegate(), annotationType.getType());
-		return this;
+		return new JavaAnnotation(annotation);
 	}
 }
