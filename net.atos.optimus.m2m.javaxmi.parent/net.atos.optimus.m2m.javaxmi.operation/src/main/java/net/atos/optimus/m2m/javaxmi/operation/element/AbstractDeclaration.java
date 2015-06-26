@@ -24,7 +24,6 @@ package net.atos.optimus.m2m.javaxmi.operation.element;
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.annotations.JavaAnnotation;
 import net.atos.optimus.m2m.javaxmi.operation.annotations.builder.AnnotationBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.packages.JavaPackage;
 import net.atos.optimus.m2m.javaxmi.operation.util.MissingImportAdder;
 
 import org.eclipse.gmt.modisco.java.Annotation;
@@ -55,21 +54,24 @@ public class AbstractDeclaration<S extends BodyDeclaration> extends Element<S> {
 	/**
 	 * Add an annotation to the current abstract declaration
 	 * 
-	 * @param javaPackage
-	 *            the package of the current abstract declaration.
+	 * @param packageName
+	 *            the name of the package of the current abstract declaration.
 	 * @param annotationName
 	 *            the annotation name.
 	 * @return the created java annotation.
 	 */
-	public JavaAnnotation addAnnotation(JavaPackage javaPackage, String annotationName) {
-		CompilationUnit compilationUnit = this.getDelegate().getOriginalCompilationUnit();
+	public JavaAnnotation addAnnotation(String packageName, String annotationName) {
+		CompilationUnit compilationUnit = this.getDelegate() == null ? null : this.getDelegate()
+				.getOriginalCompilationUnit();
 		TypeAccess annotationType = compilationUnit != null ? TypeAccessHelper.createAnnotationTypeAccess(this,
-				javaPackage, annotationName) : TypeAccessHelper.createOrphanAnnotationTypeAccess(this,
-				javaPackage.getFullQualifiedName() + "." + annotationName);
+				packageName, annotationName) : TypeAccessHelper.createOrphanAnnotationTypeAccess(this, packageName
+				+ "." + annotationName);
 		Annotation annotation = AnnotationBuilder.builder().setCompilationUnit(compilationUnit).setType(annotationType)
 				.build();
-		this.getDelegate().getAnnotations().add(annotation);
-		MissingImportAdder.addMissingImport(this.getDelegate(), annotationType.getType());
+		if(this.getDelegate() != null){
+			this.getDelegate().getAnnotations().add(annotation);
+			MissingImportAdder.addMissingImport(this.getDelegate(), annotationType.getType());
+		}
 		return new JavaAnnotation(annotation);
 	}
 }

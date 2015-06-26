@@ -29,6 +29,7 @@ import net.atos.optimus.m2m.javaxmi.operation.classes.UnresolvedClassDeclaration
 import net.atos.optimus.m2m.javaxmi.operation.element.Element;
 import net.atos.optimus.m2m.javaxmi.operation.interfaces.UnresolvedInterfaceDeclarationBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.packages.JavaPackage;
+import net.atos.optimus.m2m.javaxmi.operation.packages.PackageHelper;
 import net.atos.optimus.m2m.javaxmi.operation.types.ArrayTypeBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.types.PrimitiveTypeBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.types.UnresolvedTypeBuilder;
@@ -126,15 +127,16 @@ public class TypeAccessHelper {
 	 * 
 	 * @param element
 	 *            the element which we associate the annotation.
-	 * @param javaPackage
-	 *            the package of the element.
+	 * @param packageName
+	 *            the name of the package of the element.
 	 * @param annotationName
 	 *            the name of the annotation.
 	 * @return the created type access associated to the specified annotation
 	 *         name.
 	 */
-	public static TypeAccess createAnnotationTypeAccess(Element<?> element, JavaPackage javaPackage,
-			String annotationName) {
+	public static TypeAccess createAnnotationTypeAccess(Element<?> element, String packageName, String annotationName) {
+		Model model = ASTElementFinder.findModel(element.getDelegate());
+		JavaPackage javaPackage = PackageHelper.createPackage(model, packageName);
 		AnnotationTypeDeclaration generatedAnnotation = null;
 		Iterator<AbstractTypeDeclaration> declarationIterator = javaPackage.getDelegate().getOwnedElements().iterator();
 

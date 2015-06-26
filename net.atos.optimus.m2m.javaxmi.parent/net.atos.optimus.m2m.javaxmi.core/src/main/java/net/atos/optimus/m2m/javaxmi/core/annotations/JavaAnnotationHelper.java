@@ -23,27 +23,21 @@ package net.atos.optimus.m2m.javaxmi.core.annotations;
 
 import java.util.Iterator;
 
+import net.atos.optimus.m2m.javaxmi.operation.annotations.JavaAnnotation;
+import net.atos.optimus.m2m.javaxmi.operation.element.AbstractDeclaration;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.ArrayInitializerInstruction;
+import net.atos.optimus.m2m.javaxmi.operation.parameters.Parameter;
+
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.gmt.modisco.java.ASTNode;
-import org.eclipse.gmt.modisco.java.AbstractTypeDeclaration;
 import org.eclipse.gmt.modisco.java.Annotation;
 import org.eclipse.gmt.modisco.java.AnnotationMemberValuePair;
 import org.eclipse.gmt.modisco.java.AnnotationTypeDeclaration;
 import org.eclipse.gmt.modisco.java.AnnotationTypeMemberDeclaration;
 import org.eclipse.gmt.modisco.java.ArrayInitializer;
 import org.eclipse.gmt.modisco.java.BodyDeclaration;
-import org.eclipse.gmt.modisco.java.CompilationUnit;
-import org.eclipse.gmt.modisco.java.EnumConstantDeclaration;
 import org.eclipse.gmt.modisco.java.Expression;
-import org.eclipse.gmt.modisco.java.ImportDeclaration;
-import org.eclipse.gmt.modisco.java.Model;
-import org.eclipse.gmt.modisco.java.Package;
 import org.eclipse.gmt.modisco.java.SingleVariableDeclaration;
 import org.eclipse.gmt.modisco.java.StringLiteral;
-import org.eclipse.gmt.modisco.java.Type;
-import org.eclipse.gmt.modisco.java.TypeAccess;
-import org.eclipse.gmt.modisco.java.UnresolvedAnnotationDeclaration;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
 
 /**
@@ -64,7 +58,8 @@ public class JavaAnnotationHelper {
 	 * @param annotation
 	 * @param propertyName
 	 * @param propertyValue
-	 * @deprecated use method with 4 parameters, for specifying if double-quotes are required or not..
+	 * @deprecated use method with 4 parameters, for specifying if double-quotes
+	 *             are required or not..
 	 */
 	@Deprecated
 	public static void addAnnotationParameter(Annotation annotation, String propertyName, String propertyValue) {
@@ -81,7 +76,8 @@ public class JavaAnnotationHelper {
 	 * @param annotation
 	 * @param propertyName
 	 * @param propertyValue
-	 * @deprecated use method with 4 parameters, for specifying if double-quotes are required or not.
+	 * @deprecated use method with 4 parameters, for specifying if double-quotes
+	 *             are required or not.
 	 */
 	@Deprecated
 	public static void addAnnotationParameter(Annotation annotation, String propertyName, Object propertyValue) {
@@ -98,14 +94,25 @@ public class JavaAnnotationHelper {
 	 * @param annotation
 	 * @param propertyName
 	 * @param propertyValue
-	 * @param escape if true, value generated in double quotes
+	 * @param escape
+	 *            if true, value generated in double quotes
+	 * @deprecated use the add annotation parameter method in JavaAnnotation in
+	 *             the net.atos.optimus.m2m.javaxmi.operation package.
 	 */
+	@Deprecated
 	public static void addAnnotationParameter(Annotation annotation, String propertyName, Object propertyValue,
 			boolean escape) {
-		StringLiteral propertyExpression = JavaFactory.eINSTANCE.createStringLiteral();
-		String value = (escape ? "\"" : "") + String.valueOf(propertyValue) + (escape ? "\"" : "");
-		propertyExpression.setEscapedValue(value);
-		addAnnotationParameter(annotation, propertyName, propertyExpression);
+		if (annotation == null) {
+			return;
+		}
+		JavaAnnotation javaAnnotation = new JavaAnnotation(annotation);
+		javaAnnotation.addAnnotationParameter(propertyName, propertyValue, escape);
+		// StringLiteral propertyExpression =
+		// JavaFactory.eINSTANCE.createStringLiteral();
+		// String value = (escape ? "\"" : "") + String.valueOf(propertyValue) +
+		// (escape ? "\"" : "");
+		// propertyExpression.setEscapedValue(value);
+		// addAnnotationParameter(annotation, propertyName, propertyExpression);
 	}
 
 	/**
@@ -211,28 +218,36 @@ public class JavaAnnotationHelper {
 	 * @param packageName
 	 * @param annotationName
 	 * @return
+	 * @deprecated use the add annotation method in AbstractDeclaration in the
+	 *             net.atos.optimus.m2m.javaxmi.operation package.
 	 */
+	@Deprecated
 	public static Annotation addAnnotation(BodyDeclaration bodyDeclaration, String packageName, String annotationName) {
+		return (new AbstractDeclaration<BodyDeclaration>(bodyDeclaration)).addAnnotation(packageName, annotationName)
+				.getDelegate();
 
-		CompilationUnit compilationUnit = bodyDeclaration == null ? null : bodyDeclaration.getOriginalCompilationUnit();
-
-		AnnotationTypeDeclaration annotationDeclaration = compilationUnit != null ? getAnnotation(bodyDeclaration,
-				packageName, annotationName) : getOrphanAnnotation(bodyDeclaration, packageName + "." + annotationName);
-
-		// Now, we create a new annotation instance and set it on the body
-		// declaration.
-		Annotation annotation = JavaFactory.eINSTANCE.createAnnotation();
-		annotation.setOriginalCompilationUnit(compilationUnit);
-		TypeAccess typeAccess = JavaFactory.eINSTANCE.createTypeAccess();
-		typeAccess.setType(annotationDeclaration);
-		annotation.setType(typeAccess);
-
-		if (bodyDeclaration != null) {
-			bodyDeclaration.getAnnotations().add(annotation);
-			addMissingImport(annotationDeclaration, bodyDeclaration);
-		}
-
-		return annotation;
+		// CompilationUnit compilationUnit = bodyDeclaration == null ? null :
+		// bodyDeclaration.getOriginalCompilationUnit();
+		//
+		// AnnotationTypeDeclaration annotationDeclaration = compilationUnit !=
+		// null ? getAnnotation(bodyDeclaration,
+		// packageName, annotationName) : getOrphanAnnotation(bodyDeclaration,
+		// packageName + "." + annotationName);
+		//
+		// // Now, we create a new annotation instance and set it on the body
+		// // declaration.
+		// Annotation annotation = JavaFactory.eINSTANCE.createAnnotation();
+		// annotation.setOriginalCompilationUnit(compilationUnit);
+		// TypeAccess typeAccess = JavaFactory.eINSTANCE.createTypeAccess();
+		// typeAccess.setType(annotationDeclaration);
+		// annotation.setType(typeAccess);
+		//
+		// if (bodyDeclaration != null) {
+		// bodyDeclaration.getAnnotations().add(annotation);
+		// addMissingImport(annotationDeclaration, bodyDeclaration);
+		// }
+		//
+		// return annotation;
 	}
 
 	/**
@@ -242,28 +257,35 @@ public class JavaAnnotationHelper {
 	 * @param packageName
 	 * @param annotationName
 	 * @return
+	 * @deprecated use the add annotation method in ArrayInitializerInstruction
+	 *             in the net.atos.optimus.m2m.javaxmi.operation package.
 	 */
+	@Deprecated
 	public static Annotation addAnnotation(ArrayInitializer arrayInitializer, String packageName, String annotationName) {
-
-		CompilationUnit compilationUnit = arrayInitializer.getOriginalCompilationUnit();
-
-		AnnotationTypeDeclaration annotationDeclaration = compilationUnit != null ? getAnnotation(arrayInitializer,
-				packageName, annotationName)
-				: getOrphanAnnotation(arrayInitializer, packageName + "." + annotationName);
-
-		// Now, we create a new annotation instance and set it on the body
-		// declaration.
-		Annotation annotation = JavaFactory.eINSTANCE.createAnnotation();
-		annotation.setOriginalCompilationUnit(arrayInitializer.getOriginalCompilationUnit());
-		TypeAccess typeAccess = JavaFactory.eINSTANCE.createTypeAccess();
-		typeAccess.setType(annotationDeclaration);
-		annotation.setType(typeAccess);
-		arrayInitializer.getExpressions().add(annotation);
-
-		if (compilationUnit != null)
-			addMissingImport(annotationDeclaration, compilationUnit);
-
-		return annotation;
+		return (new ArrayInitializerInstruction(arrayInitializer)).addAnnotation(packageName, annotationName)
+				.getDelegate();
+		// CompilationUnit compilationUnit =
+		// arrayInitializer.getOriginalCompilationUnit();
+		//
+		// AnnotationTypeDeclaration annotationDeclaration = compilationUnit !=
+		// null ? getAnnotation(arrayInitializer,
+		// packageName, annotationName)
+		// : getOrphanAnnotation(arrayInitializer, packageName + "." +
+		// annotationName);
+		//
+		// // Now, we create a new annotation instance and set it on the body
+		// // declaration.
+		// Annotation annotation = JavaFactory.eINSTANCE.createAnnotation();
+		// annotation.setOriginalCompilationUnit(arrayInitializer.getOriginalCompilationUnit());
+		// TypeAccess typeAccess = JavaFactory.eINSTANCE.createTypeAccess();
+		// typeAccess.setType(annotationDeclaration);
+		// annotation.setType(typeAccess);
+		// arrayInitializer.getExpressions().add(annotation);
+		//
+		// if (compilationUnit != null)
+		// addMissingImport(annotationDeclaration, compilationUnit);
+		//
+		// return annotation;
 	}
 
 	/**
@@ -273,29 +295,35 @@ public class JavaAnnotationHelper {
 	 * @param packageName
 	 * @param annotationName
 	 * @return
+	 * @deprecated use the add annotation method in Parameter in the
+	 *             net.atos.optimus.m2m.javaxmi.operation package.
 	 */
+	@Deprecated
 	public static Annotation addAnnotation(SingleVariableDeclaration singleVariableDeclaration, String packageName,
 			String annotationName) {
-
-		CompilationUnit compilationUnit = singleVariableDeclaration.getOriginalCompilationUnit();
-
-		AnnotationTypeDeclaration annotationDeclaration = compilationUnit != null ? getAnnotation(
-				singleVariableDeclaration, packageName, annotationName) : getOrphanAnnotation(
-				singleVariableDeclaration, packageName + "." + annotationName);
-
-		// Now, we create a new annotation instance and set it on the body
-		// declaration.
-		Annotation annotation = JavaFactory.eINSTANCE.createAnnotation();
-		annotation.setOriginalCompilationUnit(singleVariableDeclaration.getOriginalCompilationUnit());
-		TypeAccess typeAccess = JavaFactory.eINSTANCE.createTypeAccess();
-		typeAccess.setType(annotationDeclaration);
-		annotation.setType(typeAccess);
-		singleVariableDeclaration.getAnnotations().add(annotation);
-
-		if (compilationUnit != null)
-			addMissingImport(annotationDeclaration, compilationUnit);
-
-		return annotation;
+		return (new Parameter(singleVariableDeclaration)).addAnnotation(packageName, annotationName).getDelegate();
+		// CompilationUnit compilationUnit =
+		// singleVariableDeclaration.getOriginalCompilationUnit();
+		//
+		// AnnotationTypeDeclaration annotationDeclaration = compilationUnit !=
+		// null ? getAnnotation(
+		// singleVariableDeclaration, packageName, annotationName) :
+		// getOrphanAnnotation(
+		// singleVariableDeclaration, packageName + "." + annotationName);
+		//
+		// // Now, we create a new annotation instance and set it on the body
+		// // declaration.
+		// Annotation annotation = JavaFactory.eINSTANCE.createAnnotation();
+		// annotation.setOriginalCompilationUnit(singleVariableDeclaration.getOriginalCompilationUnit());
+		// TypeAccess typeAccess = JavaFactory.eINSTANCE.createTypeAccess();
+		// typeAccess.setType(annotationDeclaration);
+		// annotation.setType(typeAccess);
+		// singleVariableDeclaration.getAnnotations().add(annotation);
+		//
+		// if (compilationUnit != null)
+		// addMissingImport(annotationDeclaration, compilationUnit);
+		//
+		// return annotation;
 	}
 
 	/**
@@ -307,73 +335,80 @@ public class JavaAnnotationHelper {
 	 * @param annotationName
 	 * @return
 	 */
-	private static AnnotationTypeDeclaration getAnnotation(ASTNode node, String packageName, String annotationName) {
+	// private static AnnotationTypeDeclaration getAnnotation(ASTNode node,
+	// String packageName, String annotationName) {
+	//
+	// Model model = getModel(node);
+	//
+	// // Find recursively the package in the model. Creates chunks i
+	// Package annotationPackage = getPackage(model, packageName);
+	//
+	// // Now in the package, find the Annotation
+	// AnnotationTypeDeclaration generatedAnnotation = null;
+	//
+	// for (Iterator<AbstractTypeDeclaration> declarationIterator =
+	// annotationPackage.getOwnedElements().iterator(); declarationIterator
+	// .hasNext() && generatedAnnotation == null;) {
+	// AbstractTypeDeclaration next = declarationIterator.next();
+	// if (next instanceof AnnotationTypeDeclaration &&
+	// annotationName.equals(next.getName()))
+	// generatedAnnotation = (AnnotationTypeDeclaration) next;
+	// }
+	//
+	// // If annotation does not exist, we create it
+	// if (generatedAnnotation == null) {
+	// generatedAnnotation =
+	// JavaFactory.eINSTANCE.createAnnotationTypeDeclaration();
+	// generatedAnnotation.setName(annotationName);
+	// generatedAnnotation.setPackage(annotationPackage);
+	// generatedAnnotation.setProxy(true);
+	// }
+	//
+	// // And we return the retrieved or created element.
+	// return generatedAnnotation;
+	//
+	// }
 
-		Model model = getModel(node);
+	// private static Model getModel(ASTNode node) {
+	// // Retrieves the root Model
+	// Model model = null;
+	// EObject temp = node;
+	// while (model == null && temp != null) {
+	// if (temp instanceof Model)
+	// model = (Model) temp;
+	// else
+	// temp = temp.eContainer();
+	// }
+	//
+	// return model;
+	// }
 
-		// Find recursively the package in the model. Creates chunks i
-		Package annotationPackage = getPackage(model, packageName);
-
-		// Now in the package, find the Annotation
-		AnnotationTypeDeclaration generatedAnnotation = null;
-
-		for (Iterator<AbstractTypeDeclaration> declarationIterator = annotationPackage.getOwnedElements().iterator(); declarationIterator
-				.hasNext() && generatedAnnotation == null;) {
-			AbstractTypeDeclaration next = declarationIterator.next();
-			if (next instanceof AnnotationTypeDeclaration && annotationName.equals(next.getName()))
-				generatedAnnotation = (AnnotationTypeDeclaration) next;
-		}
-
-		// If annotation does not exist, we create it
-		if (generatedAnnotation == null) {
-			generatedAnnotation = JavaFactory.eINSTANCE.createAnnotationTypeDeclaration();
-			generatedAnnotation.setName(annotationName);
-			generatedAnnotation.setPackage(annotationPackage);
-			generatedAnnotation.setProxy(true);
-		}
-
-		// And we return the retrieved or created element.
-		return generatedAnnotation;
-
-	}
-
-	private static Model getModel(ASTNode node) {
-		// Retrieves the root Model
-		Model model = null;
-		EObject temp = node;
-		while (model == null && temp != null) {
-			if (temp instanceof Model)
-				model = (Model) temp;
-			else
-				temp = temp.eContainer();
-		}
-
-		return model;
-	}
-
-	private static AnnotationTypeDeclaration getOrphanAnnotation(ASTNode node, String fullyQualifiedName) {
-		Model model = getModel(node);
-
-		UnresolvedAnnotationDeclaration annotation = null;
-		if (model != null) {
-			for (Iterator<Type> iterator = model.getOrphanTypes().iterator(); iterator.hasNext() && annotation == null;) {
-				Type orphanType = iterator.next();
-				if (orphanType instanceof UnresolvedAnnotationDeclaration
-						&& fullyQualifiedName.equals(orphanType.getName()))
-					annotation = (UnresolvedAnnotationDeclaration) orphanType;
-			}
-		}
-
-		if (annotation == null) {
-			annotation = JavaFactory.eINSTANCE.createUnresolvedAnnotationDeclaration();
-			annotation.setName(fullyQualifiedName);
-			if (model != null)
-				model.getOrphanTypes().add(annotation);
-		}
-
-		return annotation;
-
-	}
+	// private static AnnotationTypeDeclaration getOrphanAnnotation(ASTNode
+	// node, String fullyQualifiedName) {
+	// Model model = getModel(node);
+	//
+	// UnresolvedAnnotationDeclaration annotation = null;
+	// if (model != null) {
+	// for (Iterator<Type> iterator = model.getOrphanTypes().iterator();
+	// iterator.hasNext() && annotation == null;) {
+	// Type orphanType = iterator.next();
+	// if (orphanType instanceof UnresolvedAnnotationDeclaration
+	// && fullyQualifiedName.equals(orphanType.getName()))
+	// annotation = (UnresolvedAnnotationDeclaration) orphanType;
+	// }
+	// }
+	//
+	// if (annotation == null) {
+	// annotation =
+	// JavaFactory.eINSTANCE.createUnresolvedAnnotationDeclaration();
+	// annotation.setName(fullyQualifiedName);
+	// if (model != null)
+	// model.getOrphanTypes().add(annotation);
+	// }
+	//
+	// return annotation;
+	//
+	// }
 
 	/**
 	 * Utility method to find a package in a model with provided chunks. Creates
@@ -383,51 +418,53 @@ public class JavaAnnotationHelper {
 	 * @param packageChunks
 	 * @return
 	 */
-	private static Package getPackage(Model model, String packageName) {
-		String[] packageChunks = packageName.split("\\.");
-		Package temp = null;
-
-		// At first, look in model to retrieve package corresponding to the
-		// first chunk.
-		for (Iterator<Package> iteratorOnModelPackages = model.getOwnedElements().iterator(); iteratorOnModelPackages
-				.hasNext() && temp == null;) {
-			Package next = iteratorOnModelPackages.next();
-			if (packageChunks[0].equals(next.getName()))
-				temp = next;
-		}
-
-		// If package in model does not exist, create it
-		if (temp == null) {
-			temp = JavaFactory.eINSTANCE.createPackage();
-			temp.setModel(model);
-			temp.setName(packageChunks[0]);
-		}
-
-		// Now, for each other chunk
-		for (int i = 1; i < packageChunks.length; i++) {
-			Package childPackage = null;
-
-			// Check if sub package exists
-			for (Iterator<Package> iteratorOnSubPackages = temp.getOwnedPackages().iterator(); iteratorOnSubPackages
-					.hasNext() && childPackage == null;) {
-				Package next = iteratorOnSubPackages.next();
-				if (packageChunks[i].equals(next.getName()))
-					childPackage = next;
-			}
-
-			// If not the case, create it
-			if (childPackage == null) {
-				childPackage = JavaFactory.eINSTANCE.createPackage();
-				childPackage.setPackage(temp);
-				childPackage.setName(packageChunks[i]);
-			}
-
-			// Set child package as current, and continue to next chunk !
-			temp = childPackage;
-		}
-
-		return temp;
-	}
+	// private static Package getPackage(Model model, String packageName) {
+	// String[] packageChunks = packageName.split("\\.");
+	// Package temp = null;
+	//
+	// // At first, look in model to retrieve package corresponding to the
+	// // first chunk.
+	// for (Iterator<Package> iteratorOnModelPackages =
+	// model.getOwnedElements().iterator(); iteratorOnModelPackages
+	// .hasNext() && temp == null;) {
+	// Package next = iteratorOnModelPackages.next();
+	// if (packageChunks[0].equals(next.getName()))
+	// temp = next;
+	// }
+	//
+	// // If package in model does not exist, create it
+	// if (temp == null) {
+	// temp = JavaFactory.eINSTANCE.createPackage();
+	// temp.setModel(model);
+	// temp.setName(packageChunks[0]);
+	// }
+	//
+	// // Now, for each other chunk
+	// for (int i = 1; i < packageChunks.length; i++) {
+	// Package childPackage = null;
+	//
+	// // Check if sub package exists
+	// for (Iterator<Package> iteratorOnSubPackages =
+	// temp.getOwnedPackages().iterator(); iteratorOnSubPackages
+	// .hasNext() && childPackage == null;) {
+	// Package next = iteratorOnSubPackages.next();
+	// if (packageChunks[i].equals(next.getName()))
+	// childPackage = next;
+	// }
+	//
+	// // If not the case, create it
+	// if (childPackage == null) {
+	// childPackage = JavaFactory.eINSTANCE.createPackage();
+	// childPackage.setPackage(temp);
+	// childPackage.setName(packageChunks[i]);
+	// }
+	//
+	// // Set child package as current, and continue to next chunk !
+	// temp = childPackage;
+	// }
+	//
+	// return temp;
+	// }
 
 	/**
 	 * If body declaration's compilation unit doesn't have import of annotation
@@ -436,26 +473,27 @@ public class JavaAnnotationHelper {
 	 * @param generatedAnnotation
 	 * @param bodyDeclaration
 	 */
-	private static void addMissingImport(AnnotationTypeDeclaration generatedAnnotation, BodyDeclaration bodyDeclaration) {
-		AbstractTypeDeclaration atd = null;
-
-		if (bodyDeclaration instanceof AbstractTypeDeclaration) {
-			atd = (AbstractTypeDeclaration) bodyDeclaration;
-		} else if (bodyDeclaration instanceof EnumConstantDeclaration) {
-			atd = ((AbstractTypeDeclaration) bodyDeclaration.eContainer());
-		} else {
-			atd = bodyDeclaration.getAbstractTypeDeclaration();
-		}
-
-		if (atd == null)
-			return;
-
-		CompilationUnit compilationUnit = atd.getOriginalCompilationUnit();
-
-		if (compilationUnit != null)
-			addMissingImport(generatedAnnotation, compilationUnit);
-
-	}
+	// private static void addMissingImport(AnnotationTypeDeclaration
+	// generatedAnnotation, BodyDeclaration bodyDeclaration) {
+	// AbstractTypeDeclaration atd = null;
+	//
+	// if (bodyDeclaration instanceof AbstractTypeDeclaration) {
+	// atd = (AbstractTypeDeclaration) bodyDeclaration;
+	// } else if (bodyDeclaration instanceof EnumConstantDeclaration) {
+	// atd = ((AbstractTypeDeclaration) bodyDeclaration.eContainer());
+	// } else {
+	// atd = bodyDeclaration.getAbstractTypeDeclaration();
+	// }
+	//
+	// if (atd == null)
+	// return;
+	//
+	// CompilationUnit compilationUnit = atd.getOriginalCompilationUnit();
+	//
+	// if (compilationUnit != null)
+	// addMissingImport(generatedAnnotation, compilationUnit);
+	//
+	// }
 
 	/**
 	 * Adds import (if missing) in the compilation unit, for the provided
@@ -464,26 +502,30 @@ public class JavaAnnotationHelper {
 	 * @param generatedAnnotation
 	 * @param compilationUnit
 	 */
-	private static void addMissingImport(AnnotationTypeDeclaration generatedAnnotation, CompilationUnit compilationUnit) {
-
-		if (generatedAnnotation instanceof UnresolvedAnnotationDeclaration || compilationUnit == null)
-			return;
-
-		boolean hasMatchingImport = false;
-		EList<ImportDeclaration> imports = compilationUnit.getImports();
-		for (Iterator<ImportDeclaration> importIterator = imports.iterator(); importIterator.hasNext()
-				&& hasMatchingImport == false;) {
-			ImportDeclaration i = importIterator.next();
-			if (i.getImportedElement().equals(generatedAnnotation))
-				hasMatchingImport = true;
-		}
-
-		if (!hasMatchingImport) {
-			ImportDeclaration declaration = JavaFactory.eINSTANCE.createImportDeclaration();
-			declaration.setImportedElement(generatedAnnotation);
-			compilationUnit.getImports().add(declaration);
-		}
-
-	}
+	// private static void addMissingImport(AnnotationTypeDeclaration
+	// generatedAnnotation, CompilationUnit compilationUnit) {
+	//
+	// if (generatedAnnotation instanceof UnresolvedAnnotationDeclaration ||
+	// compilationUnit == null)
+	// return;
+	//
+	// boolean hasMatchingImport = false;
+	// EList<ImportDeclaration> imports = compilationUnit.getImports();
+	// for (Iterator<ImportDeclaration> importIterator = imports.iterator();
+	// importIterator.hasNext()
+	// && hasMatchingImport == false;) {
+	// ImportDeclaration i = importIterator.next();
+	// if (i.getImportedElement().equals(generatedAnnotation))
+	// hasMatchingImport = true;
+	// }
+	//
+	// if (!hasMatchingImport) {
+	// ImportDeclaration declaration =
+	// JavaFactory.eINSTANCE.createImportDeclaration();
+	// declaration.setImportedElement(generatedAnnotation);
+	// compilationUnit.getImports().add(declaration);
+	// }
+	//
+	// }
 
 }

@@ -24,7 +24,6 @@ package net.atos.optimus.m2m.javaxmi.operation.instruction.elementary;
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.annotations.JavaAnnotation;
 import net.atos.optimus.m2m.javaxmi.operation.annotations.builder.AnnotationBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.packages.JavaPackage;
 import net.atos.optimus.m2m.javaxmi.operation.util.MissingImportAdder;
 
 import org.eclipse.gmt.modisco.java.Annotation;
@@ -56,18 +55,20 @@ public class ArrayInitializerInstruction extends ElementaryInstruction {
 	/**
 	 * Add an annotation to the current array initializer instruction
 	 * 
-	 * @param javaPackage
-	 *            the package of the current array initializer instruction.
+	 * @param packageName
+	 *            the name of the package of the current array initializer
+	 *            instruction.
 	 * @param annotationName
 	 *            the annotation name.
 	 * @return the created java annotation.
 	 */
-	public JavaAnnotation addAnnotation(JavaPackage javaPackage, String annotationName) {
-		CompilationUnit compilationUnit = this.getDelegate().getOriginalCompilationUnit();
+	public JavaAnnotation addAnnotation(String packageName, String annotationName) {
+		CompilationUnit compilationUnit = this.getDelegate() == null ? null : this.getDelegate()
+				.getOriginalCompilationUnit();
 
 		TypeAccess annotationType = compilationUnit != null ? TypeAccessHelper.createAnnotationTypeAccess(this,
-				javaPackage, annotationName) : TypeAccessHelper.createOrphanAnnotationTypeAccess(this,
-				javaPackage.getFullQualifiedName() + "." + annotationName);
+				packageName, annotationName) : TypeAccessHelper.createOrphanAnnotationTypeAccess(this, packageName
+				+ "." + annotationName);
 
 		Annotation annotation = AnnotationBuilder.builder().setCompilationUnit(compilationUnit).setType(annotationType)
 				.build();
