@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Context Injection for Optimus Transformations
-Bundle-SymbolicName: net.atos.optimus.m2m.engine.ctxinject
+Bundle-SymbolicName: net.atos.optimus.m2m.engine.ctxinject;singleton:=true
 Bundle-Version: 1.2.0.qualifier
 Bundle-Activator: net.atos.optimus.m2m.engine.ctxinject.internal.Activator
 Bundle-Vendor: Atos.net
