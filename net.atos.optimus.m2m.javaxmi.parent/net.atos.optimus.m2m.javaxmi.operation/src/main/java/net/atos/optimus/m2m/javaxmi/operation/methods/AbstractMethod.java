@@ -22,6 +22,7 @@
 package net.atos.optimus.m2m.javaxmi.operation.methods;
 
 import net.atos.optimus.m2m.javaxmi.operation.element.AbstractDeclaration;
+import net.atos.optimus.m2m.javaxmi.operation.parameters.ParameterHelper;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmt.modisco.java.AbstractMethodDeclaration;
@@ -71,6 +72,38 @@ public class AbstractMethod<S extends AbstractMethodDeclaration> extends Abstrac
 	@Override
 	public AbstractMethod<S> addAnnotation(String packageName, String annotationName) {
 		super.addAnnotation(packageName, annotationName);
+		return this;
+	}
+
+	/**
+	 * Add a parameter to the current abstract method
+	 * 
+	 * @param parameterTypeName
+	 *            the type name of the parameter to add to the current abstract
+	 *            method.
+	 * @param parameterName
+	 *            the name of the parameter to add to the current abstract
+	 *            method.
+	 * @return the current abstract method.
+	 */
+	public AbstractMethod<S> addParameter(String parameterTypeName, String parameterName) {
+		ParameterHelper.builder(this, parameterTypeName).setName(parameterName).build();
+		return this;
+	}
+
+	/**
+	 * Add a parameters list (parameters names are generated) to the current
+	 * abstract method
+	 * 
+	 * @param parameterTypeNames
+	 *            the type names list of the parameter to add to the current
+	 *            abstract method.
+	 * @return the current abstract method.
+	 */
+	public AbstractMethod<S> addParameters(String... parameterTypeNames) {
+		for (String parameterTypeName : parameterTypeNames) {
+			ParameterHelper.builder(this, parameterTypeName).build();
+		}
 		return this;
 	}
 

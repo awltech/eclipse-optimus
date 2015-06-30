@@ -69,6 +69,18 @@ public class Constructor extends AbstractMethod<ConstructorDeclaration> {
 		return this;
 	}
 
+	@Override
+	public Constructor addParameter(String parameterTypeName, String parameterName) {
+		super.addParameter(parameterTypeName, parameterName);
+		return this;
+	}
+
+	@Override
+	public Constructor addParameters(String... parameterTypeNames) {
+		super.addParameters(parameterTypeNames);
+		return this;
+	}
+
 	/**
 	 * Add a list of instructions to the current constructor
 	 * 

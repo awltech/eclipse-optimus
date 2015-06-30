@@ -72,6 +72,18 @@ public class Method extends AbstractMethod<MethodDeclaration> {
 		return this;
 	}
 
+	@Override
+	public Method addParameter(String parameterTypeName, String parameterName) {
+		super.addParameter(parameterTypeName, parameterName);
+		return this;
+	}
+
+	@Override
+	public Method addParameters(String... parameterTypeNames) {
+		super.addParameters(parameterTypeNames);
+		return this;
+	}
+
 	/**
 	 * Add a list of instructions to the current method
 	 * 
