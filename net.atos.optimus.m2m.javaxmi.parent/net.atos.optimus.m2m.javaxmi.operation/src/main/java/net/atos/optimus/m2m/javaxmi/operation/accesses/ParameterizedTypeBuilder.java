@@ -66,6 +66,18 @@ public class ParameterizedTypeBuilder {
 	}
 
 	/**
+	 * Set the name of the parameterized type under construction
+	 * 
+	 * @param name
+	 *            the name of the parameterized type under construction.
+	 * @return the builder.
+	 */
+	public ParameterizedTypeBuilder setName(String name) {
+		this.buildParameterizedTypeAccess.setName(name);
+		return this;
+	}
+
+	/**
 	 * Set the type of the parameterized type under construction
 	 * 
 	 * @param type

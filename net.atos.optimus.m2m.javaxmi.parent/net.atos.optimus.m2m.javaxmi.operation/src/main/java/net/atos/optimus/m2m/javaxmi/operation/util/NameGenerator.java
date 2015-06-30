@@ -33,7 +33,11 @@ import net.atos.optimus.m2m.javaxmi.operation.methods.SetterHelper;
  */
 
 public class NameGenerator {
+	
+	public static final String PARAMETRIZED_ENTRY = "<";
 
+	public static final String PACKAGE_SEPARATOR = ".";
+	
 	/**
 	 * Generate the getter name associated to a field name
 	 * 
@@ -82,6 +86,13 @@ public class NameGenerator {
 	public static String generateNameWithTypeName(String typeName) {
 		StringBuilder s = new StringBuilder();
 		if (s != null && !"".equals(typeName.trim())) {
+			int index;
+			if((index = typeName.indexOf(NameGenerator.PARAMETRIZED_ENTRY)) != -1){
+				typeName = typeName.substring(0,index);
+			}
+			if((index = typeName.lastIndexOf(NameGenerator.PACKAGE_SEPARATOR)) != -1){
+				typeName = typeName.substring(index+1,typeName.length());
+			}
 			s.append(typeName.trim().substring(0, 1).toLowerCase());
 			if (typeName.length() > 1) {
 				s.append(typeName.substring(1));

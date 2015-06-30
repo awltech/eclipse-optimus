@@ -69,6 +69,8 @@ public class TypeAccessHelper {
 
 	public static final String GENERALIZATION = "super";
 
+	public static final String PACKAGE_SEPARATOR = ".";
+
 	/**
 	 * Create a type access associated to a class
 	 * 
@@ -211,7 +213,7 @@ public class TypeAccessHelper {
 					TypeAccessHelper.createTypeAccess(typeName.substring(0,
 							typeName.indexOf(TypeAccessHelper.PARAMETRIZED_ENTRY))), typeName);
 		}
-		if (Character.isLowerCase(typeName.charAt(0))) {
+		if (Character.isLowerCase(typeName.charAt(0)) && !typeName.contains(TypeAccessHelper.PACKAGE_SEPARATOR)) {
 			return TypeAccessBuilder.builder().setType(PrimitiveTypeBuilder.builder().setName(typeName).build())
 					.build();
 		}
@@ -249,7 +251,8 @@ public class TypeAccessHelper {
 	protected static TypeAccess createParameterizedType(TypeAccess mainType, String name) {
 		String[] arguments = name.substring(name.indexOf(TypeAccessHelper.PARAMETRIZED_ENTRY) + 1, name.length() - 1)
 				.split(TypeAccessHelper.PARAMETRIZED_SEPARATOR);
-		ParameterizedType parameterizedType = ParameterizedTypeBuilder.builder().setType(mainType).build();
+		ParameterizedType parameterizedType = ParameterizedTypeBuilder.builder().setType(mainType).setName(name)
+				.build();
 		EList<TypeAccess> argumentsList = parameterizedType.getTypeArguments();
 		for (String argument : arguments) {
 			argumentsList.add(TypeAccessHelper.createTypeParametrizedArgument(argument));
