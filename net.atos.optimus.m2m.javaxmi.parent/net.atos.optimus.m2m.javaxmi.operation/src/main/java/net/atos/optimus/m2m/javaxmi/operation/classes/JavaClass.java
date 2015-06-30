@@ -49,6 +49,24 @@ public class JavaClass extends AbstractClass<ClassDeclaration> {
 		super(classDeclaration);
 	}
 
+	@Override
+	public JavaClass addJavadoc(String documentation, boolean addEmptyLine) {
+		super.addJavadoc(documentation, addEmptyLine);
+		return this;
+	}
+
+	@Override
+	public JavaClass addComment(String commentText, boolean prefixOfParent) {
+		super.addComment(commentText, prefixOfParent);
+		return this;
+	}
+
+	@Override
+	public JavaClass addAnnotation(String packageName, String annotationName) {
+		super.addAnnotation(packageName, annotationName);
+		return this;
+	}
+
 	/**
 	 * Add interfaces list to the class
 	 * 

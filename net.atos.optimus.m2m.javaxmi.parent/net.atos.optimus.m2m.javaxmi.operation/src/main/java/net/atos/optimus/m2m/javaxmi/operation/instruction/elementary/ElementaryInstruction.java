@@ -56,6 +56,18 @@ public class ElementaryInstruction extends Element<Expression> implements IEleme
 	}
 
 	@Override
+	public ElementaryInstruction addJavadoc(String documentation, boolean addEmptyLine) {
+		super.addJavadoc(documentation, addEmptyLine);
+		return this;
+	}
+
+	@Override
+	public ElementaryInstruction addComment(String commentText, boolean prefixOfParent) {
+		super.addComment(commentText, prefixOfParent);
+		return this;
+	}
+
+	@Override
 	public ElementaryInstruction withParentheses() {
 		return new ElementaryInstruction(ParenthesizedExpressionBuilder.builder().setExpression(this.getExpression())
 				.build());

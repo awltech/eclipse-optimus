@@ -60,6 +60,18 @@ public class Parameter extends Element<SingleVariableDeclaration> {
 		return this.getDelegate().getType().getType().getName();
 	}
 
+	@Override
+	public Parameter addJavadoc(String documentation, boolean addEmptyLine) {
+		super.addJavadoc(documentation, addEmptyLine);
+		return this;
+	}
+
+	@Override
+	public Parameter addComment(String commentText, boolean prefixOfParent) {
+		super.addComment(commentText, prefixOfParent);
+		return this;
+	}
+
 	/**
 	 * Add an annotation to the current parameter
 	 * 
@@ -69,7 +81,36 @@ public class Parameter extends Element<SingleVariableDeclaration> {
 	 *            the annotation name.
 	 * @return the current parameter.
 	 */
-	public JavaAnnotation addAnnotation(String packageName, String annotationName) {
+	public Parameter addAnnotation(String packageName, String annotationName) {
+		CompilationUnit compilationUnit = this.getDelegate() == null ? null : this.getDelegate()
+				.getOriginalCompilationUnit();
+
+		TypeAccess annotationType = compilationUnit != null ? TypeAccessHelper.createAnnotationTypeAccess(this,
+				packageName, annotationName) : TypeAccessHelper.createOrphanAnnotationTypeAccess(this, packageName
+				+ "." + annotationName);
+
+		Annotation annotation = AnnotationBuilder.builder().setCompilationUnit(compilationUnit).setType(annotationType)
+				.build();
+
+		this.getDelegate().getAnnotations().add(annotation);
+
+		if (compilationUnit != null) {
+			MissingImportAdder.addMissingImport(compilationUnit, annotationType.getType());
+		}
+
+		return this;
+	}
+
+	/**
+	 * Create an annotation and add it to the current parameter
+	 * 
+	 * @param packageName
+	 *            the name of the package of the current parameter.
+	 * @param annotationName
+	 *            the annotation name.
+	 * @return the created java annotation.
+	 */
+	public JavaAnnotation createAnnotation(String packageName, String annotationName) {
 		CompilationUnit compilationUnit = this.getDelegate() == null ? null : this.getDelegate()
 				.getOriginalCompilationUnit();
 

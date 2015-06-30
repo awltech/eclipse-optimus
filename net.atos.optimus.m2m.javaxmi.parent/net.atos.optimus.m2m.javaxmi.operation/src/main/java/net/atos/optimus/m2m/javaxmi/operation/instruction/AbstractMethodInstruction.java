@@ -88,6 +88,18 @@ public class AbstractMethodInstruction extends Instruction {
 		this.abstractMethodInvocation = classInstanceCreation;
 	}
 
+	@Override
+	public AbstractMethodInstruction addJavadoc(String documentation, boolean addEmptyLine) {
+		super.addJavadoc(documentation, addEmptyLine);
+		return this;
+	}
+
+	@Override
+	public AbstractMethodInstruction addComment(String commentText, boolean prefixOfParent) {
+		super.addComment(commentText, prefixOfParent);
+		return this;
+	}
+
 	/**
 	 * Add the null argument to the abstract method
 	 * 

@@ -81,6 +81,18 @@ public class Instruction extends Element<Statement> implements IElementaryInstru
 	}
 
 	@Override
+	public Instruction addJavadoc(String documentation, boolean addEmptyLine) {
+		super.addJavadoc(documentation, addEmptyLine);
+		return this;
+	}
+
+	@Override
+	public Instruction addComment(String commentText, boolean prefixOfParent) {
+		super.addComment(commentText, prefixOfParent);
+		return this;
+	}
+
+	@Override
 	public ElementaryInstruction withParentheses() {
 		return new ElementaryInstruction(ParenthesizedExpressionBuilder.builder().setExpression(this.getExpression())
 				.build());

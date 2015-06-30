@@ -50,4 +50,22 @@ public class AbstractClass<S extends AbstractTypeDeclaration> extends AbstractDe
 		return this.getDelegate().getName();
 	}
 
+	@Override
+	public AbstractClass<S> addJavadoc(String documentation, boolean addEmptyLine) {
+		super.addJavadoc(documentation, addEmptyLine);
+		return this;
+	}
+
+	@Override
+	public AbstractClass<S> addComment(String commentText, boolean prefixOfParent) {
+		super.addComment(commentText, prefixOfParent);
+		return this;
+	}
+
+	@Override
+	public AbstractClass<S> addAnnotation(String packageName, String annotationName) {
+		super.addAnnotation(packageName, annotationName);
+		return this;
+	}
+
 }

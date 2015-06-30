@@ -50,6 +50,24 @@ public class Interface extends AbstractClass<InterfaceDeclaration> {
 		super(interfaceDeclaration);
 	}
 
+	@Override
+	public Interface addJavadoc(String documentation, boolean addEmptyLine) {
+		super.addJavadoc(documentation, addEmptyLine);
+		return this;
+	}
+
+	@Override
+	public Interface addComment(String commentText, boolean prefixOfParent) {
+		super.addComment(commentText, prefixOfParent);
+		return this;
+	}
+
+	@Override
+	public Interface addAnnotation(String packageName, String annotationName) {
+		super.addAnnotation(packageName, annotationName);
+		return this;
+	}
+
 	/**
 	 * Add interfaces list to the interface
 	 * 

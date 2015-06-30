@@ -53,4 +53,22 @@ public class Field extends AbstractDeclaration<FieldDeclaration> {
 		return this.getDelegate().getType().getType().getName();
 	}
 
+	@Override
+	public Field addJavadoc(String documentation, boolean addEmptyLine) {
+		super.addJavadoc(documentation, addEmptyLine);
+		return this;
+	}
+
+	@Override
+	public Field addComment(String commentText, boolean prefixOfParent) {
+		super.addComment(commentText, prefixOfParent);
+		return this;
+	}
+
+	@Override
+	public Field addAnnotation(String packageName, String annotationName) {
+		super.addAnnotation(packageName, annotationName);
+		return this;
+	}
+
 }

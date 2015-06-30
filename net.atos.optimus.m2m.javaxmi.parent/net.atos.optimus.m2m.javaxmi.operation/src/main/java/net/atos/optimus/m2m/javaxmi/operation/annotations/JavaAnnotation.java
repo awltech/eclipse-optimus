@@ -49,6 +49,18 @@ public class JavaAnnotation extends Element<Annotation> {
 		super(annotation);
 	}
 
+	@Override
+	public JavaAnnotation addJavadoc(String documentation, boolean addEmptyLine) {
+		super.addJavadoc(documentation, addEmptyLine);
+		return this;
+	}
+
+	@Override
+	public JavaAnnotation addComment(String commentText, boolean prefixOfParent) {
+		super.addComment(commentText, prefixOfParent);
+		return this;
+	}
+
 	/**
 	 * Adds a new object value to an annotation property. Note that is the
 	 * annotation already has a valued property with the same name, the value of

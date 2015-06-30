@@ -51,16 +51,42 @@ public class AbstractDeclaration<S extends BodyDeclaration> extends Element<S> {
 		super(bodyDeclaration);
 	}
 
+	@Override
+	public AbstractDeclaration<S> addJavadoc(String documentation, boolean addEmptyLine) {
+		super.addJavadoc(documentation, addEmptyLine);
+		return this;
+	}
+
+	@Override
+	public AbstractDeclaration<S> addComment(String commentText, boolean prefixOfParent) {
+		super.addComment(commentText, prefixOfParent);
+		return this;
+	}
+
 	/**
 	 * Add an annotation to the current abstract declaration
 	 * 
 	 * @param packageName
-	 *            the name of the package of the current abstract declaration.
+	 *            the name of the package of the annotation.
+	 * @param annotationName
+	 *            the annotation name.
+	 * @return the current abstract declaration.
+	 */
+	public AbstractDeclaration<S> addAnnotation(String packageName, String annotationName) {
+		this.createAnnotation(packageName, annotationName);
+		return this;
+	}
+
+	/**
+	 * Create an annotation and add it to the current abstract declaration
+	 * 
+	 * @param packageName
+	 *            the name of the package of the annotation.
 	 * @param annotationName
 	 *            the annotation name.
 	 * @return the created java annotation.
 	 */
-	public JavaAnnotation addAnnotation(String packageName, String annotationName) {
+	public JavaAnnotation createAnnotation(String packageName, String annotationName) {
 		CompilationUnit compilationUnit = this.getDelegate() == null ? null : this.getDelegate()
 				.getOriginalCompilationUnit();
 		TypeAccess annotationType = compilationUnit != null ? TypeAccessHelper.createAnnotationTypeAccess(this,
@@ -68,10 +94,11 @@ public class AbstractDeclaration<S extends BodyDeclaration> extends Element<S> {
 				+ "." + annotationName);
 		Annotation annotation = AnnotationBuilder.builder().setCompilationUnit(compilationUnit).setType(annotationType)
 				.build();
-		if(this.getDelegate() != null){
+		if (this.getDelegate() != null) {
 			this.getDelegate().getAnnotations().add(annotation);
 			MissingImportAdder.addMissingImport(this.getDelegate(), annotationType.getType());
 		}
 		return new JavaAnnotation(annotation);
 	}
+
 }

@@ -223,7 +223,7 @@ public class JavaAnnotationHelper {
 	 */
 	@Deprecated
 	public static Annotation addAnnotation(BodyDeclaration bodyDeclaration, String packageName, String annotationName) {
-		return (new AbstractDeclaration<BodyDeclaration>(bodyDeclaration)).addAnnotation(packageName, annotationName)
+		return (new AbstractDeclaration<BodyDeclaration>(bodyDeclaration)).createAnnotation(packageName, annotationName)
 				.getDelegate();
 
 		// CompilationUnit compilationUnit = bodyDeclaration == null ? null :
@@ -262,7 +262,7 @@ public class JavaAnnotationHelper {
 	 */
 	@Deprecated
 	public static Annotation addAnnotation(ArrayInitializer arrayInitializer, String packageName, String annotationName) {
-		return (new ArrayInitializerInstruction(arrayInitializer)).addAnnotation(packageName, annotationName)
+		return (new ArrayInitializerInstruction(arrayInitializer)).createAnnotation(packageName, annotationName)
 				.getDelegate();
 		// CompilationUnit compilationUnit =
 		// arrayInitializer.getOriginalCompilationUnit();
@@ -301,7 +301,7 @@ public class JavaAnnotationHelper {
 	@Deprecated
 	public static Annotation addAnnotation(SingleVariableDeclaration singleVariableDeclaration, String packageName,
 			String annotationName) {
-		return (new Parameter(singleVariableDeclaration)).addAnnotation(packageName, annotationName).getDelegate();
+		return (new Parameter(singleVariableDeclaration)).createAnnotation(packageName, annotationName).getDelegate();
 		// CompilationUnit compilationUnit =
 		// singleVariableDeclaration.getOriginalCompilationUnit();
 		//

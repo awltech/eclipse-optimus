@@ -49,4 +49,16 @@ public class ComplexInstruction extends Element<Statement> implements IComplexIn
 		return this.getDelegate();
 	}
 
+	@Override
+	public ComplexInstruction addJavadoc(String documentation, boolean addEmptyLine) {
+		super.addJavadoc(documentation, addEmptyLine);
+		return this;
+	}
+
+	@Override
+	public ComplexInstruction addComment(String commentText, boolean prefixOfParent) {
+		super.addComment(commentText, prefixOfParent);
+		return this;
+	}
+
 }

@@ -45,6 +45,18 @@ public class JavaPackage extends Element<org.eclipse.gmt.modisco.java.Package> {
 		super(javaPackage);
 	}
 
+	@Override
+	public JavaPackage addJavadoc(String documentation, boolean addEmptyLine) {
+		super.addJavadoc(documentation, addEmptyLine);
+		return this;
+	}
+
+	@Override
+	public JavaPackage addComment(String commentText, boolean prefixOfParent) {
+		super.addComment(commentText, prefixOfParent);
+		return this;
+	}
+
 	public String getName() {
 		return this.getDelegate().getName();
 	}

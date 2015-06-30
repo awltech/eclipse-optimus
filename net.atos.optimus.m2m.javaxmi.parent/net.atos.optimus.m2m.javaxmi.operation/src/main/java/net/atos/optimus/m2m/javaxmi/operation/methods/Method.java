@@ -54,6 +54,24 @@ public class Method extends AbstractMethod<MethodDeclaration> {
 		return this.getDelegate().getName();
 	}
 
+	@Override
+	public Method addJavadoc(String documentation, boolean addEmptyLine) {
+		super.addJavadoc(documentation, addEmptyLine);
+		return this;
+	}
+
+	@Override
+	public Method addComment(String commentText, boolean prefixOfParent) {
+		super.addComment(commentText, prefixOfParent);
+		return this;
+	}
+
+	@Override
+	public Method addAnnotation(String packageName, String annotationName) {
+		super.addAnnotation(packageName, annotationName);
+		return this;
+	}
+
 	/**
 	 * Add a list of instructions to the current method
 	 * 

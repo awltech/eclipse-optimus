@@ -56,4 +56,22 @@ public class AbstractMethod<S extends AbstractMethodDeclaration> extends Abstrac
 		return this.getDelegate().getParameters();
 	}
 
+	@Override
+	public AbstractMethod<S> addJavadoc(String documentation, boolean addEmptyLine) {
+		super.addJavadoc(documentation, addEmptyLine);
+		return this;
+	}
+
+	@Override
+	public AbstractMethod<S> addComment(String commentText, boolean prefixOfParent) {
+		super.addComment(commentText, prefixOfParent);
+		return this;
+	}
+
+	@Override
+	public AbstractMethod<S> addAnnotation(String packageName, String annotationName) {
+		super.addAnnotation(packageName, annotationName);
+		return this;
+	}
+
 }

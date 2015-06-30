@@ -53,6 +53,24 @@ public class JavaEnum extends AbstractClass<EnumDeclaration> {
 		super(enumDeclaration);
 	}
 
+	@Override
+	public JavaEnum addJavadoc(String documentation, boolean addEmptyLine) {
+		super.addJavadoc(documentation, addEmptyLine);
+		return this;
+	}
+
+	@Override
+	public JavaEnum addComment(String commentText, boolean prefixOfParent) {
+		super.addComment(commentText, prefixOfParent);
+		return this;
+	}
+
+	@Override
+	public JavaEnum addAnnotation(String packageName, String annotationName) {
+		super.addAnnotation(packageName, annotationName);
+		return this;
+	}
+
 	/**
 	 * Add an enum constant to the enumeration
 	 * 

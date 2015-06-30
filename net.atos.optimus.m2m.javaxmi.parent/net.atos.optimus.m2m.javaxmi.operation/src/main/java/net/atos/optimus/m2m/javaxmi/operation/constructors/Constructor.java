@@ -51,6 +51,24 @@ public class Constructor extends AbstractMethod<ConstructorDeclaration> {
 		super(constructorDeclaration);
 	}
 
+	@Override
+	public Constructor addJavadoc(String documentation, boolean addEmptyLine) {
+		super.addJavadoc(documentation, addEmptyLine);
+		return this;
+	}
+
+	@Override
+	public Constructor addComment(String commentText, boolean prefixOfParent) {
+		super.addComment(commentText, prefixOfParent);
+		return this;
+	}
+
+	@Override
+	public Constructor addAnnotation(String packageName, String annotationName) {
+		super.addAnnotation(packageName, annotationName);
+		return this;
+	}
+
 	/**
 	 * Add a list of instructions to the current constructor
 	 * 
