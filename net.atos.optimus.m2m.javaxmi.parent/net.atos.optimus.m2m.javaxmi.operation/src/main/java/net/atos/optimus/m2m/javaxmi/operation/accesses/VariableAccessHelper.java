@@ -60,7 +60,7 @@ public class VariableAccessHelper {
 	 */
 	public static SingleVariableAccess createVariableAccess(String variableName, boolean isProxy) {
 		if (variableName.contains(VariableAccessHelper.STATIC_VARIABLE_SEPARATOR)) {
-			int index = variableName.indexOf(VariableAccessHelper.STATIC_VARIABLE_SEPARATOR);
+			int index = variableName.lastIndexOf(VariableAccessHelper.STATIC_VARIABLE_SEPARATOR);
 			SingleVariableAccess singleVariableAccess = VariableAccessHelper.createVariableAccess(
 					variableName.substring(index + 1, variableName.length()), isProxy);
 			singleVariableAccess.setQualifier(TypeAccessHelper.createClassTypeAccess(variableName.substring(0, index)));
