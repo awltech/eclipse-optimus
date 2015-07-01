@@ -22,6 +22,7 @@
 package net.atos.optimus.m2m.javaxmi.operation.enums;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
+import net.atos.optimus.m2m.javaxmi.operation.annotations.JavaAnnotation;
 import net.atos.optimus.m2m.javaxmi.operation.classes.AbstractClass;
 import net.atos.optimus.m2m.javaxmi.operation.imports.ImportDeclarationHelper;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.IElementaryInstruction;
@@ -68,6 +69,12 @@ public class JavaEnum extends AbstractClass<EnumDeclaration> {
 	@Override
 	public JavaEnum addAnnotation(String packageName, String annotationName) {
 		super.addAnnotation(packageName, annotationName);
+		return this;
+	}
+
+	@Override
+	public JavaEnum addAnnotations(JavaAnnotation... annotations) {
+		super.addAnnotations(annotations);
 		return this;
 	}
 

@@ -105,8 +105,7 @@ public class JavaAnnotationHelper {
 		if (annotation == null) {
 			return;
 		}
-		JavaAnnotation javaAnnotation = new JavaAnnotation(annotation);
-		javaAnnotation.addAnnotationParameter(propertyName, propertyValue, escape);
+		new JavaAnnotation(null, null, annotation).addAnnotationParameter(propertyName, propertyValue, escape);
 		// StringLiteral propertyExpression =
 		// JavaFactory.eINSTANCE.createStringLiteral();
 		// String value = (escape ? "\"" : "") + String.valueOf(propertyValue) +
@@ -223,8 +222,8 @@ public class JavaAnnotationHelper {
 	 */
 	@Deprecated
 	public static Annotation addAnnotation(BodyDeclaration bodyDeclaration, String packageName, String annotationName) {
-		return (new AbstractDeclaration<BodyDeclaration>(bodyDeclaration)).createAnnotation(packageName, annotationName)
-				.getDelegate();
+		return (new AbstractDeclaration<BodyDeclaration>(bodyDeclaration))
+				.createAnnotation(packageName, annotationName).getDelegate();
 
 		// CompilationUnit compilationUnit = bodyDeclaration == null ? null :
 		// bodyDeclaration.getOriginalCompilationUnit();

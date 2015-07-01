@@ -22,8 +22,10 @@
 package net.atos.optimus.m2m.javaxmi.operation.methods;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
+import net.atos.optimus.m2m.javaxmi.operation.annotations.JavaAnnotation;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.complex.BlockBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.complex.IComplexInstruction;
+import net.atos.optimus.m2m.javaxmi.operation.parameters.Parameter;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmt.modisco.java.Block;
@@ -73,6 +75,12 @@ public class Method extends AbstractMethod<MethodDeclaration> {
 	}
 
 	@Override
+	public Method addAnnotations(JavaAnnotation... annotations) {
+		super.addAnnotations(annotations);
+		return this;
+	}
+
+	@Override
 	public Method addParameter(String parameterTypeName, String parameterName) {
 		super.addParameter(parameterTypeName, parameterName);
 		return this;
@@ -81,6 +89,12 @@ public class Method extends AbstractMethod<MethodDeclaration> {
 	@Override
 	public Method addParameters(String... parameterTypeNames) {
 		super.addParameters(parameterTypeNames);
+		return this;
+	}
+
+	@Override
+	public Method addParameters(Parameter... parameters) {
+		super.addParameters(parameters);
 		return this;
 	}
 

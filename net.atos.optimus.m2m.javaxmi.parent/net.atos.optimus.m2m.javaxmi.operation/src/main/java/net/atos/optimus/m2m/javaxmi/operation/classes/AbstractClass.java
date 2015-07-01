@@ -21,6 +21,7 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.classes;
 
+import net.atos.optimus.m2m.javaxmi.operation.annotations.JavaAnnotation;
 import net.atos.optimus.m2m.javaxmi.operation.element.AbstractDeclaration;
 
 import org.eclipse.gmt.modisco.java.AbstractTypeDeclaration;
@@ -65,6 +66,12 @@ public class AbstractClass<S extends AbstractTypeDeclaration> extends AbstractDe
 	@Override
 	public AbstractClass<S> addAnnotation(String packageName, String annotationName) {
 		super.addAnnotation(packageName, annotationName);
+		return this;
+	}
+
+	@Override
+	public AbstractClass<S> addAnnotations(JavaAnnotation... annotations) {
+		super.addAnnotations(annotations);
 		return this;
 	}
 

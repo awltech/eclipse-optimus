@@ -24,7 +24,7 @@ package net.atos.optimus.m2m.javaxmi.operation.annotations;
 import java.util.LinkedList;
 import java.util.List;
 
-import net.atos.optimus.m2m.javaxmi.operation.element.Element;
+import net.atos.optimus.m2m.javaxmi.operation.annotations.builder.AnnotationBuilder;
 
 import org.eclipse.gmt.modisco.java.Annotation;
 import org.eclipse.gmt.modisco.java.AnnotationMemberValuePair;
@@ -33,14 +33,17 @@ import org.eclipse.gmt.modisco.java.StringLiteral;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
 
 /**
- * Models an instruction : wrapper of Annotation in modisco model
+ * The purpose of such class is to help with the creation of annotations
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
  *
  */
 
-public class JavaAnnotation extends Element<Annotation> {
+public class AnnotationHelper {
+
+	/** The build annotation */
+	private Annotation buildAnnotation;
 
 	private String packageName;
 
@@ -49,68 +52,41 @@ public class JavaAnnotation extends Element<Annotation> {
 	private List<PendingAnnotationParameter> pendingAnnotationParameters;
 
 	/**
-	 * Constructor of Java annotation
+	 * Launch the build of a new annotation
 	 * 
 	 * @param packageName
-	 *            the name of the package of the annotation.
+	 *            the name of the package of the annotation under construction.
 	 * @param annotationName
-	 *            the annotation name.
-	 * @param annotation
-	 *            the annotation.
+	 *            the name of the annotation under construction.
+	 * @return a new helper.
 	 */
-	public JavaAnnotation(String packageName, String annotationName, Annotation annotation) {
-		super(annotation);
+	public static AnnotationHelper builder(String packageName, String annotationName) {
+		return new AnnotationHelper(packageName, annotationName);
+	}
+
+	/**
+	 * Private constructor : a new annotation
+	 * 
+	 * @param packageName
+	 *            the name of the package of the annotation under construction.
+	 * @param annotationName
+	 *            the name of the annotation under construction.
+	 */
+	private AnnotationHelper(String packageName, String annotationName) {
 		this.packageName = packageName;
 		this.annotationName = annotationName;
+		this.buildAnnotation = AnnotationBuilder.builder().build();
 		this.pendingAnnotationParameters = new LinkedList<PendingAnnotationParameter>();
 	}
 
 	/**
-	 * Constructor of Java annotation
+	 * Give the build annotation
 	 * 
-	 * @param packageName
-	 *            the name of the package of the annotation.
-	 * @param annotationName
-	 *            the annotation name.
-	 * @param annotation
-	 *            the annotation.
-	 * @param pendingAnnotationParameters
-	 *            the pending annotation parameters list.
+	 * @return the build annotation.
 	 */
-	public JavaAnnotation(String packageName, String annotationName, Annotation annotation,
-			List<PendingAnnotationParameter> pendingAnnotationParameters) {
-		super(annotation);
-		this.packageName = packageName;
-		this.annotationName = annotationName;
-		this.pendingAnnotationParameters = pendingAnnotationParameters;
-	}
-
-	public String getPackageName() {
-		return this.packageName;
-	}
-
-	public String getAnnotationName() {
-		return this.annotationName;
-	}
-
-	public void addPendingParameters(PendingAnnotationParameter pendingAnnotationParameter) {
-		this.pendingAnnotationParameters.add(pendingAnnotationParameter);
-	}
-
-	public List<PendingAnnotationParameter> getPendingParameters() {
-		return this.pendingAnnotationParameters;
-	}
-
-	@Override
-	public JavaAnnotation addJavadoc(String documentation, boolean addEmptyLine) {
-		super.addJavadoc(documentation, addEmptyLine);
-		return this;
-	}
-
-	@Override
-	public JavaAnnotation addComment(String commentText, boolean prefixOfParent) {
-		super.addComment(commentText, prefixOfParent);
-		return this;
+	public JavaAnnotation build() {
+		return new JavaAnnotation(this.packageName, this.annotationName, this.buildAnnotation,
+				this.pendingAnnotationParameters);
 	}
 
 	/**
@@ -126,9 +102,9 @@ public class JavaAnnotation extends Element<Annotation> {
 	 *            the escape state.
 	 * @return the current annotation.
 	 */
-	public JavaAnnotation addAnnotationParameter(String propertyName, Object propertyValue, boolean escape) {
-		if (this.getDelegate().getType() == null) {
-			this.addPendingParameters(new PendingAnnotationParameter(propertyName, propertyValue, escape));
+	public AnnotationHelper addAnnotationParameter(String propertyName, Object propertyValue, boolean escape) {
+		if (this.buildAnnotation.getType() == null) {
+			this.pendingAnnotationParameters.add(new PendingAnnotationParameter(propertyName, propertyValue, escape));
 			return this;
 		}
 
@@ -140,10 +116,10 @@ public class JavaAnnotation extends Element<Annotation> {
 		}
 
 		AnnotationTypeMemberDeclaration annotationTypeMemberDeclaration = AnnotationTypeMemberDeclarationHelper
-				.createTypeMemberDeclaration(this.getDelegate(), propertyName);
+				.createTypeMemberDeclaration(this.buildAnnotation, propertyName);
 
 		AnnotationMemberValuePair annotationMemberValuePair = AnnotationMemberValuePairHelper
-				.createAnnotationMemberValuePair(this.getDelegate(), propertyName, propertyExpression);
+				.createAnnotationMemberValuePair(this.buildAnnotation, propertyName, propertyExpression);
 
 		annotationMemberValuePair.setMember(annotationTypeMemberDeclaration);
 

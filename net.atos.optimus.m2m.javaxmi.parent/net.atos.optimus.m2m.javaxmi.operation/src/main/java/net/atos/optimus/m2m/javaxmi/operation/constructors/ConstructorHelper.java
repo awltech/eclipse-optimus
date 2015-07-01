@@ -28,7 +28,6 @@ import net.atos.optimus.m2m.javaxmi.operation.instruction.AssignmentOperationHel
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.complex.BlockBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.complex.IComplexInstruction;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.parameters.ParameterHelper;
 import net.atos.optimus.m2m.javaxmi.operation.util.NameGenerator;
 
 import org.eclipse.emf.common.util.EList;
@@ -117,8 +116,7 @@ public class ConstructorHelper {
 	 * @return the helper.
 	 */
 	public ConstructorHelper addParameter(String parameterTypeName, String parameterName) {
-		ParameterHelper.builder(new Constructor(this.buildConstructor), parameterTypeName).setName(parameterName)
-				.build();
+		new Constructor(this.buildConstructor).addParameter(parameterTypeName, parameterName);
 		return this;
 	}
 
@@ -132,9 +130,7 @@ public class ConstructorHelper {
 	 * @return the helper.
 	 */
 	public ConstructorHelper addParameters(String... parameterTypeNames) {
-		for (String parameterTypeName : parameterTypeNames) {
-			ParameterHelper.builder(new Constructor(this.buildConstructor), parameterTypeName).build();
-		}
+		new Constructor(this.buildConstructor).addParameters(parameterTypeNames);
 		return this;
 	}
 
