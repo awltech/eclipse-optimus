@@ -21,7 +21,6 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.fields;
 
-import net.atos.optimus.m2m.javaxmi.operation.annotations.JavaAnnotation;
 import net.atos.optimus.m2m.javaxmi.operation.element.AbstractDeclaration;
 
 import org.eclipse.gmt.modisco.java.FieldDeclaration;
@@ -69,12 +68,6 @@ public class Field extends AbstractDeclaration<FieldDeclaration> {
 	@Override
 	public Field addAnnotation(String packageName, String annotationName) {
 		super.addAnnotation(packageName, annotationName);
-		return this;
-	}
-
-	@Override
-	public Field addAnnotations(JavaAnnotation... annotations) {
-		super.addAnnotations(annotations);
 		return this;
 	}
 

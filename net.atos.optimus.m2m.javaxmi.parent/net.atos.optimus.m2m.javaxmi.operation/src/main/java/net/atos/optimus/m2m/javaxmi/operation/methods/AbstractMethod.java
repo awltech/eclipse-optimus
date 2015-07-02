@@ -21,7 +21,6 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.methods;
 
-import net.atos.optimus.m2m.javaxmi.operation.annotations.JavaAnnotation;
 import net.atos.optimus.m2m.javaxmi.operation.element.AbstractDeclaration;
 import net.atos.optimus.m2m.javaxmi.operation.parameters.Parameter;
 import net.atos.optimus.m2m.javaxmi.operation.parameters.ParameterHelper;
@@ -74,12 +73,6 @@ public class AbstractMethod<S extends AbstractMethodDeclaration> extends Abstrac
 	@Override
 	public AbstractMethod<S> addAnnotation(String packageName, String annotationName) {
 		super.addAnnotation(packageName, annotationName);
-		return this;
-	}
-
-	@Override
-	public AbstractMethod<S> addAnnotations(JavaAnnotation... annotations) {
-		super.addAnnotations(annotations);
 		return this;
 	}
 

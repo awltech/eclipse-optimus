@@ -105,7 +105,7 @@ public class JavaAnnotationHelper {
 		if (annotation == null) {
 			return;
 		}
-		new JavaAnnotation(null, null, annotation).addAnnotationParameter(propertyName, propertyValue, escape);
+		new JavaAnnotation(annotation).addAnnotationParameter(propertyName, propertyValue, escape);
 		// StringLiteral propertyExpression =
 		// JavaFactory.eINSTANCE.createStringLiteral();
 		// String value = (escape ? "\"" : "") + String.valueOf(propertyValue) +

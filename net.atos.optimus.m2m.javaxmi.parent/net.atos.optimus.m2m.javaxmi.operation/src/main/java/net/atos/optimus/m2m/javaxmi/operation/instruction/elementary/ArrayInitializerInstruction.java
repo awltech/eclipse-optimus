@@ -22,9 +22,7 @@
 package net.atos.optimus.m2m.javaxmi.operation.instruction.elementary;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
-import net.atos.optimus.m2m.javaxmi.operation.annotations.AnnotationHelper;
 import net.atos.optimus.m2m.javaxmi.operation.annotations.JavaAnnotation;
-import net.atos.optimus.m2m.javaxmi.operation.annotations.PendingAnnotationParameter;
 import net.atos.optimus.m2m.javaxmi.operation.annotations.builder.AnnotationBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.util.MissingImportAdder;
 
@@ -77,29 +75,10 @@ public class ArrayInitializerInstruction extends ElementaryInstruction {
 	 * @return the current array initializer instruction.
 	 */
 	public ArrayInitializerInstruction addAnnotation(String packageName, String annotationName) {
-		return this.addAnnotations(AnnotationHelper.builder(packageName, annotationName).build());
-	}
-
-	/**
-	 * Add an annotation list to the current array initializer instruction
-	 * 
-	 * @param annotations
-	 *            the list of annotations to add to the current array
-	 *            initializer instruction.
-	 * @return the current array initializer instruction.
-	 */
-	public ArrayInitializerInstruction addAnnotations(JavaAnnotation... annotations) {
-		for (JavaAnnotation annotation : annotations) {
-			JavaAnnotation createdAnnotation = this.createAnnotation(annotation.getPackageName(),
-					annotation.getAnnotationName());
-			for (PendingAnnotationParameter parameter : annotation.getPendingParameters()) {
-				createdAnnotation.addAnnotationParameter(parameter.getPropertyName(), parameter.getPropertyValue(),
-						parameter.isEscape());
-			}
-		}
+		this.createAnnotation(packageName, annotationName);
 		return this;
 	}
-	
+
 	/**
 	 * Create an annotation and add it to the current array initializer
 	 * instruction
@@ -128,7 +107,7 @@ public class ArrayInitializerInstruction extends ElementaryInstruction {
 			MissingImportAdder.addMissingImport(compilationUnit, annotationType.getType());
 		}
 
-		return new JavaAnnotation(packageName, annotationName, annotation);
+		return new JavaAnnotation(annotation);
 	}
 
 }

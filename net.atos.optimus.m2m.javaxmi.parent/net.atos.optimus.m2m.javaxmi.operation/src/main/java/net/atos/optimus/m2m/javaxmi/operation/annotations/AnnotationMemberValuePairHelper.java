@@ -73,7 +73,7 @@ public class AnnotationMemberValuePairHelper {
 					.setName(propertyName)
 					.setValue(propertyExpression)
 					.setMember(
-							AnnotationTypeMemberDeclarationHelper.createTypeMemberDeclaration(annotation, propertyName))
+							propertyName == null ? null : AnnotationTypeMemberDeclarationHelper.createTypeMemberDeclaration(annotation, propertyName))
 					.build();
 			annotation.getValues().add(mvp);
 			return mvp;
@@ -93,7 +93,7 @@ public class AnnotationMemberValuePairHelper {
 			mvp.setValue(propertyExpression);
 		}
 
-		mvp.setMember(AnnotationTypeMemberDeclarationHelper.createTypeMemberDeclaration(annotation, propertyName));
+		mvp.setMember(propertyName == null ? null : AnnotationTypeMemberDeclarationHelper.createTypeMemberDeclaration(annotation, propertyName));
 
 		return mvp;
 	}

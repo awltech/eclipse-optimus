@@ -22,7 +22,6 @@
 package net.atos.optimus.m2m.javaxmi.operation.interfaces;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
-import net.atos.optimus.m2m.javaxmi.operation.annotations.JavaAnnotation;
 import net.atos.optimus.m2m.javaxmi.operation.classes.AbstractClass;
 import net.atos.optimus.m2m.javaxmi.operation.imports.ImportDeclarationHelper;
 
@@ -66,12 +65,6 @@ public class Interface extends AbstractClass<InterfaceDeclaration> {
 	@Override
 	public Interface addAnnotation(String packageName, String annotationName) {
 		super.addAnnotation(packageName, annotationName);
-		return this;
-	}
-
-	@Override
-	public Interface addAnnotations(JavaAnnotation... annotations) {
-		super.addAnnotations(annotations);
 		return this;
 	}
 

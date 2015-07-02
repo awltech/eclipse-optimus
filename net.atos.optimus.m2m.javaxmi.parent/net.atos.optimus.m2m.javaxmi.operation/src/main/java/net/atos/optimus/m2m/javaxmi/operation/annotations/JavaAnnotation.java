@@ -21,14 +21,14 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.annotations;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import net.atos.optimus.m2m.javaxmi.operation.element.Element;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.ArrayInitializerInstruction;
 
 import org.eclipse.gmt.modisco.java.Annotation;
 import org.eclipse.gmt.modisco.java.AnnotationMemberValuePair;
 import org.eclipse.gmt.modisco.java.AnnotationTypeMemberDeclaration;
+import org.eclipse.gmt.modisco.java.ArrayInitializer;
+import org.eclipse.gmt.modisco.java.CompilationUnit;
 import org.eclipse.gmt.modisco.java.StringLiteral;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
 
@@ -42,63 +42,14 @@ import org.eclipse.gmt.modisco.java.emf.JavaFactory;
 
 public class JavaAnnotation extends Element<Annotation> {
 
-	private String packageName;
-
-	private String annotationName;
-
-	private List<PendingAnnotationParameter> pendingAnnotationParameters;
-
 	/**
 	 * Constructor of Java annotation
 	 * 
-	 * @param packageName
-	 *            the name of the package of the annotation.
-	 * @param annotationName
-	 *            the annotation name.
 	 * @param annotation
 	 *            the annotation.
 	 */
-	public JavaAnnotation(String packageName, String annotationName, Annotation annotation) {
+	public JavaAnnotation(Annotation annotation) {
 		super(annotation);
-		this.packageName = packageName;
-		this.annotationName = annotationName;
-		this.pendingAnnotationParameters = new LinkedList<PendingAnnotationParameter>();
-	}
-
-	/**
-	 * Constructor of Java annotation
-	 * 
-	 * @param packageName
-	 *            the name of the package of the annotation.
-	 * @param annotationName
-	 *            the annotation name.
-	 * @param annotation
-	 *            the annotation.
-	 * @param pendingAnnotationParameters
-	 *            the pending annotation parameters list.
-	 */
-	public JavaAnnotation(String packageName, String annotationName, Annotation annotation,
-			List<PendingAnnotationParameter> pendingAnnotationParameters) {
-		super(annotation);
-		this.packageName = packageName;
-		this.annotationName = annotationName;
-		this.pendingAnnotationParameters = pendingAnnotationParameters;
-	}
-
-	public String getPackageName() {
-		return this.packageName;
-	}
-
-	public String getAnnotationName() {
-		return this.annotationName;
-	}
-
-	public void addPendingParameters(PendingAnnotationParameter pendingAnnotationParameter) {
-		this.pendingAnnotationParameters.add(pendingAnnotationParameter);
-	}
-
-	public List<PendingAnnotationParameter> getPendingParameters() {
-		return this.pendingAnnotationParameters;
 	}
 
 	@Override
@@ -128,7 +79,6 @@ public class JavaAnnotation extends Element<Annotation> {
 	 */
 	public JavaAnnotation addAnnotationParameter(String propertyName, Object propertyValue, boolean escape) {
 		if (this.getDelegate().getType() == null) {
-			this.addPendingParameters(new PendingAnnotationParameter(propertyName, propertyValue, escape));
 			return this;
 		}
 
@@ -139,15 +89,45 @@ public class JavaAnnotation extends Element<Annotation> {
 			propertyExpression.setEscapedValue(String.valueOf(propertyValue));
 		}
 
-		AnnotationTypeMemberDeclaration annotationTypeMemberDeclaration = AnnotationTypeMemberDeclarationHelper
-				.createTypeMemberDeclaration(this.getDelegate(), propertyName);
-
-		AnnotationMemberValuePair annotationMemberValuePair = AnnotationMemberValuePairHelper
-				.createAnnotationMemberValuePair(this.getDelegate(), propertyName, propertyExpression);
-
-		annotationMemberValuePair.setMember(annotationTypeMemberDeclaration);
-
+		AnnotationMemberValuePairHelper.createAnnotationMemberValuePair(this.getDelegate(), propertyName,
+				propertyExpression);
 		return this;
+	}
+
+	/**
+	 * Create an annotation and add it to the current array initializer
+	 * instruction
+	 * 
+	 * @param packageName
+	 *            the name of the package of the current array initializer
+	 *            instruction.
+	 * @param annotationName
+	 *            the annotation name.
+	 * @return the created java annotation.
+	 */
+	public JavaAnnotation createAnnotation(String packageName, String annotationName, String propertyName) {
+		Annotation annotation = this.getDelegate();
+		CompilationUnit compilationUnit = this.getDelegate() == null ? null : this.getDelegate()
+				.getOriginalCompilationUnit();
+		AnnotationMemberValuePair pair = null;
+		if (annotation.getValues().size() == 0) {
+			pair = JavaFactory.eINSTANCE.createAnnotationMemberValuePair();
+			if (propertyName != null) {
+				AnnotationTypeMemberDeclaration annotationTypeMemberDeclaration = AnnotationTypeMemberDeclarationHelper
+						.createTypeMemberDeclaration(annotation, propertyName);
+				pair.setMember(annotationTypeMemberDeclaration);
+			}
+			annotation.getValues().add(pair);
+		} else
+			pair = annotation.getValues().get(0);
+		ArrayInitializer initializer = null;
+		if (pair.getValue() == null || !(pair.getValue() instanceof ArrayInitializer)) {
+			initializer = JavaFactory.eINSTANCE.createArrayInitializer();
+			pair.setValue(initializer);
+			initializer.setOriginalCompilationUnit(compilationUnit);
+		} else
+			initializer = (ArrayInitializer) pair.getValue();
+		return new ArrayInitializerInstruction(initializer).createAnnotation(packageName, annotationName);
 	}
 
 }
