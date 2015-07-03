@@ -54,10 +54,6 @@ public class AbstractMethod<S extends AbstractMethodDeclaration> extends Abstrac
 		return this.getDelegate().getOriginalCompilationUnit();
 	}
 
-	public EList<SingleVariableDeclaration> getParameters() {
-		return this.getDelegate().getParameters();
-	}
-
 	@Override
 	public AbstractMethod<S> addJavadoc(String documentation, boolean addEmptyLine) {
 		super.addJavadoc(documentation, addEmptyLine);
@@ -127,13 +123,14 @@ public class AbstractMethod<S extends AbstractMethodDeclaration> extends Abstrac
 		}
 		return this;
 	}
-	
-	/** Remove parameters of the current abstract method
+
+	/**
+	 * Remove parameters of the current abstract method
 	 * 
 	 * @return the current abstract method.
 	 */
 	public AbstractMethod<S> removeParameters() {
-		this.getParameters().clear();
+		this.getDelegate().getParameters().clear();
 		return this;
 	}
 

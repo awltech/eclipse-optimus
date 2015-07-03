@@ -139,7 +139,7 @@ public class SetterHelper {
 	 * @return the helper.
 	 */
 	public SetterHelper setParameterName(String parameterName) {
-		this.buildSetterMethod.getParameters().get(0).setName(parameterName);
+		this.buildSetterMethod.getDelegate().getParameters().get(0).setName(parameterName);
 		this.buildSetterMethod.getDelegate().setBody(null);
 		this.buildSetterMethod.addInstructions(AssignmentOperationHelper.builder().setOperator(AssignmentKind.ASSIGN)
 				.setLeftFieldOperand(this.field.getName()).setRightVariableOperand(parameterName).build());
