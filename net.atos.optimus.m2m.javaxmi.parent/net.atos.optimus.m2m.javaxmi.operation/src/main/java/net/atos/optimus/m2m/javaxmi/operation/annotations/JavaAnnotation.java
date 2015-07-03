@@ -28,7 +28,10 @@ import org.eclipse.gmt.modisco.java.Annotation;
 import org.eclipse.gmt.modisco.java.AnnotationMemberValuePair;
 import org.eclipse.gmt.modisco.java.AnnotationTypeMemberDeclaration;
 import org.eclipse.gmt.modisco.java.ArrayInitializer;
+import org.eclipse.gmt.modisco.java.BooleanLiteral;
+import org.eclipse.gmt.modisco.java.CharacterLiteral;
 import org.eclipse.gmt.modisco.java.CompilationUnit;
+import org.eclipse.gmt.modisco.java.NumberLiteral;
 import org.eclipse.gmt.modisco.java.StringLiteral;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
 
@@ -61,6 +64,80 @@ public class JavaAnnotation extends Element<Annotation> {
 	@Override
 	public JavaAnnotation addComment(String commentText, boolean prefixOfParent) {
 		super.addComment(commentText, prefixOfParent);
+		return this;
+	}
+
+	/**
+	 * Adds a new boolean value to an annotation property. Note that is the
+	 * annotation already has a valued property with the same name, the value of
+	 * the property will be updated with an array
+	 * 
+	 * @param propertyName
+	 *            the property name.
+	 * @param propertyValue
+	 *            the property value.
+	 * @return the current annotation.
+	 */
+	public JavaAnnotation addAnnotationParameter(String propertyName, boolean propertyValue) {
+		if (this.getDelegate().getType() == null) {
+			return this;
+		}
+		BooleanLiteral propertyExpression = JavaFactory.eINSTANCE.createBooleanLiteral();
+		propertyExpression.setValue(propertyValue);
+		AnnotationMemberValuePairHelper.createAnnotationMemberValuePair(this.getDelegate(), propertyName,
+				propertyExpression);
+		return this;
+	}
+
+	/**
+	 * Adds a new integer value to an annotation property. Note that is the
+	 * annotation already has a valued property with the same name, the value of
+	 * the property will be updated with an array
+	 * 
+	 * @param propertyName
+	 *            the property name.
+	 * @param propertyValue
+	 *            the property value.
+	 * @return the current annotation.
+	 */
+	public JavaAnnotation addAnnotationParameter(String propertyName, int propertyValue) {
+		if (this.getDelegate().getType() == null) {
+			return this;
+		}
+		NumberLiteral propertyExpression = JavaFactory.eINSTANCE.createNumberLiteral();
+		propertyExpression.setTokenValue(((Integer) propertyValue).toString());
+		AnnotationMemberValuePairHelper.createAnnotationMemberValuePair(this.getDelegate(), propertyName,
+				propertyExpression);
+		return this;
+	}
+
+	/**
+	 * Adds a new char value to an annotation property. Note that is the
+	 * annotation already has a valued property with the same name, the value of
+	 * the property will be updated with an array
+	 * 
+	 * @param propertyName
+	 *            the property name.
+	 * @param propertyValue
+	 *            the property value.
+	 * @param escape
+	 *            the escape state.
+	 * @return the current annotation.
+	 */
+	public JavaAnnotation addAnnotationParameter(String propertyName, char propertyValue, boolean escape) {
+		if (this.getDelegate().getType() == null) {
+			return this;
+		}
+
+		CharacterLiteral propertyExpression = JavaFactory.eINSTANCE.createCharacterLiteral();
+		if (escape) {
+			propertyExpression.setEscapedValue("\"" + String.valueOf(propertyValue) + "\"");
+		} else {
+			propertyExpression.setEscapedValue(String.valueOf(propertyValue));
+		}
+
+		AnnotationMemberValuePairHelper.createAnnotationMemberValuePair(this.getDelegate(), propertyName,
+				propertyExpression);
 		return this;
 	}
 

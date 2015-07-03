@@ -127,5 +127,14 @@ public class AbstractMethod<S extends AbstractMethodDeclaration> extends Abstrac
 		}
 		return this;
 	}
+	
+	/** Remove parameters of the current abstract method
+	 * 
+	 * @return the current abstract method.
+	 */
+	public AbstractMethod<S> removeParameters() {
+		this.getParameters().clear();
+		return this;
+	}
 
 }

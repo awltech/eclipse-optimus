@@ -87,6 +87,12 @@ public class Constructor extends AbstractMethod<ConstructorDeclaration> {
 		super.addParameters(parameters);
 		return this;
 	}
+	
+	@Override
+	public Constructor removeParameters() {
+		super.removeParameters();
+		return this;
+	}
 
 	/**
 	 * Add a list of instructions to the current constructor

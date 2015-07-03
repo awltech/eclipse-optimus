@@ -91,6 +91,12 @@ public class Method extends AbstractMethod<MethodDeclaration> {
 		return this;
 	}
 
+	@Override
+	public Method removeParameters() {
+		super.removeParameters();
+		return this;
+	}
+
 	/**
 	 * Add a list of instructions to the current method
 	 * 
