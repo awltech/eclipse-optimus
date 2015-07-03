@@ -25,6 +25,7 @@ import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.annotations.JavaAnnotation;
 import net.atos.optimus.m2m.javaxmi.operation.annotations.builder.AnnotationBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.element.Element;
+import net.atos.optimus.m2m.javaxmi.operation.methods.Method;
 import net.atos.optimus.m2m.javaxmi.operation.util.MissingImportAdder;
 
 import org.eclipse.gmt.modisco.java.Annotation;
@@ -58,6 +59,18 @@ public class Parameter extends Element<SingleVariableDeclaration> {
 
 	public String getTypeName() {
 		return this.getDelegate().getType().getType().getName();
+	}
+	
+	/**
+	 * Set the method of the current parameter
+	 * 
+	 * @param method
+	 *            the method of the current parameter.
+	 * @return the helper.
+	 */
+	public Parameter setMethod(Method method) {
+		method.addParameters(this);
+		return this;
 	}
 
 	@Override

@@ -22,6 +22,7 @@
 package net.atos.optimus.m2m.javaxmi.operation.parameters;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
+import net.atos.optimus.m2m.javaxmi.operation.methods.Method;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.util.NameGenerator;
 import net.atos.optimus.m2m.javaxmi.operation.variables.SingleVariableDeclarationBuilder;
@@ -110,6 +111,18 @@ public class ParameterHelper {
 	 */
 	public ParameterHelper setVarargs(boolean varargsState) {
 		this.buildParameter.setVarargs(varargsState);
+		return this;
+	}
+
+	/**
+	 * Set the method of the parameter under construction
+	 * 
+	 * @param method
+	 *            the method of the parameter under construction.
+	 * @return the helper.
+	 */
+	public ParameterHelper setMethod(Method method) {
+		method.addParameters(this.build());
 		return this;
 	}
 

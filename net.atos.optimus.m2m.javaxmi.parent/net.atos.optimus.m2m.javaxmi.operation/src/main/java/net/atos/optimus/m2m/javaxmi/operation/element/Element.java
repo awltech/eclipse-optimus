@@ -22,13 +22,23 @@
 package net.atos.optimus.m2m.javaxmi.operation.element;
 
 import java.io.PrintWriter;
+import java.lang.reflect.InvocationTargetException;
 
 import net.atos.optimus.m2m.javaxmi.operation.comments.LineCommentBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.javadoc.JavadocBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.javadoc.TagElementBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.javadoc.TextElementBuilder;
 
+import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.gmt.modisco.java.ASTNode;
 import org.eclipse.gmt.modisco.java.Javadoc;
 import org.eclipse.gmt.modisco.java.LineComment;
@@ -42,7 +52,7 @@ import org.eclipse.gmt.modisco.java.TagElement;
  *
  */
 
-public class Element<T extends ASTNode> {
+public class Element<T extends ASTNode> implements EObject {
 
 	public static final String BEGIN_COMMENT = "//";
 
@@ -130,5 +140,100 @@ public class Element<T extends ASTNode> {
 				.build();
 		this.astNode.getComments().add(comment);
 		return this;
+	}
+
+	@Override
+	public EList<Adapter> eAdapters() {
+		return this.astNode.eAdapters();
+	}
+
+	@Override
+	public boolean eDeliver() {
+		return this.astNode.eDeliver();
+	}
+
+	@Override
+	public void eSetDeliver(boolean deliver) {
+		this.astNode.eSetDeliver(deliver);
+	}
+
+	@Override
+	public void eNotify(Notification notification) {
+		this.astNode.eNotify(notification);
+	}
+
+	@Override
+	public EClass eClass() {
+		return this.astNode.eClass();
+	}
+
+	@Override
+	public Resource eResource() {
+		return this.astNode.eResource();
+	}
+
+	@Override
+	public EObject eContainer() {
+		return this.astNode.eContainer();
+	}
+
+	@Override
+	public EStructuralFeature eContainingFeature() {
+		return this.astNode.eContainingFeature();
+	}
+
+	@Override
+	public EReference eContainmentFeature() {
+		return this.astNode.eContainmentFeature();
+	}
+
+	@Override
+	public EList<EObject> eContents() {
+		return this.astNode.eContents();
+	}
+
+	@Override
+	public TreeIterator<EObject> eAllContents() {
+		return this.astNode.eAllContents();
+	}
+
+	@Override
+	public boolean eIsProxy() {
+		return this.astNode.eIsProxy();
+	}
+
+	@Override
+	public EList<EObject> eCrossReferences() {
+		return this.astNode.eCrossReferences();
+	}
+
+	@Override
+	public Object eGet(EStructuralFeature feature) {
+		return this.astNode.eGet(feature);
+	}
+
+	@Override
+	public Object eGet(EStructuralFeature feature, boolean resolve) {
+		return this.astNode.eGet(feature, resolve);
+	}
+
+	@Override
+	public void eSet(EStructuralFeature feature, Object newValue) {
+		this.astNode.eSet(feature, newValue);
+	}
+
+	@Override
+	public boolean eIsSet(EStructuralFeature feature) {
+		return this.astNode.eIsSet(feature);
+	}
+
+	@Override
+	public void eUnset(EStructuralFeature feature) {
+		this.astNode.eUnset(feature);
+	}
+
+	@Override
+	public Object eInvoke(EOperation operation, EList<?> arguments) throws InvocationTargetException {
+		return this.astNode.eInvoke(operation, arguments);
 	}
 }

@@ -171,7 +171,7 @@ public class TypeAccessHelper {
 	 *         annotation name.
 	 */
 	public static TypeAccess createOrphanAnnotationTypeAccess(Element<?> element, String fullyQualifiedName) {
-		Model model = ASTElementFinder.findModel(element.getDelegate());
+		Model model = element == null ? null : ASTElementFinder.findModel(element.getDelegate());
 		UnresolvedAnnotationDeclaration annotation = null;
 		if (model != null) {
 			Iterator<Type> iterator = model.getOrphanTypes().iterator();

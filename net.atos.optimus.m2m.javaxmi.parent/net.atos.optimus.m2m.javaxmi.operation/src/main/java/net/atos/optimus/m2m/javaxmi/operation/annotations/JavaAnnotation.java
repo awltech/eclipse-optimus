@@ -21,6 +21,8 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.annotations;
 
+import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
+import net.atos.optimus.m2m.javaxmi.operation.annotations.builder.AnnotationBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.element.Element;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.ArrayInitializerInstruction;
 
@@ -33,6 +35,7 @@ import org.eclipse.gmt.modisco.java.CharacterLiteral;
 import org.eclipse.gmt.modisco.java.CompilationUnit;
 import org.eclipse.gmt.modisco.java.NumberLiteral;
 import org.eclipse.gmt.modisco.java.StringLiteral;
+import org.eclipse.gmt.modisco.java.TypeAccess;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
 
 /**
@@ -205,6 +208,22 @@ public class JavaAnnotation extends Element<Annotation> {
 		} else
 			initializer = (ArrayInitializer) pair.getValue();
 		return new ArrayInitializerInstruction(initializer).createAnnotation(packageName, annotationName);
+	}
+
+	/**
+	 * Create an orphan annotation
+	 * 
+	 * @param packageName
+	 *            the name of the package of the current parameter.
+	 * @param annotationName
+	 *            the annotation name.
+	 * @return the created orphan annotation.
+	 */
+	public static JavaAnnotation createOrphanAnnotation(String packageName, String annotationName) {
+		TypeAccess annotationType = TypeAccessHelper.createOrphanAnnotationTypeAccess(null, packageName + "."
+				+ annotationName);
+		Annotation annotation = AnnotationBuilder.builder().setType(annotationType).build();
+		return new JavaAnnotation(annotation);
 	}
 
 }
