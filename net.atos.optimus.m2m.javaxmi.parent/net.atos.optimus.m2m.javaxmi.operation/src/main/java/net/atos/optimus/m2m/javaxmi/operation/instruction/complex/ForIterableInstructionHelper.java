@@ -35,7 +35,7 @@ import org.eclipse.gmt.modisco.java.Statement;
 
 /**
  * The purpose of such class is to help with the creation of for iterable
- * instruction
+ * instructions
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
@@ -121,7 +121,7 @@ public class ForIterableInstructionHelper {
 	}
 
 	/**
-	 * Set the iterable instruction of the for iterable instruction under
+	 * Set the iterable field instruction of the for iterable instruction under
 	 * construction
 	 * 
 	 * @param fieldName
@@ -134,8 +134,8 @@ public class ForIterableInstructionHelper {
 	}
 
 	/**
-	 * Set the iterable instruction of the for iterable instruction under
-	 * construction
+	 * Set the iterable variable instruction of the for iterable instruction
+	 * under construction
 	 * 
 	 * @param variableName
 	 *            the name of the iterable variable of the for iterable

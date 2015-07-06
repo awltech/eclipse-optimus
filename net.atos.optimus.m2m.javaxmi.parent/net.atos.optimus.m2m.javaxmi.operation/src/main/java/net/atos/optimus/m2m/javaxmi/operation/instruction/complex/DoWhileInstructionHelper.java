@@ -42,6 +42,13 @@ import org.eclipse.gmt.modisco.java.Statement;
 public class DoWhileInstructionHelper {
 
 	/**
+	 * Private constructor
+	 * 
+	 */
+	private DoWhileInstructionHelper() {
+	}
+
+	/**
 	 * Create a new while instruction
 	 * 
 	 * @param condition

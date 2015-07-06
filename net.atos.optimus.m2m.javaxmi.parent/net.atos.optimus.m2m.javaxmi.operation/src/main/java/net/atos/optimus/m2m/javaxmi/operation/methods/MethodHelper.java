@@ -47,6 +47,7 @@ import org.eclipse.gmt.modisco.java.VisibilityKind;
 
 public class MethodHelper {
 
+	/** The type name of the void type */
 	public static final String VOID_TYPE = "void";
 
 	/** The build method */

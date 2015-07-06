@@ -27,7 +27,7 @@ import org.eclipse.gmt.modisco.java.PostfixExpression;
 import org.eclipse.gmt.modisco.java.PostfixExpressionKind;
 
 /**
- * The purpose of such class is to help with the creation of postfix operation
+ * The purpose of such class is to help with the creation of postfix operations
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 

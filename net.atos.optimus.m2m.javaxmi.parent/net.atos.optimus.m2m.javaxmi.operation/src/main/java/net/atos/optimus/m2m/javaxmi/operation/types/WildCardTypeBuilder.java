@@ -65,10 +65,10 @@ public class WildCardTypeBuilder {
 	}
 
 	/**
-	 * Set the type of the wild card type under construction
+	 * Set the bound of the wild card type under construction
 	 * 
 	 * @param type
-	 *            the type of the wild card type under construction.
+	 *            the bound of the wild card type under construction.
 	 * @return the builder.
 	 */
 	public WildCardTypeBuilder setBound(TypeAccess type) {

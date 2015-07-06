@@ -65,7 +65,7 @@ public class Instruction extends Element<Statement> implements IElementaryInstru
 	 * Constructor of instruction
 	 * 
 	 * @param statement
-	 *            the expression statement.
+	 *            the super constructor invocation statement.
 	 */
 	public Instruction(SuperConstructorInvocation statement) {
 		super(statement);

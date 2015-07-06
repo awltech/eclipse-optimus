@@ -41,7 +41,7 @@ public class EnhancedForStatementBuilder {
 	private EnhancedForStatement buildEnhancedForStatement;
 
 	/**
-	 * Give a enhanced for statement builder
+	 * Give an enhanced for statement builder
 	 * 
 	 * @return a new enhanced for statement builder.
 	 */
@@ -58,7 +58,7 @@ public class EnhancedForStatementBuilder {
 	}
 
 	/**
-	 * Build a enhanced for statement of modisco model
+	 * Build an enhanced for statement of modisco model
 	 * 
 	 * @return a new enhanced for statement of modisco model.
 	 */

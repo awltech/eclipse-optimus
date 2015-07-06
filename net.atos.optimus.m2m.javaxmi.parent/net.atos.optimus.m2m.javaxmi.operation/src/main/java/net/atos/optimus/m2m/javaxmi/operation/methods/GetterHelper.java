@@ -39,6 +39,7 @@ import org.eclipse.gmt.modisco.java.VisibilityKind;
 
 public class GetterHelper {
 
+	/** Prefix of the get method name */
 	public static final String GET_PREFIX = "get";
 
 	/** The build getter method */

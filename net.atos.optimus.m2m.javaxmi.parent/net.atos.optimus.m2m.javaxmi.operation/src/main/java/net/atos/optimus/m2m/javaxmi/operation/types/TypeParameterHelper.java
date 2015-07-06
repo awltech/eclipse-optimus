@@ -29,7 +29,7 @@ import org.eclipse.gmt.modisco.java.TypeDeclaration;
 import org.eclipse.gmt.modisco.java.TypeParameter;
 
 /**
- * The purpose of such class is to help with the creation of type parameter
+ * The purpose of such class is to help with the creation of type parameters
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
@@ -38,11 +38,21 @@ import org.eclipse.gmt.modisco.java.TypeParameter;
 
 public class TypeParameterHelper {
 
+	/** String constant : entry character of a parameterized type */
 	public static final String PARAMETER_ENTRY = "<";
 
+	/** String constant : exit character of a parameterized type */
 	public static final String PARAMETER_EXIT = ">";
 
+	/** String constant : separator of a parameterized type */
 	public static final String PARAMETER_SEPARATOR = ",";
+
+	/**
+	 * Private constructor
+	 * 
+	 */
+	private TypeParameterHelper() {
+	}
 
 	/**
 	 * Add type parameters to a type declaration with a name including these

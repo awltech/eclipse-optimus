@@ -38,7 +38,15 @@ import org.eclipse.gmt.modisco.java.Package;
 
 public class ImportDeclarationHelper {
 
+	/** String constant : ending characters of import group */
 	public static final String PACKAGE_IMPORT_END = ".*";
+
+	/**
+	 * Private constructor
+	 * 
+	 */
+	private ImportDeclarationHelper() {
+	}
 
 	/**
 	 * Create a class import declaration
@@ -50,7 +58,7 @@ public class ImportDeclarationHelper {
 	 *            the static state of the created class import declaration.
 	 * @return the created class import declaration.
 	 */
-	public static ImportDeclaration createClassImportDeclaration(String fullQualifiedClassName, boolean isStatic) {
+	protected static ImportDeclaration createClassImportDeclaration(String fullQualifiedClassName, boolean isStatic) {
 		ClassDeclaration classDeclaration = ClassDeclarationBuilder.builder().setName(fullQualifiedClassName).build();
 		return ImportDeclarationBuilder.builder().setImportedElement(classDeclaration).build();
 	}
@@ -65,7 +73,7 @@ public class ImportDeclarationHelper {
 	 *            the static state of the created package import declaration.
 	 * @return the created package import declaration.
 	 */
-	public static ImportDeclaration createPackageImportDeclaration(String packageName, boolean isStatic) {
+	protected static ImportDeclaration createPackageImportDeclaration(String packageName, boolean isStatic) {
 		Package javaPackage = PackageBuilder.builder().setName(packageName).build();
 		return ImportDeclarationBuilder.builder().setImportedElement(javaPackage).build();
 	}
@@ -86,8 +94,8 @@ public class ImportDeclarationHelper {
 			return ImportDeclarationHelper.createPackageImportDeclaration(fullyQualifiedName, isStatic);
 		}
 		int lastIndex = fullyQualifiedName.lastIndexOf('.');
-		if (Character
-				.isUpperCase(lastIndex == -1 ? fullyQualifiedName.charAt(0) : fullyQualifiedName.charAt(lastIndex+1))) {
+		if (Character.isUpperCase(lastIndex == -1 ? fullyQualifiedName.charAt(0) : fullyQualifiedName
+				.charAt(lastIndex + 1))) {
 			return ImportDeclarationHelper.createClassImportDeclaration(fullyQualifiedName, isStatic);
 		} else {
 			return ImportDeclarationHelper.createPackageImportDeclaration(fullyQualifiedName, isStatic);

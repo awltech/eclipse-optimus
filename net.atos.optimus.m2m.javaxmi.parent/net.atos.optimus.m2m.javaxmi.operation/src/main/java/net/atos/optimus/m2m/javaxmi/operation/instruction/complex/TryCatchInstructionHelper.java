@@ -35,7 +35,7 @@ import org.eclipse.gmt.modisco.java.TryStatement;
 
 /**
  * The purpose of such class is to help with the creation of try/catch
- * instruction
+ * instructions
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
@@ -112,7 +112,7 @@ public class TryCatchInstructionHelper {
 	/**
 	 * Add a catch catch block to the try/catch instruction under construction
 	 * 
-	 * @param exceptionName
+	 * @param exceptionTypeName
 	 *            the type name of the exception associated to the catch block
 	 *            to add to the try/catch instruction under construction.
 	 * @param exceptionName

@@ -27,7 +27,7 @@ import org.eclipse.gmt.modisco.java.Model;
 import org.eclipse.gmt.modisco.java.Package;
 
 /**
- * The purpose of such class is to help with the creation of package
+ * The purpose of such class is to help with the creation of packages
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
@@ -35,6 +35,13 @@ import org.eclipse.gmt.modisco.java.Package;
  */
 
 public class PackageHelper {
+
+	/**
+	 * Private constructor
+	 * 
+	 */
+	private PackageHelper() {
+	}
 
 	/**
 	 * Create a package and its complete hierarchy in a java model

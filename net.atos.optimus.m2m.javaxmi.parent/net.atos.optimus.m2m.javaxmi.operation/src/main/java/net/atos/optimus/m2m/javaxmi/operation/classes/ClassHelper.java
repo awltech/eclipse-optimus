@@ -244,7 +244,7 @@ public class ClassHelper {
 	 *            the super class name of the created class.
 	 * @param interfacesNames
 	 *            the interfaces names list to add to the created class.
-	 * @return the created class accordingly to the specified parameters.
+	 * @return the created class according to the specified parameters.
 	 */
 	public static JavaClass createClass(JavaPackage javaPackage, String className, VisibilityKind visibility,
 			InheritanceKind inheritance, boolean proxyState, String superClassName, String... interfacesNames) {
@@ -269,8 +269,7 @@ public class ClassHelper {
 	 *            the super class name of the created class.
 	 * @param interfacesNames
 	 *            the interfaces names list to add to the created class.
-	 * @return the created internal class accordingly to the specified
-	 *         parameters.
+	 * @return the created internal class according to the specified parameters.
 	 */
 	public static JavaClass createInternalClass(JavaClass javaClass, String className, VisibilityKind visibility,
 			InheritanceKind inheritance, boolean proxyState, String superClassName, String... interfacesNames) {

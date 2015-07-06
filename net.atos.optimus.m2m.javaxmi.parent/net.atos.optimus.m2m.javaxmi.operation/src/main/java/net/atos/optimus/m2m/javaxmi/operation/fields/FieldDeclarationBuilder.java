@@ -122,7 +122,7 @@ public class FieldDeclarationBuilder {
 	/**
 	 * Set the type of the field declaration under construction
 	 * 
-	 * @param typeDeclaration
+	 * @param typeAccess
 	 *            the type of the field declaration under construction.
 	 * @return the builder.
 	 */

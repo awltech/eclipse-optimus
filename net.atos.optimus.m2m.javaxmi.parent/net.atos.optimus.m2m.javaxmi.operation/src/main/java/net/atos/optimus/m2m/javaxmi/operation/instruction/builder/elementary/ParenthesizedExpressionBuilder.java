@@ -39,7 +39,7 @@ public class ParenthesizedExpressionBuilder {
 	private ParenthesizedExpression buildParenthesizedExpression;
 
 	/**
-	 * Give an parenthesized expression builder
+	 * Give a parenthesized expression builder
 	 * 
 	 * @return a new parenthesized expression builder.
 	 */
@@ -56,7 +56,7 @@ public class ParenthesizedExpressionBuilder {
 	}
 
 	/**
-	 * Build an parenthesized expression of modisco model
+	 * Build a parenthesized expression of modisco model
 	 * 
 	 * @return a new parenthesized expression of modisco model.
 	 */

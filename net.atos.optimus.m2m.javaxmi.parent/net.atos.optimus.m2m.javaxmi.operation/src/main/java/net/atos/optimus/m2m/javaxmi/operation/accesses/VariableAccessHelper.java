@@ -27,7 +27,7 @@ import org.eclipse.gmt.modisco.java.SingleVariableAccess;
 import org.eclipse.gmt.modisco.java.VariableDeclaration;
 
 /**
- * The purpose of such class is to help with the manipulation of variable
+ * The purpose of such class is to help with the manipulation of variables
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
@@ -36,6 +36,7 @@ import org.eclipse.gmt.modisco.java.VariableDeclaration;
 
 public class VariableAccessHelper {
 
+	/** String constant : separator of package chunks */
 	public static final String STATIC_VARIABLE_SEPARATOR = ".";
 
 	/**
@@ -47,6 +48,13 @@ public class VariableAccessHelper {
 	 */
 	public static SingleVariableAccess createVariableAccess(String variableName) {
 		return VariableAccessHelper.createVariableAccess(variableName, false);
+	}
+
+	/**
+	 * Private constructor
+	 * 
+	 */
+	private VariableAccessHelper() {
 	}
 
 	/**

@@ -92,11 +92,12 @@ public class AnnotationBuilder {
 	}
 
 	/**
-	 * Add annotation member values list to the annotation under construction
+	 * Add annotation member value pairs list to the annotation under
+	 * construction
 	 * 
 	 * @param annotationMemberValues
-	 *            the annotation member values list to add to the annotation
-	 *            under construction.
+	 *            the annotation member value pairs list to add to the
+	 *            annotation under construction.
 	 * @return the builder.
 	 */
 	public AnnotationBuilder addValues(AnnotationMemberValuePair... annotationMemberValues) {

@@ -39,7 +39,7 @@ import org.eclipse.gmt.modisco.java.Statement;
 
 /**
  * The purpose of such class is to help with the creation of for loop
- * instruction
+ * instructions
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
@@ -165,13 +165,13 @@ public class ForLoopInstructionHelper {
 	}
 
 	/**
-	 * Set the condition instruction of the integer for loop instruction under
-	 * construction
+	 * Set the constant condition instruction of the integer for loop
+	 * instruction under construction
 	 * 
 	 * @param comparator
 	 *            the comparator operator.
 	 * @param condition
-	 *            the condition constant instruction of the integer for loop
+	 *            the constant condition instruction of the integer for loop
 	 *            instruction under construction.
 	 * @return the helper
 	 */
@@ -182,13 +182,13 @@ public class ForLoopInstructionHelper {
 	}
 
 	/**
-	 * Set the condition instruction of the integer for loop instruction under
-	 * construction
+	 * Set the field condition instruction of the integer for loop instruction
+	 * under construction
 	 * 
 	 * @param comparator
 	 *            the comparator operator.
 	 * @param fieldName
-	 *            the name of the variable containing the condition value of the
+	 *            the name of the field containing the condition value of the
 	 *            integer for loop under instruction.
 	 * @return the helper
 	 */
@@ -199,8 +199,8 @@ public class ForLoopInstructionHelper {
 	}
 
 	/**
-	 * Set the condition instruction of the integer for loop instruction under
-	 * construction
+	 * Set the variable condition instruction of the integer for loop
+	 * instruction under construction
 	 * 
 	 * @param comparator
 	 *            the comparator operator.
@@ -250,8 +250,8 @@ public class ForLoopInstructionHelper {
 	}
 
 	/**
-	 * Set the update instruction of the integer for loop instruction under
-	 * construction
+	 * Set the constant update instruction of the integer for loop instruction
+	 * under construction
 	 * 
 	 * @param updateOperator
 	 *            the update operator.
@@ -269,8 +269,8 @@ public class ForLoopInstructionHelper {
 	}
 
 	/**
-	 * Set the update instruction of the integer for loop instruction under
-	 * construction
+	 * Set the field update instruction of the integer for loop instruction
+	 * under construction
 	 * 
 	 * @param updateOperator
 	 *            the update operator.
@@ -289,8 +289,8 @@ public class ForLoopInstructionHelper {
 	}
 
 	/**
-	 * Set the update instruction of the integer for loop instruction under
-	 * construction
+	 * Set the variable update instruction of the integer for loop instruction
+	 * under construction
 	 * 
 	 * @param updateOperator
 	 *            the update operator.

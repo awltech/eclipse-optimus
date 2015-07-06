@@ -124,12 +124,12 @@ public class AnnotationTypeMemberDeclarationBuilder {
 	}
 
 	/**
-	 * Add annotation member values usages list to the annotation type member
+	 * Add annotation member value usages list to the annotation type member
 	 * declaration under construction
 	 * 
 	 * @param annotationMemberUsages
-	 *            the annotation member values list to add to the annotation
-	 *            type member declaration under construction.
+	 *            the annotation member value usages list to add to the
+	 *            annotation type member declaration under construction.
 	 * @return the builder.
 	 */
 	public AnnotationTypeMemberDeclarationBuilder addUsages(AnnotationMemberValuePair... annotationMemberUsages) {

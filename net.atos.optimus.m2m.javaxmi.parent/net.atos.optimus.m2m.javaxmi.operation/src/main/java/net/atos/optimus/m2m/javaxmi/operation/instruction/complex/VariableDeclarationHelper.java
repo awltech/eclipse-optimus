@@ -34,7 +34,7 @@ import org.eclipse.gmt.modisco.java.VariableDeclarationStatement;
 
 /**
  * The purpose of such class is to help with the creation of variable
- * declaration
+ * declarations
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 

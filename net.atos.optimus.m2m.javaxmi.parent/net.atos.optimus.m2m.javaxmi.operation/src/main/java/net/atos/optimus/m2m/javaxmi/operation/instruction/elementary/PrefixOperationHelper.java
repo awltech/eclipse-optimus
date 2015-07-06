@@ -27,7 +27,7 @@ import org.eclipse.gmt.modisco.java.PrefixExpression;
 import org.eclipse.gmt.modisco.java.PrefixExpressionKind;
 
 /**
- * The purpose of such class is to help with the creation of prefix operation
+ * The purpose of such class is to help with the creation of prefix operations
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 

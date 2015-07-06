@@ -25,7 +25,7 @@ import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.ReturnStatemen
 import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.ElementaryInstructionHelper;
 
 /**
- * The purpose of such class is to help with the creation of return instruction
+ * The purpose of such class is to help with the creation of return instructions
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
@@ -33,6 +33,13 @@ import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.ElementaryI
  */
 
 public class ReturnInstructionHelper {
+	
+	/**
+	 * Private constructor
+	 * 
+	 */
+	private ReturnInstructionHelper() {
+	}
 
 	/**
 	 * Create an empty return instruction

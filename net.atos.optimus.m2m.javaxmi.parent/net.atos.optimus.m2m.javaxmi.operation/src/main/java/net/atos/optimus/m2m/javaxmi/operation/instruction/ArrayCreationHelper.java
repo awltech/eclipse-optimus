@@ -105,7 +105,8 @@ public class ArrayCreationHelper {
 	}
 
 	/**
-	 * Add a dimensions list to the array under construction
+	 * Add dimensions list by specified fields containing dimensions to the
+	 * array under construction
 	 * 
 	 * @param fieldsNames
 	 *            the fields names of the fields containing dimensions to add to
@@ -123,7 +124,8 @@ public class ArrayCreationHelper {
 	}
 
 	/**
-	 * Add a dimensions list to the array under construction
+	 * Add a dimensions list by specified variables containing dimensions to the
+	 * array under construction
 	 * 
 	 * @param variablesNames
 	 *            the variables names of the variables containing dimensions to
@@ -141,10 +143,12 @@ public class ArrayCreationHelper {
 	}
 
 	/**
-	 * Add a dimensions list to the array under construction
+	 * Add a dimensions list by specified instructions to the array under
+	 * construction
 	 * 
 	 * @param instructions
-	 *            the dimensions list to add to the array under construction.
+	 *            the list of instructions containing dimensions to add to the
+	 *            array under construction.
 	 * @return the helper.
 	 */
 	public ArrayCreationHelper addDimensions(IElementaryInstruction... instructions) {
@@ -158,7 +162,7 @@ public class ArrayCreationHelper {
 	}
 
 	/**
-	 * Create an array with an elements list
+	 * Create an array with integer elements list
 	 * 
 	 * @param elements
 	 *            the integer elements list.

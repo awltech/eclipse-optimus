@@ -40,6 +40,7 @@ import org.eclipse.gmt.modisco.java.VisibilityKind;
 
 public class SetterHelper {
 
+	/** Prefix of the set method name */
 	public static final String SET_PREFIX = "set";
 
 	/** The build setter method */

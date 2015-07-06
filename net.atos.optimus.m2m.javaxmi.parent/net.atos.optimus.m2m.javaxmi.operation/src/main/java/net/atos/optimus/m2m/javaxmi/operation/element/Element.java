@@ -54,10 +54,16 @@ import org.eclipse.gmt.modisco.java.TagElement;
 
 public class Element<E extends ASTNode> implements EObject {
 
+	/** String constant : begin characters of an in line comment */
 	public static final String BEGIN_COMMENT = "//";
 
 	private E astNode;
 
+	/**
+	 * Return the AST node associated to the current element
+	 * 
+	 * @return the AST node associated to the current element.
+	 */
 	public E getDelegate() {
 		return this.astNode;
 	}
@@ -127,7 +133,6 @@ public class Element<E extends ASTNode> implements EObject {
 	 * 
 	 * @param commentText
 	 *            the text of the comment.
-	 * @param commentText
 	 * @param prefixOfParent
 	 *            the prefix of parent state of the comment.
 	 * @return the current element.

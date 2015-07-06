@@ -239,10 +239,11 @@ public class AssignmentOperationHelper {
 	}
 
 	/**
-	 * Set the right operand of the assignment operation under construction
+	 * Set the boolean right operand of the assignment operation under
+	 * construction
 	 * 
 	 * @param rightOperand
-	 *            the right operand of the current assignment operation.
+	 *            the boolean right operand of the current assignment operation.
 	 * @return the helper.
 	 */
 	public AssignmentOperationHelper setRightOperand(boolean rightOperand) {
@@ -252,10 +253,10 @@ public class AssignmentOperationHelper {
 	}
 
 	/**
-	 * Set the right operand of the assignment operation under construction
+	 * Set the int right operand of the assignment operation under construction
 	 * 
 	 * @param rightOperand
-	 *            the right operand of the current assignment operation.
+	 *            the int right operand of the current assignment operation.
 	 * @return the helper.
 	 */
 	public AssignmentOperationHelper setRightOperand(int rightOperand) {
@@ -265,10 +266,10 @@ public class AssignmentOperationHelper {
 	}
 
 	/**
-	 * Set the right operand of the assignment operation under construction
+	 * Set the char right operand of the assignment operation under construction
 	 * 
 	 * @param rightOperand
-	 *            the right operand of the current assignment operation.
+	 *            the char right operand of the current assignment operation.
 	 * @return the helper.
 	 */
 	public AssignmentOperationHelper setRightOperand(char rightOperand) {
@@ -278,10 +279,12 @@ public class AssignmentOperationHelper {
 	}
 
 	/**
-	 * Set the right operand of the assignment operation under construction
+	 * Set the String constant right operand of the assignment operation under
+	 * construction
 	 * 
 	 * @param rightOperand
-	 *            the right operand of the current assignment operation.
+	 *            the String constant right operand of the current assignment
+	 *            operation.
 	 * @return the helper.
 	 */
 	public AssignmentOperationHelper setRightOperand(String rightOperand) {

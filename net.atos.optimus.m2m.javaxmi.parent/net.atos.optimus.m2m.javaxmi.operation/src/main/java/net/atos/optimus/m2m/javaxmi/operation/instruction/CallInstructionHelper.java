@@ -47,6 +47,13 @@ import org.eclipse.gmt.modisco.java.SuperMethodInvocation;
 public class CallInstructionHelper {
 
 	/**
+	 * Private constructor
+	 * 
+	 */
+	private CallInstructionHelper() {
+	}
+
+	/**
 	 * Create a class instantiation instruction
 	 *
 	 * @param className
@@ -99,13 +106,14 @@ public class CallInstructionHelper {
 	}
 
 	/**
-	 * Create a static method call instruction
+	 * Create a static method call instruction from a class
 	 * 
 	 * @param className
 	 *            the name of the caller variable.
 	 * @param methodName
 	 *            the name of the method to call.
-	 * @return the created static call method instruction.
+	 * @return the created static call method instruction from the specified
+	 *         class.
 	 */
 	public static AbstractMethodInstruction createStaticMethodCallInstruction(String className, String methodName) {
 		return CallInstructionHelper.createCallMethodInstruction(
@@ -113,14 +121,13 @@ public class CallInstructionHelper {
 	}
 
 	/**
-	 * Create a method call instruction with arguments
+	 * Create a method call instruction from a caller
 	 * 
 	 * @param caller
 	 *            the caller of the method.
 	 * @param methodName
 	 *            the name of the method to call.
-	 * @return the created method call instruction with the specified name and
-	 *         arguments.
+	 * @return the created method call instruction from the specified caller.
 	 */
 	public static AbstractMethodInstruction createCallMethodInstruction(IElementaryInstruction caller, String methodName) {
 		MethodDeclaration methodDeclaration = MethodDeclarationBuilder.builder().setName(methodName).build();
@@ -145,7 +152,7 @@ public class CallInstructionHelper {
 	}
 
 	/**
-	 * Create a super constructor call instruction with arguments
+	 * Create a super constructor call instruction
 	 * 
 	 * @return the created super constructor call instruction.
 	 */

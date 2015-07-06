@@ -126,7 +126,7 @@ public class SingleVariableDeclarationBuilder {
 	 * Set the compilation unit of the single variable declaration under
 	 * construction
 	 * 
-	 * @param typeVariable
+	 * @param compilationUnit
 	 *            the compilation unit of the single variable declaration under
 	 *            construction.
 	 * @return the builder.
@@ -151,7 +151,8 @@ public class SingleVariableDeclarationBuilder {
 	}
 
 	/**
-	 * Add an annotation to the single variable declaration under construction
+	 * Add an annotations list to the single variable declaration under
+	 * construction
 	 * 
 	 * @param annotations
 	 *            the annotations list to add to the single variable declaration

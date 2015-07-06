@@ -33,7 +33,7 @@ import org.eclipse.gmt.modisco.java.Expression;
 
 /**
  * The purpose of such class is to help with the creation of annotation member
- * value pair declaration
+ * value pair
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
@@ -43,8 +43,15 @@ import org.eclipse.gmt.modisco.java.Expression;
 public class AnnotationMemberValuePairHelper {
 
 	/**
-	 * Create an annotation member value pair associated to an annotation and a
-	 * property name and expression
+	 * Private constructor
+	 * 
+	 */
+	private AnnotationMemberValuePairHelper() {
+	}
+
+	/**
+	 * Create an annotation member value pair associated to an annotation, a
+	 * property name and an expression
 	 * 
 	 * @param annotation
 	 *            the annotation.
@@ -53,7 +60,7 @@ public class AnnotationMemberValuePairHelper {
 	 * @param propertyExpression
 	 *            the property expression.
 	 * @return the created annotation member value pair associated to specified
-	 *         annotation and property name and expression.
+	 *         annotation, property name and expression.
 	 */
 	public static AnnotationMemberValuePair createAnnotationMemberValuePair(Annotation annotation, String propertyName,
 			Expression propertyExpression) {
@@ -73,8 +80,8 @@ public class AnnotationMemberValuePairHelper {
 					.setName(propertyName)
 					.setValue(propertyExpression)
 					.setMember(
-							propertyName == null ? null : AnnotationTypeMemberDeclarationHelper.createTypeMemberDeclaration(annotation, propertyName))
-					.build();
+							propertyName == null ? null : AnnotationTypeMemberDeclarationHelper
+									.createTypeMemberDeclaration(annotation, propertyName)).build();
 			annotation.getValues().add(mvp);
 			return mvp;
 		}
@@ -93,7 +100,8 @@ public class AnnotationMemberValuePairHelper {
 			mvp.setValue(propertyExpression);
 		}
 
-		mvp.setMember(propertyName == null ? null : AnnotationTypeMemberDeclarationHelper.createTypeMemberDeclaration(annotation, propertyName));
+		mvp.setMember(propertyName == null ? null : AnnotationTypeMemberDeclarationHelper.createTypeMemberDeclaration(
+				annotation, propertyName));
 
 		return mvp;
 	}

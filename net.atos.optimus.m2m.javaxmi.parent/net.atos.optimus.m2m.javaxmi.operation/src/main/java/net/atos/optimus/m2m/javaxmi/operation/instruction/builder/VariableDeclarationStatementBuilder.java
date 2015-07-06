@@ -70,8 +70,8 @@ public class VariableDeclarationStatementBuilder {
 	 * Set the type of the variable declaration statement under construction
 	 * 
 	 * @param type
-	 *            the type of the variable statement expression under
-	 *            construction.
+	 *            the type of the variable declaration statement expression
+	 *            under construction.
 	 * @return the builder.
 	 */
 	public VariableDeclarationStatementBuilder setType(TypeAccess type) {
@@ -83,7 +83,8 @@ public class VariableDeclarationStatementBuilder {
 	 * Set the modifier of the variable declaration statement under construction
 	 * 
 	 * @param modifier
-	 *            the modifier of the variable statement under construction.
+	 *            the modifier of the variable declaration statement under
+	 *            construction.
 	 * @return the builder.
 	 */
 	public VariableDeclarationStatementBuilder setModifier(Modifier modifier) {

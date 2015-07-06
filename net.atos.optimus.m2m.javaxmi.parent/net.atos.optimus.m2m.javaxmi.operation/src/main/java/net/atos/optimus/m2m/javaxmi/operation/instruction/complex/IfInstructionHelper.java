@@ -31,7 +31,7 @@ import org.eclipse.gmt.modisco.java.IfStatement;
 import org.eclipse.gmt.modisco.java.Statement;
 
 /**
- * The purpose of such class is to help with the creation of if instruction
+ * The purpose of such class is to help with the creation of if instructions
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 

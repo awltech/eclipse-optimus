@@ -40,8 +40,15 @@ import org.eclipse.gmt.modisco.java.BodyDeclaration;
 public class AnnotationTypeMemberDeclarationHelper {
 
 	/**
-	 * Create an annotation type member associated to an annotation and a
-	 * property name
+	 * Private constructor
+	 * 
+	 */
+	private AnnotationTypeMemberDeclarationHelper() {
+	}
+
+	/**
+	 * Create an annotation type member declaration associated to an annotation
+	 * and a property name
 	 * 
 	 * @param annotation
 	 *            the annotation.

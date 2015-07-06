@@ -27,7 +27,7 @@ import org.eclipse.gmt.modisco.java.InfixExpression;
 import org.eclipse.gmt.modisco.java.InfixExpressionKind;
 
 /**
- * The purpose of such class is to help with the creation of infix operation
+ * The purpose of such class is to help with the creation of infix operations
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
@@ -78,10 +78,10 @@ public class InfixOperationHelper {
 	}
 
 	/**
-	 * Set the left operand of the infix operation under construction
+	 * Set the boolean left operand of the infix operation under construction
 	 * 
 	 * @param leftOperand
-	 *            the left operand of the current infix operation.
+	 *            the boolean left operand of the current infix operation.
 	 * @return the helper.
 	 */
 	public InfixOperationHelper setLeftOperand(boolean leftOperand) {
@@ -91,10 +91,10 @@ public class InfixOperationHelper {
 	}
 
 	/**
-	 * Set the left operand of the infix operation under construction
+	 * Set the int left operand of the infix operation under construction
 	 * 
 	 * @param leftOperand
-	 *            the left operand of the current infix operation.
+	 *            the int left operand of the current infix operation.
 	 * @return the helper.
 	 */
 	public InfixOperationHelper setLeftOperand(int leftOperand) {
@@ -104,10 +104,10 @@ public class InfixOperationHelper {
 	}
 
 	/**
-	 * Set the left operand of the infix operation under construction
+	 * Set the char left operand of the infix operation under construction
 	 * 
 	 * @param leftOperand
-	 *            the left operand of the current infix operation.
+	 *            the char left operand of the current infix operation.
 	 * @return the helper.
 	 */
 	public InfixOperationHelper setLeftOperand(char leftOperand) {
@@ -117,10 +117,10 @@ public class InfixOperationHelper {
 	}
 
 	/**
-	 * Set the left operand of the infix operation under construction
+	 * Set the String left operand of the infix operation under construction
 	 * 
 	 * @param leftOperand
-	 *            the left operand of the current infix operation.
+	 *            the String left operand of the current infix operation.
 	 * @return the helper.
 	 */
 	public InfixOperationHelper setLeftOperand(String leftOperand) {
@@ -250,10 +250,10 @@ public class InfixOperationHelper {
 	}
 
 	/**
-	 * Set the right operand of the infix operation under construction
+	 * Set the boolean right operand of the infix operation under construction
 	 * 
 	 * @param rightOperand
-	 *            the right operand of the current infix operation.
+	 *            the boolean right operand of the current infix operation.
 	 * @return the helper.
 	 */
 	public InfixOperationHelper setRightOperand(boolean rightOperand) {
@@ -263,10 +263,10 @@ public class InfixOperationHelper {
 	}
 
 	/**
-	 * Set the right operand of the infix operation under construction
+	 * Set the int right operand of the infix operation under construction
 	 * 
 	 * @param rightOperand
-	 *            the right operand of the current infix operation.
+	 *            the int right operand of the current infix operation.
 	 * @return the helper.
 	 */
 	public InfixOperationHelper setRightOperand(int rightOperand) {
@@ -276,10 +276,10 @@ public class InfixOperationHelper {
 	}
 
 	/**
-	 * Set the right operand of the infix operation under construction
+	 * Set the char right operand of the infix operation under construction
 	 * 
 	 * @param rightOperand
-	 *            the right operand of the current infix operation.
+	 *            the char right operand of the current infix operation.
 	 * @return the helper.
 	 */
 	public InfixOperationHelper setRightOperand(char rightOperand) {
@@ -289,10 +289,10 @@ public class InfixOperationHelper {
 	}
 
 	/**
-	 * Set the right operand of the infix operation under construction
+	 * Set the String right operand of the infix operation under construction
 	 * 
 	 * @param rightOperand
-	 *            the right operand of the current infix operation.
+	 *            the String right operand of the current infix operation.
 	 * @return the helper.
 	 */
 	public InfixOperationHelper setRightOperand(String rightOperand) {

@@ -190,7 +190,7 @@ public class EnumHelper {
 	 *            the proxy state of of the created enumeration.
 	 * @param interfacesNames
 	 *            the interfaces names list to add to the created enumeration.
-	 * @return the created class accordingly to the specified parameters.
+	 * @return the created enum accordingly to the specified parameters.
 	 */
 	public static JavaEnum createEnum(JavaPackage javaPackage, String enumName, boolean proxyState,
 			String... interfacesNames) {

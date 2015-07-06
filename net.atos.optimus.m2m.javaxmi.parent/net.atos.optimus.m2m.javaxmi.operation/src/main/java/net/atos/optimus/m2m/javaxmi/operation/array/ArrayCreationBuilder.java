@@ -72,7 +72,7 @@ public class ArrayCreationBuilder {
 	 * 
 	 * @param expressions
 	 *            the dimensions list to add to the array creation under
-	 *            construction
+	 *            construction.
 	 * @return the builder.
 	 */
 	public ArrayCreationBuilder addDimensions(Expression... expressions) {

@@ -32,7 +32,7 @@ import org.eclipse.gmt.modisco.java.SwitchStatement;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
 
 /**
- * The purpose of such class is to help with the creation of switch instruction
+ * The purpose of such class is to help with the creation of switch instructions
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
@@ -207,10 +207,10 @@ public class SwitchInstructionHelper {
 	 *            switch instruction under construction.
 	 * @return the build switch instruction.
 	 */
-	public ComplexInstruction addFinalCaseBlock(IComplexInstruction... caseInstructions) {
+	public ComplexInstruction addFinalCaseBlock(IComplexInstruction... finalCaseInstructions) {
 		EList<Statement> statementList = this.buildSwitchInstruction.getStatements();
 		statementList.add(SwitchCaseBuilder.builder().setDefault(true).build());
-		for (IComplexInstruction caseInstruction : caseInstructions) {
+		for (IComplexInstruction caseInstruction : finalCaseInstructions) {
 			statementList.add(caseInstruction.getStatement());
 		}
 		return this.build();

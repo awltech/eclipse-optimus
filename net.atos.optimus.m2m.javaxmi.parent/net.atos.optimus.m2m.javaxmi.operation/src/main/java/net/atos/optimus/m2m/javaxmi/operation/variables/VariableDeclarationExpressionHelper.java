@@ -30,7 +30,7 @@ import org.eclipse.gmt.modisco.java.VariableDeclarationExpression;
 
 /**
  * The purpose of such class is to help with the creation of variable
- * declaration expression
+ * declaration expressions
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
@@ -38,6 +38,13 @@ import org.eclipse.gmt.modisco.java.VariableDeclarationExpression;
  */
 
 public class VariableDeclarationExpressionHelper {
+
+	/**
+	 * Private constructor
+	 * 
+	 */
+	private VariableDeclarationExpressionHelper() {
+	}
 
 	/**
 	 * Create a variable declaration expression

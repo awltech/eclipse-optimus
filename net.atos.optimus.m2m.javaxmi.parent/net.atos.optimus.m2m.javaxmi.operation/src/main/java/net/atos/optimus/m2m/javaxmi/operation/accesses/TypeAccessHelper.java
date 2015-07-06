@@ -46,7 +46,7 @@ import org.eclipse.gmt.modisco.java.TypeAccess;
 import org.eclipse.gmt.modisco.java.UnresolvedAnnotationDeclaration;
 
 /**
- * The purpose of such class is to help with the creation of type access
+ * The purpose of such class is to help with the creation of type accesses
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
@@ -55,21 +55,36 @@ import org.eclipse.gmt.modisco.java.UnresolvedAnnotationDeclaration;
 
 public class TypeAccessHelper {
 
+	/** String constant : entry character of an array */
 	public static final String ARRAY_ENTRY = "[";
 
+	/** String constant : exit character of an array */
 	public static final String ARRAY_EXIT = "]";
 
+	/** String constant : entry character of a parameterized type */
 	public static final String PARAMETRIZED_ENTRY = "<";
 
+	/** String constant : separator of a parameterized type */
 	public static final String PARAMETRIZED_SEPARATOR = ",";
 
+	/** String constant : the wild card character */
 	public static final String WILD_CARD = "?";
 
+	/** The Java keyword for class extension */
 	public static final String EXTENSION = "extends";
 
+	/** The Java keyword for generalization */
 	public static final String GENERALIZATION = "super";
 
+	/** String constant : separator of package chunks */
 	public static final String PACKAGE_SEPARATOR = ".";
+
+	/**
+	 * Private constructor
+	 * 
+	 */
+	private TypeAccessHelper() {
+	}
 
 	/**
 	 * Create a type access associated to a class
@@ -221,13 +236,13 @@ public class TypeAccessHelper {
 	}
 
 	/**
-	 * Create a array type
+	 * Create an array type
 	 * 
 	 * @param mainType
 	 *            the main type of the array type.
 	 * @param name
 	 *            the name of the array type.
-	 * @return the created type access associated to these parameters.
+	 * @return the created type access associated to the specified array type.
 	 */
 	protected static TypeAccess createArrayType(TypeAccess mainType, String name) {
 		int dimensions = 0;
@@ -246,7 +261,8 @@ public class TypeAccessHelper {
 	 *            the main type of the parameterized type.
 	 * @param name
 	 *            the name of the parameterized type.
-	 * @return the created type access associated to these parameters.
+	 * @return the created type access associated to the specified parameterized
+	 *         type.
 	 */
 	protected static TypeAccess createParameterizedType(TypeAccess mainType, String name) {
 		String[] arguments = name.substring(name.indexOf(TypeAccessHelper.PARAMETRIZED_ENTRY) + 1, name.length() - 1)
@@ -266,7 +282,7 @@ public class TypeAccessHelper {
 	 * @param argument
 	 *            the argument of the parameterized type in one string.
 	 * @return the created type for the specified argument of a parameterized
-	 *         type
+	 *         type.
 	 */
 	protected static TypeAccess createTypeParametrizedArgument(String argument) {
 		String[] argumentParts = argument.trim().split("\\s+");

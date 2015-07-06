@@ -26,7 +26,7 @@ import net.atos.optimus.m2m.javaxmi.operation.accesses.ArrayAccessBuilder;
 import org.eclipse.gmt.modisco.java.ArrayAccess;
 
 /**
- * The purpose of such class is to help with the creation of array instruction
+ * The purpose of such class is to help with the creation of array instructions
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 

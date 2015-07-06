@@ -25,7 +25,7 @@ import org.eclipse.gmt.modisco.java.UnresolvedAnnotationDeclaration;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
 
 /**
- * A builder dedicated to create an unresolved annotation declaration of modisco
+ * A builder dedicated to create unresolved annotation declaration of modisco
  * model
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>

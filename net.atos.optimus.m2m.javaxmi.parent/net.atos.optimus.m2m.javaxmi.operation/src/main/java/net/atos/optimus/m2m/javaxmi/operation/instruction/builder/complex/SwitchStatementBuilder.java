@@ -81,14 +81,14 @@ public class SwitchStatementBuilder {
 	/**
 	 * Add a statements list to the switch statement under construction
 	 * 
-	 * @param statement
+	 * @param statements
 	 *            the statements list to add to the switch statement under
 	 *            construction.
 	 * @return the builder.
 	 */
-	public SwitchStatementBuilder addStatement(Statement... statements) {
+	public SwitchStatementBuilder addStatements(Statement... statements) {
 		EList<Statement> statementsList = this.buildSwitchStatement.getStatements();
-		for(Statement statement : statements){
+		for (Statement statement : statements) {
 			statementsList.add(statement);
 		}
 		return this;

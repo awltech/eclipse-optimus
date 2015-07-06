@@ -80,8 +80,8 @@ public class IfStatementBuilder {
 	/**
 	 * Set the then statement of the if statement under construction
 	 * 
-	 * @param expression
-	 *            the expression of the if statement under construction.
+	 * @param statement
+	 *            the then statement of the if statement under construction.
 	 * @return the builder.
 	 */
 	public IfStatementBuilder setThenStatement(Statement statement) {
@@ -92,8 +92,8 @@ public class IfStatementBuilder {
 	/**
 	 * Set the else statement of the if statement under construction
 	 * 
-	 * @param expression
-	 *            the expression of the if statement under construction.
+	 * @param statement
+	 *            the else statement of the if statement under construction.
 	 * @return the builder.
 	 */
 	public IfStatementBuilder setElseStatement(Statement statement) {

@@ -71,10 +71,10 @@ public class ConstructorDeclarationBuilder {
 	}
 
 	/**
-	 * Set the name of the method constructor under construction
+	 * Set the name of the constructor under construction
 	 * 
 	 * @param name
-	 *            the name of the method constructor under construction.
+	 *            the name of the constructor under construction.
 	 * @return the builder.
 	 */
 	public ConstructorDeclarationBuilder setName(String name) {

@@ -67,7 +67,7 @@ public class SuperMethodInvocationBuilder {
 	}
 
 	/**
-	 * Set the super method declaration of the super method invocation under
+	 * Set the method declaration of the super method invocation under
 	 * construction
 	 * 
 	 * @param methodDeclaration

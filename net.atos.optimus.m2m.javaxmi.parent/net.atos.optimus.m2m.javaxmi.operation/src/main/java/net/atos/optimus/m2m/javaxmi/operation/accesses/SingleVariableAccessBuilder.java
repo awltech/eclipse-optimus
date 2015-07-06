@@ -66,7 +66,7 @@ public class SingleVariableAccessBuilder {
 	}
 
 	/**
-	 * Set the variable declaration fragment of the single variable access under
+	 * Set the variable declaration of the single variable access under
 	 * construction
 	 * 
 	 * @param variableDeclaration

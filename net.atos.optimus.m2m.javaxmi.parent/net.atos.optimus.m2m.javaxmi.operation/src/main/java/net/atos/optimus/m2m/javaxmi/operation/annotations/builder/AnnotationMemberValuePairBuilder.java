@@ -81,9 +81,9 @@ public class AnnotationMemberValuePairBuilder {
 	/**
 	 * Set the member of the annotation member value pair under construction
 	 * 
-	 * @param member
-	 *            the member of the annotation member value pair under
-	 *            construction.
+	 * @param typeMemberDeclaration
+	 *            the type member declaration of the annotation member value
+	 *            pair under construction.
 	 * @return the builder.
 	 */
 	public AnnotationMemberValuePairBuilder setMember(AnnotationTypeMemberDeclaration typeMemberDeclaration) {

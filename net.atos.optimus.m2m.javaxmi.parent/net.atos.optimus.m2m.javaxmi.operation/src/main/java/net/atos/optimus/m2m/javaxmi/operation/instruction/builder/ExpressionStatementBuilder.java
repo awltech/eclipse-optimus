@@ -39,7 +39,7 @@ public class ExpressionStatementBuilder {
 	private ExpressionStatement buildExpressionStatement;
 
 	/**
-	 * Give a expression statement builder
+	 * Give an expression statement builder
 	 * 
 	 * @return a new expression statement builder.
 	 */
@@ -56,7 +56,7 @@ public class ExpressionStatementBuilder {
 	}
 
 	/**
-	 * Build a expression statement of modisco model
+	 * Build an expression statement of modisco model
 	 * 
 	 * @return a new expression statement of modisco model.
 	 */

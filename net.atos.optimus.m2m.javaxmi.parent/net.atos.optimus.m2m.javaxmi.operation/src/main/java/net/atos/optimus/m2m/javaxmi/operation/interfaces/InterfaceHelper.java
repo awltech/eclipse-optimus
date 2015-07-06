@@ -198,7 +198,7 @@ public class InterfaceHelper {
 	 *            declaration.
 	 * @return the created interface accordingly to the specified parameters.
 	 */
-	public static Interface createClass(JavaPackage javaPackage, String interfaceName, VisibilityKind visibility,
+	public static Interface createInterface(JavaPackage javaPackage, String interfaceName, VisibilityKind visibility,
 			boolean isAbstract, InheritanceKind inheritance, boolean proxyState, String superClassName,
 			String... interfacesNames) {
 		return InterfaceHelper.builder(javaPackage, interfaceName).setVisibility(visibility).setAbstract(isAbstract)

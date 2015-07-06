@@ -70,7 +70,7 @@ public class AbstractMethodInstruction extends Instruction {
 	 * Constructor of abstract super constructor instruction
 	 * 
 	 * @param superConstructorInvocation
-	 *            the super method invocation statement.
+	 *            the super constructor invocation statement.
 	 */
 	public AbstractMethodInstruction(SuperConstructorInvocation superConstructorInvocation) {
 		super(superConstructorInvocation);
@@ -125,7 +125,7 @@ public class AbstractMethodInstruction extends Instruction {
 	}
 
 	/**
-	 * Add a int argument to the abstract method
+	 * Add an int argument to the abstract method
 	 * 
 	 * @param argument
 	 *            the int argument.

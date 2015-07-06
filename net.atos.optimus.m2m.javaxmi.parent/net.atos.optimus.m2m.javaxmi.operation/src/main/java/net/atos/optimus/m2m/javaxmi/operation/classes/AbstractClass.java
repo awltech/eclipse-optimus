@@ -26,8 +26,8 @@ import net.atos.optimus.m2m.javaxmi.operation.element.AbstractDeclaration;
 import org.eclipse.gmt.modisco.java.AbstractTypeDeclaration;
 
 /**
- * Models an abstract class : wrapper of ClassDeclaration and
- * InterfaceDeclaration (AbstractTypeDeclaration) in modisco model
+ * Models an abstract class : wrapper of AbstractTypeDeclaration in modisco
+ * model
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 

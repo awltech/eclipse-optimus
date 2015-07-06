@@ -35,6 +35,13 @@ import org.eclipse.gmt.modisco.java.SingleVariableAccess;
 public class FieldAccessHelper {
 
 	/**
+	 * Private constructor
+	 * 
+	 */
+	private FieldAccessHelper() {
+	}
+
+	/**
 	 * Create an access to a field with proxy state set to false
 	 * 
 	 * @param fieldName

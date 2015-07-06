@@ -26,7 +26,7 @@ import net.atos.optimus.m2m.javaxmi.operation.element.Element;
 import org.eclipse.gmt.modisco.java.Package;
 
 /**
- * Models a package : wrapper of package in modisco model
+ * Models a package : wrapper of Package in modisco model
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 

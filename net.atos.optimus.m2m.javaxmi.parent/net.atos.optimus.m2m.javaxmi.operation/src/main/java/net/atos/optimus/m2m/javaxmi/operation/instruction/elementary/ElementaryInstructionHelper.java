@@ -33,7 +33,7 @@ import org.eclipse.gmt.modisco.java.emf.JavaFactory;
 
 /**
  * The purpose of such class is to help with the creation of elementary
- * instruction
+ * instructions
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
@@ -41,6 +41,13 @@ import org.eclipse.gmt.modisco.java.emf.JavaFactory;
  */
 
 public class ElementaryInstructionHelper {
+
+	/**
+	 * Private constructor
+	 * 
+	 */
+	private ElementaryInstructionHelper() {
+	}
 
 	/**
 	 * Create a null constant instruction
