@@ -21,6 +21,7 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.instruction.complex;
 
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.ReturnStatementBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.ElementaryInstructionHelper;
 
 /**
@@ -32,6 +33,15 @@ import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.ElementaryI
  */
 
 public class ReturnInstructionHelper {
+
+	/**
+	 * Create an empty return instruction
+	 * 
+	 * @return a new empty return instruction.
+	 */
+	public static ComplexInstruction createEmptyReturnInstruction() {
+		return new ComplexInstruction(ReturnStatementBuilder.builder().build());
+	}
 
 	/**
 	 * Create a null constant return instruction

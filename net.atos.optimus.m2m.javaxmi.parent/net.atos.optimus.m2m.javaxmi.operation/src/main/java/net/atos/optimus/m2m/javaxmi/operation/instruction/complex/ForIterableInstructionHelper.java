@@ -130,8 +130,7 @@ public class ForIterableInstructionHelper {
 	 * @return the helper.
 	 */
 	public ForIterableInstructionHelper setIterableFieldInstruction(String fieldName) {
-		this.setIterableInstruction(ElementaryInstructionHelper.createFieldInstruction(fieldName));
-		return this;
+		return this.setIterableInstruction(ElementaryInstructionHelper.createFieldInstruction(fieldName));
 	}
 
 	/**
@@ -144,8 +143,7 @@ public class ForIterableInstructionHelper {
 	 * @return the helper.
 	 */
 	public ForIterableInstructionHelper setIterableVariableInstruction(String variableName) {
-		this.setIterableInstruction(ElementaryInstructionHelper.createVariableInstruction(variableName));
-		return this;
+		return this.setIterableInstruction(ElementaryInstructionHelper.createVariableInstruction(variableName));
 	}
 
 	/**

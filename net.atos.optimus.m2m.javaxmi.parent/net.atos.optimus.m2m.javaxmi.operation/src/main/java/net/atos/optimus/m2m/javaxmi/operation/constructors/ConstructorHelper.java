@@ -161,9 +161,8 @@ public class ConstructorHelper {
 	public ConstructorHelper addParameterAndSetAssociatedField(Field field) {
 		String parameterName = NameGenerator.generateNameWithTypeName(field.getTypeName());
 		this.addParameter(field.getTypeName(), parameterName);
-		this.addInstructions(AssignmentOperationHelper.builder().setOperator(AssignmentKind.ASSIGN)
+		return this.addInstructions(AssignmentOperationHelper.builder().setOperator(AssignmentKind.ASSIGN)
 				.setLeftFieldOperand(field.getName()).setRightVariableOperand(parameterName).build());
-		return this;
 	}
 
 	/**
@@ -179,9 +178,8 @@ public class ConstructorHelper {
 	 */
 	public ConstructorHelper addParameterAndSetAssociatedField(String parameterName, Field field) {
 		this.addParameter(field.getTypeName(), parameterName);
-		this.addInstructions(AssignmentOperationHelper.builder().setOperator(AssignmentKind.ASSIGN)
+		return this.addInstructions(AssignmentOperationHelper.builder().setOperator(AssignmentKind.ASSIGN)
 				.setLeftFieldOperand(field.getName()).setRightVariableOperand(parameterName).build());
-		return this;
 	}
 
 	/**

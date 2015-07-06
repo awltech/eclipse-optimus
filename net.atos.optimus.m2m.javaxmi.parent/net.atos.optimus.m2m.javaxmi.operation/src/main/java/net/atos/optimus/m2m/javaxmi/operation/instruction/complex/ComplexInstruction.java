@@ -22,7 +22,6 @@
 package net.atos.optimus.m2m.javaxmi.operation.instruction.complex;
 
 import net.atos.optimus.m2m.javaxmi.operation.element.Element;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.ReturnStatementBuilder;
 
 import org.eclipse.gmt.modisco.java.Statement;
 
@@ -60,15 +59,6 @@ public class ComplexInstruction extends Element<Statement> implements IComplexIn
 	public ComplexInstruction addComment(String commentText, boolean prefixOfParent) {
 		super.addComment(commentText, prefixOfParent);
 		return this;
-	}
-
-	/**
-	 * Create an empty return instruction
-	 * 
-	 * @return a new empty return instruction.
-	 */
-	public static ComplexInstruction createEmptyReturnInstruction() {
-		return new ComplexInstruction(ReturnStatementBuilder.builder().build());
 	}
 
 }

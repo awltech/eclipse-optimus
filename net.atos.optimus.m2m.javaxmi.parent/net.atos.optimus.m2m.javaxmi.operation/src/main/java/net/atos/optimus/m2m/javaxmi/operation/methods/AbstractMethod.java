@@ -84,8 +84,7 @@ public class AbstractMethod<S extends AbstractMethodDeclaration> extends Abstrac
 	 * @return the current abstract method.
 	 */
 	public AbstractMethod<S> addParameter(String parameterTypeName, String parameterName) {
-		Parameter parameter = ParameterHelper.builder(parameterTypeName).setName(parameterName).build();
-		return this.addParameters(parameter);
+		return this.addParameters(ParameterHelper.builder(parameterTypeName).setName(parameterName).build());
 	}
 
 	/**

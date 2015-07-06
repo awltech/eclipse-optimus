@@ -113,8 +113,7 @@ public class SwitchInstructionHelper {
 	 * @return the helper.
 	 */
 	public SwitchInstructionHelper addCaseNullBlock(boolean withBreak, IComplexInstruction... caseInstructions) {
-		this.addCaseBlock(ElementaryInstructionHelper.createNullInstruction(), withBreak, caseInstructions);
-		return this;
+		return this.addCaseBlock(ElementaryInstructionHelper.createNullInstruction(), withBreak, caseInstructions);
 	}
 
 	/**
@@ -132,8 +131,7 @@ public class SwitchInstructionHelper {
 	 */
 	public SwitchInstructionHelper addCaseBlock(int condition, boolean withBreak,
 			IComplexInstruction... caseInstructions) {
-		this.addCaseBlock(ElementaryInstructionHelper.createInstruction(condition), withBreak, caseInstructions);
-		return this;
+		return this.addCaseBlock(ElementaryInstructionHelper.createInstruction(condition), withBreak, caseInstructions);
 	}
 
 	/**
@@ -151,8 +149,7 @@ public class SwitchInstructionHelper {
 	 */
 	public SwitchInstructionHelper addCaseBlock(char condition, boolean withBreak,
 			IComplexInstruction... caseInstructions) {
-		this.addCaseBlock(ElementaryInstructionHelper.createInstruction(condition), withBreak, caseInstructions);
-		return this;
+		return this.addCaseBlock(ElementaryInstructionHelper.createInstruction(condition), withBreak, caseInstructions);
 	}
 
 	/**
@@ -170,9 +167,8 @@ public class SwitchInstructionHelper {
 	 */
 	public SwitchInstructionHelper addCaseVariableBlock(String variableName, boolean withBreak,
 			IComplexInstruction... caseInstructions) {
-		this.addCaseBlock(ElementaryInstructionHelper.createVariableInstruction(variableName), withBreak,
+		return this.addCaseBlock(ElementaryInstructionHelper.createVariableInstruction(variableName), withBreak,
 				caseInstructions);
-		return this;
 	}
 
 	/**
