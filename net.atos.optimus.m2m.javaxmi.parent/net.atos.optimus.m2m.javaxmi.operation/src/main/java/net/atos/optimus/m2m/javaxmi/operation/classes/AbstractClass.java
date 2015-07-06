@@ -34,7 +34,7 @@ import org.eclipse.gmt.modisco.java.AbstractTypeDeclaration;
  *
  */
 
-public class AbstractClass<S extends AbstractTypeDeclaration> extends AbstractDeclaration<S> {
+public class AbstractClass<C extends AbstractTypeDeclaration> extends AbstractDeclaration<C> {
 
 	/**
 	 * Constructor of abstract class
@@ -42,7 +42,7 @@ public class AbstractClass<S extends AbstractTypeDeclaration> extends AbstractDe
 	 * @param abstractTypeDeclaration
 	 *            the abstract type declaration.
 	 */
-	public AbstractClass(S abstractTypeDeclaration) {
+	public AbstractClass(C abstractTypeDeclaration) {
 		super(abstractTypeDeclaration);
 	}
 
@@ -51,19 +51,19 @@ public class AbstractClass<S extends AbstractTypeDeclaration> extends AbstractDe
 	}
 
 	@Override
-	public AbstractClass<S> addJavadoc(String documentation, boolean addEmptyLine) {
+	public AbstractClass<C> addJavadoc(String documentation, boolean addEmptyLine) {
 		super.addJavadoc(documentation, addEmptyLine);
 		return this;
 	}
 
 	@Override
-	public AbstractClass<S> addComment(String commentText, boolean prefixOfParent) {
+	public AbstractClass<C> addComment(String commentText, boolean prefixOfParent) {
 		super.addComment(commentText, prefixOfParent);
 		return this;
 	}
 
 	@Override
-	public AbstractClass<S> addAnnotation(String packageName, String annotationName) {
+	public AbstractClass<C> addAnnotation(String packageName, String annotationName) {
 		super.addAnnotation(packageName, annotationName);
 		return this;
 	}

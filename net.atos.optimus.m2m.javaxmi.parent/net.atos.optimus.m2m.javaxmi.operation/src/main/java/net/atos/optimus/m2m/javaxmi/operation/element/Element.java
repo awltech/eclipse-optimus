@@ -52,13 +52,13 @@ import org.eclipse.gmt.modisco.java.TagElement;
  *
  */
 
-public class Element<T extends ASTNode> implements EObject {
+public class Element<E extends ASTNode> implements EObject {
 
 	public static final String BEGIN_COMMENT = "//";
 
-	private T astNode;
+	private E astNode;
 
-	public T getDelegate() {
+	public E getDelegate() {
 		return this.astNode;
 	}
 
@@ -68,7 +68,7 @@ public class Element<T extends ASTNode> implements EObject {
 	 * @param astNode
 	 *            the AST node.
 	 */
-	public Element(T astNode) {
+	public Element(E astNode) {
 		this.astNode = astNode;
 	}
 
@@ -97,7 +97,7 @@ public class Element<T extends ASTNode> implements EObject {
 	 *            the javadoc's content
 	 * @return the current element.
 	 */
-	public Element<T> addJavadoc(String documentation, boolean addEmptyLine) {
+	public Element<E> addJavadoc(String documentation, boolean addEmptyLine) {
 		Javadoc javadoc = JavadocBuilder.builder().setPrefixOfParent(true).build();
 		EList<TagElement> tags = javadoc.getTags();
 
@@ -132,7 +132,7 @@ public class Element<T extends ASTNode> implements EObject {
 	 *            the prefix of parent state of the comment.
 	 * @return the current element.
 	 */
-	public Element<T> addComment(String commentText, boolean prefixOfParent) {
+	public Element<E> addComment(String commentText, boolean prefixOfParent) {
 		if (!commentText.startsWith(Element.BEGIN_COMMENT)) {
 			commentText = Element.BEGIN_COMMENT + commentText;
 		}

@@ -39,7 +39,7 @@ import org.eclipse.gmt.modisco.java.TypeAccess;
  *
  */
 
-public class AbstractDeclaration<S extends BodyDeclaration> extends Element<S> {
+public class AbstractDeclaration<D extends BodyDeclaration> extends Element<D> {
 
 	/**
 	 * Constructor of abstract declaration
@@ -47,18 +47,18 @@ public class AbstractDeclaration<S extends BodyDeclaration> extends Element<S> {
 	 * @param bodyDeclaration
 	 *            the body declaration.
 	 */
-	public AbstractDeclaration(S bodyDeclaration) {
+	public AbstractDeclaration(D bodyDeclaration) {
 		super(bodyDeclaration);
 	}
 
 	@Override
-	public AbstractDeclaration<S> addJavadoc(String documentation, boolean addEmptyLine) {
+	public AbstractDeclaration<D> addJavadoc(String documentation, boolean addEmptyLine) {
 		super.addJavadoc(documentation, addEmptyLine);
 		return this;
 	}
 
 	@Override
-	public AbstractDeclaration<S> addComment(String commentText, boolean prefixOfParent) {
+	public AbstractDeclaration<D> addComment(String commentText, boolean prefixOfParent) {
 		super.addComment(commentText, prefixOfParent);
 		return this;
 	}
@@ -72,7 +72,7 @@ public class AbstractDeclaration<S extends BodyDeclaration> extends Element<S> {
 	 *            the annotation name.
 	 * @return the current abstract declaration.
 	 */
-	public AbstractDeclaration<S> addAnnotation(String packageName, String annotationName) {
+	public AbstractDeclaration<D> addAnnotation(String packageName, String annotationName) {
 		this.createAnnotation(packageName, annotationName);
 		return this;
 	}

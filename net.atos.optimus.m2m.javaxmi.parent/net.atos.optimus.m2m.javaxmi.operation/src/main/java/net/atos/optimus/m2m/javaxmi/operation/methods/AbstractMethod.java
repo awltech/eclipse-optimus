@@ -38,7 +38,7 @@ import org.eclipse.gmt.modisco.java.SingleVariableDeclaration;
  *
  */
 
-public class AbstractMethod<S extends AbstractMethodDeclaration> extends AbstractDeclaration<S> {
+public class AbstractMethod<M extends AbstractMethodDeclaration> extends AbstractDeclaration<M> {
 
 	/**
 	 * Constructor of abstract method
@@ -46,7 +46,7 @@ public class AbstractMethod<S extends AbstractMethodDeclaration> extends Abstrac
 	 * @param abstractMethodDeclaration
 	 *            the abstract method declaration.
 	 */
-	public AbstractMethod(S abstractMethodDeclaration) {
+	public AbstractMethod(M abstractMethodDeclaration) {
 		super(abstractMethodDeclaration);
 	}
 
@@ -55,19 +55,19 @@ public class AbstractMethod<S extends AbstractMethodDeclaration> extends Abstrac
 	}
 
 	@Override
-	public AbstractMethod<S> addJavadoc(String documentation, boolean addEmptyLine) {
+	public AbstractMethod<M> addJavadoc(String documentation, boolean addEmptyLine) {
 		super.addJavadoc(documentation, addEmptyLine);
 		return this;
 	}
 
 	@Override
-	public AbstractMethod<S> addComment(String commentText, boolean prefixOfParent) {
+	public AbstractMethod<M> addComment(String commentText, boolean prefixOfParent) {
 		super.addComment(commentText, prefixOfParent);
 		return this;
 	}
 
 	@Override
-	public AbstractMethod<S> addAnnotation(String packageName, String annotationName) {
+	public AbstractMethod<M> addAnnotation(String packageName, String annotationName) {
 		super.addAnnotation(packageName, annotationName);
 		return this;
 	}
@@ -83,7 +83,7 @@ public class AbstractMethod<S extends AbstractMethodDeclaration> extends Abstrac
 	 *            method.
 	 * @return the current abstract method.
 	 */
-	public AbstractMethod<S> addParameter(String parameterTypeName, String parameterName) {
+	public AbstractMethod<M> addParameter(String parameterTypeName, String parameterName) {
 		return this.addParameters(ParameterHelper.builder(parameterTypeName).setName(parameterName).build());
 	}
 
@@ -96,7 +96,7 @@ public class AbstractMethod<S extends AbstractMethodDeclaration> extends Abstrac
 	 *            abstract method.
 	 * @return the current abstract method.
 	 */
-	public AbstractMethod<S> addParameters(String... parameterTypeNames) {
+	public AbstractMethod<M> addParameters(String... parameterTypeNames) {
 		for (String parameterTypeName : parameterTypeNames) {
 			Parameter parameter = ParameterHelper.builder(parameterTypeName).build();
 			this.addParameters(parameter);
@@ -111,7 +111,7 @@ public class AbstractMethod<S extends AbstractMethodDeclaration> extends Abstrac
 	 *            the parameters list to add to the current abstract method.
 	 * @return the current abstract method.
 	 */
-	public AbstractMethod<S> addParameters(Parameter... parameters) {
+	public AbstractMethod<M> addParameters(Parameter... parameters) {
 		AbstractMethodDeclaration abstractMethodDeclaration = this.getDelegate();
 		EList<SingleVariableDeclaration> parametersList = abstractMethodDeclaration.getParameters();
 		for (Parameter parameter : parameters) {
@@ -128,7 +128,7 @@ public class AbstractMethod<S extends AbstractMethodDeclaration> extends Abstrac
 	 * 
 	 * @return the current abstract method.
 	 */
-	public AbstractMethod<S> removeParameters() {
+	public AbstractMethod<M> removeParameters() {
 		this.getDelegate().getParameters().clear();
 		return this;
 	}
