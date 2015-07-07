@@ -95,7 +95,14 @@ public class NameGenerator {
 			if ((index = typeName.lastIndexOf(NameGenerator.PACKAGE_SEPARATOR)) != -1) {
 				typeName = typeName.substring(index + 1, typeName.length());
 			}
-			s.append(typeName.trim().substring(0, 1).toLowerCase());
+			typeName = typeName.trim();
+			if(Character.isLowerCase(typeName.charAt(0))){
+				s.append("my");
+				s.append(typeName.trim().substring(0, 1).toUpperCase());
+			}
+			else{
+				s.append(typeName.trim().substring(0, 1).toLowerCase());
+			}
 			if (typeName.length() > 1) {
 				s.append(typeName.substring(1));
 			}

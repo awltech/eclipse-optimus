@@ -151,18 +151,21 @@ public class ConstructorHelper {
 	}
 
 	/**
-	 * Add a parameter with a generated name in the constructor and set the
-	 * specified field in the constructor body
+	 * Add a parameter list with generated names in the constructor and set the
+	 * fields in the specified list in the constructor body
 	 * 
-	 * @param field
-	 *            the field to set.
+	 * @param fields
+	 *            the fields list to set.
 	 * @return the helper.
 	 */
-	public ConstructorHelper addParameterAndSetAssociatedField(Field field) {
-		String parameterName = NameGenerator.generateNameWithTypeName(field.getTypeName());
-		this.addParameter(field.getTypeName(), parameterName);
-		return this.addInstructions(AssignmentOperationHelper.builder().setOperator(AssignmentKind.ASSIGN)
-				.setLeftFieldOperand(field.getName()).setRightVariableOperand(parameterName).build());
+	public ConstructorHelper addParameterAndSetAssociatedFields(Field... fields) {
+		for(Field field : fields){
+			String parameterName = NameGenerator.generateNameWithTypeName(field.getTypeName());
+			this.addParameter(field.getTypeName(), parameterName);
+			this.addInstructions(AssignmentOperationHelper.builder().setOperator(AssignmentKind.ASSIGN)
+					.setLeftFieldOperand(field.getName()).setRightVariableOperand(parameterName).build());
+		}
+		return this;
 	}
 
 	/**
@@ -218,7 +221,7 @@ public class ConstructorHelper {
 	public static Constructor createConstructor(JavaClass javaClass, VisibilityKind visibility, Field... fields) {
 		ConstructorHelper helper = ConstructorHelper.builder(javaClass).setVisibility(visibility);
 		for (Field field : fields) {
-			helper.addParameterAndSetAssociatedField(field);
+			helper.addParameterAndSetAssociatedFields(field);
 		}
 		return helper.build();
 	}
