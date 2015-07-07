@@ -109,6 +109,18 @@ public class InterfaceHelper {
 	}
 
 	/**
+	 * Set the inheritance of the interface under construction
+	 * 
+	 * @param inheritance
+	 *            the inheritance of the interface under construction.
+	 * @return the helper.
+	 */
+	public InterfaceHelper setInheritance(InheritanceKind inheritance) {
+		this.buildInterface.getModifier().setInheritance(inheritance);
+		return this;
+	}
+
+	/**
 	 * Set the proxy state of the interface under construction
 	 * 
 	 * @param proxyState
@@ -199,10 +211,9 @@ public class InterfaceHelper {
 	 * @return the created interface accordingly to the specified parameters.
 	 */
 	public static Interface createInterface(JavaPackage javaPackage, String interfaceName, VisibilityKind visibility,
-			boolean isAbstract, InheritanceKind inheritance, boolean proxyState, String superClassName,
-			String... interfacesNames) {
+			boolean isAbstract, InheritanceKind inheritance, boolean proxyState, String... interfacesNames) {
 		return InterfaceHelper.builder(javaPackage, interfaceName).setVisibility(visibility).setAbstract(isAbstract)
-				.setProxy(proxyState).addInterfaces(interfacesNames).build();
+				.setProxy(proxyState).setInheritance(inheritance).addInterfaces(interfacesNames).build();
 	}
 
 }
