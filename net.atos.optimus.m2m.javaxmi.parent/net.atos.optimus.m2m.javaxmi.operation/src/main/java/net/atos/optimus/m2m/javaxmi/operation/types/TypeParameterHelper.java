@@ -85,13 +85,21 @@ public class TypeParameterHelper {
 	 */
 	public static void addReturnTypeToMethodDeclaration(MethodDeclaration methodDeclaration, String returnTypeName) {
 		returnTypeName = returnTypeName.trim();
-		if (returnTypeName.contains(TypeParameterHelper.PARAMETER_ENTRY)
-				&& returnTypeName.indexOf(TypeParameterHelper.PARAMETER_ENTRY) == 0) {
-			int index = returnTypeName.indexOf(TypeParameterHelper.PARAMETER_EXIT);
-			methodDeclaration.setReturnType(TypeAccessHelper.createTypeAccess(returnTypeName.substring(index + 1,
+		if (returnTypeName.startsWith(TypeParameterHelper.PARAMETER_ENTRY)) {
+			int nbParamEntry = 1;
+			int index = 1;
+			while (nbParamEntry != 0) {
+				if (returnTypeName.charAt(index) == '<') {
+					nbParamEntry++;
+				} else if (returnTypeName.charAt(index) == '>') {
+					nbParamEntry--;
+				}
+				index++;
+			}
+			methodDeclaration.setReturnType(TypeAccessHelper.createTypeAccess(returnTypeName.substring(index,
 					returnTypeName.length()).trim()));
-			String[] parametersTypes = returnTypeName.substring(1, index)
-					.split(TypeParameterHelper.PARAMETER_SEPARATOR);
+			String[] parametersTypes = returnTypeName.substring(1, index - 1).split(
+					TypeParameterHelper.PARAMETER_SEPARATOR);
 			EList<TypeParameter> typeParametersList = methodDeclaration.getTypeParameters();
 			for (String parameterTypeName : parametersTypes) {
 				typeParametersList.add(TypeParameterHelper.createTypeParameter(parameterTypeName));
