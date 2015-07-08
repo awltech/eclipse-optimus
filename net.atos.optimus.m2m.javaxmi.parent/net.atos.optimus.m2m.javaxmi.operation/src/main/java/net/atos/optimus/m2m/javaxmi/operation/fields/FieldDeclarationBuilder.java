@@ -21,11 +21,11 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.fields;
 
+import org.eclipse.gmt.modisco.java.AbstractTypeDeclaration;
 import org.eclipse.gmt.modisco.java.CompilationUnit;
 import org.eclipse.gmt.modisco.java.FieldDeclaration;
 import org.eclipse.gmt.modisco.java.Modifier;
 import org.eclipse.gmt.modisco.java.TypeAccess;
-import org.eclipse.gmt.modisco.java.TypeDeclaration;
 import org.eclipse.gmt.modisco.java.VariableDeclarationFragment;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
 
@@ -100,7 +100,7 @@ public class FieldDeclarationBuilder {
 	 *            the abstract type of the field declaration under construction.
 	 * @return the builder.
 	 */
-	public FieldDeclarationBuilder setAbstractTypeDeclaration(TypeDeclaration typeDeclaration) {
+	public FieldDeclarationBuilder setAbstractTypeDeclaration(AbstractTypeDeclaration typeDeclaration) {
 		this.buildFieldDeclaration.setAbstractTypeDeclaration(typeDeclaration);
 		return this;
 	}

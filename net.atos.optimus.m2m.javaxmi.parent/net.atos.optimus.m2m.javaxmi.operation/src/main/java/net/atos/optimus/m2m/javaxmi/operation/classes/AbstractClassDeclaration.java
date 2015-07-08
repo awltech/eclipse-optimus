@@ -21,24 +21,28 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.classes;
 
+import net.atos.optimus.m2m.javaxmi.operation.element.AbstractDeclaration;
+
 import org.eclipse.gmt.modisco.java.AbstractTypeDeclaration;
 
 /**
- * Models an abstract class, excluded Interface
+ * Models an abstract class declaration : wrapper of AbstractTypeDeclaration in modisco
+ * model
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
  *
  */
-public class AbstractClass<C extends AbstractTypeDeclaration> extends AbstractClassDeclaration<C> {
+
+public class AbstractClassDeclaration<C extends AbstractTypeDeclaration> extends AbstractDeclaration<C> {
 
 	/**
-	 * Constructor of abstract class
+	 * Constructor of abstract class declaration
 	 * 
 	 * @param abstractTypeDeclaration
 	 *            the abstract type declaration.
 	 */
-	public AbstractClass(C abstractTypeDeclaration) {
+	public AbstractClassDeclaration(C abstractTypeDeclaration) {
 		super(abstractTypeDeclaration);
 	}
 
@@ -47,19 +51,19 @@ public class AbstractClass<C extends AbstractTypeDeclaration> extends AbstractCl
 	}
 
 	@Override
-	public AbstractClass<C> addJavadoc(String documentation, boolean addEmptyLine) {
+	public AbstractClassDeclaration<C> addJavadoc(String documentation, boolean addEmptyLine) {
 		super.addJavadoc(documentation, addEmptyLine);
 		return this;
 	}
 
 	@Override
-	public AbstractClass<C> addComment(String commentText, boolean prefixOfParent) {
+	public AbstractClassDeclaration<C> addComment(String commentText, boolean prefixOfParent) {
 		super.addComment(commentText, prefixOfParent);
 		return this;
 	}
 
 	@Override
-	public AbstractClass<C> addAnnotation(String packageName, String annotationName) {
+	public AbstractClassDeclaration<C> addAnnotation(String packageName, String annotationName) {
 		super.addAnnotation(packageName, annotationName);
 		return this;
 	}

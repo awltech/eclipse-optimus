@@ -21,11 +21,12 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.methods;
 
-import net.atos.optimus.m2m.javaxmi.operation.classes.JavaClass;
+import net.atos.optimus.m2m.javaxmi.operation.classes.AbstractClass;
 import net.atos.optimus.m2m.javaxmi.operation.fields.Field;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.complex.ReturnInstructionHelper;
 import net.atos.optimus.m2m.javaxmi.operation.util.NameGenerator;
 
+import org.eclipse.gmt.modisco.java.AbstractTypeDeclaration;
 import org.eclipse.gmt.modisco.java.InheritanceKind;
 import org.eclipse.gmt.modisco.java.VisibilityKind;
 
@@ -49,27 +50,29 @@ public class GetterHelper {
 	 * Launch the build of a new getter method (public, not final, with
 	 * generated name)
 	 * 
-	 * @param javaClass
-	 *            the class where is the getter method under construction.
+	 * @param abstractClass
+	 *            the abstract class where is the getter method under
+	 *            construction.
 	 * @param field
 	 *            the field associated to the getter method under construction.
 	 * @return a new getter method helper.
 	 */
-	public static GetterHelper builder(JavaClass javaClass, Field field) {
-		return new GetterHelper(javaClass, field);
+	public static GetterHelper builder(AbstractClass<? extends AbstractTypeDeclaration> abstractClass, Field field) {
+		return new GetterHelper(abstractClass, field);
 	}
 
 	/**
 	 * Private constructor : a new getter method (public, not final, with
 	 * generated name)
 	 * 
-	 * @param javaClass
-	 *            the class where is the getter method under construction.
+	 * @param abstractClass
+	 *            the abstract class where is the getter method under
+	 *            construction.
 	 * @param field
 	 *            the field associated to the getter method under construction.
 	 */
-	private GetterHelper(JavaClass javaClass, Field field) {
-		this.buildGetterMethod = MethodHelper.builder(javaClass, NameGenerator.generateGetterName(field.getName()))
+	private GetterHelper(AbstractClass<? extends AbstractTypeDeclaration> abstractClass, Field field) {
+		this.buildGetterMethod = MethodHelper.builder(abstractClass, NameGenerator.generateGetterName(field.getName()))
 				.setVisibility(VisibilityKind.PUBLIC).setInheritance(InheritanceKind.NONE)
 				.setReturnType(field.getTypeName())
 				.addInstructions(ReturnInstructionHelper.createFieldReturnInstruction(field.getName())).build();
@@ -124,8 +127,8 @@ public class GetterHelper {
 	/**
 	 * Create a getter method
 	 * 
-	 * @param javaClass
-	 *            the class where is the created getter method.
+	 * @param abstractClass
+	 *            the abstract class where is the created getter method.
 	 * @param visibility
 	 *            the visibility of the created getter method.
 	 * @param isFinal
@@ -137,10 +140,10 @@ public class GetterHelper {
 	 * @return the created getter method accordingly to the specified
 	 *         parameters.
 	 */
-	public static Method createGetter(JavaClass javaClass, VisibilityKind visibility, boolean isFinal, Field field,
-			String getterName) {
-		return GetterHelper.builder(javaClass, field).setVisibility(visibility).setFinal(isFinal).setName(getterName)
-				.build();
+	public static Method createGetter(AbstractClass<? extends AbstractTypeDeclaration> abstractClass,
+			VisibilityKind visibility, boolean isFinal, Field field, String getterName) {
+		return GetterHelper.builder(abstractClass, field).setVisibility(visibility).setFinal(isFinal)
+				.setName(getterName).build();
 	}
 
 }

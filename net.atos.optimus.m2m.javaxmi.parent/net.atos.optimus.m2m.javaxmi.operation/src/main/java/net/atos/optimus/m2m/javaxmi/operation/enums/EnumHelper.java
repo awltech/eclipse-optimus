@@ -123,9 +123,11 @@ public class EnumHelper {
 	public EnumHelper addEnumConstant(String constantName, IElementaryInstruction... arguments) {
 		EnumConstantDeclaration enumConstantDeclaration = EnumConstantDeclarationBuilder.builder()
 				.setName(constantName).build();
-		EList<Expression> argumentsList = enumConstantDeclaration.getArguments();
-		for (IElementaryInstruction argument : arguments) {
-			argumentsList.add(argument.getExpression());
+		if(arguments.length != 0){
+			EList<Expression> argumentsList = enumConstantDeclaration.getArguments();
+			for (IElementaryInstruction argument : arguments) {
+				argumentsList.add(argument.getExpression());
+			}
 		}
 		this.buildEnum.getEnumConstants().add(enumConstantDeclaration);
 		return this;

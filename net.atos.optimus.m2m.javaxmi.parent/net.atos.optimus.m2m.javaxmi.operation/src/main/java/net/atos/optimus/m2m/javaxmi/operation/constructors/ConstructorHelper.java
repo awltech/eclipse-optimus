@@ -22,7 +22,7 @@
 package net.atos.optimus.m2m.javaxmi.operation.constructors;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
-import net.atos.optimus.m2m.javaxmi.operation.classes.JavaClass;
+import net.atos.optimus.m2m.javaxmi.operation.classes.AbstractClass;
 import net.atos.optimus.m2m.javaxmi.operation.fields.Field;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.AssignmentOperationHelper;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.complex.BlockBuilder;
@@ -31,9 +31,9 @@ import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.util.NameGenerator;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.gmt.modisco.java.AbstractTypeDeclaration;
 import org.eclipse.gmt.modisco.java.AssignmentKind;
 import org.eclipse.gmt.modisco.java.Block;
-import org.eclipse.gmt.modisco.java.ClassDeclaration;
 import org.eclipse.gmt.modisco.java.ConstructorDeclaration;
 import org.eclipse.gmt.modisco.java.Modifier;
 import org.eclipse.gmt.modisco.java.TypeAccess;
@@ -56,28 +56,30 @@ public class ConstructorHelper {
 	 * Launch the build of a new constructor (public, with no body and no
 	 * parameter by default)
 	 * 
-	 * @param javaClass
-	 *            the class associated to the constructor under construction.
+	 * @param abstractClass
+	 *            the abstract class associated to the constructor under
+	 *            construction.
 	 * 
 	 * @return a new constructor helper.
 	 */
-	public static ConstructorHelper builder(JavaClass javaClass) {
-		return new ConstructorHelper(javaClass);
+	public static ConstructorHelper builder(AbstractClass<? extends AbstractTypeDeclaration> abstractClass) {
+		return new ConstructorHelper(abstractClass);
 	}
 
 	/**
 	 * Private constructor : a new constructor (public, with no body and no
 	 * parameter by default)
 	 * 
-	 * @param javaClass
-	 *            the class associated to the constructor under construction.
+	 * @param abstractClass
+	 *            the abstract class associated to the constructor under
+	 *            construction.
 	 */
-	private ConstructorHelper(JavaClass javaClass) {
-		ClassDeclaration internalClass = javaClass.getDelegate();
+	private ConstructorHelper(AbstractClass<? extends AbstractTypeDeclaration> abstractClass) {
+		AbstractTypeDeclaration internalClass = abstractClass.getDelegate();
 		Modifier modifier = ModifierBuilder.builder().setVisibility(VisibilityKind.PUBLIC)
 				.setCompilationUnit(internalClass.getOriginalCompilationUnit()).build();
 		this.buildConstructor = ConstructorDeclarationBuilder.builder().setModifier(modifier)
-				.setName(javaClass.getName()).setAbstractTypeDeclaration(internalClass)
+				.setName(abstractClass.getName()).setAbstractTypeDeclaration(internalClass)
 				.setCompilationUnit(internalClass.getOriginalCompilationUnit()).build();
 	}
 
@@ -159,7 +161,7 @@ public class ConstructorHelper {
 	 * @return the helper.
 	 */
 	public ConstructorHelper addParameterAndSetAssociatedFields(Field... fields) {
-		for(Field field : fields){
+		for (Field field : fields) {
 			String parameterName = NameGenerator.generateNameWithTypeName(field.getTypeName());
 			this.addParameter(field.getTypeName(), parameterName);
 			this.addInstructions(AssignmentOperationHelper.builder().setOperator(AssignmentKind.ASSIGN)
@@ -208,8 +210,8 @@ public class ConstructorHelper {
 	/**
 	 * Create a constructor with automatic set fields
 	 * 
-	 * @param javaClass
-	 *            the class where is the created constructor.
+	 * @param abstractClass
+	 *            the abstract class where is the created constructor.
 	 * @param visibility
 	 *            the visibility the created constructor.
 	 * @param fields
@@ -218,8 +220,9 @@ public class ConstructorHelper {
 	 * @return the created constructor with automatic set fields accordingly to
 	 *         the specified parameters.
 	 */
-	public static Constructor createConstructor(JavaClass javaClass, VisibilityKind visibility, Field... fields) {
-		ConstructorHelper helper = ConstructorHelper.builder(javaClass).setVisibility(visibility);
+	public static Constructor createConstructor(AbstractClass<? extends AbstractTypeDeclaration> abstractClass,
+			VisibilityKind visibility, Field... fields) {
+		ConstructorHelper helper = ConstructorHelper.builder(abstractClass).setVisibility(visibility);
 		for (Field field : fields) {
 			helper.addParameterAndSetAssociatedFields(field);
 		}

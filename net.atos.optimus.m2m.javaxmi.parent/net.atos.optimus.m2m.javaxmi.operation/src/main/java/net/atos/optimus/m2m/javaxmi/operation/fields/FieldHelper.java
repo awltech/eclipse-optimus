@@ -22,12 +22,12 @@
 package net.atos.optimus.m2m.javaxmi.operation.fields;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
-import net.atos.optimus.m2m.javaxmi.operation.classes.JavaClass;
+import net.atos.optimus.m2m.javaxmi.operation.classes.AbstractClass;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.util.NameGenerator;
 import net.atos.optimus.m2m.javaxmi.operation.variables.VariableDeclarationFragmentBuilder;
 
-import org.eclipse.gmt.modisco.java.ClassDeclaration;
+import org.eclipse.gmt.modisco.java.AbstractTypeDeclaration;
 import org.eclipse.gmt.modisco.java.FieldDeclaration;
 import org.eclipse.gmt.modisco.java.InheritanceKind;
 import org.eclipse.gmt.modisco.java.Modifier;
@@ -51,28 +51,29 @@ public class FieldHelper {
 	 * Launch the build of a new field (private, not static, nor abstract, with
 	 * generated name)
 	 * 
-	 * @param javaClass
-	 *            the class where is the field under construction.
+	 * @param abstractClass
+	 *            the abstract class where is the field under construction.
 	 * @param fieldTypeName
 	 *            the type name of the field under construction.
 	 * @return a new helper.
 	 */
-	public static FieldHelper builder(JavaClass javaClass, String fieldTypeName) {
-		return new FieldHelper(javaClass, fieldTypeName);
+	public static FieldHelper builder(AbstractClass<? extends AbstractTypeDeclaration> abstractClass,
+			String fieldTypeName) {
+		return new FieldHelper(abstractClass, fieldTypeName);
 	}
 
 	/**
 	 * Private constructor : a new field (private, not static, nor abstract,
 	 * with generated name)
 	 * 
-	 * @param javaClass
-	 *            the class where is the field under construction.
+	 * @param abstractClass
+	 *            the abstract class where is the field under construction.
 	 * @param fieldTypeName
 	 *            the type name of the field under construction.
 	 * @return a new helper.
 	 */
-	private FieldHelper(JavaClass javaClass, String fieldTypeName) {
-		ClassDeclaration internalClass = javaClass.getDelegate();
+	private FieldHelper(AbstractClass<? extends AbstractTypeDeclaration> abstractClass, String fieldTypeName) {
+		AbstractTypeDeclaration internalClass = abstractClass.getDelegate();
 		String fieldName = NameGenerator.generateNameWithTypeName(fieldTypeName);
 		Modifier modifier = ModifierBuilder.builder().setVisibility(VisibilityKind.PRIVATE).setStatic(false)
 				.setInheritance(InheritanceKind.NONE).setCompilationUnit(internalClass.getOriginalCompilationUnit())
@@ -145,8 +146,8 @@ public class FieldHelper {
 	/**
 	 * Create a field
 	 * 
-	 * @param javaClass
-	 *            the class where is the created field.
+	 * @param abstractClass
+	 *            the abstract class where is the created field.
 	 * @param visibility
 	 *            the visibility of the created field.
 	 * @param isStatic
@@ -159,9 +160,9 @@ public class FieldHelper {
 	 *            the name of the created field.
 	 * @return the created field accordingly to the specified parameters.
 	 */
-	public static Field createField(JavaClass javaClass, VisibilityKind visibility, boolean isStatic, boolean isFinal,
-			String fieldTypeName, String fieldName) {
-		return FieldHelper.builder(javaClass, fieldTypeName).setVisibility(visibility).setStatic(isStatic)
+	public static Field createField(AbstractClass<? extends AbstractTypeDeclaration> abstractClass,
+			VisibilityKind visibility, boolean isStatic, boolean isFinal, String fieldTypeName, String fieldName) {
+		return FieldHelper.builder(abstractClass, fieldTypeName).setVisibility(visibility).setStatic(isStatic)
 				.setFinal(isFinal).setName(fieldName).build();
 	}
 

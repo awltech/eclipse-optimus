@@ -22,7 +22,7 @@
 package net.atos.optimus.m2m.javaxmi.operation.methods;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
-import net.atos.optimus.m2m.javaxmi.operation.classes.AbstractClass;
+import net.atos.optimus.m2m.javaxmi.operation.classes.AbstractClassDeclaration;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.complex.BlockBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.complex.IComplexInstruction;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
@@ -57,30 +57,30 @@ public class MethodHelper {
 	 * Launch the build of a new method (void, public, not static, inheritance
 	 * set to none with no parameter, no exceptions and no body by default)
 	 * 
-	 * @param abstractClass
-	 *            the class or the interface where is the method under
-	 *            construction.
+	 * @param abstractClassDeclaration
+	 *            the class, the interface or the enumeration where is the
+	 *            method under construction.
 	 * @param methodName
 	 *            the name of the created method under construction.
 	 * 
 	 * @return a new method helper.
 	 */
-	public static MethodHelper builder(AbstractClass<?> abstractClass, String methodName) {
-		return new MethodHelper(abstractClass, methodName);
+	public static MethodHelper builder(AbstractClassDeclaration<?> abstractClassDeclaration, String methodName) {
+		return new MethodHelper(abstractClassDeclaration, methodName);
 	}
 
 	/**
 	 * Private constructor : a new method (void, public, not static, inheritance
 	 * set to none with no parameter, no exceptions and no body by default)
 	 * 
-	 * @param abstractClass
-	 *            the class or the interface where is the method under
-	 *            construction.
+	 * @param abstractClassDeclaration
+	 *            the class, the interface or the enumeration where is the
+	 *            method under construction.
 	 * @param methodName
 	 *            the name of the created method under construction.
 	 */
-	private MethodHelper(AbstractClass<?> abstractClass, String methodName) {
-		AbstractTypeDeclaration abstractType = abstractClass.getDelegate();
+	private MethodHelper(AbstractClassDeclaration<?> abstractClassDeclaration, String methodName) {
+		AbstractTypeDeclaration abstractType = abstractClassDeclaration.getDelegate();
 		Modifier modifier = ModifierBuilder.builder().setVisibility(VisibilityKind.PUBLIC).setStatic(false)
 				.setInheritance(InheritanceKind.NONE).setCompilationUnit(abstractType.getOriginalCompilationUnit())
 				.build();
@@ -214,8 +214,9 @@ public class MethodHelper {
 	/**
 	 * Create a method with exceptions but no parameter and no body
 	 * 
-	 * @param abstractClass
-	 *            the class or the interface where is the created method.
+	 * @param abstractClassDeclaration
+	 *            the class or the interface or the enumeration where is the
+	 *            created method.
 	 * @param visibility
 	 *            the visibility the created method.
 	 * @param isStatic
@@ -231,9 +232,10 @@ public class MethodHelper {
 	 * @return the created method with instructions and no parameter accordingly
 	 *         to the specified parameters.
 	 */
-	public static Method createMethod(AbstractClass<?> abstractClass, VisibilityKind visibility, boolean isStatic,
-			InheritanceKind inheritance, String returnTypeName, String methodName, String... exceptionsNames) {
-		return MethodHelper.builder(abstractClass, methodName).setVisibility(visibility).setStatic(isStatic)
+	public static Method createMethod(AbstractClassDeclaration<?> abstractClassDeclaration, VisibilityKind visibility,
+			boolean isStatic, InheritanceKind inheritance, String returnTypeName, String methodName,
+			String... exceptionsNames) {
+		return MethodHelper.builder(abstractClassDeclaration, methodName).setVisibility(visibility).setStatic(isStatic)
 				.setInheritance(inheritance).setReturnType(returnTypeName).addExceptions(exceptionsNames).build();
 	}
 

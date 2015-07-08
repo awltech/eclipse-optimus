@@ -21,11 +21,12 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.methods;
 
-import net.atos.optimus.m2m.javaxmi.operation.classes.JavaClass;
+import net.atos.optimus.m2m.javaxmi.operation.classes.AbstractClass;
 import net.atos.optimus.m2m.javaxmi.operation.fields.Field;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.AssignmentOperationHelper;
 import net.atos.optimus.m2m.javaxmi.operation.util.NameGenerator;
 
+import org.eclipse.gmt.modisco.java.AbstractTypeDeclaration;
 import org.eclipse.gmt.modisco.java.AssignmentKind;
 import org.eclipse.gmt.modisco.java.InheritanceKind;
 import org.eclipse.gmt.modisco.java.VisibilityKind;
@@ -53,29 +54,31 @@ public class SetterHelper {
 	 * Launch the build of a new setter method (public, not final, with
 	 * generated name and generated parameter name)
 	 * 
-	 * @param javaClass
-	 *            the class where is the setter method under construction.
+	 * @param abstractClass
+	 *            the abstract class where is the setter method under
+	 *            construction.
 	 * @param field
 	 *            the field associated to the setter method under construction.
 	 * @return a new setter method helper.
 	 */
-	public static SetterHelper builder(JavaClass javaClass, Field field) {
-		return new SetterHelper(javaClass, field);
+	public static SetterHelper builder(AbstractClass<? extends AbstractTypeDeclaration> abstractClass, Field field) {
+		return new SetterHelper(abstractClass, field);
 	}
 
 	/**
 	 * Private constructor : a new setter method (public, not final, with
 	 * generated name and generated parameter name)
 	 * 
-	 * @param javaClass
-	 *            the class where is the setter method under construction.
+	 * @param abstractClass
+	 *            the abstract class where is the setter method under
+	 *            construction.
 	 * @param field
 	 *            the field associated to the setter method under construction.
 	 */
-	private SetterHelper(JavaClass javaClass, Field field) {
+	private SetterHelper(AbstractClass<? extends AbstractTypeDeclaration> abstractClass, Field field) {
 		String parameterName = NameGenerator.generateNameWithTypeName(field.getTypeName());
 		this.buildSetterMethod = MethodHelper
-				.builder(javaClass, NameGenerator.generateSetterName(field.getName()))
+				.builder(abstractClass, NameGenerator.generateSetterName(field.getName()))
 				.setVisibility(VisibilityKind.PUBLIC)
 				.setInheritance(InheritanceKind.NONE)
 				.addParameter(field.getTypeName(), parameterName)
@@ -150,8 +153,8 @@ public class SetterHelper {
 	/**
 	 * Create a setter method
 	 * 
-	 * @param javaClass
-	 *            the class where is the created setter method.
+	 * @param abstractClass
+	 *            the abstract class where is the created setter method.
 	 * @param visibility
 	 *            the visibility of the created setter method.
 	 * @param isFinal
@@ -165,10 +168,10 @@ public class SetterHelper {
 	 * @return the created setter method accordingly to the specified
 	 *         parameters.
 	 */
-	public static Method createSetter(JavaClass javaClass, VisibilityKind visibility, boolean isFinal, Field field,
-			String setterName, String parameterName) {
-		return SetterHelper.builder(javaClass, field).setVisibility(visibility).setFinal(isFinal).setName(setterName)
-				.setParameterName(parameterName).build();
+	public static Method createSetter(AbstractClass<? extends AbstractTypeDeclaration> abstractClass,
+			VisibilityKind visibility, boolean isFinal, Field field, String setterName, String parameterName) {
+		return SetterHelper.builder(abstractClass, field).setVisibility(visibility).setFinal(isFinal)
+				.setName(setterName).setParameterName(parameterName).build();
 	}
 
 }

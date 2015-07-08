@@ -22,13 +22,13 @@
 package net.atos.optimus.m2m.javaxmi.operation.constructors;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.gmt.modisco.java.AbstractTypeDeclaration;
 import org.eclipse.gmt.modisco.java.Block;
 import org.eclipse.gmt.modisco.java.CompilationUnit;
 import org.eclipse.gmt.modisco.java.ConstructorDeclaration;
 import org.eclipse.gmt.modisco.java.Modifier;
 import org.eclipse.gmt.modisco.java.SingleVariableDeclaration;
 import org.eclipse.gmt.modisco.java.TypeAccess;
-import org.eclipse.gmt.modisco.java.TypeDeclaration;
 import org.eclipse.gmt.modisco.java.emf.JavaFactory;
 
 /**
@@ -117,7 +117,7 @@ public class ConstructorDeclarationBuilder {
 	 *            construction.
 	 * @return the builder.
 	 */
-	public ConstructorDeclarationBuilder setAbstractTypeDeclaration(TypeDeclaration typeDeclaration) {
+	public ConstructorDeclarationBuilder setAbstractTypeDeclaration(AbstractTypeDeclaration typeDeclaration) {
 		this.buildConstructorDeclaration.setAbstractTypeDeclaration(typeDeclaration);
 		return this;
 	}

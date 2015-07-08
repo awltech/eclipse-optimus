@@ -22,7 +22,7 @@
 package net.atos.optimus.m2m.javaxmi.operation.interfaces;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
-import net.atos.optimus.m2m.javaxmi.operation.classes.AbstractClass;
+import net.atos.optimus.m2m.javaxmi.operation.classes.AbstractClassDeclaration;
 import net.atos.optimus.m2m.javaxmi.operation.imports.ImportDeclarationHelper;
 
 import org.eclipse.emf.common.util.EList;
@@ -38,7 +38,7 @@ import org.eclipse.gmt.modisco.java.TypeAccess;
  *
  */
 
-public class Interface extends AbstractClass<InterfaceDeclaration> {
+public class Interface extends AbstractClassDeclaration<InterfaceDeclaration> {
 
 	/**
 	 * Constructor of interface
