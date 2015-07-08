@@ -22,13 +22,11 @@
 package net.atos.optimus.m2m.javaxmi.operation.constructors;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.complex.BlockBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.complex.IComplexInstruction;
 import net.atos.optimus.m2m.javaxmi.operation.methods.AbstractMethod;
 import net.atos.optimus.m2m.javaxmi.operation.parameters.Parameter;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.gmt.modisco.java.Block;
 import org.eclipse.gmt.modisco.java.ConstructorDeclaration;
 import org.eclipse.gmt.modisco.java.TypeAccess;
 
@@ -87,29 +85,16 @@ public class Constructor extends AbstractMethod<ConstructorDeclaration> {
 		super.addParameters(parameters);
 		return this;
 	}
-	
+
 	@Override
 	public Constructor removeParameters() {
 		super.removeParameters();
 		return this;
 	}
 
-	/**
-	 * Add a list of instructions to the current constructor
-	 * 
-	 * @param instructions
-	 *            the added instructions list of the constructor.
-	 * @return the constructor with the instructions list added to its body.
-	 */
+	@Override
 	public Constructor addInstructions(IComplexInstruction... instructions) {
-		Block block = this.getDelegate().getBody();
-		if (block == null) {
-			block = BlockBuilder.builder().build();
-			this.getDelegate().setBody(block);
-		}
-		for (IComplexInstruction instruction : instructions) {
-			block.getStatements().add(instruction.getStatement());
-		}
+		super.addInstructions(instructions);
 		return this;
 	}
 

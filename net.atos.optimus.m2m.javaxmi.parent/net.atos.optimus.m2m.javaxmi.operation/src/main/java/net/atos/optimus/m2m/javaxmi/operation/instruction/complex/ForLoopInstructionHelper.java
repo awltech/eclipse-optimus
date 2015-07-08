@@ -21,7 +21,7 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.instruction.complex;
 
-import net.atos.optimus.m2m.javaxmi.operation.instruction.AssignmentOperationHelper;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.AssignmentInstructionHelper;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.complex.BlockBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.complex.ForStatementBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.ElementaryInstructionHelper;
@@ -106,7 +106,7 @@ public class ForLoopInstructionHelper {
 	public ForLoopInstructionHelper initializeVariable(int initialValue) {
 		this.buildForLoopInstruction.getInitializers().set(
 				0,
-				AssignmentOperationHelper.builder().setOperator(AssignmentKind.ASSIGN)
+				AssignmentInstructionHelper.builder().setOperator(AssignmentKind.ASSIGN)
 						.setLeftVariableDeclarationOperand("int", this.variableName).setRightOperand(initialValue)
 						.build().getExpression());
 		return this;
@@ -123,7 +123,7 @@ public class ForLoopInstructionHelper {
 	public ForLoopInstructionHelper initializeVariableWithField(String fieldName) {
 		this.buildForLoopInstruction.getInitializers().set(
 				0,
-				AssignmentOperationHelper.builder().setOperator(AssignmentKind.ASSIGN)
+				AssignmentInstructionHelper.builder().setOperator(AssignmentKind.ASSIGN)
 						.setLeftVariableDeclarationOperand("int", this.variableName).setRightFieldOperand(fieldName)
 						.build().getExpression());
 		return this;
@@ -140,7 +140,7 @@ public class ForLoopInstructionHelper {
 	public ForLoopInstructionHelper initializeVariableWithVariable(String variableName) {
 		this.buildForLoopInstruction.getInitializers().set(
 				0,
-				AssignmentOperationHelper.builder().setOperator(AssignmentKind.ASSIGN)
+				AssignmentInstructionHelper.builder().setOperator(AssignmentKind.ASSIGN)
 						.setLeftVariableDeclarationOperand("int", this.variableName)
 						.setRightVariableOperand(variableName).build().getExpression());
 		return this;
@@ -158,7 +158,7 @@ public class ForLoopInstructionHelper {
 	public ForLoopInstructionHelper initializeVariable(IElementaryInstruction initializer) {
 		this.buildForLoopInstruction.getInitializers().set(
 				0,
-				AssignmentOperationHelper.builder().setOperator(AssignmentKind.ASSIGN)
+				AssignmentInstructionHelper.builder().setOperator(AssignmentKind.ASSIGN)
 						.setLeftVariableDeclarationOperand("int", this.variableName).setRightOperand(initializer)
 						.build().getExpression());
 		return this;
@@ -263,7 +263,7 @@ public class ForLoopInstructionHelper {
 	public ForLoopInstructionHelper setLoopUpdate(AssignmentKind updateOperator, int update) {
 		this.buildForLoopInstruction.getUpdaters().add(
 				0,
-				AssignmentOperationHelper.builder().setOperator(updateOperator)
+				AssignmentInstructionHelper.builder().setOperator(updateOperator)
 						.setLeftVariableOperand(this.variableName).setRightOperand(update).build().getExpression());
 		return this;
 	}
@@ -282,7 +282,7 @@ public class ForLoopInstructionHelper {
 	public ForLoopInstructionHelper setLoopFieldUpdate(AssignmentKind updateOperator, String fieldName) {
 		this.buildForLoopInstruction.getUpdaters().add(
 				0,
-				AssignmentOperationHelper.builder().setOperator(updateOperator)
+				AssignmentInstructionHelper.builder().setOperator(updateOperator)
 						.setLeftVariableOperand(this.variableName).setRightFieldOperand(fieldName).build()
 						.getExpression());
 		return this;
@@ -302,7 +302,7 @@ public class ForLoopInstructionHelper {
 	public ForLoopInstructionHelper setLoopVariableUpdate(AssignmentKind updateOperator, String variabledName) {
 		this.buildForLoopInstruction.getUpdaters().add(
 				0,
-				AssignmentOperationHelper.builder().setOperator(updateOperator)
+				AssignmentInstructionHelper.builder().setOperator(updateOperator)
 						.setLeftVariableOperand(this.variableName).setRightVariableOperand(variabledName).build()
 						.getExpression());
 		return this;
@@ -322,7 +322,7 @@ public class ForLoopInstructionHelper {
 	public ForLoopInstructionHelper setLoopUpdate(AssignmentKind updateOperator, IElementaryInstruction update) {
 		this.buildForLoopInstruction.getUpdaters().add(
 				0,
-				AssignmentOperationHelper.builder().setOperator(updateOperator)
+				AssignmentInstructionHelper.builder().setOperator(updateOperator)
 						.setLeftVariableOperand(this.variableName).setRightOperand(update).build().getExpression());
 		return this;
 	}

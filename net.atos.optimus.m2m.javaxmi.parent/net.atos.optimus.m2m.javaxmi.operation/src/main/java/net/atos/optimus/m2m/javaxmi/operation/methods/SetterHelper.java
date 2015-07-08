@@ -23,7 +23,7 @@ package net.atos.optimus.m2m.javaxmi.operation.methods;
 
 import net.atos.optimus.m2m.javaxmi.operation.classes.AbstractClass;
 import net.atos.optimus.m2m.javaxmi.operation.fields.Field;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.AssignmentOperationHelper;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.AssignmentInstructionHelper;
 import net.atos.optimus.m2m.javaxmi.operation.util.NameGenerator;
 
 import org.eclipse.gmt.modisco.java.AbstractTypeDeclaration;
@@ -83,7 +83,7 @@ public class SetterHelper {
 				.setInheritance(InheritanceKind.NONE)
 				.addParameter(field.getTypeName(), parameterName)
 				.addInstructions(
-						AssignmentOperationHelper.builder().setOperator(AssignmentKind.ASSIGN)
+						AssignmentInstructionHelper.builder().setOperator(AssignmentKind.ASSIGN)
 								.setLeftFieldOperand(field.getName()).setRightVariableOperand(parameterName).build())
 				.build();
 		this.field = field;
@@ -145,7 +145,7 @@ public class SetterHelper {
 	public SetterHelper setParameterName(String parameterName) {
 		this.buildSetterMethod.getDelegate().getParameters().get(0).setName(parameterName);
 		this.buildSetterMethod.getDelegate().setBody(null);
-		this.buildSetterMethod.addInstructions(AssignmentOperationHelper.builder().setOperator(AssignmentKind.ASSIGN)
+		this.buildSetterMethod.addInstructions(AssignmentInstructionHelper.builder().setOperator(AssignmentKind.ASSIGN)
 				.setLeftFieldOperand(this.field.getName()).setRightVariableOperand(parameterName).build());
 		return this;
 	}

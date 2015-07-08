@@ -22,11 +22,14 @@
 package net.atos.optimus.m2m.javaxmi.operation.methods;
 
 import net.atos.optimus.m2m.javaxmi.operation.element.AbstractDeclaration;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.complex.BlockBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.complex.IComplexInstruction;
 import net.atos.optimus.m2m.javaxmi.operation.parameters.Parameter;
 import net.atos.optimus.m2m.javaxmi.operation.parameters.ParameterHelper;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmt.modisco.java.AbstractMethodDeclaration;
+import org.eclipse.gmt.modisco.java.Block;
 import org.eclipse.gmt.modisco.java.CompilationUnit;
 import org.eclipse.gmt.modisco.java.SingleVariableDeclaration;
 
@@ -119,6 +122,25 @@ public class AbstractMethod<M extends AbstractMethodDeclaration> extends Abstrac
 			param.setOriginalCompilationUnit(abstractMethodDeclaration.getOriginalCompilationUnit());
 			param.setMethodDeclaration(abstractMethodDeclaration);
 			parametersList.add(parameter.getDelegate());
+		}
+		return this;
+	}
+
+	/**
+	 * Add a list of instructions to the current abstract method
+	 * 
+	 * @param instructions
+	 *            the added instructions list of the constructor.
+	 * @return the constructor with the instructions list added to its body.
+	 */
+	public AbstractMethod<M> addInstructions(IComplexInstruction... instructions) {
+		Block block = this.getDelegate().getBody();
+		if (block == null) {
+			block = BlockBuilder.builder().build();
+			this.getDelegate().setBody(block);
+		}
+		for (IComplexInstruction instruction : instructions) {
+			block.getStatements().add(instruction.getStatement());
 		}
 		return this;
 	}

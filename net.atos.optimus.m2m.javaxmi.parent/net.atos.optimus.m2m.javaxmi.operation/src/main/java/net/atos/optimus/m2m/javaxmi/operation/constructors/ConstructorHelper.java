@@ -24,7 +24,7 @@ package net.atos.optimus.m2m.javaxmi.operation.constructors;
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.classes.AbstractClass;
 import net.atos.optimus.m2m.javaxmi.operation.fields.Field;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.AssignmentOperationHelper;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.AssignmentInstructionHelper;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.complex.BlockBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.complex.IComplexInstruction;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
@@ -164,7 +164,7 @@ public class ConstructorHelper {
 		for (Field field : fields) {
 			String parameterName = NameGenerator.generateNameWithTypeName(field.getTypeName());
 			this.addParameter(field.getTypeName(), parameterName);
-			this.addInstructions(AssignmentOperationHelper.builder().setOperator(AssignmentKind.ASSIGN)
+			this.addInstructions(AssignmentInstructionHelper.builder().setOperator(AssignmentKind.ASSIGN)
 					.setLeftFieldOperand(field.getName()).setRightVariableOperand(parameterName).build());
 		}
 		return this;
@@ -183,7 +183,7 @@ public class ConstructorHelper {
 	 */
 	public ConstructorHelper addParameterAndSetAssociatedField(String parameterName, Field field) {
 		this.addParameter(field.getTypeName(), parameterName);
-		return this.addInstructions(AssignmentOperationHelper.builder().setOperator(AssignmentKind.ASSIGN)
+		return this.addInstructions(AssignmentInstructionHelper.builder().setOperator(AssignmentKind.ASSIGN)
 				.setLeftFieldOperand(field.getName()).setRightVariableOperand(parameterName).build());
 	}
 

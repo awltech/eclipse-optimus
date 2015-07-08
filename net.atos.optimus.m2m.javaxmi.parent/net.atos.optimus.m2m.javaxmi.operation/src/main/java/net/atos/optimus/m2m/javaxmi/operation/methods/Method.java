@@ -22,12 +22,10 @@
 package net.atos.optimus.m2m.javaxmi.operation.methods;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.complex.BlockBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.complex.IComplexInstruction;
 import net.atos.optimus.m2m.javaxmi.operation.parameters.Parameter;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.gmt.modisco.java.Block;
 import org.eclipse.gmt.modisco.java.MethodDeclaration;
 import org.eclipse.gmt.modisco.java.TypeAccess;
 
@@ -97,22 +95,9 @@ public class Method extends AbstractMethod<MethodDeclaration> {
 		return this;
 	}
 
-	/**
-	 * Add a list of instructions to the current method
-	 * 
-	 * @param instructions
-	 *            the added instructions list of the method.
-	 * @return the method with the instructions list added to its body.
-	 */
+	@Override
 	public Method addInstructions(IComplexInstruction... instructions) {
-		Block block = this.getDelegate().getBody();
-		if (block == null) {
-			block = BlockBuilder.builder().build();
-			this.getDelegate().setBody(block);
-		}
-		for (IComplexInstruction instruction : instructions) {
-			block.getStatements().add(instruction.getStatement());
-		}
+		super.addInstructions(instructions);
 		return this;
 	}
 

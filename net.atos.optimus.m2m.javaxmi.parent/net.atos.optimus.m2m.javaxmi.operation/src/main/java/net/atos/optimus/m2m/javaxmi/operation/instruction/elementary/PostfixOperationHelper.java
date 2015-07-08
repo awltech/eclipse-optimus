@@ -173,4 +173,16 @@ public class PostfixOperationHelper {
 		return this;
 	}
 
+	/**
+	 * Set the operand of the postfix operation under construction
+	 * 
+	 * @param operand
+	 *            the operand of the current postfix operation.
+	 * @return the helper.
+	 */
+	public PostfixOperationHelper setOperand(IElementaryInstruction operand) {
+		this.buildPostfixOperation.setOperand(operand.getExpression());
+		return this;
+	}
+
 }
