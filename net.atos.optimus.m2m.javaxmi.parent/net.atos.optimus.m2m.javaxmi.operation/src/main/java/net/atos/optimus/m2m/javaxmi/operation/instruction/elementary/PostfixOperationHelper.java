@@ -21,6 +21,7 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.instruction.elementary;
 
+import net.atos.optimus.m2m.javaxmi.operation.instruction.Instruction;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.elementary.PostfixExpressionBuilder;
 
 import org.eclipse.gmt.modisco.java.PostfixExpression;
@@ -61,8 +62,8 @@ public class PostfixOperationHelper {
 	 * 
 	 * @return the build postfix operation.
 	 */
-	public ElementaryInstruction build() {
-		return new ElementaryInstruction(this.buildPostfixOperation);
+	public Instruction build() {
+		return new Instruction(this.buildPostfixOperation);
 	}
 
 	/**

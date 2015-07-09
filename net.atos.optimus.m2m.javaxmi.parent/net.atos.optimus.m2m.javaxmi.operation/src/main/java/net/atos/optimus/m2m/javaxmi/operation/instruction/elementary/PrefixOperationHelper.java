@@ -21,6 +21,7 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.instruction.elementary;
 
+import net.atos.optimus.m2m.javaxmi.operation.instruction.Instruction;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.elementary.PrefixExpressionBuilder;
 
 import org.eclipse.gmt.modisco.java.PrefixExpression;
@@ -61,8 +62,8 @@ public class PrefixOperationHelper {
 	 * 
 	 * @return the build prefix operation.
 	 */
-	public ElementaryInstruction build() {
-		return new ElementaryInstruction(this.buildPrefixOperation);
+	public Instruction build() {
+		return new Instruction(this.buildPrefixOperation);
 	}
 
 	/**

@@ -137,7 +137,7 @@ public class ForLoopInstructionHelper {
 	 *            integer for loop under instruction.
 	 * @return the helper.
 	 */
-	public ForLoopInstructionHelper initializeVariableWithVariable(String variableName) {
+	public ForLoopInstructionHelper initializeVariableWithOtherVariable(String variableName) {
 		this.buildForLoopInstruction.getInitializers().set(
 				0,
 				AssignmentInstructionHelper.builder().setOperator(AssignmentKind.ASSIGN)

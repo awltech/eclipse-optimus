@@ -23,6 +23,7 @@ package net.atos.optimus.m2m.javaxmi.operation.instruction;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.element.Element;
+import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.ExpressionStatementBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.ReturnStatementBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.elementary.CastExpressionBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.elementary.InstanceOfExpressionBuilder;
@@ -34,6 +35,8 @@ import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.IElementary
 
 import org.eclipse.gmt.modisco.java.Expression;
 import org.eclipse.gmt.modisco.java.ExpressionStatement;
+import org.eclipse.gmt.modisco.java.PostfixExpression;
+import org.eclipse.gmt.modisco.java.PrefixExpression;
 import org.eclipse.gmt.modisco.java.Statement;
 import org.eclipse.gmt.modisco.java.SuperConstructorInvocation;
 
@@ -70,6 +73,28 @@ public class Instruction extends Element<Statement> implements IElementaryInstru
 	public Instruction(SuperConstructorInvocation statement) {
 		super(statement);
 		this.expression = statement.getExpression();
+	}
+
+	/**
+	 * Constructor of instruction
+	 * 
+	 * @param postfixExpression
+	 *            the postfix expression.
+	 */
+	public Instruction(PostfixExpression postfixExpression) {
+		super(ExpressionStatementBuilder.builder().setExpression(postfixExpression).build());
+		this.expression = postfixExpression;
+	}
+
+	/**
+	 * Constructor of instruction
+	 * 
+	 * @param prefixExpression
+	 *            the prefix expression.
+	 */
+	public Instruction(PrefixExpression prefixExpression) {
+		super(ExpressionStatementBuilder.builder().setExpression(prefixExpression).build());
+		this.expression = prefixExpression;
 	}
 
 	public Statement getStatement() {
