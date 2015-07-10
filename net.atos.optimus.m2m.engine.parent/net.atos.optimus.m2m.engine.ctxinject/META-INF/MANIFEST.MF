@@ -4,7 +4,7 @@ Bundle-Name: Context Injection for Optimus Transformations
 Bundle-SymbolicName: net.atos.optimus.m2m.engine.ctxinject;singleton:=true
 Bundle-Version: 1.2.0.qualifier
 Bundle-Activator: net.atos.optimus.m2m.engine.ctxinject.internal.Activator
-Bundle-Vendor: Atos.net
+Bundle-Vendor: Worldline.com
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.emf.ecore,

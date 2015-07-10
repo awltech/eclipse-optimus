@@ -26,7 +26,7 @@
       id="net.atos.optimus.m2m.engine.sdk.feature"
       label="Optimus M2M Engine Transformations Generator"
       version="1.2.0.qualifier"
-      provider-name="Atos.net">
+      provider-name="Worldline.com">
 
    <description url="http://www.example.com/description">
       This SDK contains the a wizard to create transformations

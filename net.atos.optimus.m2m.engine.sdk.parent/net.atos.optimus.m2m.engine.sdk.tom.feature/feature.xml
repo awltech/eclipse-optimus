@@ -26,7 +26,7 @@
       id="net.atos.optimus.m2m.engine.sdk.tom.feature"
       label="Optimus M2M Engine Transformation Orchestration Modeler"
       version="1.2.0.qualifier"
-      provider-name="Atos.net">
+      provider-name="Worldline.com">
 
    <description url="http://eclipse.worldline.com/">
       A graphical editor dedicated to write transformations diagram in optimus
