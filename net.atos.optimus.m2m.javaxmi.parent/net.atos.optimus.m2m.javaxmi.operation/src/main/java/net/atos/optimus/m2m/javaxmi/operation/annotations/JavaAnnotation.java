@@ -219,4 +219,22 @@ public class JavaAnnotation extends Element<Annotation> {
 		return new JavaAnnotation(annotation);
 	}
 
+	/**
+	 * Create an orphan annotation
+	 * 
+	 * @param element
+	 *            the element used to create the orphan annotation.
+	 * @param packageName
+	 *            the name of the package of the current parameter.
+	 * @param annotationName
+	 *            the annotation name.
+	 * @return the created orphan annotation.
+	 */
+	public static JavaAnnotation createOrphanAnnotation(Element<?> element, String packageName, String annotationName) {
+		TypeAccess annotationType = TypeAccessHelper.createOrphanAnnotationTypeAccess(element, packageName + "."
+				+ annotationName);
+		Annotation annotation = AnnotationBuilder.builder().setType(annotationType).build();
+		return new JavaAnnotation(annotation);
+	}
+
 }

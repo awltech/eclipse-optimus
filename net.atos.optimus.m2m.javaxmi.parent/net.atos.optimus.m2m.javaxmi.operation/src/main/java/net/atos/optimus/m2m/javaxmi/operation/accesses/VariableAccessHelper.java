@@ -71,7 +71,13 @@ public class VariableAccessHelper {
 			int index = variableName.lastIndexOf(VariableAccessHelper.STATIC_VARIABLE_SEPARATOR);
 			SingleVariableAccess singleVariableAccess = VariableAccessHelper.createVariableAccess(
 					variableName.substring(index + 1, variableName.length()), isProxy);
-			singleVariableAccess.setQualifier(TypeAccessHelper.createClassTypeAccess(variableName.substring(0, index)));
+			String variablePrefix = variableName.substring(0, index);
+			index = variablePrefix.lastIndexOf(VariableAccessHelper.STATIC_VARIABLE_SEPARATOR) + 1;
+			if (Character.isUpperCase(variablePrefix.charAt(index))) {
+				singleVariableAccess.setQualifier(TypeAccessHelper.createClassTypeAccess(variablePrefix));
+			} else {
+				singleVariableAccess.setQualifier(VariableAccessHelper.createVariableAccess(variablePrefix, isProxy));
+			}
 			return singleVariableAccess;
 		}
 		VariableDeclaration variableDeclaration = VariableDeclarationFragmentBuilder.builder().setName(variableName)
