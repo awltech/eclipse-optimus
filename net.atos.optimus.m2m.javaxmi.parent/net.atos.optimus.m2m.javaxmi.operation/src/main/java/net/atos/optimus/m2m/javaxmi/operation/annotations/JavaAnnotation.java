@@ -123,21 +123,14 @@ public class JavaAnnotation extends Element<Annotation> {
 	 *            the property name.
 	 * @param propertyValue
 	 *            the property value.
-	 * @param escape
-	 *            the escape state.
 	 * @return the current annotation.
 	 */
-	public JavaAnnotation addAnnotationParameter(String propertyName, char propertyValue, boolean escape) {
+	public JavaAnnotation addAnnotationParameter(String propertyName, char propertyValue) {
 		if (this.getDelegate().getType() == null) {
 			return this;
 		}
-
 		CharacterLiteral propertyExpression = JavaFactory.eINSTANCE.createCharacterLiteral();
-		if (escape) {
-			propertyExpression.setEscapedValue("\"" + String.valueOf(propertyValue) + "\"");
-		} else {
-			propertyExpression.setEscapedValue(String.valueOf(propertyValue));
-		}
+		propertyExpression.setEscapedValue("\'" + propertyValue + "\'");
 
 		AnnotationMemberValuePairHelper.createAnnotationMemberValuePair(this.getDelegate(), propertyName,
 				propertyExpression);
