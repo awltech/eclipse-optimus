@@ -21,7 +21,7 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.constructors;
 
-import net.atos.optimus.m2m.javaxmi.operation.instruction.complex.IComplexInstruction;
+import net.atos.optimus.m2m.javaxmi.operation.instructions.complex.IComplexInstruction;
 import net.atos.optimus.m2m.javaxmi.operation.methods.AbstractMethod;
 import net.atos.optimus.m2m.javaxmi.operation.parameters.Parameter;
 

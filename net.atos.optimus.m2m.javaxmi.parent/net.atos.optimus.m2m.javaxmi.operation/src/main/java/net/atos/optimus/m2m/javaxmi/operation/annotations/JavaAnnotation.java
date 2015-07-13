@@ -22,9 +22,9 @@
 package net.atos.optimus.m2m.javaxmi.operation.annotations;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
-import net.atos.optimus.m2m.javaxmi.operation.annotations.builder.AnnotationBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.element.Element;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.ArrayInitializerInstruction;
+import net.atos.optimus.m2m.javaxmi.operation.annotations.builders.AnnotationBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.elements.Element;
+import net.atos.optimus.m2m.javaxmi.operation.instructions.elementary.ArrayInitializerInstruction;
 
 import org.eclipse.gmt.modisco.java.Annotation;
 import org.eclipse.gmt.modisco.java.AnnotationMemberValuePair;

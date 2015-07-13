@@ -24,8 +24,8 @@ package net.atos.optimus.m2m.javaxmi.core.annotations;
 import java.util.Iterator;
 
 import net.atos.optimus.m2m.javaxmi.operation.annotations.JavaAnnotation;
-import net.atos.optimus.m2m.javaxmi.operation.element.AbstractDeclaration;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.ArrayInitializerInstruction;
+import net.atos.optimus.m2m.javaxmi.operation.elements.AbstractDeclaration;
+import net.atos.optimus.m2m.javaxmi.operation.instructions.elementary.ArrayInitializerInstruction;
 import net.atos.optimus.m2m.javaxmi.operation.parameters.Parameter;
 
 import org.eclipse.emf.common.util.EList;

@@ -23,8 +23,8 @@ package net.atos.optimus.m2m.javaxmi.operation.annotations;
 
 import java.util.Iterator;
 
-import net.atos.optimus.m2m.javaxmi.operation.annotations.builder.AnnotationMemberValuePairBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.array.ArrayInitializerBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.annotations.builders.AnnotationMemberValuePairBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.arrays.ArrayInitializerBuilder;
 
 import org.eclipse.gmt.modisco.java.Annotation;
 import org.eclipse.gmt.modisco.java.AnnotationMemberValuePair;

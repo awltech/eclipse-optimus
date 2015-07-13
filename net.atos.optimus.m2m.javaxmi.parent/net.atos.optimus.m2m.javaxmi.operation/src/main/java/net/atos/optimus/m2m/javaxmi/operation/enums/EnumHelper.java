@@ -24,7 +24,7 @@ package net.atos.optimus.m2m.javaxmi.operation.enums;
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.classes.CompilationUnitBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.imports.ImportDeclarationHelper;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.elementary.IElementaryInstruction;
+import net.atos.optimus.m2m.javaxmi.operation.instructions.elementary.IElementaryInstruction;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.packages.JavaPackage;
 import net.atos.optimus.m2m.javaxmi.operation.util.ASTElementFinder;

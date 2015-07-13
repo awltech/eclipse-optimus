@@ -21,7 +21,7 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.packages;
 
-import net.atos.optimus.m2m.javaxmi.operation.element.Element;
+import net.atos.optimus.m2m.javaxmi.operation.elements.Element;
 
 import org.eclipse.gmt.modisco.java.Package;
 

@@ -23,10 +23,10 @@ package net.atos.optimus.m2m.javaxmi.operation.accesses;
 
 import java.util.Iterator;
 
-import net.atos.optimus.m2m.javaxmi.operation.annotations.builder.AnnotationTypeDeclarationBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.annotations.builder.UnresolvedAnnotationDeclarationBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.annotations.builders.AnnotationTypeDeclarationBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.annotations.builders.UnresolvedAnnotationDeclarationBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.classes.UnresolvedClassDeclarationBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.element.Element;
+import net.atos.optimus.m2m.javaxmi.operation.elements.Element;
 import net.atos.optimus.m2m.javaxmi.operation.interfaces.UnresolvedInterfaceDeclarationBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.packages.JavaPackage;
 import net.atos.optimus.m2m.javaxmi.operation.packages.PackageHelper;

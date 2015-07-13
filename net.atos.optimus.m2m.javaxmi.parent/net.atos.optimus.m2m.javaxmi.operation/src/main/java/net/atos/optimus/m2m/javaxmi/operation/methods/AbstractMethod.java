@@ -22,9 +22,9 @@
 package net.atos.optimus.m2m.javaxmi.operation.methods;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
-import net.atos.optimus.m2m.javaxmi.operation.element.AbstractDeclaration;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.complex.BlockBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.complex.IComplexInstruction;
+import net.atos.optimus.m2m.javaxmi.operation.elements.AbstractDeclaration;
+import net.atos.optimus.m2m.javaxmi.operation.instructions.builders.complex.BlockBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instructions.complex.IComplexInstruction;
 import net.atos.optimus.m2m.javaxmi.operation.parameters.Parameter;
 import net.atos.optimus.m2m.javaxmi.operation.parameters.ParameterHelper;
 

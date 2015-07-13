@@ -22,7 +22,7 @@
 package net.atos.optimus.m2m.javaxmi.operation.variables;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
-import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.elementary.VariableDeclarationExpressionBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.instructions.builders.elementary.VariableDeclarationExpressionBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.modifiers.ModifierBuilder;
 
 import org.eclipse.gmt.modisco.java.InheritanceKind;

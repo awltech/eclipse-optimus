@@ -23,8 +23,8 @@ package net.atos.optimus.m2m.javaxmi.operation.parameters;
 
 import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.annotations.JavaAnnotation;
-import net.atos.optimus.m2m.javaxmi.operation.annotations.builder.AnnotationBuilder;
-import net.atos.optimus.m2m.javaxmi.operation.element.Element;
+import net.atos.optimus.m2m.javaxmi.operation.annotations.builders.AnnotationBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.elements.Element;
 import net.atos.optimus.m2m.javaxmi.operation.methods.Method;
 import net.atos.optimus.m2m.javaxmi.operation.util.MissingImportAdder;
 

@@ -21,7 +21,7 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.annotations;
 
-import net.atos.optimus.m2m.javaxmi.operation.annotations.builder.AnnotationTypeMemberDeclarationBuilder;
+import net.atos.optimus.m2m.javaxmi.operation.annotations.builders.AnnotationTypeMemberDeclarationBuilder;
 
 import org.eclipse.gmt.modisco.java.Annotation;
 import org.eclipse.gmt.modisco.java.AnnotationTypeDeclaration;
