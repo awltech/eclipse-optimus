@@ -21,6 +21,7 @@
  */
 package net.atos.optimus.m2m.javaxmi.operation.methods;
 
+import net.atos.optimus.m2m.javaxmi.operation.accesses.TypeAccessHelper;
 import net.atos.optimus.m2m.javaxmi.operation.element.AbstractDeclaration;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.builder.complex.BlockBuilder;
 import net.atos.optimus.m2m.javaxmi.operation.instruction.complex.IComplexInstruction;
@@ -32,6 +33,7 @@ import org.eclipse.gmt.modisco.java.AbstractMethodDeclaration;
 import org.eclipse.gmt.modisco.java.Block;
 import org.eclipse.gmt.modisco.java.CompilationUnit;
 import org.eclipse.gmt.modisco.java.SingleVariableDeclaration;
+import org.eclipse.gmt.modisco.java.TypeAccess;
 
 /**
  * Models an abstract method : method or constructor
@@ -141,6 +143,21 @@ public class AbstractMethod<M extends AbstractMethodDeclaration> extends Abstrac
 		}
 		for (IComplexInstruction instruction : instructions) {
 			block.getStatements().add(instruction.getStatement());
+		}
+		return this;
+	}
+
+	/**
+	 * Add an exceptions list to the current abstract method
+	 * 
+	 * @param exceptionsNames
+	 *            the exceptions list to add to the current abstract method.
+	 * @return the abstract method with the exceptions list added.
+	 */
+	public AbstractMethod<M> addExceptions(String... exceptionsNames) {
+		EList<TypeAccess> exceptionsList = this.getDelegate().getThrownExceptions();
+		for (String exceptionName : exceptionsNames) {
+			exceptionsList.add(TypeAccessHelper.createExceptionTypeAccess(exceptionName));
 		}
 		return this;
 	}

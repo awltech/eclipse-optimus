@@ -129,17 +129,17 @@ public class ParameterHelper {
 	/**
 	 * Create a parameter
 	 * 
-	 * @param isFinal
-	 *            the final state of the created parameter.
 	 * @param parameterTypeName
 	 *            the type name of the created parameter.
 	 * @param parameterName
 	 *            the name of the created parameter.
+	 * @param isFinal
+	 *            the final state of the created parameter.
 	 * @param varargsState
 	 *            the varargs state of the created parameter.
 	 * @return the created parameter accordingly to the specified parameters.
 	 */
-	public static Parameter createParameter(boolean isFinal, String parameterTypeName, String parameterName,
+	public static Parameter createParameter(String parameterTypeName, String parameterName, boolean isFinal,
 			boolean varargsState) {
 		return ParameterHelper.builder(parameterTypeName).setFinal(isFinal).setName(parameterName)
 				.setVarargs(varargsState).build();

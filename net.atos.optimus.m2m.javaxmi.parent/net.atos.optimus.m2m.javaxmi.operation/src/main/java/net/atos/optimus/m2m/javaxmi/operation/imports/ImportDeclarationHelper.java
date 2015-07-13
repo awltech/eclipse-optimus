@@ -60,7 +60,7 @@ public class ImportDeclarationHelper {
 	 */
 	protected static ImportDeclaration createClassImportDeclaration(String fullQualifiedClassName, boolean isStatic) {
 		ClassDeclaration classDeclaration = ClassDeclarationBuilder.builder().setName(fullQualifiedClassName).build();
-		return ImportDeclarationBuilder.builder().setImportedElement(classDeclaration).build();
+		return ImportDeclarationBuilder.builder().setImportedElement(classDeclaration).setStatic(isStatic).build();
 	}
 
 	/**
@@ -75,7 +75,7 @@ public class ImportDeclarationHelper {
 	 */
 	protected static ImportDeclaration createPackageImportDeclaration(String packageName, boolean isStatic) {
 		Package javaPackage = PackageBuilder.builder().setName(packageName).build();
-		return ImportDeclarationBuilder.builder().setImportedElement(javaPackage).build();
+		return ImportDeclarationBuilder.builder().setImportedElement(javaPackage).setStatic(isStatic).build();
 	}
 
 	/**
