@@ -34,7 +34,7 @@ import java.util.Set;
  *
  */
 
-public class TransformationMaskReferenceInput {
+public class TransformationMaskReferenceInput implements ITransformationMask {
 
 	/** The input mask name */
 	private String inputMaskName;
