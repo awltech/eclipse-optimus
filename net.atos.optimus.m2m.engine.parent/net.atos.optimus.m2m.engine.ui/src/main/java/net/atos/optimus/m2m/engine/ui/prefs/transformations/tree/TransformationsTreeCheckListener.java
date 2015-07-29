@@ -21,13 +21,10 @@
  */
 package net.atos.optimus.m2m.engine.ui.prefs.transformations.tree;
 
-import java.util.HashSet;
 import java.util.Set;
 
+import net.atos.optimus.m2m.engine.core.masks.MaskTransformationRequirementsTool;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskReferenceInput;
-import net.atos.optimus.m2m.engine.core.requirements.AbstractRequirement;
-import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSource;
-import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSourceManager;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
 import net.atos.optimus.m2m.engine.masks.IEditableTransformationMask;
 
@@ -75,13 +72,19 @@ public class TransformationsTreeCheckListener implements ICheckStateListener {
 				this.transformationMaskReferenceInput.setCheckedTransformation(transformationReference.getId(),
 						event.getChecked());
 				if (event.getChecked()) {
-					Set<TransformationReference> checkedReferences = new HashSet<TransformationReference>();
-					this.checkForRequirementsToCheck((TransformationReference) event.getElement(), checkedReferences);
+					Set<String> checkedReferences = MaskTransformationRequirementsTool.requirementsToActivate(
+							this.transformationMaskReferenceInput, (TransformationReference) event.getElement());
+					for (String transfoId : checkedReferences) {
+						this.transformationMaskReferenceInput.setCheckedTransformation(transfoId, true);
+					}
 				} else {
-					Set<TransformationReference> uncheckedReferences = new HashSet<TransformationReference>();
-					this.checkForRequirementsToUncheck((TransformationReference) event.getElement(),
-							uncheckedReferences);
+					Set<String> uncheckedReferences = MaskTransformationRequirementsTool.requirementsToDesactivate(
+							this.transformationMaskReferenceInput, (TransformationReference) event.getElement());
+					for (String transfoId : uncheckedReferences) {
+						this.transformationMaskReferenceInput.setCheckedTransformation(transfoId, false);
+					}
 				}
+				this.treeViewer.refresh();
 			} else {
 				if (event.getSource() instanceof CheckboxTreeViewer) {
 					if (event.getChecked()) {
@@ -90,67 +93,6 @@ public class TransformationsTreeCheckListener implements ICheckStateListener {
 					} else {
 						CheckboxTreeViewer checkBox = (CheckboxTreeViewer) event.getSource();
 						checkBox.setChecked(event.getElement(), true);
-					}
-				}
-			}
-		}
-	}
-
-	/**
-	 * This method should only be called when an element is checked from the
-	 * preferences view.
-	 * 
-	 * This method will look recursively into the transformation reference to
-	 * know the other transformations required by the current reference. The
-	 * required transformations will be checked too.
-	 * 
-	 * 
-	 * @param reference
-	 *            the checked transformation reference.
-	 * @param checkedReferences
-	 *            the reference already check.
-	 */
-	private void checkForRequirementsToCheck(TransformationReference reference,
-			Set<TransformationReference> checkedReferences) {
-		for (AbstractRequirement otherReq : reference.getRequirements()) {
-			String otherReqId = otherReq.getId();
-			TransformationReference otherRef = TransformationDataSourceManager.INSTANCE.getById(otherReqId);
-			if (otherReqId != null && !checkedReferences.contains(otherRef)) {
-				this.transformationMaskReferenceInput.setCheckedTransformation(otherRef.getId(), true);
-				this.treeViewer.refresh(otherRef);
-				checkedReferences.add(otherRef);
-				checkForRequirementsToCheck(otherRef, checkedReferences);
-			}
-		}
-	}
-
-	/**
-	 * This method should only be called when an element is unchecked from the
-	 * preferences view.
-	 * 
-	 * This method will look deeply into the referenced transformations to know
-	 * whether the current reference is required by another transformation. If
-	 * this is the case, the transformation requiring this one will be unchecked
-	 * too.
-	 * 
-	 * @param reference
-	 *            the unchecked transformation reference.
-	 * @param uncheckedReferences
-	 *            the reference already uncheck.
-	 */
-	private void checkForRequirementsToUncheck(TransformationReference reference,
-			Set<TransformationReference> uncheckedReferences) {
-		String referenceId = reference.getId();
-		for (TransformationDataSource transformationDataSource : TransformationDataSourceManager.INSTANCE
-				.getTransformationDataSources()) {
-			for (TransformationReference otherRef : transformationDataSource.getAll()) {
-				for (AbstractRequirement otherReq : otherRef.getRequirements()) {
-					String otherReqId = otherReq.getId();
-					if (otherReqId.equals(referenceId) && !uncheckedReferences.contains(otherRef)) {
-						this.transformationMaskReferenceInput.setCheckedTransformation(otherRef.getId(), false);
-						this.treeViewer.refresh(otherRef);
-						uncheckedReferences.add(otherRef);
-						checkForRequirementsToUncheck(otherRef, uncheckedReferences);
 					}
 				}
 			}
