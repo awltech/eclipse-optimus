@@ -19,11 +19,12 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.engine.core.masks;
+package net.atos.optimus.m2m.engine.masks;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import net.atos.optimus.m2m.engine.core.masks.ITransformationMask;
 import net.atos.optimus.m2m.engine.core.requirements.AbstractRequirement;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSource;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSourceManager;

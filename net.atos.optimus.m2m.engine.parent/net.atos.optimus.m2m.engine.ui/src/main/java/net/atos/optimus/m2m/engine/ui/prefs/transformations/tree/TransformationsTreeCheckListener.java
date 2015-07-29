@@ -23,10 +23,10 @@ package net.atos.optimus.m2m.engine.ui.prefs.transformations.tree;
 
 import java.util.Set;
 
-import net.atos.optimus.m2m.engine.core.masks.MaskTransformationRequirementsTool;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskReferenceInput;
 import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
 import net.atos.optimus.m2m.engine.masks.IEditableTransformationMask;
+import net.atos.optimus.m2m.engine.masks.MaskTransformationRequirementsTool;
 
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;

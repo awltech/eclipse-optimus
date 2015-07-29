@@ -27,12 +27,17 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import net.atos.optimus.m2m.engine.core.masks.ITransformationMask;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskDataSource;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskReference;
+import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSource;
+import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSourceManager;
+import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
 import net.atos.optimus.m2m.engine.masks.Activator;
 import net.atos.optimus.m2m.engine.masks.JavaTransformationMask;
+import net.atos.optimus.m2m.engine.masks.MaskTransformationRequirementsTool;
 import net.atos.optimus.m2m.engine.masks.logging.OptimusM2MMaskMessages;
 
 import org.eclipse.core.runtime.CoreException;
@@ -70,7 +75,7 @@ public class ExtensionPointTransformationMaskDataSource extends TransformationMa
 		super(ExtensionPointTransformationMaskDataSource.DESCRIPTION);
 		OptimusM2MMaskMessages.ML01.log();
 
-		Map<String,TransformationMaskReference> foundMasks = new HashMap<String,TransformationMaskReference>();
+		Map<String, TransformationMaskReference> foundMasks = new HashMap<String, TransformationMaskReference>();
 
 		IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(Activator.PLUGIN_ID,
 				ExtensionPointTransformationMaskDataSource.EXTENSION_POINT_NAME);
@@ -126,14 +131,12 @@ public class ExtensionPointTransformationMaskDataSource extends TransformationMa
 							if ("includes".equals(child.getName())) {
 								String transformationId = child.getAttribute("transformationId");
 								if (transformationId != null) {
-									mask.withTransformation(transformationId);
-									OptimusM2MMaskMessages.ML08.log(name, transformationId);
+									this.includeRequiredTransformation(name, mask, transformationId);
 								}
 							} else if ("includesSet".equals(child.getName())) {
 								String transformationSetId = child.getAttribute("transformationSetId");
 								if (transformationSetId != null) {
-									mask.withTransformationSet(transformationSetId);
-									OptimusM2MMaskMessages.ML09.log(name, transformationSetId);
+									this.includeRequiredTransformationSet(name, mask, transformationSetId);
 								}
 							}
 						}
@@ -156,14 +159,12 @@ public class ExtensionPointTransformationMaskDataSource extends TransformationMa
 							if ("excludes".equals(child.getName())) {
 								String transformationId = child.getAttribute("transformationId");
 								if (transformationId != null) {
-									mask.withoutTransformation(transformationId);
-									OptimusM2MMaskMessages.ML11.log(name, transformationId);
+									this.excludeRequiredTransformation(name, mask, transformationId);
 								}
 							} else if ("excludesSet".equals(child.getName())) {
 								String transformationSetId = child.getAttribute("transformationSetId");
 								if (transformationSetId != null) {
-									mask.withoutTransformationSet(transformationSetId);
-									OptimusM2MMaskMessages.ML12.log(name, transformationSetId);
+									this.excludeRequiredTransformationSet(name, mask, transformationSetId);
 								}
 							}
 						}
@@ -178,6 +179,98 @@ public class ExtensionPointTransformationMaskDataSource extends TransformationMa
 			transformationMaskReferencesResult.add(transformationMaskReference);
 		}
 		this.registeredMasks = Collections.unmodifiableList(transformationMaskReferencesResult);
+	}
+
+	/**
+	 * Include the transformation set in an inclusive mask
+	 * 
+	 * @param maskName
+	 *            the name of the inclusive mask.
+	 * @param mask
+	 *            the inclusive mask.
+	 * @param transformationSetId
+	 *            the transformation set to include.
+	 */
+	private void includeRequiredTransformationSet(String maskName, JavaTransformationMask mask,
+			String transformationSetId) {
+		OptimusM2MMaskMessages.ML09.log(maskName, transformationSetId);
+		for (TransformationDataSource transformationDataSource : TransformationDataSourceManager.INSTANCE
+				.getTransformationDataSources()) {
+			for (TransformationReference transformationReference : transformationDataSource.getAll()) {
+				String setId = transformationReference.getTransformationSet() == null ? "" : transformationReference
+						.getTransformationSet().getId();
+				if (transformationSetId.equals(setId) && transformationReference.getId() != null) {
+					this.includeRequiredTransformation(maskName, mask, transformationReference.getId());
+				}
+			}
+		}
+	}
+
+	/**
+	 * Include the required transformations of a specified transformation and
+	 * the transformation specified itself in an inclusive mask
+	 * 
+	 * @param maskName
+	 *            the name of the inclusive mask.
+	 * @param mask
+	 *            the inclusive mask.
+	 * @param transformationId
+	 *            the transformation to include.
+	 */
+	private void includeRequiredTransformation(String maskName, JavaTransformationMask mask, String transformationId) {
+		Set<String> includedTransformations = MaskTransformationRequirementsTool.requirementsToActivate(mask,
+				TransformationDataSourceManager.INSTANCE.getById(transformationId));
+		includedTransformations.add(transformationId);
+		for (String includedTransformation : includedTransformations) {
+			mask.withTransformation(includedTransformation);
+			OptimusM2MMaskMessages.ML08.log(maskName, includedTransformation);
+		}
+	}
+
+	/**
+	 * Exclude the transformation set in an exclusive mask
+	 * 
+	 * @param maskName
+	 *            the name of the exclusive mask.
+	 * @param mask
+	 *            the exclusive mask.
+	 * @param transformationSetId
+	 *            the transformation set to exclude.
+	 */
+	private void excludeRequiredTransformationSet(String maskName, JavaTransformationMask mask,
+			String transformationSetId) {
+		OptimusM2MMaskMessages.ML12.log(maskName, transformationSetId);
+		for (TransformationDataSource transformationDataSource : TransformationDataSourceManager.INSTANCE
+				.getTransformationDataSources()) {
+			for (TransformationReference transformationReference : transformationDataSource.getAll()) {
+				String setId = transformationReference.getTransformationSet() == null ? "" : transformationReference
+						.getTransformationSet().getId();
+				if (transformationSetId.equals(setId) && transformationReference.getId() != null) {
+					this.excludeRequiredTransformation(maskName, mask, transformationReference.getId());
+				}
+			}
+		}
+	}
+
+	/**
+	 * Exclude the transformations required by a specified transformation and
+	 * the transformation specified itself in an exclusive mask
+	 * 
+	 * @param maskName
+	 *            the name of the exclusive mask.
+	 * @param mask
+	 *            the exclusive mask.
+	 * @param transformationId
+	 *            the transformation to exclude.
+	 */
+	private void excludeRequiredTransformation(String maskName, JavaTransformationMask mask, String transformationId) {
+		Set<String> excludedTransformations = MaskTransformationRequirementsTool.requirementsToDesactivate(mask,
+				TransformationDataSourceManager.INSTANCE.getById(transformationId));
+		excludedTransformations.add(transformationId);
+		for (String excludedTransformation : excludedTransformations) {
+			mask.withoutTransformation(excludedTransformation);
+			OptimusM2MMaskMessages.ML11.log(maskName, excludedTransformation);
+		}
 	}
 
 	@Override
