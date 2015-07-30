@@ -24,11 +24,11 @@ package net.atos.optimus.m2m.engine.masks.extension;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -214,7 +214,7 @@ public class XMLFileTransformationMaskDataSource extends TransformationMaskDataS
 	@Override
 	public Collection<TransformationMaskReference> getAllMasks() {
 		this.loadTransformationUserMasks();
-		List<TransformationMaskReference> transformationMaskReferencesResult = new LinkedList<TransformationMaskReference>();
+		List<TransformationMaskReference> transformationMaskReferencesResult = new ArrayList<TransformationMaskReference>();
 		for (TransformationMaskReference transformationMaskReference : this.transformationMaskReferences.values()) {
 			transformationMaskReferencesResult.add(transformationMaskReference);
 		}

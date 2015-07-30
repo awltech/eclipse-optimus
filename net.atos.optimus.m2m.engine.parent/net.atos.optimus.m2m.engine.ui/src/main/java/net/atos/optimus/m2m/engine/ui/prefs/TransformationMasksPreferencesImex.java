@@ -116,7 +116,9 @@ public class TransformationMasksPreferencesImex {
 		dialog.setFilterExtensions(new String[] { "*.xml" });
 		dialog.setFilterPath(pathName);
 		dialog.setFileName(fileName);
-		dialog.open();
+		if(dialog.open() == null){
+			return null;
+		}
 
 		String newFileName = dialog.getFileName();
 		String newPathName = dialog.getFilterPath();
