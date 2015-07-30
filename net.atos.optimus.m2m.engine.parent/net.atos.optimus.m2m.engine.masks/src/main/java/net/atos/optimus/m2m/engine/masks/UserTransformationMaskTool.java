@@ -101,17 +101,20 @@ public class UserTransformationMaskTool {
 		descriptionElement.setText(transformationMaskReference.getDescription());
 		transformationMaskRoot.addContent(descriptionElement);
 
+		Element typeElement = new Element("type");
+		typeElement.setText("inclusive");
+		transformationMaskRoot.addContent(typeElement);
+
 		ITransformationMask initialTransformationMask = transformationMaskReference.getImplementation();
 		for (TransformationDataSource transformationDataSource : TransformationDataSourceManager.INSTANCE
 				.getTransformationDataSources()) {
 			for (TransformationReference transformationReference : transformationDataSource.getAll()) {
-				Element transformation = new Element("transformation");
-				Attribute transformationName = new Attribute("name", transformationReference.getId());
-				transformation.setAttribute(transformationName);
-				Attribute transformationEnabled = new Attribute("enable", Boolean.toString(initialTransformationMask
-						.isTransformationEnabled(transformationReference.getId())));
-				transformation.setAttribute(transformationEnabled);
-				transformationMaskRoot.addContent(transformation);
+				if (initialTransformationMask.isTransformationEnabled(transformationReference.getId())) {
+					Element transformation = new Element("transformation");
+					Attribute transformationName = new Attribute("name", transformationReference.getId());
+					transformation.setAttribute(transformationName);
+					transformationMaskRoot.addContent(transformation);
+				}
 			}
 		}
 
@@ -156,7 +159,7 @@ public class UserTransformationMaskTool {
 		UserTransformationMaskTool.writeTransformationMask(transformationMaskFile, document);
 		OptimusM2MMaskMessages.UM04.log(extendedTransformationMaskReference.getName());
 	}
-	
+
 	/**
 	 * Create an XML file containing a transformation mask
 	 * 

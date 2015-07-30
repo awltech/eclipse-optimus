@@ -66,10 +66,9 @@ public class XMLTransformationMaskReference extends EditableTransformationMaskRe
 	 *            the file containing the transformation mask.
 	 */
 	public XMLTransformationMaskReference(File transformationMaskFilename) {
-		super("", "", new XMLTransformationMask(transformationMaskFilename));
+		super("", "", null);
 		this.transformationMaskFile = transformationMaskFilename;
 		this.lastModificationDate = -1;
-		((XMLTransformationMask) this.implementation).setAssociatedTransformationMaskReference(this);
 		this.loadUserTransformationMaskReference();
 	}
 
@@ -111,6 +110,13 @@ public class XMLTransformationMaskReference extends EditableTransformationMaskRe
 		this.setName(nameElement.getValue());
 		Element descriptionElement = transformationMask.getChild("description");
 		this.setDescription(descriptionElement.getValue());
+		Element typeElement = transformationMask.getChild("type");
+		if("inclusive".equals(typeElement.getValue())){
+			this.implementation = new InclusiveXMLTransformationMask(this.transformationMaskFile,this);
+		}
+		else{
+			this.implementation = new ExclusiveXMLTransformationMask(this.transformationMaskFile,this);
+		}
 		OptimusM2MMaskMessages.UM19.log(this.transformationMaskFile.getName());
 	}
 	

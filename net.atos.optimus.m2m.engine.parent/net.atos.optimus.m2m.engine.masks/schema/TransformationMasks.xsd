@@ -2,11 +2,15 @@
 
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 
+	<xsd:simpleType name="maskType">
+    	<xsd:restriction base="xsd:string">
+        	<xsd:enumeration value="inclusive" />
+        	<xsd:enumeration value="exclusive" />
+    	</xsd:restriction>
+	</xsd:simpleType>
+
 	<xsd:complexType name="transformations">
-	
 		<xsd:attribute name="name" type="xsd:string" use="required"/>
-		<xsd:attribute name="enable" type="xsd:boolean" use="required"/>
-	
 	</xsd:complexType>
 	
 	<xsd:complexType name="transformationMasks">
@@ -16,6 +20,8 @@
 			<xsd:element name="name" type="xsd:string"/>
 	
 			<xsd:element name="description" type="xsd:string"/>
+			
+			<xsd:element name="type" type="maskType"/>
 			
 			<xsd:sequence minOccurs="0" maxOccurs="unbounded">
 		

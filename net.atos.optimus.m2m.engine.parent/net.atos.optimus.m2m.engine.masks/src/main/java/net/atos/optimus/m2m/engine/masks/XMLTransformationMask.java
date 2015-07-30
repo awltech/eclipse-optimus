@@ -23,17 +23,16 @@ package net.atos.optimus.m2m.engine.masks;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskReference;
+import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSourceManager;
+import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
 import net.atos.optimus.m2m.engine.masks.extension.XMLFileTransformationMaskDataSource;
 import net.atos.optimus.m2m.engine.masks.logging.OptimusM2MMaskMessages;
 
@@ -51,7 +50,7 @@ import org.xml.sax.SAXException;
  *
  */
 
-public class XMLTransformationMask implements IEditableTransformationMask {
+public abstract class XMLTransformationMask implements IEditableTransformationMask {
 
 	/** The file of the transformation mask */
 	protected File transformationMaskFile;
@@ -62,8 +61,8 @@ public class XMLTransformationMask implements IEditableTransformationMask {
 	 */
 	protected long lastModificationDate;
 
-	/** The map holding the enabled/disabled transformations */
-	protected Map<String, Boolean> transformationMask;
+	/** The set holding the enabled/disabled transformations */
+	protected Set<String> transformationMask;
 
 	/** The transformation mask reference associated to the transformation mask */
 	protected TransformationMaskReference associatedTransformationMaskReference;
@@ -73,24 +72,15 @@ public class XMLTransformationMask implements IEditableTransformationMask {
 	 * 
 	 * @param transformationMaskFilename
 	 *            the file containing the transformation mask.
-	 */
-	public XMLTransformationMask(File transformationMaskFilename) {
-		this.transformationMaskFile = transformationMaskFilename;
-		this.lastModificationDate = -1;
-		this.transformationMask = new HashMap<String, Boolean>();
-		this.loadUserTransformationMask();
-	}
-
-	/**
-	 * Associate the transformation mask reference with the transformation mask
-	 * 
 	 * @param associatedTransformationMaskReference
 	 *            the transformation mask reference associated to the
-	 *            transformation mask.
+	 *            transformation mask. 
 	 */
-	public void setAssociatedTransformationMaskReference(
-			TransformationMaskReference associatedTransformationMaskReference) {
+	public XMLTransformationMask(File transformationMaskFilename, XMLTransformationMaskReference associatedTransformationMaskReference) {
+		this.transformationMaskFile = transformationMaskFilename;
 		this.associatedTransformationMaskReference = associatedTransformationMaskReference;
+		this.lastModificationDate = -1;
+		this.loadUserTransformationMask();
 	}
 
 	/**
@@ -129,36 +119,56 @@ public class XMLTransformationMask implements IEditableTransformationMask {
 	protected void updateTransformationMask() throws JDOMException, IOException {
 		SAXBuilder sxb = new SAXBuilder();
 		Document document = sxb.build(this.transformationMaskFile);
+		this.transformationMask = new HashSet<String>();
+
 		Element transformationMask = document.getRootElement();
-		List<?> transformations = transformationMask.getChildren("transformation");
-		Iterator<?> transformationsIt = transformations.iterator();
+		Iterator<?> transformationsIt = transformationMask.getChildren("transformation").iterator();
+
 		while (transformationsIt.hasNext()) {
 			Element transformation = (Element) transformationsIt.next();
-			boolean enable = Boolean.parseBoolean(transformation.getAttributeValue("enable"));
 			String transformationName = transformation.getAttributeValue("name");
-			this.transformationMask.put(transformationName, enable);
-			if (enable) {
-				OptimusM2MMaskMessages.UM17.log(transformationName, this.transformationMaskFile.getName());
-			} else {
-				OptimusM2MMaskMessages.UM18.log(transformationName, this.transformationMaskFile.getName());
-			}
+			this.insertTransformationAndAssociatedRequirements(transformationName);
 		}
 		OptimusM2MMaskMessages.UM19.log(this.transformationMaskFile.getName());
 	}
 
-	@Override
-	public boolean isTransformationEnabled(String id) {
-		this.loadUserTransformationMask();
-		return this.transformationMask.containsKey(id) ? this.transformationMask.get(id) : true;
+	/**
+	 * Insert transformation in the mask and their associated requirements
+	 * 
+	 * @param transformationName
+	 *            the name of the transformation to insert.
+	 */
+	protected void insertTransformationAndAssociatedRequirements(String transformationName) {
+		TransformationReference transformationRef = TransformationDataSourceManager.INSTANCE
+				.getById(transformationName);
+		if (transformationRef != null && !this.transformationMask.contains(transformationName)) {
+			this.transformationMask.add(transformationName);
+			this.addTransformationLog(transformationName);
+			for (String requirement : this.getRequirementsTransformation(transformationRef)) {
+				this.addTransformationLog(requirement);
+				this.transformationMask.add(requirement);
+			}
+		}
 	}
 
-	@Override
-	public void submitMaskModification(Set<Entry<String, Boolean>> maskModifications) {
-		for (Entry<String, Boolean> modification : maskModifications) {
-			this.transformationMask.put(modification.getKey(), modification.getValue());
-		}
-		UserTransformationMaskTool.createUserTransformationMask(this.transformationMaskFile,
-				this.associatedTransformationMaskReference);
-	}
+	/**
+	 * The transformation log used when insert a transformation in the current
+	 * mask
+	 * 
+	 * @param transformationName
+	 *            the name of the insert transformation
+	 */
+	protected abstract void addTransformationLog(String transformationName);
+
+	/**
+	 * Give the set of required transformation for a specified transformation
+	 * according to the current mask
+	 * 
+	 * @param reference
+	 *            the transformation reference.
+	 * @return the set of required transformation for a specified transformation
+	 *         according to the current mask.
+	 */
+	protected abstract Set<String> getRequirementsTransformation(TransformationReference reference);
 
 }
