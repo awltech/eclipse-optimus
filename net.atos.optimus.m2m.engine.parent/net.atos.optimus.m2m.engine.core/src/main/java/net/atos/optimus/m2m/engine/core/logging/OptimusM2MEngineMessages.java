@@ -43,7 +43,7 @@ public enum OptimusM2MEngineMessages implements OptimusMessage {
 			Level.WARNING), TE13(Level.INFO), TE14(Level.INFO), TE15(Level.INFO), TE16(Level.INFO), TE17(Level.INFO), TE18(
 			Level.INFO), TE19(Level.INFO), TE20(Level.WARNING), TE21(Level.INFO), TE22(Level.SEVERE), TE23(Level.SEVERE), TE24(
 			Level.INFO), TE25(Level.INFO), TE26(Level.INFO), TE27(Level.INFO), TE28(Level.INFO), TE29(Level.INFO), TE30(
-			Level.INFO), TE31(Level.INFO), TE32(Level.WARNING),TE33(Level.INFO), 
+			Level.INFO), TE31(Level.INFO), TE32(Level.WARNING), TE33(Level.INFO),
 
 	// Messages related to the Transformation Adapters
 	AD01(Level.FINE), AD02(Level.FINE), AD03(Level.SEVERE), AD04(Level.INFO), AD05(Level.INFO),
@@ -69,8 +69,9 @@ public enum OptimusM2MEngineMessages implements OptimusMessage {
 	DS01(Level.INFO), DS02(Level.WARNING), DS03(Level.WARNING), DS04(Level.WARNING), DS05(Level.FINE), DS06(Level.FINE),
 
 	// Messages related to the Transformation Mask Data Sources registration
-	MS01(Level.FINE),MS02(Level.INFO),MS03(Level.WARNING),MS04(Level.WARNING),MS05(Level.WARNING),MS06(Level.FINE),
-	
+	MS01(Level.FINE), MS02(Level.INFO), MS03(Level.WARNING), MS04(Level.WARNING), MS05(Level.WARNING), MS06(Level.FINE), MS07(
+			Level.WARNING),
+
 	// Messages related to Transformation Hooks management
 	TH01(Level.FINE), TH02(Level.FINE), TH03(Level.INFO), TH04(Level.WARNING), TH05(Level.WARNING), TH06(Level.WARNING), TH07(
 			Level.WARNING), TH08(Level.WARNING);

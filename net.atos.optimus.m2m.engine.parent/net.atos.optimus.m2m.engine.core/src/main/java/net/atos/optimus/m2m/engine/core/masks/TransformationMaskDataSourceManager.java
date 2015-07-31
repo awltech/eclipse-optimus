@@ -22,8 +22,10 @@
 package net.atos.optimus.m2m.engine.core.masks;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import net.atos.optimus.m2m.engine.core.Activator;
 import net.atos.optimus.m2m.engine.core.logging.OptimusM2MEngineMessages;
@@ -53,7 +55,7 @@ public enum TransformationMaskDataSourceManager {
 
 	/** The name of the element in the extension */
 	public static final String EXTENSION_ELEMENT = "transformationMaskDataSource";
-	
+
 	/** The last known preferred mask preference */
 	public TransformationMaskReference preferredMaskReference;
 
@@ -69,6 +71,7 @@ public enum TransformationMaskDataSourceManager {
 	private final List<TransformationMaskDataSource> transformationMaskDataSources;
 
 	private TransformationMaskDataSourceManager() {
+		Set<String> transformationMasksName = new HashSet<String>();
 		OptimusM2MEngineMessages.MS01.log();
 
 		List<TransformationMaskDataSource> tempTransformationMaskDataSources = new LinkedList<TransformationMaskDataSource>();
@@ -89,6 +92,11 @@ public enum TransformationMaskDataSourceManager {
 								tempTransformationMaskDataSources.add(dataSource);
 								OptimusM2MEngineMessages.MS02
 										.log(dataSource.getName(), dataSource.getClass().getName());
+								for (TransformationMaskReference mask : dataSource.getAllMasks()) {
+									if (!transformationMasksName.add(mask.getName())) {
+										OptimusM2MEngineMessages.MS07.log(mask.getName());
+									}
+								}
 							} else {
 								OptimusM2MEngineMessages.MS03.log(o.getClass().getName());
 							}
@@ -129,15 +137,15 @@ public enum TransformationMaskDataSourceManager {
 	public TransformationMaskReference getPreferredTransformationMask() {
 		String maskName = Activator.getDefault().getPreferenceStore()
 				.getString(TransformationMaskDataSourceManager.PREFERED_MASK_STORE_KEY);
-		if(this.preferredMaskReference == null || !this.preferredMaskReference.getName().equals(maskName)){
+		if (this.preferredMaskReference == null || !this.preferredMaskReference.getName().equals(maskName)) {
 			this.preferredMaskReference = this.findTransformationMaskByName(maskName);
-			if(this.preferredMaskReference == null){
+			if (this.preferredMaskReference == null) {
 				this.preferredMaskReference = this
 						.findTransformationMaskByName(TransformationMaskDataSourceManager.DEFAULT_MASK_NAME);
 				this.setPreferredTransformationMask(this.preferredMaskReference);
 			}
 		}
-		return this.preferredMaskReference; 
+		return this.preferredMaskReference;
 	}
 
 	/**
@@ -174,13 +182,13 @@ public enum TransformationMaskDataSourceManager {
 				.putValue(TransformationMaskDataSourceManager.PREFERED_MASK_STORE_KEY,
 						transformationMaskReference.getName());
 	}
-	
-	public void reinitializePreferredTransformationMask(){
+
+	public void reinitializePreferredTransformationMask() {
 		Activator
-		.getDefault()
-		.getPreferenceStore()
-		.putValue(TransformationMaskDataSourceManager.PREFERED_MASK_STORE_KEY,
-				TransformationMaskDataSourceManager.DEFAULT_MASK_NAME);
+				.getDefault()
+				.getPreferenceStore()
+				.putValue(TransformationMaskDataSourceManager.PREFERED_MASK_STORE_KEY,
+						TransformationMaskDataSourceManager.DEFAULT_MASK_NAME);
 	}
 
 }

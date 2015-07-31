@@ -21,6 +21,8 @@
  */
 package net.atos.optimus.m2m.engine.core.masks;
 
+import java.util.UUID;
+
 /**
  * This class is mainly a wrapper. It is used to name the transformation masks,
  * for user reusability
@@ -30,6 +32,11 @@ package net.atos.optimus.m2m.engine.core.masks;
  * 
  */
 public class TransformationMaskReference {
+
+	/**
+	 * Mask ID
+	 */
+	protected long id;
 
 	/**
 	 * Mask Name
@@ -57,6 +64,7 @@ public class TransformationMaskReference {
 	 *            the implementation of the mask.
 	 */
 	public TransformationMaskReference(String name, String description, ITransformationMask implementation) {
+		this.id = UUID.randomUUID().getMostSignificantBits();
 		this.name = name;
 		this.description = description;
 		this.implementation = implementation;
@@ -67,6 +75,13 @@ public class TransformationMaskReference {
 	 */
 	public ITransformationMask getImplementation() {
 		return implementation;
+	}
+	
+	/**
+	 * @return transformation mask ID
+	 */
+	public long getId() {
+		return this.id;
 	}
 
 	/**
@@ -82,11 +97,11 @@ public class TransformationMaskReference {
 	public String getDescription() {
 		return description;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
-		if(obj instanceof TransformationMaskReference){
-			return this.getName().equals(((TransformationMaskReference)obj).getName());
+		if (obj instanceof TransformationMaskReference) {
+			return this.getId() == ((TransformationMaskReference) obj).getId();
 		}
 		return false;
 	}
