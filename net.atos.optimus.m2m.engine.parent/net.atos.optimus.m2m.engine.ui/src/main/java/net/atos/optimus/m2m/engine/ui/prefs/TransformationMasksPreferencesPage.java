@@ -325,8 +325,8 @@ public class TransformationMasksPreferencesPage extends PreferencePage implement
 								.getOriginalTransformationMaskReference());
 				if (transformationMaskCreationDialog.open() == Window.OK) {
 					TransformationMasksPreferencesPage.this.refreshTransformationMaskPreferencePage();
-					TransformationMaskReference transformationMaskReference = new TransformationMaskReference(
-							transformationMaskCreationDialog.getNewMaskName(), "", null);
+					TransformationMaskReference transformationMaskReference = TransformationMaskDataSourceManager.INSTANCE
+							.findTransformationMaskByName(transformationMaskCreationDialog.getNewMaskName());
 					ISelection selection = new StructuredSelection(transformationMaskReference);
 					TransformationMasksPreferencesPage.this.transformationMasksTableViewer.setSelection(selection);
 				}
