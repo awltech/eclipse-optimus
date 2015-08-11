@@ -19,31 +19,32 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package net.atos.optimus.m2m.engine.ui.prefs.dialog;
+package net.atos.optimus.m2m.engine.ui.prefs.dialog.list;
 
-import java.text.MessageFormat;
-import java.util.ResourceBundle;
+import net.atos.optimus.m2m.engine.core.masks.TransformationMaskReference;
+
+import org.eclipse.jface.viewers.ColumnLabelProvider;
 
 /**
- * Messages for input dialog in transformation mask preference
+ * Label provider used in the table dedicated to available transformation masks in creation page
  * 
  * @author tnachtergaele <nachtergaele.thomas@gmail.com>
  * 
  *
  */
+public class AvailableTransformationMasksLabelProvider extends ColumnLabelProvider {
 
-public enum TransformationMasksDialogMessages {
-
-	CREATION_TITLE, CREATION_MESSAGE, CREATION_DESCRIPTION, EXTENSION_MESSAGE, NAME_CONFLICT, NONE_MERGE, RENAME_TITLE, RENAME_OLD_NAME, RENAME_NEW_NAME, RENAME_INFO, DELETION_TITLE, DELETION_MESSAGE, PREFERRED_MASK_WARNING;
-
-	private static ResourceBundle resourceBundle = ResourceBundle.getBundle("TransformationMasksDialogMessages");
-
-	public String message() {
-		return resourceBundle.getString(this.toString());
-	}
-
-	public String message(Object... args) {
-		return MessageFormat.format(message(), args);
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
+	 */
+	public String getText(Object element) {
+		if (element instanceof TransformationMaskReference) {
+			TransformationMaskReference transformationMaskReference = (TransformationMaskReference) element;
+			return transformationMaskReference.getName();
+		}
+		return null;
 	}
 
 }

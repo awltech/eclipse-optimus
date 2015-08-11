@@ -21,33 +21,49 @@
  */
 package net.atos.optimus.m2m.engine.ui.prefs.dialog;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Set;
+
 import net.atos.optimus.common.tools.swt.FormDataBuilder;
 import net.atos.optimus.m2m.engine.core.masks.ITransformationMask;
+import net.atos.optimus.m2m.engine.core.masks.TransformationMaskDataSource;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskDataSourceManager;
 import net.atos.optimus.m2m.engine.core.masks.TransformationMaskReference;
+import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSource;
+import net.atos.optimus.m2m.engine.core.transformations.TransformationDataSourceManager;
+import net.atos.optimus.m2m.engine.core.transformations.TransformationReference;
+import net.atos.optimus.m2m.engine.masks.JavaTransformationMask;
 import net.atos.optimus.m2m.engine.masks.UserTransformationMaskTool;
-import net.atos.optimus.m2m.engine.ui.prefs.masks.list.TransformationMasksContentsProvider;
-import net.atos.optimus.m2m.engine.ui.prefs.masks.list.TransformationMasksLabelProvider;
+import net.atos.optimus.m2m.engine.ui.prefs.dialog.list.AvailableTransformationMasksContentsProvider;
+import net.atos.optimus.m2m.engine.ui.prefs.dialog.list.AvailableTransformationMasksLabelProvider;
+import net.atos.optimus.m2m.engine.ui.prefs.dialog.list.SelectedTransformationMask;
+import net.atos.optimus.m2m.engine.ui.prefs.dialog.list.SelectedTransformationMasksContentsProvider;
+import net.atos.optimus.m2m.engine.ui.prefs.dialog.list.SelectedTransformationMasksLabelProvider;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.Widget;
 
 /**
  * Dialog window used to create a new user transformation mask
@@ -59,9 +75,15 @@ import org.eclipse.swt.widgets.Widget;
 
 public class TransformationMaskCreationDialog extends Dialog {
 
+	/** The width size of the selection buttons */
+	public static final int BUTTON_SELECT_WIDTH = 80;
+
+	/** The width size of the ordering buttons */
+	public static final int BUTTON_ORDER_WIDTH = 20;
+
 	/** The label width */
 	public static final int LABEL_WIDTH = 70;
-	
+
 	/** The extended transformation mask by default */
 	protected TransformationMaskReference transformationMask;
 
@@ -71,11 +93,20 @@ public class TransformationMaskCreationDialog extends Dialog {
 	/** The text area holding the transformation mask description */
 	protected Text descriptionText;
 
-	/** The combo viewer holding transformation masks */
-	protected ComboViewer transformationMasksComboViewer;
-
 	/** The new mask name */
 	protected String newMaskName;
+
+	/** The table viewer holding available transformation mask */
+	protected TableViewer availableTransformationMasksTableViewer;
+
+	/** The set holding the available transformation mask */
+	protected Set<TransformationMaskReference> availableTransformationMasks;
+
+	/** The table viewer holding selected transformation mask */
+	protected TableViewer selectedTransformationMasksTableViewer;
+
+	/** The list holding the selected transformation mask */
+	protected LinkedList<SelectedTransformationMask> selectedTransformationMasks;
 
 	/**
 	 * Constructor
@@ -96,11 +127,16 @@ public class TransformationMaskCreationDialog extends Dialog {
 		Composite mainContainer = (Composite) super.createDialogArea(parent);
 		mainContainer.setLayout(new FormLayout());
 
+		// Name container
+
 		Composite creationContainer = new Composite(mainContainer, SWT.NONE);
 		creationContainer.setLayout(new FormLayout());
 		Label creationLabel = new Label(creationContainer, SWT.NONE);
 		creationLabel.setText(TransformationMasksDialogMessages.CREATION_MESSAGE.message());
 		this.creationText = new Text(creationContainer, SWT.NONE);
+		this.creationText.setText("");
+
+		// Description container
 
 		Composite descriptionContainer = new Composite(mainContainer, SWT.NONE);
 		descriptionContainer.setLayout(new FormLayout());
@@ -108,18 +144,57 @@ public class TransformationMaskCreationDialog extends Dialog {
 		descriptionLabel.setText(TransformationMasksDialogMessages.CREATION_DESCRIPTION.message());
 		this.descriptionText = new Text(descriptionContainer, SWT.BORDER | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);
 
-		Composite extensionContainer = new Composite(mainContainer, SWT.NONE);
-		extensionContainer.setLayout(new FormLayout());
-		Label extensionLabel = new Label(extensionContainer, SWT.NONE);
-		extensionLabel.setText(TransformationMasksDialogMessages.EXTENSION_MESSAGE.message());
+		// Merge container
 
-		Combo transformationMaskExtensionCombo = new Combo(extensionContainer, SWT.READ_ONLY);
-		this.transformationMasksComboViewer = new ComboViewer(transformationMaskExtensionCombo);
-		this.transformationMasksComboViewer.setLabelProvider(new TransformationMasksLabelProvider());
-		this.transformationMasksComboViewer.setContentProvider(new TransformationMasksContentsProvider());
-		this.transformationMasksComboViewer.setInput(TransformationMaskDataSourceManager.INSTANCE);
-		ISelection selection = new StructuredSelection(this.transformationMask);
-		this.transformationMasksComboViewer.setSelection(selection);
+		Composite mergeContainer = new Composite(mainContainer, SWT.NONE);
+		mergeContainer.setLayout(new FormLayout());
+
+		Group availableMaskGroup = new Group(mergeContainer, SWT.NONE);
+		availableMaskGroup.setText("Available Mask");
+		availableMaskGroup.setLayout(new FormLayout());
+		Table availableTransformationMasksTable = new Table(availableMaskGroup, SWT.BORDER | SWT.SINGLE);
+		this.availableTransformationMasksTableViewer = new TableViewer(availableTransformationMasksTable);
+		this.availableTransformationMasksTableViewer.setLabelProvider(new AvailableTransformationMasksLabelProvider());
+		this.availableTransformationMasksTableViewer
+				.setContentProvider(new AvailableTransformationMasksContentsProvider());
+		this.availableTransformationMasks = new HashSet<TransformationMaskReference>();
+		for (TransformationMaskDataSource transformationMaskDataSource : TransformationMaskDataSourceManager.INSTANCE
+				.getTransformationMaskDataSources()) {
+			this.availableTransformationMasks.addAll(transformationMaskDataSource.getAllMasks());
+		}
+		availableTransformationMasksTableViewer.setInput(this.availableTransformationMasks);
+
+		Composite mergeButtons = new Composite(mergeContainer, SWT.NONE);
+		mergeButtons.setLayout(new FormLayout());
+		Button addIncludedButton = new Button(mergeButtons, SWT.PUSH);
+		addIncludedButton.setText(">>> included");
+		Button addExcludedButton = new Button(mergeButtons, SWT.PUSH);
+		addExcludedButton.setText(">>> excluded");
+		Button cancelButton = new Button(mergeButtons, SWT.PUSH);
+		cancelButton.setText("<<<");
+
+		Composite selectedContainer = new Composite(mergeContainer, SWT.NONE);
+		selectedContainer.setLayout(new FormLayout());
+
+		Group selectedMaskGroup = new Group(selectedContainer, SWT.NONE);
+		selectedMaskGroup.setLayout(new FormLayout());
+		selectedMaskGroup.setText("Selected Mask");
+		Table selectedTransformationMasksTable = new Table(selectedMaskGroup, SWT.BORDER | SWT.SINGLE);
+		this.selectedTransformationMasksTableViewer = new TableViewer(selectedTransformationMasksTable);
+		this.selectedTransformationMasksTableViewer.setLabelProvider(new SelectedTransformationMasksLabelProvider());
+		this.selectedTransformationMasksTableViewer
+				.setContentProvider(new SelectedTransformationMasksContentsProvider());
+		this.selectedTransformationMasks = new LinkedList<SelectedTransformationMask>();
+		selectedTransformationMasksTableViewer.setInput(this.selectedTransformationMasks);
+
+		Composite arrowButtons = new Composite(selectedContainer, SWT.NONE);
+		arrowButtons.setLayout(new FormLayout());
+		Button arrowUpButton = new Button(arrowButtons, SWT.PUSH);
+		arrowUpButton.setText("^");
+		Button arrowDownButton = new Button(arrowButtons, SWT.PUSH);
+		arrowDownButton.setText("v");
+
+		// Error container
 
 		final Composite errorContainer = new Composite(mainContainer, SWT.NONE);
 		errorContainer.setLayout(new FormLayout());
@@ -132,32 +207,182 @@ public class TransformationMaskCreationDialog extends Dialog {
 		FormDataBuilder.on(this.creationText).left(creationLabel).right().vertical();
 		FormDataBuilder.on(creationContainer).top().horizontal();
 
-		FormDataBuilder.on(descriptionLabel).left().top().width(TransformationMaskCreationDialog.LABEL_WIDTH);
-		FormDataBuilder.on(this.descriptionText).left(descriptionLabel).right().height(50);
-		FormDataBuilder.on(descriptionContainer).top(creationContainer).horizontal();
-
-		FormDataBuilder.on(extensionLabel).left().top(15).bottom().width(TransformationMaskCreationDialog.LABEL_WIDTH);
-		FormDataBuilder.on(transformationMaskExtensionCombo).left(extensionLabel).right().vertical();
-		FormDataBuilder.on(extensionContainer).top(descriptionContainer).horizontal();
-
 		FormDataBuilder.on(errorImage).top().left();
-		FormDataBuilder.on(errorLabel).top(20).left(errorImage).right();
-		FormDataBuilder.on(errorContainer).top(extensionContainer).horizontal();
+		FormDataBuilder.on(errorLabel).top().left(errorImage).right();
+		FormDataBuilder.on(errorContainer).top(creationContainer).horizontal();
+
+		FormDataBuilder.on(descriptionLabel).left().top().width(TransformationMaskCreationDialog.LABEL_WIDTH);
+		FormDataBuilder.on(this.descriptionText).left(descriptionLabel).height(50).right();
+		FormDataBuilder.on(descriptionContainer).top(errorContainer).horizontal();
+
+		FormDataBuilder.on(availableTransformationMasksTable).vertical().horizontal();
+		FormDataBuilder.on(availableMaskGroup).left().vertical();
+
+		FormDataBuilder.on(addIncludedButton).top().width(TransformationMaskCreationDialog.BUTTON_SELECT_WIDTH);
+		FormDataBuilder.on(addExcludedButton).top(addIncludedButton)
+				.width(TransformationMaskCreationDialog.BUTTON_SELECT_WIDTH);
+		FormDataBuilder.on(cancelButton).top(addExcludedButton)
+				.width(TransformationMaskCreationDialog.BUTTON_SELECT_WIDTH);
+		FormDataBuilder.on(mergeButtons).top(10).left(availableMaskGroup);
+
+		FormDataBuilder.on(selectedTransformationMasksTable).vertical().horizontal();
+		FormDataBuilder.on(selectedMaskGroup).left().right(arrowButtons).vertical();
+
+		FormDataBuilder.on(arrowUpButton).top().width(TransformationMaskCreationDialog.BUTTON_ORDER_WIDTH);
+		FormDataBuilder.on(arrowDownButton).top(arrowUpButton)
+				.width(TransformationMaskCreationDialog.BUTTON_ORDER_WIDTH);
+		FormDataBuilder.on(arrowButtons).right().top(10);
+
+		FormDataBuilder.on(selectedContainer).left(mergeButtons).right().vertical();
+
+		FormDataBuilder.on(mergeContainer).top(descriptionContainer).bottom().horizontal();
 
 		creationText.addModifyListener(new ModifyListener() {
 
 			@Override
 			public void modifyText(ModifyEvent e) {
-				String transformationName = TransformationMaskCreationDialog.this.creationText.getText().trim();
-				TransformationMaskReference transformationMaskReference = new TransformationMaskReference(transformationName,"",null);
-				Widget widget = TransformationMaskCreationDialog.this.transformationMasksComboViewer.testFindItem(transformationMaskReference);
-				if (widget != null) {
+				String transformationMaskName = TransformationMaskCreationDialog.this.creationText.getText().trim();
+				if ("".equals(transformationMaskName)) {
 					TransformationMaskCreationDialog.this.getButton(IDialogConstants.OK_ID).setEnabled(false);
-					errorLabel.setText(TransformationMasksDialogMessages.NAME_CONFLICT.message(transformationName));
+					errorContainer.setVisible(false);
+				} else if (TransformationMaskDataSourceManager.INSTANCE
+						.findTransformationMaskByName(transformationMaskName) != null) {
+					TransformationMaskCreationDialog.this.getButton(IDialogConstants.OK_ID).setEnabled(false);
+					errorLabel.setText(TransformationMasksDialogMessages.NAME_CONFLICT.message(transformationMaskName));
+					errorContainer.setVisible(true);
+				} else if (TransformationMaskCreationDialog.this.selectedTransformationMasksTableViewer.getElementAt(0) == null) {
+					TransformationMaskCreationDialog.this.getButton(IDialogConstants.OK_ID).setEnabled(false);
+					errorLabel.setText(TransformationMasksDialogMessages.NONE_MERGE.message());
 					errorContainer.setVisible(true);
 				} else {
 					TransformationMaskCreationDialog.this.getButton(IDialogConstants.OK_ID).setEnabled(true);
 					errorContainer.setVisible(false);
+				}
+			}
+		});
+
+		selectedTransformationMasksTable.addPaintListener(new PaintListener() {
+
+			@Override
+			public void paintControl(PaintEvent e) {
+				String transformationMaskName = TransformationMaskCreationDialog.this.creationText.getText().trim();
+				if ("".equals(transformationMaskName)) {
+					TransformationMaskCreationDialog.this.getButton(IDialogConstants.OK_ID).setEnabled(false);
+					errorContainer.setVisible(false);
+				} else if (TransformationMaskDataSourceManager.INSTANCE
+						.findTransformationMaskByName(transformationMaskName) != null) {
+					TransformationMaskCreationDialog.this.getButton(IDialogConstants.OK_ID).setEnabled(false);
+					errorLabel.setText(TransformationMasksDialogMessages.NAME_CONFLICT.message(transformationMaskName));
+					errorContainer.setVisible(true);
+				} else if (TransformationMaskCreationDialog.this.selectedTransformationMasksTableViewer.getElementAt(0) == null) {
+					TransformationMaskCreationDialog.this.getButton(IDialogConstants.OK_ID).setEnabled(false);
+					errorLabel.setText(TransformationMasksDialogMessages.NONE_MERGE.message());
+					errorContainer.setVisible(true);
+				} else {
+					TransformationMaskCreationDialog.this.getButton(IDialogConstants.OK_ID).setEnabled(true);
+					errorContainer.setVisible(false);
+				}
+			}
+		});
+
+		addIncludedButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				StructuredSelection selectionOnMask = (StructuredSelection) TransformationMaskCreationDialog.this.availableTransformationMasksTableViewer
+						.getSelection();
+				if (selectionOnMask.getFirstElement() instanceof TransformationMaskReference) {
+					TransformationMaskReference transformationMaskReference = (TransformationMaskReference) selectionOnMask
+							.getFirstElement();
+					TransformationMaskCreationDialog.this.availableTransformationMasks
+							.remove(transformationMaskReference);
+					TransformationMaskCreationDialog.this.selectedTransformationMasks
+							.add(new SelectedTransformationMask(transformationMaskReference, true));
+					TransformationMaskCreationDialog.this.availableTransformationMasksTableViewer.refresh();
+					TransformationMaskCreationDialog.this.selectedTransformationMasksTableViewer.refresh();
+				}
+			}
+		});
+
+		addExcludedButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				StructuredSelection selectionOnMask = (StructuredSelection) TransformationMaskCreationDialog.this.availableTransformationMasksTableViewer
+						.getSelection();
+				if (selectionOnMask.getFirstElement() instanceof TransformationMaskReference) {
+					TransformationMaskReference transformationMaskReference = (TransformationMaskReference) selectionOnMask
+							.getFirstElement();
+					TransformationMaskCreationDialog.this.availableTransformationMasks
+							.remove(transformationMaskReference);
+					TransformationMaskCreationDialog.this.selectedTransformationMasks
+							.add(new SelectedTransformationMask(transformationMaskReference, false));
+					TransformationMaskCreationDialog.this.availableTransformationMasksTableViewer.refresh();
+					TransformationMaskCreationDialog.this.selectedTransformationMasksTableViewer.refresh();
+				}
+			}
+		});
+
+		cancelButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				StructuredSelection selectionOnMask = (StructuredSelection) TransformationMaskCreationDialog.this.selectedTransformationMasksTableViewer
+						.getSelection();
+				if (selectionOnMask.getFirstElement() instanceof SelectedTransformationMask) {
+					SelectedTransformationMask selectedTransformationMask = (SelectedTransformationMask) selectionOnMask
+							.getFirstElement();
+					TransformationMaskCreationDialog.this.selectedTransformationMasks
+							.remove(selectedTransformationMask);
+					TransformationMaskCreationDialog.this.availableTransformationMasks.add(selectedTransformationMask
+							.getTransformationMaskReference());
+					TransformationMaskCreationDialog.this.availableTransformationMasksTableViewer.refresh();
+					TransformationMaskCreationDialog.this.selectedTransformationMasksTableViewer.refresh();
+				}
+			}
+		});
+
+		arrowUpButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				StructuredSelection selectionOnMask = (StructuredSelection) TransformationMaskCreationDialog.this.selectedTransformationMasksTableViewer
+						.getSelection();
+				if (selectionOnMask.getFirstElement() instanceof SelectedTransformationMask) {
+					SelectedTransformationMask selectedTransformationMask = (SelectedTransformationMask) selectionOnMask
+							.getFirstElement();
+					Iterator<SelectedTransformationMask> iterator = TransformationMaskCreationDialog.this.selectedTransformationMasks
+							.iterator();
+					int index = 0;
+					while (!iterator.next().equals(selectedTransformationMask)) {
+						index++;
+					}
+					if (index != 0) {
+						iterator.remove();
+						TransformationMaskCreationDialog.this.selectedTransformationMasks.add(index - 1,
+								selectedTransformationMask);
+						TransformationMaskCreationDialog.this.selectedTransformationMasksTableViewer.refresh();
+					}
+				}
+			}
+		});
+
+		arrowDownButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				StructuredSelection selectionOnMask = (StructuredSelection) TransformationMaskCreationDialog.this.selectedTransformationMasksTableViewer
+						.getSelection();
+				if (selectionOnMask.getFirstElement() instanceof SelectedTransformationMask) {
+					SelectedTransformationMask selectedTransformationMask = (SelectedTransformationMask) selectionOnMask
+							.getFirstElement();
+					Iterator<SelectedTransformationMask> iterator = TransformationMaskCreationDialog.this.selectedTransformationMasks
+							.iterator();
+					int index = 0;
+					while (!iterator.next().equals(selectedTransformationMask)) {
+						index++;
+					}
+					if (iterator.hasNext()) {
+						iterator.remove();
+						TransformationMaskCreationDialog.this.selectedTransformationMasks.add(index + 1,
+								selectedTransformationMask);
+						TransformationMaskCreationDialog.this.selectedTransformationMasksTableViewer.refresh();
+					}
 				}
 			}
 		});
@@ -169,14 +394,44 @@ public class TransformationMaskCreationDialog extends Dialog {
 	protected void okPressed() {
 		this.newMaskName = this.creationText.getText();
 		String maskDescription = this.descriptionText.getText();
-		IStructuredSelection selection = (IStructuredSelection) this.transformationMasksComboViewer.getSelection();
-		TransformationMaskReference extendedTransformationMask = (TransformationMaskReference) selection
-				.getFirstElement();
-		ITransformationMask maskImplementation = extendedTransformationMask.getImplementation();
 		TransformationMaskReference newTransformationMask = new TransformationMaskReference(this.newMaskName,
-				maskDescription, maskImplementation);
+				maskDescription, this.mergeSelectedTransformationMask());
 		UserTransformationMaskTool.createUserTransformationMask(newTransformationMask);
 		super.okPressed();
+	}
+
+	/**
+	 * Merge the selected transformation masks
+	 * 
+	 * @return the transformation mask resulting of the merge of selected
+	 *         transformation masks.
+	 */
+	protected ITransformationMask mergeSelectedTransformationMask() {
+		JavaTransformationMask mergeMask = this.selectedTransformationMasks.get(0).isInclusive() ? JavaTransformationMask
+				.allOff() : JavaTransformationMask.allOn();
+		for (SelectedTransformationMask selectedTransformationMask : this.selectedTransformationMasks) {
+			ITransformationMask mask = selectedTransformationMask.getTransformationMaskReference().getImplementation();
+			if (selectedTransformationMask.isInclusive()) {
+				for (TransformationDataSource transformationDataSource : TransformationDataSourceManager.INSTANCE
+						.getTransformationDataSources()) {
+					for (TransformationReference reference : transformationDataSource.getAll()) {
+						if (mask.isTransformationEnabled(reference.getId())) {
+							mergeMask.withTransformation(reference.getId());
+						}
+					}
+				}
+			} else {
+				for (TransformationDataSource transformationDataSource : TransformationDataSourceManager.INSTANCE
+						.getTransformationDataSources()) {
+					for (TransformationReference reference : transformationDataSource.getAll()) {
+						if (!mask.isTransformationEnabled(reference.getId())) {
+							mergeMask.withoutTransformation(reference.getId());
+						}
+					}
+				}
+			}
+		}
+		return mergeMask;
 	}
 
 	@Override
@@ -187,7 +442,14 @@ public class TransformationMaskCreationDialog extends Dialog {
 
 	@Override
 	protected Point getInitialSize() {
-		return new Point(400, 280);
+		return new Point(600, 450);
+	}
+
+	@Override
+	protected void createButtonsForButtonBar(Composite parent) {
+		// TODO Auto-generated method stub
+		super.createButtonsForButtonBar(parent);
+		TransformationMaskCreationDialog.this.getButton(IDialogConstants.OK_ID).setEnabled(false);
 	}
 
 	/**
