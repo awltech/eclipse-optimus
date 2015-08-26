@@ -9,7 +9,7 @@
 	<properties>
 		<tycho-version>0.20.0</tycho-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<build-model>default-aggregation-local.b3aggr</build-model>
+		<build-model>${project.basedir}/default-aggregation-local.b3aggr</build-model>
 		<build-root>../net.atos.optimus.parent/target</build-root>
 		<build-log-level>DEBUG</build-log-level>
 		<build-action>CLEAN_BUILD</build-action>
@@ -39,7 +39,7 @@
 							<url> http://download.eclipse.org/modeling/emft/b3/updates-4.3/</url>
 						</repository>
 					</repositories>
-					<appArgLine>-application org.eclipse.b3.cli.headless aggregate --buildModel ${build-model} --buildRoot ${build-model} --action ${build-action} --eclipseLogLevel ${build-log-level}</appArgLine>
+					<appArgLine>-application org.eclipse.b3.cli.headless aggregate --buildModel ${build-model} --buildRoot ${build-root} --action ${build-action} --eclipseLogLevel ${build-log-level} --logLevel ${build-log-level}</appArgLine>
 					<dependencies>
 						<dependency>
 							<artifactId>org.eclipse.b3.aggregator.engine.feature</artifactId>
