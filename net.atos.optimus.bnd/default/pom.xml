@@ -40,7 +40,8 @@
 							<url> http://download.eclipse.org/modeling/emft/b3/updates-4.3/</url>
 						</repository>
 					</repositories>
-					<appArgLine>-application org.eclipse.b3.cli.headless aggregate --buildModel ${build-model} --buildRoot ${build-root} --action ${build-action} --eclipseLogLevel ${build-log-level} --logLevel ${build-log-level} --stacktrace ${java-args}</appArgLine>
+					<appArgLine>-application org.eclipse.b3.cli.headless aggregate --buildModel ${build-model} --buildRoot ${build-root} --action ${build-action} --eclipseLogLevel ${build-log-level} --logLevel ${build-log-level} --stacktrace</appArgLine>
+					<argLine>${java-args}</argLine>
 					<dependencies>
 						<dependency>
 							<artifactId>org.eclipse.b3.aggregator.engine.feature</artifactId>
