@@ -9,12 +9,12 @@
 	<properties>
 		<tycho-version>0.20.0</tycho-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<build-model>local-aggregation.b3aggr</build-model> <!-- Has to be specified by the user of the pom -->
+		<build-model></build-model> <!-- Has to be specified by the user of the pom -->
 		<build-root>${project.basedir}/target/build</build-root>
 		<build-log-level>DEBUG</build-log-level>
 		<build-action>CLEAN_BUILD</build-action>
 		<java-args></java-args>
-		<app-args></app-args>
+		<build-args></build-args>
 	</properties>
 	<build>
 		<plugins>
@@ -41,7 +41,7 @@
 							<url> http://download.eclipse.org/modeling/emft/b3/updates-4.3/</url>
 						</repository>
 					</repositories>
-					<appArgLine>-application org.eclipse.b3.cli.headless aggregate --buildModel ${build-model} --buildRoot ${build-root} --action ${build-action} --eclipseLogLevel ${build-log-level} --logLevel ${build-log-level} --stacktrace ${app-args}</appArgLine>
+					<appArgLine>-application org.eclipse.b3.cli.headless aggregate --buildModel ${build-model} --buildRoot ${build-root} --action ${build-action} --eclipseLogLevel ${build-log-level} --logLevel ${build-log-level} --stacktrace ${build-args}</appArgLine>
 					<argLine>${java-args}</argLine>
 					<dependencies>
 						<dependency>
