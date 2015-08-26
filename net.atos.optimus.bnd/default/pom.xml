@@ -13,6 +13,7 @@
 		<build-root>${project.basedir}/target</build-root>
 		<build-log-level>DEBUG</build-log-level>
 		<build-action>CLEAN_BUILD</build-action>
+		<java-args></java-args>
 	</properties>
 	<build>
 		<plugins>
@@ -39,7 +40,7 @@
 							<url> http://download.eclipse.org/modeling/emft/b3/updates-4.3/</url>
 						</repository>
 					</repositories>
-					<appArgLine>-application org.eclipse.b3.cli.headless aggregate --buildModel ${build-model} --buildRoot ${build-root} --action ${build-action} --eclipseLogLevel ${build-log-level} --logLevel ${build-log-level} --stacktrace</appArgLine>
+					<appArgLine>-application org.eclipse.b3.cli.headless aggregate --buildModel ${build-model} --buildRoot ${build-root} --action ${build-action} --eclipseLogLevel ${build-log-level} --logLevel ${build-log-level} --stacktrace ${java-args}</appArgLine>
 					<dependencies>
 						<dependency>
 							<artifactId>org.eclipse.b3.aggregator.engine.feature</artifactId>
