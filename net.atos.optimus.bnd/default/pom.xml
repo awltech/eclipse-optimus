@@ -1,0 +1,61 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>net.atos.optimus</groupId>
+	<artifactId>net.atos.optimus.superparent</artifactId>
+	<version>1.2.0</version>
+	<packaging>pom</packaging>
+	<name>Worldline Optimus Global Aggregation Pom</name>
+	<properties>
+		<tycho-version>0.20.0</tycho-version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<build-model>default-aggregation-local.b3aggr</build-model>
+		<build-root>../net.atos.optimus.parent/target</build-root>
+		<build-log-level>DEBUG</build-log-level>
+		<build-action>CLEAN_BUILD</build-action>
+	</properties>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho.extras</groupId>
+				<artifactId>tycho-eclipserun-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<repositories>
+						<repository>
+							<id>B3 requirements</id>
+							<layout>p2</layout>
+							<url> http://download.eclipse.org/releases/kepler/</url>
+						</repository>
+						<repository>
+							<id>B3 aggregator</id>
+							<layout>p2</layout>
+							<url> http://download.eclipse.org/modeling/emft/b3/updates-4.3/</url>
+						</repository>
+					</repositories>
+					<appArgLine>-application org.eclipse.b3.cli.headless aggregate --buildModel ${build-model} --buildRoot ${build-model} --action ${build-action} --eclipseLogLevel ${build-log-level}</appArgLine>
+					<dependencies>
+						<dependency>
+							<artifactId>org.eclipse.b3.aggregator.engine.feature</artifactId>
+							<type>eclipse-feature</type>
+						</dependency>
+					</dependencies>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>eclipse-run</goal>
+						</goals>
+						<phase>package</phase>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
