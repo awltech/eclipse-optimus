@@ -7,13 +7,13 @@
 	<packaging>pom</packaging>
 	<name>Worldline Optimus Global Aggregation Pom</name>
 	<properties>
-		<tycho-version>0.20.0</tycho-version>
+		<tycho-version>0.23.0</tycho-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<build-model></build-model> <!-- Has to be specified by the user of the pom -->
 		<project-outputdir>${project.basedir}/target</project-outputdir>
 		<build-root>${project-outputdir}/build</build-root>
 		<build-workspace>${project-outputdir}/workspace</build-workspace>
-		<build-log-level>DEBUG</build-log-level>
+		<build-log-level>INFO</build-log-level>
 		<build-action>CLEAN_BUILD</build-action>
 		<java-args></java-args>
 		<build-args></build-args>
