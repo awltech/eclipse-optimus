@@ -10,7 +10,9 @@
 		<tycho-version>0.20.0</tycho-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<build-model></build-model> <!-- Has to be specified by the user of the pom -->
-		<build-root>${project.basedir}/target/build</build-root>
+		<project-outputdir>${project.basedir}/target</project-outputdir>
+		<build-root>${project-outputdir}/build</build-root>
+		<build-workspace>${project-outputdir}/workspace</build-workspace>
 		<build-log-level>DEBUG</build-log-level>
 		<build-action>CLEAN_BUILD</build-action>
 		<java-args></java-args>
@@ -41,7 +43,7 @@
 							<url> http://download.eclipse.org/modeling/emft/b3/updates-4.3/</url>
 						</repository>
 					</repositories>
-					<appArgLine>-application org.eclipse.b3.cli.headless aggregate --buildModel ${build-model} --buildRoot ${build-root} --action ${build-action} --eclipseLogLevel ${build-log-level} --logLevel ${build-log-level} --stacktrace ${build-args}</appArgLine>
+					<appArgLine>-data ${build-workspace} -application org.eclipse.b3.cli.headless aggregate --buildModel ${build-model} --buildRoot ${build-root} --action ${build-action} --eclipseLogLevel ${build-log-level} --logLevel ${build-log-level} --stacktrace ${build-args}</appArgLine>
 					<argLine>${java-args}</argLine>
 					<dependencies>
 						<dependency>
@@ -56,6 +58,25 @@
 							<goal>eclipse-run</goal>
 						</goals>
 						<phase>package</phase>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<phase>clean</phase>
+						<configuration>
+							<target name="clean">
+								<delete verbose="true">
+									<fileset dir="${project-outputdir}" includes="*" />
+								</delete>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>
