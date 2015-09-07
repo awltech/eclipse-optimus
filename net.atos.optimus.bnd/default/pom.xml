@@ -11,7 +11,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<build-model></build-model> <!-- Has to be specified by the user of the pom -->
 		<project-outputdir>${project.basedir}/target</project-outputdir>
-		<build-root>${project-outputdir}</build-root>
+		<build-root>${project-outputdir}/build</build-root>
 		<build-workspace>${project-outputdir}/workspace</build-workspace>
 		<build-log-level>DEBUG</build-log-level>
 		<build-action>CLEAN_BUILD</build-action>
