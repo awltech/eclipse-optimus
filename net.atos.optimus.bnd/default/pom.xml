@@ -18,6 +18,16 @@
 		<java-args></java-args>
 		<build-args></build-args>
 	</properties>
+	<repositories>
+		<repository>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>bintray-mvanbesien-awltech</id>
+			<name>bintray</name>
+			<url>http://dl.bintray.com/mvanbesien/awltech</url>
+		</repository>
+	</repositories>
 	<build>
 		<plugins>
 			<plugin>
@@ -56,6 +66,19 @@
 					<execution>
 						<goals>
 							<goal>eclipse-run</goal>
+						</goals>
+						<phase>package</phase>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.worldline.mojo</groupId>
+				<artifactId>p2repo-index-plugin</artifactId>
+				<version>0.5.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate-index</goal>
 						</goals>
 						<phase>package</phase>
 					</execution>
