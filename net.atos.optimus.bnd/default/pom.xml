@@ -50,7 +50,7 @@
 						<repository>
 							<id>B3 aggregator</id>
 							<layout>p2</layout>
-							<url> http://download.eclipse.org/modeling/emft/b3/updates-4.3/</url>
+							<url>http://eclipse.worldline.com/thirdparties/b3/</url>
 						</repository>
 					</repositories>
 					<appArgLine>-data ${build-workspace} -application org.eclipse.b3.cli.headless aggregate --buildModel ${build-model} --buildRoot ${build-root} --action ${build-action} --eclipseLogLevel ${build-log-level} --logLevel ${build-log-level} --stacktrace ${build-args}</appArgLine>
